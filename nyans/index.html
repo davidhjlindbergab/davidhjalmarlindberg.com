@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nyans · Colour grading composed for your frame</title>
-<meta name="description" content="Nyans reads your shot and composes ten finished looks for it in seconds, on modelled print film or in clean digital. The blacks hold, the highlights hold and skin stays skin.">
+<meta name="description" content="Nyans reads your shot and composes ten finished looks for it in seconds, on modelled print film or in clean digital. The blacks hold, the highlights hold and skin stays skin. In your browser, and in Premiere Pro, DaVinci Resolve and Final Cut Pro.">
 <meta name="theme-color" content="#101010">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/nyans/">
 <meta property="og:type" content="product">
@@ -47,6 +47,23 @@ html{scroll-behavior:smooth}
 .ny-cmp:focus-within .ny-handle{outline:2px solid #EFEFEF;outline-offset:3px}
 .ny-range{-webkit-appearance:none;appearance:none}
 @media (max-width:860px){.ny-nav{display:none}}
+.ny-eds{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:40px 32px}
+.ny-eds li{display:flex;flex-direction:column;gap:10px;padding-top:22px;border-top:1px solid rgba(255,255,255,0.14)}
+.ny-eds h3{margin:0;font-size:26px;font-weight:400;letter-spacing:-0.01em}
+.ny-eds p{margin:0;color:#ABABAB;text-wrap:pretty}
+.ny-buy{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:clamp(28px,4.4vw,56px);border-radius:18px;background:#161616;border:1px solid rgba(255,255,255,0.08)}
+.ny-buy__amount{margin:14px 0 0;display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 16px;color:#ABABAB;font-size:17px}
+.ny-buy__amount span{font-size:clamp(56px,6vw,80px);font-weight:300;line-height:.95;letter-spacing:-0.03em;color:#EFEFEF}
+.ny-buy__list{list-style:none;margin:26px 0 0;padding:0;display:flex;flex-direction:column}
+.ny-buy__list li{padding:12px 0;border-top:1px solid rgba(255,255,255,0.08);color:#CFCFCF}
+.ny-buy__go{display:flex;flex-direction:column;justify-content:center;gap:14px}
+.ny-buy__btns{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px}
+.nyans .ny-buybtn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 26px;border-radius:12px;background:#EFEFEF;color:#111111;font-size:18px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background .2s ease,transform .2s ease}
+.nyans .ny-buybtn:hover{background:#FFFFFF;color:#111111;transform:translateY(-1px)}
+.ny-buybtn:focus-visible{outline:2px solid #EFEFEF;outline-offset:3px}
+.ny-buy__fine{margin:0;font-size:15px;line-height:1.55;color:#8C8C8C;text-wrap:pretty}
+@media (max-width:860px){.ny-buy{grid-template-columns:1fr;gap:32px}.ny-buy__btns{flex-direction:column}.ny-buy__btns a{width:100%}}
+@media (prefers-reduced-motion:reduce){.ny-buybtn{transition:none}}
 .dhl-wrap{background:#101010;border-bottom:1px solid rgba(255,255,255,0.07)}
 .dhl-bar{max-width:1368px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:env(safe-area-inset-top,0px) clamp(20px,5vw,64px) 0;font:400 15px/1.2 'Afacad Flux',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 .dhl-bar a{display:inline-flex;align-items:center;gap:9px;min-height:46px;color:#ABABAB;text-decoration:none;transition:color .2s ease}
@@ -74,8 +91,9 @@ html{scroll-behavior:smooth}
 <a href="#looks">Looks</a>
 <a href="#why">Why Nyans</a>
 <a href="#workflow">Workflow</a>
+<a href="#plugins">Plugins</a>
 </nav>
-<a class="ny-cta" href="https://claude.ai/artifact/JE9wf5L3ghL6tXzqFtWJKa" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1.5px solid transparent; background: linear-gradient(#161616, #161616) padding-box, linear-gradient(90deg, #8f5cff, #4c7dff 18%, #2fc6f0 34%, #36e2a5 50%, #a9e85a 63%, #ffd84a 74%, #ff9b3d 86%, #ff5468) border-box; color: #FFFFFF; font-size: 15px; font-weight: 500; text-decoration: none; white-space: nowrap">Open Nyans</a>
+<a class="ny-cta" href="app/" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1.5px solid transparent; background: linear-gradient(#161616, #161616) padding-box, linear-gradient(90deg, #8f5cff, #4c7dff 18%, #2fc6f0 34%, #36e2a5 50%, #a9e85a 63%, #ffd84a 74%, #ff9b3d 86%, #ff5468) border-box; color: #FFFFFF; font-size: 15px; font-weight: 500; text-decoration: none; white-space: nowrap">Open Nyans</a>
 </header>
 
 <section aria-labelledby="hero-title" style="padding: clamp(36px, 6vw, 80px) clamp(20px, 5vw, 64px) clamp(64px, 8vw, 104px)">
@@ -84,7 +102,7 @@ html{scroll-behavior:smooth}
 <h1 id="hero-title" style="margin: 22px 0 0; font-size: clamp(46px, 7vw, 100px); font-weight: 300; line-height: 1.0; letter-spacing: -0.03em; text-wrap: balance">One frame in.<br>Ten grades out.</h1>
 <p style="margin: 26px 0 0; max-width: 640px; font-size: clamp(18px, 1.6vw, 21px); line-height: 1.55; color: #ABABAB; text-wrap: pretty">Nyans reads your shot and composes ten finished looks for it in seconds, on modelled print film or in clean digital, from soft and warm to hard and cold. Each one is solved on your image, so the blacks hold, the highlights hold and skin stays skin.</p>
 <div style="margin-top: 36px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px 28px">
-<a class="ny-cta" href="https://claude.ai/artifact/JE9wf5L3ghL6tXzqFtWJKa" style="display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 26px; border-radius: 12px; border: 1.5px solid transparent; background: linear-gradient(#161616, #161616) padding-box, linear-gradient(90deg, #8f5cff, #4c7dff 18%, #2fc6f0 34%, #36e2a5 50%, #a9e85a 63%, #ffd84a 74%, #ff9b3d 86%, #ff5468) border-box; color: #FFFFFF; font-size: 18px; font-weight: 500; text-decoration: none; white-space: nowrap">Open Nyans<svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9h11"></path><path d="M10 4.5 14.5 9 10 13.5"></path></svg></a>
+<a class="ny-cta" href="app/" style="display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 26px; border-radius: 12px; border: 1.5px solid transparent; background: linear-gradient(#161616, #161616) padding-box, linear-gradient(90deg, #8f5cff, #4c7dff 18%, #2fc6f0 34%, #36e2a5 50%, #a9e85a 63%, #ffd84a 74%, #ff9b3d 86%, #ff5468) border-box; color: #FFFFFF; font-size: 18px; font-weight: 500; text-decoration: none; white-space: nowrap">Open Nyans<svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9h11"></path><path d="M10 4.5 14.5 9 10 13.5"></path></svg></a>
 <a class="ny-quiet" href="#looks" style="display: inline-flex; align-items: center; min-height: 44px; color: #EFEFEF; font-size: 17px; text-decoration: underline; text-underline-offset: 6px; text-decoration-color: rgba(255,255,255,0.35)">See one frame, ten ways</a>
 </div>
 </div>
@@ -141,7 +159,7 @@ html{scroll-behavior:smooth}
 <li style="display: flex; flex-direction: column; gap: 12px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.14)">
 <span class="ny-mono">01</span>
 <h3 style="margin: 0; font-size: 26px; font-weight: 400; letter-spacing: -0.01em">Open a frame</h3>
-<p style="margin: 0; color: #ABABAB; text-wrap: pretty">A still or a clip: camera log, Rec.709, phone footage or AI-generated. Inside Premiere Pro or DaVinci Resolve, Nyans reads the frame under your playhead.</p>
+<p style="margin: 0; color: #ABABAB; text-wrap: pretty">A still or a clip: camera log, Rec.709, phone footage or AI-generated. Inside Premiere Pro, DaVinci Resolve or Final Cut Pro, Nyans reads the frame under your playhead.</p>
 </li>
 <li style="display: flex; flex-direction: column; gap: 12px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.14)">
 <span class="ny-mono">02</span>
@@ -383,7 +401,7 @@ html{scroll-behavior:smooth}
 <div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
 <p class="ny-eyebrow">Workflow</p>
 <h2 id="workflow-title" class="ny-h2">In your browser. In your editor.</h2>
-<p style="margin: 0; color: #ABABAB; text-wrap: pretty">Nyans runs in the browser on a Mac, PC, tablet or phone, with nothing to install. In Premiere Pro and DaVinci Resolve it works as a panel: it reads the frame under the playhead and applies the look to the clip in one press.</p>
+<p style="margin: 0; color: #ABABAB; text-wrap: pretty">Nyans runs in the browser on a Mac, PC, tablet or phone, with nothing to install. In Premiere Pro and DaVinci Resolve it works as a panel, and in Final Cut Pro as an effect: it reads the frame under the playhead and applies the look to the clip in one press.</p>
 </div>
 <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px">
 <figure style="flex: 3 1 560px; min-width: 0; margin: 0">
@@ -408,7 +426,7 @@ html{scroll-behavior:smooth}
 </div>
 <div style="display: flex; flex-direction: column; gap: 8px; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.1)">
 <dt class="ny-mono">In your editor</dt>
-<dd style="margin: 0; color: #CFCFCF; text-wrap: pretty">Panels for Premiere Pro and DaVinci Resolve.</dd>
+<dd style="margin: 0; color: #CFCFCF; text-wrap: pretty">Panels for Premiere Pro and DaVinci Resolve Studio, and an effect for Final Cut Pro. <a href="#plugins" style="color: #EFEFEF; text-underline-offset: 4px">Get the plugins</a>.</dd>
 </div>
 <div style="display: flex; flex-direction: column; gap: 8px; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.1)">
 <dt class="ny-mono">Scopes</dt>
@@ -422,11 +440,49 @@ html{scroll-behavior:smooth}
 </div>
 </section>
 
+<section id="plugins" class="ny-sec" aria-labelledby="plugins-title">
+<div style="max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<p class="ny-eyebrow">Plugins</p>
+<h2 id="plugins-title" class="ny-h2">Nyans inside your editor.</h2>
+<p style="margin: 0; color: #ABABAB; text-wrap: pretty">The same Nyans, as a panel in Premiere Pro and DaVinci Resolve Studio and as an effect in Final Cut Pro. It reads the frame under your playhead and puts the look on your clips in one press, and your editor renders it itself, in real time and in the final export.</p>
+</div>
+<ul class="ny-eds">
+<li><span class="ny-mono">Panel</span><h3>Premiere Pro</h3><p>2025 (25.6) or later, on a Mac or a PC. Puts the look on the selected clips through Lumetri Color.</p></li>
+<li><span class="ny-mono">Workflow integration</span><h3>DaVinci Resolve Studio</h3><p>Version 18 or later, on a Mac or a PC. Puts the look on a node of the clip, its colour group or the whole timeline.</p></li>
+<li><span class="ny-mono">Effect</span><h3>Final Cut Pro</h3><p>10.6 or later, on macOS 13 Ventura or later. The look is stored in the clip, so it travels with the library and renders in every export.</p></li>
+</ul>
+<div id="buy" class="ny-buy">
+<div class="ny-buy__price">
+<p class="ny-eyebrow">One licence</p>
+<p class="ny-buy__amount"><span>€59</span>once, no subscription</p>
+<ul class="ny-buy__list">
+<li>Every Nyans 1.x version</li>
+<li>For you, on up to two computers, Mac or PC</li>
+<li>No account: Nyans checks your licence on your computer and never goes online</li>
+<li>Every feature free for 14 days before you buy</li>
+</ul>
+</div>
+<div class="ny-buy__go">
+<div class="ny-buy__btns">
+<a class="ny-cta" href="download/Nyans-plugins-1.1.0.zip" download style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 0 26px; border-radius: 12px; border: 1.5px solid transparent; background: linear-gradient(#161616, #161616) padding-box, linear-gradient(90deg, #8f5cff, #4c7dff 18%, #2fc6f0 34%, #36e2a5 50%, #a9e85a 63%, #ffd84a 74%, #ff9b3d 86%, #ff5468) border-box; color: #FFFFFF; font-size: 18px; font-weight: 500; text-decoration: none; white-space: nowrap">Download free trial<svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v10.5"></path><path d="M4.5 9 9 13.5 13.5 9"></path></svg></a>
+<a class="ny-buybtn" data-ny-buy href="mailto:david@nakaya.world?subject=Buying%20Nyans&amp;body=Hi%20David%2C%20I%27d%20like%20to%20buy%20a%20Nyans%20licence%20%28%E2%82%AC59%29.%20My%20name%20for%20the%20licence%3A%20">Buy for €59</a>
+</div>
+<p class="ny-buy__fine">One download for Mac and PC, 1.9 MB, with an installer for each editor. Start with Read me first.</p>
+<p class="ny-buy__fine">After 14 days Nyans still composes looks, and every look you applied stays on your clips, but applying new ones needs a licence. It arrives by e-mail: paste it into Nyans once in each editor you use.</p>
+<p class="ny-buy__fine">The installers are not signed by Apple yet, so on a Mac, right-click one and choose Open the first time.</p>
+</div>
+</div>
+<p style="margin: 0; color: #ABABAB">Rather not install anything? <a href="app/" style="color: #EFEFEF; text-underline-offset: 4px">Open Nyans in your browser</a>, free.</p>
+</div>
+</section>
+
 <section class="ny-sec" aria-labelledby="end-title" style="padding-top: clamp(96px, 11vw, 160px); padding-bottom: clamp(96px, 11vw, 160px)">
 <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 30px">
 <h2 id="end-title" style="margin: 0; font-size: clamp(38px, 5.2vw, 76px); font-weight: 300; line-height: 1.04; letter-spacing: -0.025em; text-wrap: balance">Your next frame has ten grades in it.</h2>
-<a class="ny-cta" href="https://claude.ai/artifact/JE9wf5L3ghL6tXzqFtWJKa" style="display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 26px; border-radius: 12px; border: 1.5px solid transparent; background: linear-gradient(#161616, #161616) padding-box, linear-gradient(90deg, #8f5cff, #4c7dff 18%, #2fc6f0 34%, #36e2a5 50%, #a9e85a 63%, #ffd84a 74%, #ff9b3d 86%, #ff5468) border-box; color: #FFFFFF; font-size: 18px; font-weight: 500; text-decoration: none; white-space: nowrap">Open Nyans<svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9h11"></path><path d="M10 4.5 14.5 9 10 13.5"></path></svg></a>
+<a class="ny-cta" href="app/" style="display: inline-flex; align-items: center; gap: 10px; min-height: 54px; padding: 0 26px; border-radius: 12px; border: 1.5px solid transparent; background: linear-gradient(#161616, #161616) padding-box, linear-gradient(90deg, #8f5cff, #4c7dff 18%, #2fc6f0 34%, #36e2a5 50%, #a9e85a 63%, #ffd84a 74%, #ff9b3d 86%, #ff5468) border-box; color: #FFFFFF; font-size: 18px; font-weight: 500; text-decoration: none; white-space: nowrap">Open Nyans<svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9h11"></path><path d="M10 4.5 14.5 9 10 13.5"></path></svg></a>
 <p class="ny-mono" style="margin: 0">Runs in your browser. Nothing to install.</p>
+<a class="ny-quiet" href="#plugins" style="display: inline-flex; align-items: center; min-height: 44px; color: #EFEFEF; font-size: 17px; text-decoration: underline; text-underline-offset: 6px; text-decoration-color: rgba(255,255,255,0.35)">Or get the plugins for Premiere Pro, Resolve and Final Cut Pro</a>
 </div>
 </section>
 
