@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Andrum: make room for the voice in any mix</title>
-<meta name="description" content="Andrum turns the music down only where it covers the voice, and only while the voice is there. 61 bands, zero latency, and a model of the ear that cuts only what the voice needs. Audio Unit and VST3 for Mac. Try it free for 14 days.">
+<meta name="description" content="Andrum turns the music down only where it covers the voice, and only while the voice is there. 61 bands, zero latency, and a model of the ear that cuts only what the voice needs. For Mac and Windows. Try it free for 14 days.">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/andrum/">
 <meta name="theme-color" content="#04060a">
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="Andrum">
 <meta property="og:title" content="Andrum: make room for the voice">
-<meta property="og:description" content="Turns the music down only where it covers the voice, and only while the voice is there. Audio Unit and VST3 for Mac.">
+<meta property="og:description" content="Turns the music down only where it covers the voice, and only while the voice is there. For Mac and Windows.">
 <meta property="og:url" content="https://davidhjalmarlindberg.com/andrum/">
 <meta property="og:image" content="https://davidhjalmarlindberg.com/andrum/assets/img/andrum-og.jpg">
 <meta property="og:image:width" content="1200">
@@ -30,13 +30,16 @@
   "name": "Andrum",
   "description": "A plug-in that turns the music down only where it covers the voice, and only while the voice is there.",
   "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "macOS 11 or later",
+  "operatingSystem": "macOS 11 or later, Windows 10 or later",
+  "softwareVersion": "1.4.0",
+  "downloadUrl": "https://davidhjalmarlindberg.com/andrum/#download",
   "image": "https://davidhjalmarlindberg.com/andrum/assets/img/andrum-og.jpg",
   "url": "https://davidhjalmarlindberg.com/andrum/",
   "offers": {
     "@type": "Offer",
     "price": "59.00",
     "priceCurrency": "EUR",
+    "availability": "https://schema.org/PreOrder",
     "url": "https://davidhjalmarlindberg.com/andrum/#buy"
   },
   "publisher": { "@type": "Organization", "name": "David HJ Lindberg AB" }
@@ -54,6 +57,30 @@
   .dhl-bar svg { width: 15px; height: 15px; flex: none; }
   @media (max-width: 1023px) { .dhl-bar { padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); } }
   @media (max-width: 639px) { .dhl-bar { padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); } }
+  /* the download section */
+  .an-dl { display: grid; gap: 40px; padding: 64px; border-radius: 22px; background: radial-gradient(ellipse 60% 80% at 100% 0%, rgba(81, 67, 160, 0.12), rgba(81, 67, 160, 0) 70%), var(--deep); box-shadow: inset 0 0 0 1px var(--line); }
+  .an-dl__lede { margin: 16px 0 0; max-width: 34em; font-size: 16.5px; color: var(--mist); }
+  .an-dl__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .an-dl__card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 30px; border-radius: 16px; background: var(--dusk); box-shadow: inset 0 0 0 1px var(--line); }
+  .an-dl__card.is-yours { box-shadow: inset 0 0 0 1px rgba(180, 179, 218, 0.42); }
+  .an-dl__card h3 { margin: 0; font: 300 32px/1.1 var(--display); letter-spacing: -0.02em; color: var(--frost); }
+  .an-dl__card p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--mist); }
+  .an-dl__card .an-btn { margin-top: auto; }
+  .an-dl__card .an-fine { margin: 0; }
+  .an-dl__card:not(.is-yours) .an-btn--primary { background: transparent; color: var(--frost); box-shadow: inset 0 0 0 1px rgba(243, 245, 249, 0.26); }
+  .an-dl__card:not(.is-yours) .an-btn--primary:hover { background: rgba(243, 245, 249, 0.04); box-shadow: inset 0 0 0 1px rgba(243, 245, 249, 0.55); }
+  .an-dl__notes { display: grid; gap: 8px; max-width: 48em; font-size: 14.5px; line-height: 1.6; color: var(--mist); }
+  .an-dl__notes p { margin: 0; }
+  .an-dl__notes strong { font-weight: 500; color: var(--frost); }
+  .an-dl__notes a { color: var(--frost); text-underline-offset: 3px; }
+  .an-dl__notes .an-fine { margin-top: 6px; }
+  @media (max-width: 1023px) { .an-dl { padding: 48px; } }
+  @media (max-width: 639px) {
+    .an-dl { gap: 32px; padding: 34px 24px; border-radius: 18px; }
+    .an-dl__grid { grid-template-columns: 1fr; }
+    .an-dl__card { padding: 24px; }
+    .an-dl__card .an-btn { align-self: stretch; }
+  }
 </style>
 </head>
 <body>
@@ -76,10 +103,10 @@
       <h1 class="an-h1" id="an-title">Make room for the voice.</h1>
       <p class="an-lede">Andrum turns the music down only where it covers the voice, and only while the voice is there. The mix stays full and the words come through.</p>
       <div class="an-actions">
-        <a class="an-btn an-btn--primary" href="../#contact">Download free trial</a>
-        <a class="an-btn an-btn--line" href="../#contact">Buy for €59</a>
+        <a class="an-btn an-btn--primary" href="#download">Download free trial</a>
+        <a class="an-btn an-btn--line" href="#buy">€59 · On sale soon</a>
       </div>
-      <p class="an-fine">14 days free with every feature. Audio Unit and VST3 for Mac.</p>
+      <p class="an-fine">14 days free with every feature. For Mac and Windows.</p>
     </div>
 
     <div class="an-inst" data-an-inst role="group" aria-label="Listen to the demo, and watch Andrum make room">
@@ -493,21 +520,56 @@
       <div class="an-price__panel">
         <div class="an-price__main">
           <h2 class="an-h2" id="an-price-title">Try it free. Buy it once.</h2>
-          <p class="an-price__amount"><span class="an-price__value">€59</span><span class="an-price__terms">One licence, no subscription</span></p>
+          <p class="an-price__amount"><span class="an-price__value">€59</span><span class="an-price__terms">One licence, no subscription. On sale soon.</span></p>
           <div class="an-actions">
-            <a class="an-btn an-btn--primary" href="../#contact">Buy for €59</a>
-            <a class="an-btn an-btn--line" href="../#contact">Download free trial</a>
+            <a class="an-btn an-btn--primary" href="#download">Download free trial</a>
+            <a class="an-btn an-btn--line" href="mailto:david@nakaya.world?subject=Andrum%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Hi%20David%2C%20please%20e-mail%20me%20when%20Andrum%20licences%20go%20on%20sale.">Tell me when it's on sale</a>
           </div>
-          <p class="an-fine">The trial runs for 14 days from the first time you use Andrum, with every feature. After that, Andrum lets the sound through untouched until you add a licence, so your sessions still open.</p>
+          <p class="an-fine">Licences go on sale soon. Until then, the trial gives you every feature for 14 days from the first time you use Andrum. After that, Andrum lets the sound through untouched and keeps every setting, so your sessions still open and nothing is lost when you add a licence.</p>
         </div>
         <ul class="an-price__list">
           <li>Every feature, as an Audio Unit, a VST3 and a standalone app</li>
-          <li>For one person, on up to two Macs: say a studio Mac and a laptop</li>
+          <li>For one person, on up to two computers: say a studio Mac and a laptop</li>
           <li>Every 1.x update included</li>
           <li>Use it in any work, commercial and broadcast included</li>
-          <li>No iLok and no account: your licence is checked on your Mac, and Andrum never goes online</li>
-          <li>Apple Silicon and Intel, macOS 11 or later</li>
+          <li>No iLok and no account: your licence is checked on your computer, and Andrum never goes online</li>
+          <li>Mac: Apple silicon and Intel, macOS 11 or later</li>
+          <li>Windows: Windows 10 and 11, 64-bit</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================================================================== download -->
+  <section class="an-section an-download" id="download" aria-labelledby="an-dl-title">
+    <div class="an-wrap">
+      <div class="an-dl">
+        <div class="an-dl__head">
+          <span class="an-caps">Free trial · Andrum 1.4.0</span>
+          <h2 class="an-h2" id="an-dl-title">Download Andrum.</h2>
+          <p class="an-dl__lede">Every feature, free for 14 days. One installer puts Andrum where every app on your computer looks for it.</p>
+        </div>
+        <div class="an-dl__grid">
+          <article class="an-dl__card" data-an-os="mac">
+            <h3>Mac</h3>
+            <p>Audio Unit, VST3 and the Andrum app, for Logic Pro, Ableton Live, Premiere Pro, DaVinci Resolve and the rest. Apple silicon and Intel, macOS 11 or later.</p>
+            <a class="an-btn an-btn--primary" href="download/Andrum-1.4.0-macOS.dmg" download>Download for Mac</a>
+            <p class="an-fine">Disk image, 27 MB</p>
+          </article>
+          <article class="an-dl__card" data-an-os="win">
+            <h3>Windows</h3>
+            <p>VST3 and the Andrum app, for Ableton Live, FL Studio, Cubase, Premiere Pro, DaVinci Resolve and the rest. Windows 10 and 11, 64-bit.</p>
+            <a class="an-btn an-btn--primary" href="download/Andrum-1.4.0-Windows-Setup.exe" download>Download for Windows</a>
+            <p class="an-fine">Installer, 10.5 MB</p>
+          </article>
+        </div>
+        <div class="an-dl__notes">
+          <p><strong>The first time you open the installer.</strong> This version isn't signed by Apple or Microsoft yet, so your computer asks you once.</p>
+          <p><strong>Mac:</strong> open the disk image and double-click Install Andrum. When macOS stops it, open System Settings, then Privacy &amp; Security, click Open Anyway beside Install Andrum, and confirm.</p>
+          <p><strong>Windows:</strong> if Windows says it protected your PC, click More info, then Run anyway.</p>
+          <p class="an-fine">Then rescan plug-ins in your app if it doesn't find Andrum by itself. File checksums: <a href="download/SHA256.txt">SHA-256</a>.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -530,7 +592,7 @@
         </details>
         <details>
           <summary>Which apps does it work in?</summary>
-          <p>Logic Pro, Ableton Live, FL Studio, Cubase, Studio One, Bitwig Studio, Reaper and GarageBand, and the video editors Premiere Pro, DaVinci Resolve and Final Cut Pro. Andrum comes as an Audio Unit and a VST3, plus a standalone app, and shows up in your plug-in list under David HJ Lindberg.</p>
+          <p>Logic Pro, Ableton Live, FL Studio, Cubase, Studio One, Bitwig Studio, Reaper and GarageBand, and the video editors Premiere Pro, DaVinci Resolve and Final Cut Pro. Andrum comes as an Audio Unit and a VST3 on a Mac, a VST3 on Windows, plus a standalone app, and shows up in your plug-in list under David HJ Lindberg.</p>
         </details>
         <details>
           <summary>Does it work in Pro Tools?</summary>
@@ -538,14 +600,14 @@
         </details>
         <details>
           <summary>Is there a Windows version?</summary>
-          <p>Not yet. Andrum is for Mac today.</p>
+          <p>Yes. On Windows 10 and 11 (64-bit), Andrum comes as a VST3 for Ableton Live, FL Studio, Cubase, Studio One, Bitwig Studio, Reaper, Premiere Pro and DaVinci Resolve, and as a standalone app. One installer puts in both.</p>
         </details>
         <details>
           <summary>Does it add latency?</summary>
           <p>No, Andrum runs at zero latency. For a kick and a bass you can give it up to 30 ms of lookahead, which your DAW compensates for.</p>
         </details>
         <details>
-          <summary>Is it heavy on my Mac?</summary>
+          <summary>Is it heavy on my computer?</summary>
           <p>No. With every feature on, Andrum runs about ten times faster than real time on one core of our test machine, and an instance whose inputs fall silent rests until they play again.</p>
         </details>
         <details>
@@ -558,11 +620,11 @@
         </details>
         <details>
           <summary>Can I use it on more than one computer?</summary>
-          <p>Yes. One licence covers one person on up to two Macs. When you get a new Mac, remove the licence from the old one in Andrum and add it on the new one.</p>
+          <p>Yes. One licence covers one person on up to two computers, Mac or Windows. When you get a new computer, remove the licence from the old one in Andrum and add it on the new one.</p>
         </details>
         <details>
           <summary>Does it need the internet or an iLok?</summary>
-          <p>No. Your licence is a short piece of text that Andrum checks on your Mac. Andrum never connects to the internet.</p>
+          <p>No. Your licence is a short piece of text that Andrum checks on your computer. Andrum never connects to the internet.</p>
         </details>
       </div>
     </div>
@@ -574,8 +636,8 @@
       <h2 class="an-h2" id="an-final-title">Hear it in your own mix.</h2>
       <p>Download Andrum and use every feature free for 14 days.</p>
       <div class="an-actions">
-        <a class="an-btn an-btn--primary" href="../#contact">Download free trial</a>
-        <a class="an-btn an-btn--line" href="../#contact">Buy for €59</a>
+        <a class="an-btn an-btn--primary" href="#download">Download free trial</a>
+        <a class="an-btn an-btn--line" href="#buy">€59 · On sale soon</a>
       </div>
     </div>
     <div class="an-final__pic" aria-hidden="true">
@@ -601,11 +663,21 @@
       <svg class="an-i-load" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="30 14"/></svg>
     </button>
     <span class="an-mark">andrum<i aria-hidden="true"></i></span>
-    <a class="an-btn an-btn--primary" href="../#contact">Download free trial</a>
-    <a class="an-btn an-btn--line" href="../#contact">Buy for €59</a>
+    <a class="an-btn an-btn--primary" href="#download">Download free trial</a>
+    <a class="an-btn an-btn--line" href="#buy">€59 · On sale soon</a>
   </div>
 </main>
 
+<script>
+  // The download card for the visitor's own computer leads; a phone or tablet sees both alike.
+  (function () {
+    var ua = navigator.userAgent || '', p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    var mobile = /iPhone|iPad|iPod|Android/i.test(ua) || (/Mac/i.test(p) && navigator.maxTouchPoints > 1);
+    var os = mobile ? '' : /Win/i.test(p + ' ' + ua) ? 'win' : /Mac/i.test(p + ' ' + ua) ? 'mac' : '';
+    var cards = document.querySelectorAll('[data-an-os]');
+    for (var i = 0; i < cards.length; i++) if (!os || cards[i].getAttribute('data-an-os') === os) cards[i].classList.add('is-yours');
+  })();
+</script>
 <script src="assets/js/page.js" defer></script>
 </body>
 </html>
