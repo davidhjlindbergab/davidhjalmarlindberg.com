@@ -4,7 +4,7 @@
    InitiateCheckout on Buy, and Purchase on the thank-you page, once, for a visitor who came to it through Buy. */
 (function () {
   'use strict';
-  var PIXEL_ID = '';               // the Meta pixel's ID, digits only (Meta Events Manager, Data sources). Empty: no banner, no pixel.
+  var PIXEL_ID = '4475247569405091';   // the Meta pixel (dataset "Nyans" in the David HJ Lindberg AB business portfolio). Empty: no banner, no pixel.
   var KEY = 'nyans.cookies';       // 'yes' or 'no': the visitor's choice, kept in this browser
   var BOUGHT = 'nyans.checkout';   // when a visitor who accepted pressed Buy, so the thank-you page counts that purchase once
   var PRICE = { value: 59, currency: 'EUR' };
