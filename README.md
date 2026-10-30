@@ -1,8 +1,16 @@
 # davidhjalmarlindberg.com
 
-The website of David Hjalmar Lindberg: the front page, plus product pages for Andrum (`/andrum/`) and Nyans (`/nyans/`).
+The website of David Hjalmar Lindberg: the front page, a page for each project, and product pages for Andrum (`/andrum/`) and Nyans (`/nyans/`).
 
 Plain HTML, CSS and JavaScript with no build step. Served by GitHub Pages from the root of `main`; `CNAME` holds the custom domain.
+
+## Pages
+
+- **Front page** (`index.html`): ten projects in the order Nakãya, Andrum, Nyans, Avicii, The Last Testament, DINOS, Norrsken, Aware App, Talks, DJ. Each links to its page.
+- **Project pages**: `nakaya/`, `avicii/`, `the-last-testament/`, `dinos/`, `norrsken/`, `aware/`, `talks/` and `dj/`, each an `index.html`. Andrum and Nyans link to their product pages.
+- **One stylesheet** (`style.css`) for the front page, the project pages and `404.html`: paper `#f4f3ef`, ink `#242420`, Helvetica Neue.
+- **Images**: front-page images in `img/work/`, each project's gallery in `img/<project>/`.
+- **The DJ page** plays the Borderland 2026 set through SoundCloud's own player.
 
 ## Nyans: selling and tracking
 
