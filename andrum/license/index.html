@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Add your Andrum licence</title>
+<meta name="description" content="How to add your Andrum licence key, and how to get your licence for a computer without internet.">
+<link rel="canonical" href="https://davidhjalmarlindberg.com/andrum/license/">
+<meta name="theme-color" content="#04060a">
+<link rel="icon" href="../assets/img/andrum-icon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="../assets/img/andrum-icon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="../assets/img/andrum-icon-180.png">
+<link rel="preload" href="../assets/fonts/InterDisplay-Light.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="../assets/css/andrum.css">
+<style>html { background: #04060a; } body { margin: 0; }</style>
+</head>
+<body>
+<main class="andrum an-page">
+  <header class="an-topbar">
+    <a class="an-mark" href="../" aria-label="Andrum, back to the product page">andrum<i aria-hidden="true"></i></a>
+    <nav aria-label="Andrum">
+      <a href="../#download">Download</a>
+      <a href="../buy/">Buy</a>
+    </nav>
+  </header>
+
+  <article class="an-doc">
+    <h1 class="an-h1">Add your licence.</h1>
+    <p class="an-doc__lede">Your licence key is in the receipt Lemon Squeezy e-mailed you when you bought Andrum. Adding it takes a few seconds.</p>
+
+    <div class="an-card" data-key-card hidden>
+      <div class="an-field">
+        <label for="your-key">Your licence key</label>
+        <div class="an-field__row">
+          <input class="an-input" id="your-key" readonly data-key-shown>
+          <button class="an-btn an-btn--primary" type="button" data-copy-key>Copy key</button>
+        </div>
+      </div>
+      <p class="an-msg" data-key-msg role="status" aria-live="polite"></p>
+    </div>
+
+    <ol class="an-howto">
+      <li>Copy the licence key from your receipt.</li>
+      <li>Open Andrum in your music app or video editor, and click <span class="an-ui">Trial</span> at the bottom of its window.</li>
+      <li>Click <span class="an-ui">Paste license</span>. Andrum fetches your licence once and works offline from then on.</li>
+    </ol>
+    <p>Andrum on a second computer? Paste the same key there too: one licence covers one person on up to two computers.</p>
+
+    <h2 id="offline">On a computer without internet</h2>
+    <p>Get your licence here, on any phone or computer that's online, and take it to the other computer.</p>
+    <form class="an-card" data-licence-form novalidate>
+      <div class="an-field">
+        <label for="key">Licence key</label>
+        <div class="an-field__row">
+          <input class="an-input" id="key" name="key" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="38B1460A-5104-4067-A91D-77B872934D51">
+          <button class="an-btn an-btn--primary" type="submit">Get my licence</button>
+        </div>
+      </div>
+      <p class="an-msg" data-msg role="status" aria-live="polite"></p>
+      <div data-out hidden>
+        <pre class="an-licence" data-licence></pre>
+        <div class="an-actions">
+          <button class="an-btn an-btn--primary" type="button" data-copy>Copy licence</button>
+          <button class="an-btn an-btn--line" type="button" data-save>Download licence file</button>
+        </div>
+        <p class="an-fine">On the other computer, paste it into Andrum with <span class="an-ui">Paste license</span>, or click <span class="an-ui">Open license file…</span> and choose the file.</p>
+      </div>
+    </form>
+
+    <h2 id="lost">Lost your key?</h2>
+    <p>Search your e-mail for Andrum: the key is in the receipt from Lemon Squeezy. Or sign in at <a href="https://app.lemonsqueezy.com/my-orders">app.lemonsqueezy.com/my-orders</a> with the e-mail address you bought with, to see your order and its key.</p>
+    <p>Still stuck? Write to <a href="mailto:davidhjlindbergab@gmail.com">davidhjlindbergab@gmail.com</a> with your order number, and you'll have your licence by e-mail.</p>
+  </article>
+
+  <footer class="an-foot">
+    <div class="an-wrap">
+      <p>Andrum is made in Sweden by David HJ Lindberg AB (559291-3353). Questions? Write to <a href="mailto:davidhjlindbergab@gmail.com">davidhjlindbergab@gmail.com</a>.</p>
+      <nav class="an-foot__links" aria-label="Terms and help">
+        <a href="../">Andrum</a>
+        <a href="../terms/">Licence and terms</a>
+        <a href="../terms/#refunds">Refunds</a>
+        <a href="../privacy/">Privacy</a>
+      </nav>
+    </div>
+  </footer>
+</main>
+
+<script>
+  // The licence page: shows the key the receipt's button carries (#key=...), and for a computer without
+  // internet, asks the licence service (its address is in service.json) for the buyer's signed licence.
+  (function () {
+    "use strict";
+    var SUPPORT = "davidhjlindbergab@gmail.com";
+    var KEY = /[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/;
+    var $ = function (s, el) { return (el || document).querySelector(s); };
+    var form = $("[data-licence-form]"), input = $("#key"), msg = $("[data-msg]"), out = $("[data-out]"), pre = $("[data-licence]");
+    var submit = $('button[type="submit"]', form);
+
+    function tidy(s) { return String(s || "").replace(/[‐-―−]/g, "-"); }
+    function say(el, text, bad) { el.textContent = text; el.classList.toggle("is-bad", !!bad); }
+
+    function copy(text, el, done) {
+      var ok = function () { say(el, done); };
+      var fail = function () { say(el, "Couldn't copy here: select the text and copy it yourself.", true); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fail);
+      else fail();
+    }
+
+    // the key from the receipt's button, then out of the address bar
+    var m = /(?:^#|&)key=([^&]+)/.exec(window.location.hash || "");
+    if (m) {
+      var k = (tidy(decodeURIComponent(m[1])).match(KEY) || [])[0];
+      if (k) {
+        $("[data-key-shown]").value = k;
+        input.value = k;
+        $("[data-key-card]").hidden = false;
+        $("[data-copy-key]").addEventListener("click", function () {
+          copy(k, $("[data-key-msg]"), "Copied. Now open Andrum, click Trial at the bottom of its window, then Paste license.");
+        });
+      }
+      try { history.replaceState(null, "", window.location.pathname); } catch (e) { /* fine */ }
+    }
+
+    function service() {
+      return fetch("service.json", { cache: "no-store" })
+        .then(function (r) { return r.ok ? r.json() : {}; })
+        .then(function (j) { return j && /^https:\/\//.test(j.url || "") ? j.url : null; }, function () { return null; });
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var k = (tidy(input.value).match(KEY) || [])[0];
+      out.hidden = true;
+      if (!k) {
+        say(msg, "That doesn't look like a licence key. Copy it from your receipt: 36 letters and digits, with dashes.", true);
+        input.focus();
+        return;
+      }
+      submit.disabled = true;
+      say(msg, "Getting your licence…");
+      service().then(function (url) {
+        if (!url) {
+          say(msg, "The licence service isn't online yet. Write to " + SUPPORT + " with your order number and you'll have your licence by e-mail.", true);
+          return;
+        }
+        return fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key: k }) })
+          .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (res) {
+            if (res.ok && res.j.license) {
+              pre.textContent = res.j.license;
+              out.hidden = false;
+              say(msg, "Here's your licence" + (res.j.name ? ", " + res.j.name : "") + ".");
+            } else {
+              say(msg, res.j.message || "The licence service couldn't make your licence. Write to " + SUPPORT + " with your order number.", true);
+            }
+          });
+      }).catch(function () {
+        say(msg, "The licence service didn't answer. Check the connection and try again, or write to " + SUPPORT + ".", true);
+      }).then(function () { submit.disabled = false; });
+    });
+
+    $("[data-copy]").addEventListener("click", function () { copy(pre.textContent, msg, "Copied. On the other computer, paste it into Andrum with Paste license."); });
+    $("[data-save]").addEventListener("click", function () {
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([pre.textContent + "\n"], { type: "text/plain" }));
+      a.download = "Andrum License.txt";
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    });
+  })();
+</script>
+</body>
+</html>

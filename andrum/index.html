@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Andrum: make room for the voice in any mix</title>
-<meta name="description" content="Andrum turns the music down only where it covers the voice, and only while the voice is there. 61 bands, zero latency, and a model of the ear that cuts only what the voice needs. For Mac and Windows. Try it free for 14 days.">
+<meta name="description" content="Andrum turns the music down only where it covers the voice, and only while the voice is there. 61 bands, zero latency, and a model of the ear that cuts only what the voice needs. For Mac and Windows. Try it free for 7 days, then €59 once.">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/andrum/">
 <meta name="theme-color" content="#04060a">
 <meta property="og:type" content="product">
@@ -31,7 +31,7 @@
   "description": "A plug-in that turns the music down only where it covers the voice, and only while the voice is there.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "macOS 11 or later, Windows 10 or later",
-  "softwareVersion": "1.4.0",
+  "softwareVersion": "1.5.0",
   "downloadUrl": "https://davidhjalmarlindberg.com/andrum/#download",
   "image": "https://davidhjalmarlindberg.com/andrum/assets/img/andrum-og.jpg",
   "url": "https://davidhjalmarlindberg.com/andrum/",
@@ -39,8 +39,16 @@
     "@type": "Offer",
     "price": "59.00",
     "priceCurrency": "EUR",
-    "availability": "https://schema.org/PreOrder",
-    "url": "https://davidhjalmarlindberg.com/andrum/#buy"
+    "availability": "https://schema.org/InStock",
+    "url": "https://davidhjalmarlindberg.com/andrum/#buy",
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "applicableCountry": "SE",
+      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+      "merchantReturnDays": 14,
+      "returnFees": "https://schema.org/FreeReturn",
+      "url": "https://davidhjalmarlindberg.com/andrum/terms/#refunds"
+    }
   },
   "publisher": { "@type": "Organization", "name": "David HJ Lindberg AB" }
 }
@@ -104,9 +112,9 @@
       <p class="an-lede">Andrum turns the music down only where it covers the voice, and only while the voice is there. The mix stays full and the words come through.</p>
       <div class="an-actions">
         <a class="an-btn an-btn--primary" href="#download">Download free trial</a>
-        <a class="an-btn an-btn--line" href="#buy">€59 · On sale soon</a>
+        <a class="an-btn an-btn--line" href="buy/" data-an-buy>Buy for €59</a>
       </div>
-      <p class="an-fine">14 days free with every feature. For Mac and Windows.</p>
+      <p class="an-fine">7 days free with every feature. For Mac and Windows.</p>
     </div>
 
     <div class="an-inst" data-an-inst role="group" aria-label="Listen to the demo, and watch Andrum make room">
@@ -518,21 +526,36 @@
   <section class="an-section an-price" id="buy" aria-labelledby="an-price-title">
     <div class="an-wrap">
       <div class="an-price__panel">
-        <div class="an-price__main">
+        <div class="an-price__main" data-an-price>
           <h2 class="an-h2" id="an-price-title">Try it free. Buy it once.</h2>
-          <p class="an-price__amount"><span class="an-price__value">€59</span><span class="an-price__terms">One licence, no subscription. On sale soon.</span></p>
+          <p class="an-price__amount"><span class="an-price__value">€59</span><span class="an-price__terms">One licence, no subscription. VAT included.</span></p>
           <div class="an-actions">
-            <a class="an-btn an-btn--primary" href="#download">Download free trial</a>
-            <a class="an-btn an-btn--line" href="mailto:david@nakaya.world?subject=Andrum%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Hi%20David%2C%20please%20e-mail%20me%20when%20Andrum%20licences%20go%20on%20sale.">Tell me when it's on sale</a>
+            <a class="an-btn an-btn--primary" href="buy/" data-an-buy>Buy for €59</a>
+            <a class="an-btn an-btn--line" href="#download">Download free trial</a>
           </div>
-          <p class="an-fine">Licences go on sale soon. Until then, the trial gives you every feature for 14 days from the first time you use Andrum. After that, Andrum lets the sound through untouched and keeps every setting, so your sessions still open and nothing is lost when you add a licence.</p>
+          <p class="an-fine">Your licence key arrives by e-mail the moment you pay. Not for you after all? Write within 14 days and you get your money back, no questions asked.</p>
+          <p class="an-fine">The trial gives you every feature for 7 days from the first time you use Andrum. After that, Andrum lets the sound through untouched and keeps every setting, so your sessions still open and nothing is lost when you add your licence.</p>
+        </div>
+        <div class="an-thanks" data-an-thanks hidden tabindex="-1" aria-labelledby="an-thanks-title">
+          <h2 class="an-h2" id="an-thanks-title">Thank you.</h2>
+          <p class="an-thanks__lede">Your licence key is on its way to <strong data-an-thanks-email>your inbox</strong>, in the receipt from Lemon Squeezy.</p>
+          <ol class="an-howto">
+            <li>Copy the licence key from the receipt.</li>
+            <li>Open Andrum and click <span class="an-ui">Trial</span> at the bottom of its window.</li>
+            <li>Click <span class="an-ui">Paste license</span>. Andrum fetches your licence once and works offline from then on.</li>
+          </ol>
+          <div class="an-actions">
+            <a class="an-btn an-btn--primary" href="#download">Download Andrum</a>
+            <a class="an-btn an-btn--line" href="license/">How to activate</a>
+          </div>
         </div>
         <ul class="an-price__list">
           <li>Every feature, as an Audio Unit, a VST3 and a standalone app</li>
           <li>For one person, on up to two computers: say a studio Mac and a laptop</li>
           <li>Every 1.x update included</li>
           <li>Use it in any work, commercial and broadcast included</li>
-          <li>No iLok and no account: your licence is checked on your computer, and Andrum never goes online</li>
+          <li>No iLok and no account: Andrum goes online once to fetch your licence, then works offline</li>
+          <li>14 days to change your mind: your money back, no questions asked</li>
           <li>Mac: Apple silicon and Intel, macOS 11 or later</li>
           <li>Windows: Windows 10 and 11, 64-bit</li>
         </ul>
@@ -546,21 +569,21 @@
     <div class="an-wrap">
       <div class="an-dl">
         <div class="an-dl__head">
-          <span class="an-caps">Free trial · Andrum 1.4.0</span>
+          <span class="an-caps">Free trial · Andrum 1.5.0</span>
           <h2 class="an-h2" id="an-dl-title">Download Andrum.</h2>
-          <p class="an-dl__lede">Every feature, free for 14 days. One installer puts Andrum where every app on your computer looks for it.</p>
+          <p class="an-dl__lede">Every feature, free for 7 days. One installer puts Andrum where every app on your computer looks for it.</p>
         </div>
         <div class="an-dl__grid">
           <article class="an-dl__card" data-an-os="mac">
             <h3>Mac</h3>
             <p>Audio Unit, VST3 and the Andrum app, for Logic Pro, Ableton Live, Premiere Pro, DaVinci Resolve and the rest. Apple silicon and Intel, macOS 11 or later.</p>
-            <a class="an-btn an-btn--primary" href="download/Andrum-1.4.0-macOS.dmg" download>Download for Mac</a>
+            <a class="an-btn an-btn--primary" href="download/Andrum-1.5.0-macOS.dmg" download>Download for Mac</a>
             <p class="an-fine">Disk image, 27 MB</p>
           </article>
           <article class="an-dl__card" data-an-os="win">
             <h3>Windows</h3>
             <p>VST3 and the Andrum app, for Ableton Live, FL Studio, Cubase, Premiere Pro, DaVinci Resolve and the rest. Windows 10 and 11, 64-bit.</p>
-            <a class="an-btn an-btn--primary" href="download/Andrum-1.4.0-Windows-Setup.exe" download>Download for Windows</a>
+            <a class="an-btn an-btn--primary" href="download/Andrum-1.5.0-Windows-Setup.exe" download>Download for Windows</a>
             <p class="an-fine">Installer, 10.5 MB</p>
           </article>
         </div>
@@ -568,7 +591,7 @@
           <p><strong>The first time you open the installer.</strong> This version isn't signed by Apple or Microsoft yet, so your computer asks you once.</p>
           <p><strong>Mac:</strong> open the disk image and double-click Install Andrum. When macOS stops it, open System Settings, then Privacy &amp; Security, click Open Anyway beside Install Andrum, and confirm.</p>
           <p><strong>Windows:</strong> if Windows says it protected your PC, click More info, then Run anyway.</p>
-          <p class="an-fine">Then rescan plug-ins in your app if it doesn't find Andrum by itself. File checksums: <a href="download/SHA256.txt">SHA-256</a>.</p>
+          <p class="an-fine">Then rescan plug-ins in your app if it doesn't find Andrum by itself. Bought it? <a href="license/">Add your licence</a>. File checksums: <a href="download/SHA256.txt">SHA-256</a>.</p>
         </div>
       </div>
     </div>
@@ -579,7 +602,7 @@
     <div class="an-wrap an-faq__grid">
       <div class="an-faq__side">
         <h2 class="an-h2" id="an-faq-title">Questions</h2>
-        <p>Something else? Write to <a href="mailto:david@nakaya.world">david@nakaya.world</a>.</p>
+        <p>Something else? Write to <a href="mailto:davidhjlindbergab@gmail.com">davidhjlindbergab@gmail.com</a>.</p>
       </div>
       <div class="an-faq__list">
         <details>
@@ -619,12 +642,28 @@
           <p>Andrum lets the sound through untouched until you add a licence. Nothing in your sessions breaks, and once you add a licence it works exactly as before.</p>
         </details>
         <details>
+          <summary>How do I add my licence?</summary>
+          <p>Right after you pay, Lemon Squeezy e-mails you a receipt with your licence key. Copy the key, open Andrum, click Trial at the bottom of its window, then Paste license. On a computer without internet, <a href="license/">get your licence here</a> instead and bring it over.</p>
+        </details>
+        <details>
           <summary>Can I use it on more than one computer?</summary>
-          <p>Yes. One licence covers one person on up to two computers, Mac or Windows. When you get a new computer, remove the licence from the old one in Andrum and add it on the new one.</p>
+          <p>Yes. One licence covers one person on up to two computers, Mac or Windows: paste the same key on each. When you get a new computer, remove the licence from the old one in Andrum and add it on the new one.</p>
         </details>
         <details>
           <summary>Does it need the internet or an iLok?</summary>
-          <p>No. Your licence is a short piece of text that Andrum checks on your computer. Andrum never connects to the internet.</p>
+          <p>No iLok and no account. Andrum goes online once, when you paste your licence key, to fetch your licence. After that it never connects to the internet, and your licence keeps working offline.</p>
+        </details>
+        <details>
+          <summary>Can I get a refund?</summary>
+          <p>Yes. If Andrum isn't right for you, write to <a href="mailto:davidhjlindbergab@gmail.com">davidhjlindbergab@gmail.com</a> within 14 days of buying and you get your money back in full, no questions asked. <a href="terms/#refunds">How refunds work</a>.</p>
+        </details>
+        <details>
+          <summary>Who takes the payment?</summary>
+          <p>Lemon Squeezy, which sells Andrum for us as merchant of record. It takes the payment, adds the right VAT or sales tax for your country (the €59 includes it) and e-mails your receipt with the licence key.</p>
+        </details>
+        <details>
+          <summary>How do I remove Andrum?</summary>
+          <p>On a Mac, open the Andrum disk image and double-click Uninstall Andrum. On Windows, open Settings, then Apps, choose Andrum and click Uninstall.</p>
         </details>
       </div>
     </div>
@@ -634,10 +673,10 @@
   <section class="an-final" aria-labelledby="an-final-title">
     <div class="an-wrap an-final__text">
       <h2 class="an-h2" id="an-final-title">Hear it in your own mix.</h2>
-      <p>Download Andrum and use every feature free for 14 days.</p>
+      <p>Download Andrum and use every feature free for 7 days.</p>
       <div class="an-actions">
         <a class="an-btn an-btn--primary" href="#download">Download free trial</a>
-        <a class="an-btn an-btn--line" href="#buy">€59 · On sale soon</a>
+        <a class="an-btn an-btn--line" href="buy/" data-an-buy>Buy for €59</a>
       </div>
     </div>
     <div class="an-final__pic" aria-hidden="true">
@@ -650,8 +689,15 @@
 
   <footer class="an-foot">
     <div class="an-wrap">
-      <p>Andrum is made in Sweden by David HJ Lindberg AB. Questions before you buy? Write to <a href="mailto:david@nakaya.world">david@nakaya.world</a>.</p>
-      <p class="an-fine">Audio Unit is a trademark of Apple Inc. VST is a registered trademark of Steinberg Media Technologies GmbH. Other product names are trademarks of their owners.</p>
+      <p>Andrum is made in Sweden by David HJ Lindberg AB (559291-3353). Questions before you buy? Write to <a href="mailto:davidhjlindbergab@gmail.com">davidhjlindbergab@gmail.com</a>.</p>
+      <nav class="an-foot__links" aria-label="Terms and help">
+        <a href="license/">Add your licence</a>
+        <a href="terms/">Licence and terms</a>
+        <a href="terms/#refunds">Refunds</a>
+        <a href="privacy/">Privacy</a>
+        <button class="an-textbtn" type="button" data-an-consent-open hidden>Cookie settings</button>
+      </nav>
+      <p class="an-fine">Orders are processed by Lemon Squeezy, our reseller and merchant of record. Audio Unit is a trademark of Apple Inc. VST is a registered trademark of Steinberg Media Technologies GmbH. Other product names are trademarks of their owners.</p>
     </div>
   </footer>
 
@@ -664,7 +710,7 @@
     </button>
     <span class="an-mark">andrum<i aria-hidden="true"></i></span>
     <a class="an-btn an-btn--primary" href="#download">Download free trial</a>
-    <a class="an-btn an-btn--line" href="#buy">€59 · On sale soon</a>
+    <a class="an-btn an-btn--line" href="buy/" data-an-buy>Buy for €59</a>
   </div>
 </main>
 
@@ -679,5 +725,6 @@
   })();
 </script>
 <script src="assets/js/page.js" defer></script>
+<script src="assets/js/store.js" defer></script>
 </body>
 </html>

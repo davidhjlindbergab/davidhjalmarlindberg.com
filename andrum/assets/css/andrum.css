@@ -135,6 +135,9 @@
 .andrum .an-btn--primary:hover { background: #ffffff; box-shadow: 0 0 0 5px rgba(243, 245, 249, 0.08); }
 .andrum .an-btn--line { color: var(--frost); box-shadow: inset 0 0 0 1px rgba(243, 245, 249, 0.26); }
 .andrum .an-btn--line:hover { box-shadow: inset 0 0 0 1px rgba(243, 245, 249, 0.55); background: rgba(243, 245, 249, 0.04); }
+.andrum button.an-btn { border: 0; cursor: pointer; }
+.andrum button.an-btn--line { background: transparent; }
+.andrum button.an-btn--line:hover { background: rgba(243, 245, 249, 0.04); }
 .an-textbtn {
   padding: 0;
   border: 0;
@@ -780,4 +783,131 @@
 
 @media (prefers-reduced-motion: reduce) {
   .andrum *, .andrum *::before, .andrum *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* ============================================================================ buying */
+/* after a purchase: where the key went and the three steps, in the price panel's place */
+.an-thanks:focus { outline: none; }
+.an-thanks__lede { margin: 22px 0 0; max-width: 30em; font-size: 17px; line-height: 1.6; color: var(--mist); }
+.an-thanks__lede strong { font-weight: 500; color: var(--frost); overflow-wrap: anywhere; }
+.an-thanks .an-actions { justify-content: flex-start; }
+.an-howto { margin: 24px 0 0; padding: 0; list-style: none; counter-reset: an-howto; display: grid; gap: 12px; max-width: 30em; }
+.an-howto li { position: relative; padding-left: 40px; font-size: 15.5px; line-height: 1.55; color: var(--frost); counter-increment: an-howto; }
+.an-howto li::before {
+  content: counter(an-howto);
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font: 500 13px/1 var(--text);
+  color: var(--frost);
+  box-shadow: inset 0 0 0 1px rgba(180, 179, 218, 0.45);
+}
+
+/* the footer's links */
+.an-foot__links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 22px; margin-top: 14px; }
+.an-foot__links a, .an-foot__links .an-textbtn { font-size: 14px; color: var(--mist); text-decoration-color: rgba(154, 163, 180, 0.4); }
+.an-foot__links a:hover { color: var(--frost); }
+.an-foot__links [hidden] { display: none; }
+
+/* asking once whether ads may be measured (only when an ad id is set in store.js) */
+.an-consent {
+  position: fixed;
+  z-index: 60;
+  left: 24px;
+  bottom: 24px;
+  max-width: 420px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: rgba(10, 11, 20, 0.94);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09), 0 18px 50px rgba(0, 0, 0, 0.55);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--mist);
+}
+.an-consent[hidden] { display: none; }
+.an-consent p { margin: 0; }
+.an-consent__btns { display: flex; gap: 10px; margin-top: 14px; }
+.an-consent .an-btn { height: 42px; padding: 0 20px; font-size: 14px; }
+@media (max-width: 639px) {
+  .an-consent { left: 10px; right: 10px; bottom: 10px; max-width: none; }
+  .an-consent__btns .an-btn { flex: 1; }
+}
+
+/* ============================================================================ the smaller pages: licence, terms, privacy */
+.an-page { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; }
+.an-page .an-foot { margin-top: auto; }
+.an-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(var(--wrap), 100% - 2 * var(--gutter));
+  margin-inline: auto;
+  min-height: 72px;
+  border-bottom: 1px solid var(--line);
+}
+.an-topbar .an-mark { font-size: 21px; }
+.an-topbar a { text-decoration: none; }
+.an-topbar nav { display: flex; gap: 22px; font-size: 14.5px; }
+.an-topbar nav a { color: var(--mist); }
+.an-topbar nav a:hover, .an-topbar nav a[aria-current="page"] { color: var(--frost); }
+
+.an-doc { width: min(720px, 100% - 2 * var(--gutter)); margin: 0 auto; padding: 88px 0 112px; }
+.an-doc .an-h1 { font-size: 56px; }
+.an-doc__lede { margin: 22px 0 0; font-size: 19px; line-height: 1.55; color: var(--mist); text-wrap: pretty; }
+.an-doc h2 { margin: 64px 0 0; font: 300 30px/1.15 var(--display); letter-spacing: -0.015em; color: var(--frost); scroll-margin-top: 24px; }
+.an-doc h3 { margin: 36px 0 0; font: 500 16.5px/1.4 var(--text); color: var(--frost); }
+.an-doc p, .an-doc li { font-size: 16px; line-height: 1.7; color: var(--mist); }
+.an-doc p { margin: 16px 0 0; }
+.an-doc ul { margin: 14px 0 0; padding-left: 1.2em; }
+.an-doc li + li { margin-top: 6px; }
+.an-doc strong { font-weight: 500; color: var(--frost); }
+.an-doc .an-howto { margin-top: 28px; }
+.an-doc .an-fine { margin-top: 20px; }
+.an-doc__meta { margin-top: 14px; font-size: 14px; color: var(--label); }
+
+/* the licence page's box: a key in, a licence out */
+.an-card { margin-top: 28px; padding: 30px; border-radius: 18px; background: var(--deep); box-shadow: inset 0 0 0 1px var(--line); }
+.an-field { display: grid; gap: 10px; }
+.an-field label { font-size: 14px; font-weight: 500; color: var(--frost); }
+.an-field__row { display: flex; gap: 10px; }
+.an-input {
+  flex: 1;
+  min-width: 0;
+  height: 50px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--dusk);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--frost);
+  font: 400 15.5px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  letter-spacing: 0.02em;
+}
+.an-input::placeholder { color: var(--faint); }
+.an-input:focus-visible { outline: 2px solid var(--air); outline-offset: 2px; }
+.an-card .an-btn { border: 0; cursor: pointer; }
+.an-card .an-btn[disabled] { opacity: 0.55; cursor: progress; }
+.an-msg { margin: 16px 0 0; font-size: 15px; line-height: 1.6; color: var(--mist); }
+.an-msg.is-bad { color: #f0b8c4; }
+.an-licence { margin: 22px 0 0; padding: 18px 20px; border-radius: 12px; background: var(--night); box-shadow: inset 0 0 0 1px var(--line);
+              font: 400 13.5px/1.6 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--frost); white-space: pre-wrap; overflow-wrap: anywhere; }
+.an-card .an-actions { justify-content: flex-start; margin-top: 18px; }
+
+@media (max-width: 639px) {
+  .an-topbar { min-height: 60px; }
+  .an-topbar nav { gap: 16px; font-size: 14px; }
+  .an-doc { padding: 56px 0 80px; }
+  .an-doc .an-h1 { font-size: 40px; }
+  .an-doc h2 { margin-top: 48px; font-size: 26px; }
+  .an-card { padding: 22px 18px; }
+  .an-field__row { flex-direction: column; }
+  .an-card .an-actions { flex-direction: column; align-items: stretch; }
 }
