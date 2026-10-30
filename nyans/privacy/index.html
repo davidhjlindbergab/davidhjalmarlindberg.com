@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacy · Nyans</title>
+<meta name="description" content="How Nyans and its pages handle personal data: the licence check, buying through Lemon Squeezy, and the Meta pixel, which runs only if you accept it.">
+<link rel="canonical" href="https://davidhjalmarlindberg.com/nyans/privacy/">
+<meta name="theme-color" content="#101010">
+<link rel="icon" href="../images/nyans-icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@300;400;500;600&amp;family=DM+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#101010}
+.nyans{min-height:100vh;background:#101010;color:#EFEFEF;font-family:'Afacad Flux',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
+.nyans *,.nyans *::before,.nyans *::after{box-sizing:border-box}
+.nyans a{color:#EFEFEF;text-underline-offset:4px}.nyans a:hover{color:#FFFFFF}
+.nyans a:focus-visible{outline:2px solid #EFEFEF;outline-offset:3px}
+.ny-mono{margin:0;font-family:'DM Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:#8C8C8C}
+.dhl-wrap{background:#101010;border-bottom:1px solid rgba(255,255,255,0.07)}
+.dhl-bar{max-width:1368px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:env(safe-area-inset-top,0px) clamp(20px,5vw,64px) 0;font:400 15px/1.2 'Afacad Flux',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.dhl-bar a{display:inline-flex;align-items:center;gap:9px;min-height:46px;color:#ABABAB;text-decoration:none;transition:color .2s ease}
+.dhl-bar a:hover{color:#FFFFFF}
+.dhl-bar a:focus-visible{outline:2px solid #EFEFEF;outline-offset:3px}
+.dhl-bar svg{width:15px;height:15px;flex:none}
+.ny-head{max-width:1368px;margin:0 auto;padding:18px clamp(20px,5vw,64px)}
+.ny-head a{display:inline-flex;align-items:center;min-height:44px}
+.ny-main{max-width:760px;margin:0 auto;padding:clamp(40px,6vw,80px) clamp(20px,5vw,64px) clamp(72px,9vw,128px)}
+h1{margin:18px 0 0;font-size:clamp(40px,5.6vw,68px);font-weight:300;line-height:1.04;letter-spacing:-0.026em;text-wrap:balance}
+.lead{margin:22px 0 0;font-size:clamp(18px,1.5vw,20px);color:#ABABAB;text-wrap:pretty}
+.ny-main section{margin-top:44px;padding-top:26px;border-top:1px solid rgba(255,255,255,0.1)}
+.ny-main h2{margin:0 0 12px;font-size:24px;font-weight:400;letter-spacing:-0.01em}
+.ny-main p,.ny-main li{color:#C4C4C4;text-wrap:pretty}
+.ny-main p{margin:0 0 12px}.ny-main p:last-child{margin-bottom:0}
+.ny-main ul{margin:0 0 12px;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.ny-main strong{color:#EFEFEF;font-weight:500}
+.ny-btn{display:inline-flex;align-items:center;min-height:46px;margin-top:6px;padding:0 18px;border-radius:10px;border:1px solid rgba(255,255,255,0.22);background:transparent;color:#EFEFEF;font:inherit;font-size:16px;font-weight:500;cursor:pointer}
+.ny-btn:hover{border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.06)}
+.ny-btn:focus-visible{outline:2px solid #EFEFEF;outline-offset:3px}
+footer{padding:36px clamp(20px,5vw,64px) 48px;border-top:1px solid rgba(255,255,255,0.07)}
+.ny-foot{max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;padding:0;list-style:none;font-size:15px;color:#8C8C8C}
+.nyans .ny-foot a,.ny-foot button{display:inline-flex;align-items:center;min-height:44px;padding:0;border:0;background:none;color:#ABABAB;font:inherit;text-decoration:none;cursor:pointer}
+.nyans .ny-foot a:hover,.ny-foot button:hover{color:#FFFFFF}
+.ny-foot button:focus-visible{outline:2px solid #EFEFEF;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.dhl-bar a{transition:none}}
+</style>
+<script src="../site.js" defer></script>
+</head>
+<body data-ny-page="privacy">
+<div class="dhl-wrap">
+<nav class="dhl-bar" aria-label="David Hjalmar Lindberg">
+<a href="../../#work"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>David Hjalmar Lindberg</a>
+<a href="../../#contact">Contact</a>
+</nav>
+</div>
+<div class="nyans">
+<header class="ny-head"><a href="../" aria-label="Nyans"><img src="../images/nyans-logo.svg" alt="nyans" style="height: 28px; width: auto; display: block"></a></header>
+<main class="ny-main">
+<p class="ny-mono">Last updated 30 October 2026</p>
+<h1>Privacy</h1>
+<p class="lead">Nyans grades your images on your own computer and never uploads them. This page says what does leave your computer, why, and who receives it.</p>
+
+<section>
+<h2>Who is responsible</h2>
+<p>David HJ Lindberg AB, Sweden, is responsible for the personal data described here. Write to <a href="mailto:david@nakaya.world">david@nakaya.world</a> with any question about it.</p>
+</section>
+
+<section>
+<h2>Nyans itself</h2>
+<ul>
+<li>Your images and clips are processed on your own computer, in the browser or in your editor. They are never uploaded.</li>
+<li>Nyans keeps its settings, the start of your trial and your licence in your browser’s storage, or in the plugin’s own folder in your editor. They stay on your computer.</li>
+</ul>
+</section>
+
+<section>
+<h2>The licence check</h2>
+<p>When you add a licence key, Nyans sends the key to Lemon Squeezy’s licence service with a short label for the install, such as “Premiere Pro, Mac”, and checks it again about once a week when you are online. Your IP address reaches Lemon Squeezy with each check. Lemon Squeezy answers with the licence’s status and the name and e-mail address on the order, which Nyans keeps on your computer to show whose licence it is. We do this to give you the licence you bought.</p>
+</section>
+
+<section>
+<h2>Buying</h2>
+<p>Lemon Squeezy, our reseller, runs the checkout as merchant of record. It processes your name, e-mail address, billing address and payment details under its own <a href="https://www.lemonsqueezy.com/privacy">privacy policy</a>. We receive your name, e-mail address, country and order details, and use them to deliver and support your licence, handle refunds and keep our accounts. We keep them for as long as you use your licence and as long as accounting law requires.</p>
+</section>
+
+<section>
+<h2>These pages</h2>
+<ul>
+<li>The site is hosted by GitHub Pages. GitHub receives your IP address and browser details when you load a page, to deliver it and keep the service secure.</li>
+<li>The fonts load from Google Fonts, so Google receives your IP address when a page loads.</li>
+<li>The site sets no cookies of its own. Your answer to the cookie question, yes or no, is kept in your browser so you are not asked again.</li>
+</ul>
+</section>
+
+<section id="cookies">
+<h2>Cookies and the Meta pixel</h2>
+<p>Only if you accept, the Nyans pages load Meta’s pixel. It tells Meta, which runs Facebook and Instagram, that you visited, opened the trial, started a checkout or bought Nyans, together with your IP address, browser details and the cookies Meta sets (_fbp and _fbc). We see the results as counts and use them to run our ads. Meta may link the data to your Facebook or Instagram account and uses it under its own <a href="https://www.facebook.com/privacy/policy/">privacy policy</a>. For collecting and sending these data, we and Meta Platforms Ireland Ltd are joint controllers.</p>
+<p>The legal basis is your consent. You can change your answer at any time, and declining changes nothing about what Nyans can do.</p>
+<p hidden data-ny-cookies><button type="button" class="ny-btn">Change cookie settings</button></p>
+</section>
+
+<section>
+<h2>Where data goes</h2>
+<p>Lemon Squeezy, GitHub, Google and Meta may process data in the United States. Those transfers rely on the safeguards the GDPR requires, such as the EU–US Data Privacy Framework or the European Commission’s standard contractual clauses.</p>
+</section>
+
+<section>
+<h2>E-mail</h2>
+<p>If you write to us, we use your message and address to answer you, and keep the conversation for as long as it helps us support you.</p>
+</section>
+
+<section>
+<h2>Your rights</h2>
+<p>You can ask us for a copy of your personal data, and ask us to correct or delete it, limit or object to its use, or hand it over in a portable form. Write to <a href="mailto:david@nakaya.world">david@nakaya.world</a>. If you think we handle your data wrongly, you can complain to IMY, the Swedish Authority for Privacy Protection, at <a href="https://www.imy.se/en/">imy.se</a>.</p>
+</section>
+</main>
+<footer>
+<ul class="ny-foot">
+<li>© 2026 David HJ Lindberg AB</li>
+<li><a href="../">Nyans</a></li>
+<li><a href="../terms/">Terms</a></li>
+<li hidden data-ny-cookies><button type="button">Cookie settings</button></li>
+<li><a href="mailto:david@nakaya.world">Support: david@nakaya.world</a></li>
+</ul>
+</footer>
+</div>
+</body>
+</html>
