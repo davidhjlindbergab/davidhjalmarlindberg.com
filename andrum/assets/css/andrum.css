@@ -781,3 +781,41 @@
 @media (prefers-reduced-motion: reduce) {
   .andrum *, .andrum *::before, .andrum *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* ============================================================================ the product shots */
+/* Light on black: blended with "lighten", their dark surround is the page's own night, so no edge shows. */
+/* plates: a close-up between two sections, full width, dissolving into the night above and below */
+.an-plate { margin: 0; }
+.an-plate picture, .an-plate img { display: block; width: 100%; }
+.an-plate img {
+  height: auto;
+  aspect-ratio: 16 / 9;
+  max-height: 86vh;
+  object-fit: cover;
+  mix-blend-mode: lighten;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 80%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 80%, transparent 100%);
+}
+.an-section:has(+ .an-plate) { padding-bottom: 24px; }
+.an-plate + .an-section { padding-top: 16px; }
+
+/* the price section's window, standing over the panel, its reflection fading into it */
+.an-packshot { max-width: 1200px; margin: -96px auto -64px; }
+.an-packshot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  object-position: 50% 42%;
+  mix-blend-mode: lighten;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
+}
+.an-packshot + .an-price__panel { position: relative; }
+
+@media (max-width: 639px) {
+  .an-plate img { aspect-ratio: 4 / 5; max-height: none; }
+  .an-packshot { margin: -48px -20px -32px; }
+  .an-packshot img { aspect-ratio: 1; object-position: 50% 50%; }
+}
