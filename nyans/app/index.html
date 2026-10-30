@@ -46,30 +46,39 @@ button { cursor: pointer; }
   grid-template-areas: "bar bar" "stage panel" "dock panel";
 }
 
-/* ---------------- top bar */
-.bar { grid-area: bar; display: flex; align-items: center; gap: 14px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--hair); min-width: 0; }
-.brand { display: flex; align-items: center; flex: none; user-select: none; }
+/* ---------------- top bar: the brand and where the frame comes from on the left; source and output, the actions and help on the right.
+   When the window is too narrow for all of it, the bar gives way in steps (app.js sets .f1 to .f8 until everything fits and the clip name
+   keeps about 200px): Open and Export lose their words, the field labels go, the trial chip shortens, the menus narrow, the clip name and
+   then the editor tag go, the menus narrow again, Grab frame loses its word. Below 861px it becomes rows instead. */
+.bar { grid-area: bar; display: flex; align-items: center; gap: 12px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--hair); min-width: 0; }
+.bar > * { flex: none; }
+.brand { display: flex; align-items: center; user-select: none; margin-right: 2px; }
 .brand svg { display: block; height: 30px; width: auto; }   /* (the horizontal lockup; the x-height of the word sits on the bar's centre line) */
-.host-tag { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; font-size: var(--t-xs); color: var(--ink-2); border: 1px solid var(--hair-2); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
-/* in a plugin panel the bar also carries the editor's status and Grab frame: it gives way in steps, never past the window */
-.hosted .bar .field { min-width: 0; }
-.hosted .bar .field .select { flex: 0 1 auto; }
-.hosted .bar .meta { flex-shrink: 1000; }               /* (first the file name gives way, then the status, the colour pickers last) */
-.hosted .host-tag { flex-shrink: 0; }
-@media (max-width: 1280px) {
-  .hosted .bar { gap: 10px; }
-  .hosted .bar .meta { display: none; }
-  .hosted .host-tag { flex-shrink: 8; min-width: 72px; }
-  .hosted #openBtn .t, .hosted #exportBtn .t { display: none; }
-  .hosted #openBtn, .hosted #exportBtn { width: 32px; padding: 0; }
-}
-@media (min-width: 861px) and (max-width: 1000px) { .hosted .host-tag { display: none; } }
-/* a narrow desktop window: the bar's labels give way before its buttons do */
-@media (min-width: 861px) and (max-width: 1040px) { html:not(.hosted) .bar .field > span { display: none; } html:not(.hosted) .bar .btn .t { display: none; } html:not(.hosted) .bar .btn:not(.icon-btn) { width: 34px; padding: 0; } }
-.bar .meta { color: var(--ink-2); font-size: var(--t-s); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; font-variant-numeric: tabular-nums; margin-left: 6px; }
+.bar .io, .bar .acts { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.bar .io { gap: 12px; }
+.bar .acts { padding-left: 12px; border-left: 1px solid var(--hair); }
+.host-tag { flex: 0 1 auto; display: inline-flex; align-items: center; gap: 8px; height: 28px; min-width: 0; max-width: 560px; padding: 0 12px 0 10px; border-radius: 999px; border: 1px solid var(--hair-2); background: rgba(255, 255, 255, 0.025); font-size: var(--t-xs); color: var(--ink-2); white-space: nowrap; overflow: hidden; }
+.host-tag[hidden] { display: none; }
+.host-tag .live { flex: none; width: 6px; height: 6px; border-radius: 50%; background: #40d98a; box-shadow: 0 0 0 3px rgba(64, 217, 138, 0.14); transition: background .3s, box-shadow .3s; }
+.host-tag.idle .live { background: var(--ink-3); box-shadow: none; }
+.host-tag b { flex: none; font-weight: 500; color: var(--ink); letter-spacing: 0.01em; }
+.host-tag .clip { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.host-tag .clip:empty { display: none; }
+.bar .meta { flex: 0 1 auto; min-width: 0; color: var(--ink-2); font-size: var(--t-s); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums; margin-left: 4px; }
+.bar .meta:empty { min-width: 0; }
 .bar .meta .dims { margin-left: 10px; color: var(--ink-3); }
-.bar .spacer { flex: 1; }
-.field { display: flex; align-items: center; gap: 8px; color: var(--ink-3); font-size: var(--t-s); }
+.bar .spacer { flex: 1 1 0; min-width: 0; }
+.field { display: flex; align-items: center; gap: 8px; color: var(--ink-3); font-size: var(--t-s); min-width: 0; }
+.field .select { max-width: 220px; text-overflow: ellipsis; }
+.hosted .bar .meta { display: none; }   /* (in a plugin the editor tag says which clip) */
+.bar.f1 #openBtn .t, .bar.f1 #exportBtn .t { display: none; } .bar.f1 #openBtn, .bar.f1 #exportBtn { width: 32px; padding: 0; }
+.bar.f2 .field > span { display: none; }
+.bar.f3 .lic-chip .l { display: none; } .bar.f3 .lic-chip .s { display: inline; }
+.bar.f4 .field .select { max-width: 160px; }
+.bar.f5 .host-tag .clip, .bar.f5 .meta { display: none; } .bar.f5 .host-tag { flex-shrink: 0; }
+.bar.f6 .host-tag { display: none; }
+.bar.f7 .field .select { max-width: 124px; }
+.bar.f8 #grabBtn .t { display: none; } .bar.f8 #grabBtn { width: 34px; padding: 0; }
 .select { appearance: none; background: var(--raised); border: 1px solid var(--hair); border-radius: var(--r-s); padding: 6px 28px 6px 10px; font-size: var(--t-s); color: var(--ink); min-width: 0;
   background-image: linear-gradient(45deg, transparent 50%, var(--ink-2) 50%), linear-gradient(135deg, var(--ink-2) 50%, transparent 50%);
   background-position: calc(100% - 14px) 52%, calc(100% - 10px) 52%; background-size: 4px 4px; background-repeat: no-repeat; }
@@ -305,6 +314,72 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 .toast { position: fixed; z-index: 60; left: 50%; top: calc(66px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -12px); background: #242424; border: 1px solid var(--hair-2); color: var(--ink); padding: 9px 15px; border-radius: 999px; font-size: var(--t-s); opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; max-width: calc(100vw - 32px); overflow: hidden; text-overflow: ellipsis; }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
 
+/* ---------------- 1.3: the empty state's own progress, the dock's tabs, saved looks, the look's title */
+.empty-state .btn { gap: 9px; min-width: 132px; transition: background .15s, opacity .2s; }
+.empty-state .btn .spin { display: none; width: 13px; height: 13px; border-radius: 50%; border: 1.6px solid rgba(17, 17, 17, 0.22); border-top-color: #111; animation: spin .75s linear infinite; }
+.empty-state.busy .btn { pointer-events: none; }
+.empty-state.busy .btn .spin { display: inline-block; }
+.viewer:not(.has-src) .status { display: none; }   /* (with the empty state showing, its button carries the progress) */
+.dock-nav { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.tabs.small { padding: 2px; }
+.tabs.small button { padding: 3px 11px; font-size: 11px; display: inline-flex; align-items: center; }
+.tabs .n { margin-left: 6px; color: var(--ink-3); font-variant-numeric: tabular-nums; font-size: 10.5px; }
+.tabs .n:empty { display: none; }
+.tabs button[aria-selected="true"] .n { color: var(--ink-2); }
+.strip { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); }
+.frame .pic { display: grid; place-items: center; background: #0b0b0b; }
+.frame canvas { max-width: 100%; }
+.frame .badge.star { left: auto; right: 6px; top: 6px; padding: 2px 5px; background: rgba(14, 14, 14, 0.72); color: var(--sun); border: 1px solid rgba(252, 205, 115, 0.35); backdrop-filter: blur(6px); line-height: 1; }
+.frame .badge.star svg { width: 10px; height: 10px; display: block; }
+.frame.saved-frame .pic { outline-offset: 2px; }
+.frame.saved-frame.stored canvas { opacity: 0.55; filter: saturate(0.6); }
+.frame.tile { flex: 0 0 auto; width: 132px; cursor: pointer; }
+.frame.tile .pic { border: 1px dashed var(--hair-2); background: transparent; color: var(--ink-3); font-size: var(--t-s); display: grid; place-items: center; text-align: center; padding: 10px; line-height: 1.35; transition: color .15s, border-color .15s; }
+.frame.tile:hover .pic { color: var(--ink); border-color: rgba(255, 255, 255, 0.4); }
+.frame.tile .pic svg { width: 16px; height: 16px; display: block; margin: 0 auto 6px; }
+.strip .empty .link { font-size: inherit; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; padding: 0; }
+.strip .empty .link:hover { color: var(--ink); }
+.lk-title { position: relative; margin-top: 8px; min-height: 32px; }
+#lkName { margin: 0; }
+.name-edit { display: block; width: 100%; margin: 0; padding: 0 0 2px; border: 0; border-bottom: 1px solid var(--hair-2); border-radius: 0; background: transparent; color: var(--ink); font: inherit; font-size: 30px; font-weight: var(--w-light); line-height: 1.05; letter-spacing: -0.02em; outline: none; }
+.name-edit:focus { border-bottom-color: var(--ink-2); }
+.name-edit[hidden] { display: none; }
+.kick .saved-kick { color: var(--sun); }
+.fit-row { margin-top: 12px; }
+.fit-row[hidden] { display: none; }
+.fit-row .seg button { padding: 4px 11px; }
+#saveBtn svg { width: 14px; height: 14px; }
+#saveBtn.on { color: var(--sun); border-color: rgba(252, 205, 115, 0.4); }
+#saveBtn.on svg { fill: currentColor; }
+#saveBtn.dirty { color: var(--ink); border-color: rgba(252, 205, 115, 0.55); }
+.saved-line { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 10px 0 0; }
+.saved-line[hidden] { display: none; }
+.saved-line .link { padding: 2px 0; font-size: var(--t-xs); color: var(--ink-3); }
+.saved-line .link:hover { color: var(--ink); }
+.link.danger.armed, .link.danger:hover { color: #ff9b8f; }
+.link[disabled] { opacity: 0.35; pointer-events: none; }
+.details { margin-top: 2px; border-top: 1px solid var(--hair); }
+.details summary { list-style: none; display: flex; align-items: center; padding: 10px 0 6px; cursor: pointer; font-size: var(--t-s); color: var(--ink-2); }
+.details summary::-webkit-details-marker { display: none; }
+.details summary span::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 9px; border-right: 1.3px solid currentColor; border-bottom: 1.3px solid currentColor; transform: translateY(-2px) rotate(-45deg); transition: transform .2s; }
+.details[open] summary span::before { transform: translateY(-3px) rotate(45deg); }
+.details .spec { margin-top: 4px; padding-top: 0; border-top: 0; }
+.apply-btn[disabled] { opacity: 1; background: var(--raised); border-color: var(--hair-2); color: var(--ink-3); }
+.lic-chip .s { display: none; }
+/* small confirmations: the Apply button says it was done, the star of a look just saved fills with a little lift */
+.apply-btn svg path { stroke-dasharray: 16; stroke-dashoffset: 0; }
+.apply-btn.done svg path { animation: tick .45s var(--ease) both; }
+@keyframes tick { from { stroke-dashoffset: 16; } to { stroke-dashoffset: 0; } }
+#saveBtn.on svg { animation: pop .38s var(--ease); }
+@keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) { .apply-btn.done svg path, #saveBtn.on svg { animation: none; } }
+.strip { scroll-padding-inline: 28px; }   /* (a picked look scrolled into view stays clear of the strip's faded edges) */
+.frame { transition: transform .2s var(--ease); }
+.frame:hover { transform: translateY(-1px); }
+.frame .pic { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28); }
+@media (prefers-reduced-motion: reduce) { .frame, .frame:hover { transition: none; transform: none; } }
+.group[hidden] { display: none; }
+
 /* ---------------- responsive */
 @media (max-width: 1180px) { :root { --panel-w: 310px; } .launch { width: 190px; } }
 @media (min-width: 861px) and (max-height: 700px) { .es-mark { width: 92px; height: 92px; } .empty-state h1 { font-size: 26px; } }
@@ -316,11 +391,17 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
   /* with a frame open the viewer stays at the top while the looks and the Refine sliders scroll under it, so every change is seen as it is made */
   .app.has-src .stage { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 8; background: var(--surround); box-shadow: 0 1px 0 var(--hair), 0 10px 24px rgba(0, 0, 0, 0.35); }
   .app.has-src .viewer { max-height: 46vh; min-height: min(250px, 46vh); touch-action: pan-y; }   /* (a vertical swipe on the picture still scrolls the page; across, it drives the split) */
-  .bar { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); gap: 10px; flex-wrap: wrap; height: auto; min-height: 54px; padding-block: 9px; }
+  /* rows: the brand and the actions; where the frame comes from; source and output */
+  .bar { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(12px, env(safe-area-inset-right, 0px)); gap: 8px 8px; flex-wrap: wrap; height: auto; min-height: 54px; padding-block: 10px; }
   .bar .meta, .bar .spacer { display: none; }
-  .brand { margin-right: auto; }
-  .bar .field { order: 5; flex: 1 1 150px; min-width: 0; }
-  .bar .field .select { flex: 1; }
+  .brand { margin-right: auto; order: 0; }
+  .bar .acts { order: 1; padding-left: 0; border-left: 0; gap: 6px; }
+  .bar .acts .btn .t { display: none; } .bar .acts .btn { width: 34px; padding: 0; }
+  .bar .lic-chip { order: 2; } #aboutBtn { order: 3; }
+  .host-tag { order: 4; flex: 1 1 100%; max-width: none; min-width: 0; height: 26px; }
+  .bar .io { order: 5; flex: 1 1 100%; gap: 10px; }
+  .bar .io .field { flex: 1 1 0; }
+  .bar .io .field .select { flex: 1; max-width: none; }
   .viewer { height: 62vw; min-height: 250px; max-height: 70vh; flex: none; }
   .viewer:not(.has-src) { height: auto; max-height: none; }
   .viewer:not(.has-src) .empty-state { position: relative; inset: auto; padding: 30px 20px 28px; overflow: visible; }
@@ -333,6 +414,9 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
   .launch { min-width: 0; }
   .strip { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); min-height: 156px; }
   .panel { border-left: 0; border-top: 1px solid var(--hair); }
+  .scopes { order: 2; border-bottom: 0; border-top: 1px solid var(--hair); }   /* (the look and its Refine first, the scopes after them) */
+  .panel-body { order: 1; }
+  .apply { order: 3; }
   .scopes, .panel-body { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .panel-body { overflow: visible; }
   .apply { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -14px 30px rgba(0, 0, 0, 0.4); }
@@ -340,7 +424,7 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
   .sheet .stats { grid-template-columns: 1fr; }
   .tabs button { padding: 4px 8px; }
 }
-@media (max-width: 520px) { .bar .btn .t { display: none; } .bar .btn:not(.icon-btn) { width: 34px; padding: 0; } .bar { gap: 8px; } .bar .field > span { display: none; } }
+@media (max-width: 520px) { .bar .field > span { display: none; } .bar .lic-chip .l { display: none; } .bar .lic-chip .s { display: inline; } }
 @media (prefers-reduced-motion: reduce) {
   .gen .ring i, .gen .glow, .es-mark::before, .sweep .beam { animation: none !important; }
   .frame.develop .pic canvas { animation: none; }
@@ -360,27 +444,32 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 </head>
 <body>
 <div class="app" id="app">
-  <header class="bar">
+  <header class="bar" id="bar">
     <div class="brand" role="img" aria-label="Nyans"><svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Nyans" viewBox="0 0 798.26 222.21"><title>Nyans</title><circle cx="3.05" cy="216.10" r="3.03" fill="#5B2DC4"/><path d="M3.06 219.14L6.96 219.14L6.79 212.94L3.03 213.07Z" fill="#5B2EC4"/><path d="M4.56 219.21L9.63 219.07L9.28 212.73L4.39 213.00Z" fill="#5A31C6"/><path d="M7.23 219.21L12.26 218.93L11.72 212.45L6.89 212.86Z" fill="#5934C7"/><path d="M9.87 219.13L14.84 218.72L14.10 212.11L9.33 212.65Z" fill="#5837C8"/><path d="M12.46 218.99L17.39 218.44L16.43 211.70L11.72 212.38Z" fill="#5839C9"/><path d="M15.01 218.78L19.89 218.09L18.71 211.23L14.06 212.04Z" fill="#573CCA"/><path d="M17.53 218.50L22.36 217.68L20.94 210.70L16.35 211.64Z" fill="#563ECC"/><path d="M20.00 218.15L24.78 217.19L23.12 210.10L18.59 211.17Z" fill="#5541CD"/><path d="M22.44 217.74L27.17 216.64L25.25 209.45L20.78 210.65Z" fill="#5443CE"/><path d="M24.85 217.26L29.52 216.03L27.34 208.73L22.93 210.06Z" fill="#5345CF"/><path d="M27.22 216.72L31.83 215.36L29.37 207.96L25.04 209.42Z" fill="#5247D0"/><path d="M29.55 216.11L34.10 214.62L31.36 207.14L27.09 208.72Z" fill="#5049D1"/><path d="M31.85 215.44L36.34 213.82L33.31 206.25L29.11 207.96Z" fill="#4F4CD2"/><path d="M34.11 214.71L38.54 212.96L35.21 205.32L31.08 207.15Z" fill="#4E4ED3"/><path d="M36.34 213.91L40.70 212.04L37.07 204.33L33.01 206.28Z" fill="#4D50D4"/><path d="M38.53 213.06L42.83 211.06L38.89 203.30L34.90 205.36Z" fill="#4C51D5"/><path d="M40.69 212.15L44.93 210.02L40.66 202.21L36.75 204.39Z" fill="#4A53D6"/><path d="M42.82 211.17L46.99 208.93L42.40 201.08L38.56 203.36Z" fill="#4955D7"/><path d="M44.92 210.14L49.02 207.79L44.10 199.89L40.33 202.29Z" fill="#4757D8"/><path d="M46.98 209.05L51.01 206.59L45.77 198.67L42.07 201.16Z" fill="#4659D9"/><path d="M49.01 207.91L52.97 205.34L47.40 197.39L43.77 199.99Z" fill="#445BDA"/><path d="M51.00 206.72L54.90 204.04L48.99 196.07L45.43 198.77Z" fill="#425DDC"/><path d="M52.97 205.47L56.79 202.69L50.55 194.71L47.06 197.50Z" fill="#405FDD"/><path d="M54.90 204.17L58.66 201.29L52.08 193.31L48.66 196.19Z" fill="#3E60DE"/><path d="M56.81 202.81L60.49 199.84L53.58 191.86L50.23 194.83Z" fill="#3C62DF"/><path d="M58.68 201.41L62.29 198.35L55.04 190.37L51.76 193.43Z" fill="#3A64E0"/><path d="M60.52 199.96L64.07 196.81L56.48 188.84L53.27 191.99Z" fill="#3766E1"/><path d="M62.33 198.47L65.81 195.24L57.89 187.28L54.74 190.50Z" fill="#3568E2"/><path d="M64.11 196.93L67.53 193.61L59.27 185.67L56.19 188.97Z" fill="#336AE2"/><path d="M65.87 195.34L69.22 191.95L60.63 184.03L57.61 187.40Z" fill="#336EE1"/><path d="M67.59 193.72L70.88 190.25L61.96 182.35L59.00 185.79Z" fill="#3271E0"/><path d="M69.29 192.05L72.51 188.51L63.27 180.63L60.37 184.14Z" fill="#3174E0"/><path d="M70.96 190.34L74.12 186.74L64.55 178.88L61.71 182.46Z" fill="#3077DF"/><path d="M72.60 188.59L75.71 184.92L65.81 177.09L63.03 180.73Z" fill="#2F7ADE"/><path d="M74.22 186.81L77.27 183.08L67.05 175.27L64.32 178.98Z" fill="#2F7DDE"/><path d="M75.81 184.99L78.80 181.20L68.27 173.42L65.59 177.18Z" fill="#2E80DD"/><path d="M77.37 183.13L80.31 179.29L69.47 171.54L66.84 175.35Z" fill="#2D83DC"/><path d="M78.92 181.24L81.80 177.34L70.65 169.63L68.07 173.49Z" fill="#2C86DC"/><path d="M80.43 179.32L83.26 175.37L71.81 167.68L69.28 171.60Z" fill="#2C89DB"/><path d="M81.93 177.36L84.71 173.37L72.95 165.71L70.47 169.68Z" fill="#2B8CDA"/><path d="M83.40 175.38L86.13 171.34L74.08 163.71L71.64 167.72Z" fill="#2A8ED9"/><path d="M84.84 173.37L87.53 169.28L75.20 161.68L72.80 165.74Z" fill="#2991D9"/><path d="M86.27 171.32L88.91 167.20L76.29 159.63L73.94 163.73Z" fill="#2994D8"/><path d="M87.68 169.26L90.27 165.09L77.38 157.55L75.06 161.69Z" fill="#2897D7"/><path d="M89.06 167.16L91.61 162.96L78.45 155.45L76.17 159.63Z" fill="#279AD6"/><path d="M90.42 165.05L92.94 160.81L79.52 153.33L77.26 157.54Z" fill="#279DD5"/><path d="M91.77 162.91L94.24 158.64L80.57 151.18L78.35 155.42Z" fill="#26A0D4"/><path d="M93.09 160.75L95.53 156.45L81.61 149.01L79.42 153.29Z" fill="#25A3D3"/><path d="M94.40 158.56L96.80 154.23L82.64 146.83L80.48 151.13Z" fill="#25A5D2"/><path d="M95.68 156.36L98.05 152.00L83.67 144.62L81.53 148.95Z" fill="#24A8D1"/><path d="M96.95 154.14L99.28 149.76L84.69 142.40L82.57 146.76Z" fill="#24ABD0"/><path d="M98.20 151.90L100.50 147.50L85.70 140.16L83.61 144.54Z" fill="#23AECF"/><path d="M99.44 149.65L101.71 145.22L86.71 137.90L84.63 142.31Z" fill="#23B1CE"/><path d="M100.65 147.38L102.90 142.93L87.72 135.63L85.66 140.06Z" fill="#22B4CD"/><path d="M101.86 145.09L104.07 140.63L88.72 133.34L86.68 137.79Z" fill="#22B6CB"/><path d="M103.04 142.80L105.23 138.31L89.72 131.04L87.69 135.51Z" fill="#23B7C8"/><path d="M104.21 140.49L106.38 135.99L90.72 128.73L88.70 133.22Z" fill="#24B8C4"/><path d="M105.37 138.17L107.51 133.66L91.72 126.41L89.71 130.91Z" fill="#25B9C0"/><path d="M106.51 135.84L108.63 131.31L92.72 124.08L90.72 128.59Z" fill="#26BABD"/><path d="M107.64 133.50L109.74 128.96L93.73 121.74L91.73 126.27Z" fill="#27BBB9"/><path d="M108.76 131.15L110.84 126.61L94.73 119.40L92.74 123.93Z" fill="#28BCB5"/><path d="M109.86 128.80L111.93 124.25L95.74 117.05L93.75 121.59Z" fill="#29BDB1"/><path d="M110.95 126.44L113.00 121.89L96.76 114.69L94.77 119.24Z" fill="#2BBEAD"/><path d="M112.03 124.08L114.07 119.52L97.78 112.33L95.79 116.88Z" fill="#2CBEA9"/><path d="M113.10 121.72L115.13 117.15L98.81 109.96L96.81 114.52Z" fill="#2DBFA5"/><path d="M114.16 119.35L116.18 114.78L99.84 107.59L97.84 112.16Z" fill="#2FC0A1"/><path d="M115.21 116.98L117.22 112.41L100.88 105.23L98.88 109.79Z" fill="#30C19D"/><path d="M116.25 114.61L118.26 110.05L101.93 102.86L99.92 107.42Z" fill="#31C298"/><path d="M117.29 112.24L119.28 107.68L102.99 100.49L100.97 105.05Z" fill="#33C294"/><path d="M118.32 109.88L120.31 105.32L104.06 98.12L102.03 102.69Z" fill="#34C390"/><path d="M119.34 107.52L121.33 102.97L105.14 95.76L103.09 100.32Z" fill="#36C48B"/><path d="M120.35 105.16L122.34 100.62L106.24 93.41L104.17 97.96Z" fill="#37C587"/><path d="M121.36 102.81L123.36 98.27L107.34 91.05L105.26 95.60Z" fill="#39C582"/><path d="M122.37 100.46L124.37 95.94L108.46 88.71L106.35 93.24Z" fill="#3AC67D"/><path d="M123.37 98.12L125.38 93.61L109.58 86.37L107.46 90.89Z" fill="#3CC778"/><path d="M124.38 95.79L126.38 91.29L110.73 84.04L108.58 88.55Z" fill="#3DC773"/><path d="M125.38 93.47L127.39 88.99L111.88 81.72L109.72 86.22Z" fill="#3FC86E"/><path d="M126.38 91.16L128.41 86.70L113.05 79.41L110.86 83.89Z" fill="#48C96D"/><path d="M127.38 88.86L129.42 84.42L114.24 77.11L112.03 81.58Z" fill="#50CA6C"/><path d="M128.38 86.58L130.44 82.15L115.44 74.83L113.20 79.28Z" fill="#58CB6A"/><path d="M129.39 84.31L131.46 79.90L116.66 72.56L114.39 76.99Z" fill="#5FCC69"/><path d="M130.40 82.05L132.49 77.67L117.89 70.30L115.59 74.71Z" fill="#66CE68"/><path d="M131.41 79.81L133.52 75.45L119.15 68.07L116.81 72.45Z" fill="#6CCF66"/><path d="M132.43 77.58L134.57 73.25L120.41 65.84L118.05 70.20Z" fill="#72D065"/><path d="M133.45 75.38L135.62 71.07L121.70 63.64L119.30 67.97Z" fill="#78D164"/><path d="M134.49 73.19L136.68 68.92L123.01 61.46L120.57 65.76Z" fill="#7DD262"/><path d="M135.53 71.02L137.75 66.78L124.33 59.30L121.86 63.57Z" fill="#83D361"/><path d="M136.58 68.88L138.83 64.67L125.67 57.16L123.16 61.39Z" fill="#88D45F"/><path d="M137.64 66.75L139.93 62.58L127.04 55.04L124.48 59.24Z" fill="#8DD55D"/><path d="M138.72 64.65L141.04 60.52L128.42 52.95L125.83 57.11Z" fill="#92D65C"/><path d="M139.80 62.57L142.16 58.48L129.83 50.88L127.19 55.01Z" fill="#97D75A"/><path d="M140.90 60.52L143.30 56.47L131.25 48.84L128.57 52.92Z" fill="#9CD858"/><path d="M142.01 58.49L144.45 54.48L132.70 46.83L129.97 50.87Z" fill="#A0D956"/><path d="M143.14 56.49L145.62 52.53L134.17 44.84L131.39 48.84Z" fill="#A5DA54"/><path d="M144.29 54.52L146.81 50.61L135.66 42.89L132.83 46.84Z" fill="#A9DB52"/><path d="M145.45 52.58L148.02 48.71L137.18 40.97L134.30 44.86Z" fill="#AEDC50"/><path d="M146.63 50.67L149.25 46.85L138.72 39.08L135.79 42.92Z" fill="#B2DD4E"/><path d="M147.83 48.78L150.50 45.02L140.29 37.22L137.30 41.01Z" fill="#B6DD4C"/><path d="M149.04 46.93L151.77 43.23L141.88 35.40L138.83 39.13Z" fill="#BBDE4A"/><path d="M150.28 45.11L153.07 41.47L143.50 33.61L140.39 37.28Z" fill="#BFDF47"/><path d="M151.54 43.33L154.38 39.75L145.14 31.87L141.97 35.47Z" fill="#C3E044"/><path d="M152.83 41.57L155.73 38.06L146.81 30.16L143.58 33.69Z" fill="#C7E142"/><path d="M154.13 39.86L157.09 36.41L148.51 28.49L145.22 31.95Z" fill="#CBE23F"/><path d="M155.46 38.18L158.49 34.81L150.23 26.86L146.88 30.25Z" fill="#CDE240"/><path d="M156.82 36.53L159.90 33.24L151.98 25.28L148.57 28.59Z" fill="#CFE342"/><path d="M158.20 34.93L161.35 31.71L153.77 23.74L150.28 26.97Z" fill="#D0E344"/><path d="M159.61 33.36L162.83 30.22L155.58 22.24L152.03 25.39Z" fill="#D2E447"/><path d="M161.05 31.83L164.33 28.77L157.42 20.79L153.80 23.86Z" fill="#D4E449"/><path d="M162.52 30.35L165.87 27.37L159.29 19.39L155.61 22.36Z" fill="#D5E54B"/><path d="M164.02 28.90L167.43 26.01L161.19 18.04L157.44 20.92Z" fill="#D7E64D"/><path d="M165.54 27.49L169.03 24.70L163.13 16.74L159.30 19.52Z" fill="#D9E64F"/><path d="M167.11 26.13L170.66 23.44L165.09 15.49L161.20 18.17Z" fill="#DAE751"/><path d="M168.70 24.81L172.33 22.21L167.09 14.29L163.13 16.87Z" fill="#DCE753"/><path d="M170.33 23.54L174.03 21.04L169.12 13.15L165.09 15.62Z" fill="#DDE855"/><path d="M171.99 22.31L175.77 19.92L171.18 12.06L167.08 14.42Z" fill="#DFE857"/><path d="M173.69 21.13L177.54 18.84L173.27 11.03L169.11 13.27Z" fill="#E1E959"/><path d="M175.43 19.99L179.35 17.82L175.40 10.06L171.17 12.18Z" fill="#E2E95B"/><path d="M177.21 18.91L181.20 16.85L177.56 9.15L173.26 11.15Z" fill="#E4EA5D"/><path d="M179.03 17.87L183.09 15.93L179.76 8.29L175.39 10.17Z" fill="#E5EA5F"/><path d="M180.89 16.89L185.02 15.06L181.99 7.50L177.56 9.25Z" fill="#E7EB61"/><path d="M182.79 15.95L186.99 14.25L184.25 6.76L179.76 8.39Z" fill="#E9EB62"/><path d="M184.73 15.07L189.00 13.49L186.55 6.09L182.00 7.59Z" fill="#EAEC64"/><path d="M186.73 14.24L191.06 12.79L188.88 5.49L184.27 6.85Z" fill="#ECEC66"/><path d="M188.76 13.47L193.16 12.14L191.25 4.94L186.58 6.17Z" fill="#EEED68"/><path d="M190.84 12.76L195.31 11.56L193.65 4.47L188.93 5.56Z" fill="#EFED6A"/><path d="M192.97 12.10L197.51 11.03L196.09 4.05L191.32 5.01Z" fill="#F1EE6C"/><path d="M195.15 11.51L199.75 10.57L198.57 3.71L193.74 4.53Z" fill="#F3EE6D"/><path d="M197.38 10.97L202.04 10.16L201.09 3.43L196.21 4.11Z" fill="#F5EF6F"/><path d="M199.66 10.50L204.38 9.83L203.64 3.22L198.71 3.77Z" fill="#F6EF71"/><path d="M201.99 10.09L206.77 9.55L206.23 3.07L201.25 3.48Z" fill="#F8F073"/><path d="M204.38 9.75L209.21 9.34L208.86 3.00L203.84 3.27Z" fill="#FAF075"/><path d="M206.81 9.48L211.70 9.20L211.53 3.00L206.47 3.13Z" fill="#FCF177"/><path d="M209.30 9.27L213.06 9.14L213.03 3.07L209.14 3.06Z" fill="#FEF279"/><circle cx="213.05" cy="6.10" r="3.03" fill="#FFF27A"/><path d="M285.42953196819604 161.10277122311467V61.10277122311467H305.2628653015294V75.43610455644802Q310.7628653015294 67.26943788978134 319.1795319681961 62.93610455644801Q327.59619863486273 58.60277122311467 337.26286530152936 58.60277122311467Q347.92953196819604 58.60277122311467 357.09619863486273 63.85277122311467Q366.26286530152936 69.10277122311467 371.92953196819604 78.93610455644802Q377.59619863486273 88.76943788978134 377.59619863486273 102.76943788978134V161.10277122311467H355.76286530152936V105.76943788978134Q355.76286530152936 95.10277122311467 349.42953196819604 86.93610455644802Q343.09619863486273 78.76943788978134 331.59619863486273 78.76943788978134Q325.2628653015294 78.76943788978134 319.6795319681961 81.76943788978134Q314.09619863486273 84.76943788978134 310.6795319681961 90.60277122311467Q307.2628653015294 96.43610455644802 307.2628653015294 105.26943788978134V161.10277122311467ZM395.59619863486273 211.10277122311467 428.42953196819604 145.60277122311467 386.59619863486273 61.10277122311467H410.92953196819604L431.09619863486273 102.10277122311467Q433.76286530152936 107.60277122311467 436.09619863486273 112.76943788978134Q438.42953196819604 117.93610455644802 440.59619863486273 124.43610455644802Q442.76286530152936 117.93610455644802 445.09619863486273 112.76943788978134Q447.42953196819604 107.60277122311467 450.26286530152936 102.10277122311467L470.76286530152936 61.10277122311467H493.92953196819604L419.09619863486273 211.10277122311467ZM548.4295319681961 162.93610455644802Q538.0961986348627 162.93610455644802 529.0961986348627 158.85277122311467Q520.0961986348627 154.76943788978133 513.1795319681961 147.68610455644802Q506.2628653015294 140.60277122311467 502.4295319681961 131.18610455644802Q498.59619863486273 121.76943788978134 498.59619863486273 111.10277122311467Q498.59619863486273 100.43610455644802 502.4295319681961 91.01943788978134Q506.2628653015294 81.60277122311467 513.1795319681961 74.51943788978134Q520.0961986348627 67.43610455644802 529.0961986348627 63.35277122311468Q538.0961986348627 59.269437889781344 548.4295319681961 59.269437889781344Q558.5961986348627 59.269437889781344 567.2628653015295 62.93610455644801Q575.9295319681961 66.60277122311467 582.2628653015294 73.26943788978134V61.10277122311467H601.7628653015294V161.10277122311467H582.2628653015294V148.93610455644802Q575.9295319681961 155.43610455644802 567.2628653015295 159.18610455644802Q558.5961986348627 162.93610455644802 548.4295319681961 162.93610455644802ZM551.0961986348627 143.43610455644802Q559.9295319681961 143.43610455644802 567.0961986348627 139.01943788978133Q574.2628653015294 134.60277122311467 578.429531968196 127.26943788978134Q582.5961986348627 119.93610455644802 582.5961986348627 111.10277122311467Q582.5961986348627 102.26943788978134 578.429531968196 94.93610455644802Q574.2628653015294 87.60277122311467 567.0961986348627 83.18610455644802Q559.9295319681961 78.76943788978134 551.2628653015294 78.76943788978134Q542.4295319681961 78.76943788978134 535.2628653015295 83.18610455644802Q528.0961986348627 87.60277122311467 523.929531968196 94.93610455644802Q519.7628653015294 102.26943788978134 519.7628653015294 111.10277122311467Q519.7628653015294 119.93610455644802 523.929531968196 127.26943788978134Q528.0961986348627 134.60277122311467 535.2628653015295 139.01943788978133Q542.4295319681961 143.43610455644802 551.0961986348627 143.43610455644802ZM630.4295319681961 161.10277122311467V61.10277122311467H650.2628653015294V75.43610455644802Q655.7628653015294 67.26943788978134 664.179531968196 62.93610455644801Q672.5961986348627 58.60277122311467 682.2628653015294 58.60277122311467Q692.9295319681961 58.60277122311467 702.0961986348627 63.85277122311467Q711.2628653015294 69.10277122311467 716.929531968196 78.93610455644802Q722.5961986348627 88.76943788978134 722.5961986348627 102.76943788978134V161.10277122311467H700.7628653015294V105.76943788978134Q700.7628653015294 95.10277122311467 694.429531968196 86.93610455644802Q688.0961986348627 78.76943788978134 676.5961986348627 78.76943788978134Q670.2628653015294 78.76943788978134 664.679531968196 81.76943788978134Q659.0961986348627 84.76943788978134 655.679531968196 90.60277122311467Q652.2628653015294 96.43610455644802 652.2628653015294 105.26943788978134V161.10277122311467ZM777.429531968196 163.60277122311467Q768.929531968196 163.60277122311467 759.5961986348627 160.51943788978133Q750.2628653015294 157.43610455644802 744.0961986348626 150.93610455644802L749.929531968196 128.60277122311467Q754.5961986348626 136.10277122311467 762.3461986348626 140.85277122311467Q770.0961986348626 145.60277122311467 778.7628653015294 145.60277122311467Q786.0961986348626 145.60277122311467 789.679531968196 142.18610455644802Q793.2628653015294 138.76943788978133 793.2628653015294 133.93610455644802Q793.2628653015294 128.43610455644802 789.5128653015294 125.85277122311467Q785.7628653015294 123.26943788978134 782.429531968196 122.10277122311467L768.7628653015294 116.93610455644802Q764.7628653015294 115.26943788978134 759.3461986348627 112.26943788978134Q753.929531968196 109.26943788978134 749.8461986348627 103.68610455644802Q745.7628653015294 98.10277122311467 745.7628653015294 88.93610455644802Q745.7628653015294 80.76943788978134 749.7628653015294 73.85277122311467Q753.7628653015294 66.93610455644802 761.2628653015294 62.769437889781344Q768.7628653015294 58.60277122311467 778.929531968196 58.60277122311467Q787.5961986348626 58.60277122311467 796.179531968196 61.60277122311467Q804.7628653015294 64.60277122311467 810.0961986348626 70.43610455644802L804.429531968196 92.43610455644802Q801.429531968196 87.60277122311467 797.179531968196 84.01943788978134Q792.929531968196 80.43610455644802 788.0961986348627 78.51943788978134Q783.2628653015294 76.60277122311467 778.429531968196 76.60277122311467Q772.0961986348626 76.60277122311467 768.679531968196 79.85277122311467Q765.2628653015294 83.10277122311467 765.2628653015294 87.43610455644802Q765.2628653015294 90.76943788978134 767.5961986348627 93.51943788978134Q769.929531968196 96.26943788978134 774.7628653015294 98.26943788978134L788.0961986348626 103.26943788978134Q792.429531968196 104.76943788978134 798.2628653015292 107.93610455644802Q804.0961986348626 111.10277122311467 808.3461986348626 116.85277122311467Q812.5961986348626 122.60277122311467 812.5961986348626 132.43610455644802Q812.5961986348626 141.76943788978133 808.0961986348626 148.68610455644802Q803.5961986348626 155.60277122311467 795.679531968196 159.60277122311467Q787.7628653015294 163.60277122311467 777.429531968196 163.60277122311467Z" fill="#EFEFEF" transform="translate(-14.33 0)"/></svg></div>
-    <span class="host-tag" id="hostTag" hidden></span>
+    <span class="host-tag" id="hostTag" hidden><i class="live" aria-hidden="true"></i><b id="hostName"></b><span class="clip" id="hostClip"></span></span>
     <span class="meta" id="meta"></span>
     <span class="spacer"></span>
-    <label class="field" for="inputSel"><span>Source</span>
-      <select class="select" id="inputSel" aria-label="Source color space"></select>
-    </label>
-    <label class="field" for="outSel" title="Set this to your timeline's output. The viewer, scopes, LUTs and recorded clips then match what Resolve or Premiere shows."><span>Output</span>
-      <select class="select" id="outSel" aria-label="Output display"></select>
-    </label>
-    <button class="btn primary" id="grabBtn" title="Read the frame under the playhead (F)" hidden>
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2.5 5.5v-3h3M10.5 2.5h3v3M13.5 10.5v3h-3M5.5 13.5h-3v-3"/><circle cx="8" cy="8" r="2.2"/></svg><span class="t">Grab frame</span>
-    </button>
-    <button class="btn" id="openBtn" title="Open an image or clip (O)">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 11V2.5M4.5 6 8 2.5 11.5 6M2.5 10.5v3h11v-3"/></svg><span class="t">Open</span>
-    </button>
-    <input type="file" id="fileIn" accept="image/*,video/*,.mov,.mp4,.m4v,.webm" hidden>
-    <button class="btn" id="exportBtn" title="Export (E)" disabled>
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 2.5V11M4.5 7.5 8 11l3.5-3.5M2.5 10.5v3h11v-3"/></svg><span class="t">Export</span>
-    </button>
+    <div class="io" id="ioGroup">
+      <label class="field" for="inputSel" title="The colour space of your footage: camera log is decoded with its own curve"><span>Source</span>
+        <select class="select" id="inputSel" aria-label="Source colour space"></select>
+      </label>
+      <label class="field" for="outSel" title="Set this to your timeline's output. The viewer, scopes, LUTs and recorded clips then match what Resolve or Premiere shows."><span>Output</span>
+        <select class="select" id="outSel" aria-label="Output display"></select>
+      </label>
+    </div>
+    <div class="acts" id="actGroup">
+      <button class="btn primary" id="grabBtn" title="Read the frame under the playhead (F)" hidden>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2.5 5.5v-3h3M10.5 2.5h3v3M13.5 10.5v3h-3M5.5 13.5h-3v-3"/><circle cx="8" cy="8" r="2.2"/></svg><span class="t">Grab frame</span>
+      </button>
+      <button class="btn" id="openBtn" title="Open an image or clip (O)">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 11V2.5M4.5 6 8 2.5 11.5 6M2.5 10.5v3h11v-3"/></svg><span class="t">Open</span>
+      </button>
+      <input type="file" id="fileIn" accept="image/*,video/*,.mov,.mp4,.m4v,.webm" hidden>
+      <input type="file" id="lookIn" accept=".nyanslook,.json,application/json" hidden>
+      <button class="btn" id="exportBtn" title="Export (E)" disabled>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 2.5V11M4.5 7.5 8 11l3.5-3.5M2.5 10.5v3h11v-3"/></svg><span class="t">Export</span>
+      </button>
+    </div>
     <button class="btn quiet icon-btn" id="aboutBtn" aria-label="How Nyans works" title="How Nyans works">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="6"/><path d="M6.4 6.2a1.7 1.7 0 1 1 2.3 1.6c-.5.2-.7.6-.7 1.1v.4M8 11.3v.2"/></svg>
     </button>
@@ -393,7 +482,7 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
         <div class="es-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 132.0 132.0" role="img" aria-label="Nyans"><title>Nyans</title><circle cx="14.52" cy="117.48" r="1.49" fill="#5B2DC4"/><path d="M14.53 118.97L17.05 118.96L16.97 115.91L14.51 115.99Z" fill="#5B2EC4"/><path d="M14.65 119.02L18.36 118.91L18.19 115.80L14.57 115.98Z" fill="#5A31C6"/><path d="M15.96 119.04L19.64 118.82L19.38 115.64L15.79 115.93Z" fill="#5934C7"/><path d="M17.25 119.02L20.91 118.70L20.55 115.46L16.99 115.84Z" fill="#5837C8"/><path d="M18.53 118.97L22.16 118.54L21.69 115.24L18.16 115.73Z" fill="#5839C9"/><path d="M19.78 118.88L23.38 118.35L22.80 114.99L19.31 115.58Z" fill="#573CCA"/><path d="M21.02 118.76L24.59 118.13L23.89 114.71L20.44 115.40Z" fill="#563ECC"/><path d="M22.23 118.61L25.77 117.88L24.96 114.40L21.54 115.19Z" fill="#5541CD"/><path d="M23.43 118.42L26.94 117.59L26.00 114.06L22.62 114.95Z" fill="#5443CE"/><path d="M24.62 118.21L28.08 117.27L27.01 113.69L23.68 114.68Z" fill="#5345CF"/><path d="M25.78 117.96L29.21 116.92L28.01 113.30L24.71 114.38Z" fill="#5247D0"/><path d="M26.93 117.68L30.32 116.54L28.98 112.88L25.73 114.06Z" fill="#5049D1"/><path d="M28.07 117.37L31.41 116.13L29.92 112.43L26.72 113.70Z" fill="#4F4CD2"/><path d="M29.18 117.03L32.48 115.70L30.85 111.95L27.70 113.32Z" fill="#4E4ED3"/><path d="M30.28 116.65L33.54 115.23L31.75 111.45L28.65 112.91Z" fill="#4D50D4"/><path d="M31.37 116.25L34.57 114.73L32.64 110.93L29.58 112.48Z" fill="#4C51D5"/><path d="M32.43 115.82L35.59 114.21L33.50 110.38L30.50 112.02Z" fill="#4A53D6"/><path d="M33.49 115.36L36.59 113.66L34.34 109.81L31.39 111.53Z" fill="#4955D7"/><path d="M34.52 114.87L37.58 113.08L35.17 109.21L32.27 111.02Z" fill="#4757D8"/><path d="M35.54 114.35L38.55 112.48L35.98 108.60L33.13 110.48Z" fill="#4659D9"/><path d="M36.54 113.80L39.50 111.85L36.77 107.96L33.98 109.92Z" fill="#445BDA"/><path d="M37.53 113.23L40.43 111.20L37.54 107.30L34.80 109.34Z" fill="#425DDC"/><path d="M38.51 112.63L41.35 110.53L38.29 106.62L35.61 108.73Z" fill="#405FDD"/><path d="M39.46 112.01L42.26 109.83L39.03 105.92L36.40 108.10Z" fill="#3E60DE"/><path d="M40.41 111.36L43.15 109.11L39.76 105.20L37.18 107.44Z" fill="#3C62DF"/><path d="M41.33 110.68L44.02 108.37L40.47 104.45L37.94 106.77Z" fill="#3A64E0"/><path d="M42.25 109.98L44.88 107.60L41.16 103.70L38.69 106.07Z" fill="#3766E1"/><path d="M43.14 109.26L45.73 106.82L41.84 102.92L39.42 105.35Z" fill="#3568E2"/><path d="M44.03 108.51L46.56 106.01L42.51 102.12L40.14 104.61Z" fill="#336AE2"/><path d="M44.90 107.74L47.38 105.19L43.17 101.31L40.85 103.85Z" fill="#336EE1"/><path d="M45.75 106.96L48.18 104.35L43.81 100.47L41.54 103.07Z" fill="#3271E0"/><path d="M46.59 106.15L48.98 103.49L44.44 99.62L42.22 102.27Z" fill="#3174E0"/><path d="M47.42 105.32L49.76 102.61L45.06 98.76L42.89 101.45Z" fill="#3077DF"/><path d="M48.23 104.47L50.52 101.72L45.67 97.88L43.54 100.61Z" fill="#2F7ADE"/><path d="M49.04 103.60L51.28 100.80L46.27 96.98L44.18 99.76Z" fill="#2F7DDE"/><path d="M49.82 102.71L52.02 99.88L46.86 96.06L44.82 98.88Z" fill="#2E80DD"/><path d="M50.60 101.81L52.76 98.93L47.44 95.13L45.44 97.99Z" fill="#2D83DC"/><path d="M51.36 100.89L53.48 97.97L48.01 94.19L46.05 97.09Z" fill="#2C86DC"/><path d="M52.11 99.95L54.19 97.00L48.57 93.23L46.65 96.16Z" fill="#2C89DB"/><path d="M52.85 99.00L54.89 96.02L49.13 92.26L47.24 95.23Z" fill="#2B8CDA"/><path d="M53.58 98.03L55.58 95.02L49.68 91.28L47.82 94.27Z" fill="#2A8ED9"/><path d="M54.30 97.04L56.26 94.00L50.21 90.28L48.39 93.31Z" fill="#2991D9"/><path d="M55.00 96.05L56.93 92.98L50.75 89.27L48.96 92.32Z" fill="#2994D8"/><path d="M55.70 95.04L57.59 91.94L51.27 88.25L49.51 91.33Z" fill="#2897D7"/><path d="M56.38 94.02L58.25 90.90L51.79 87.21L50.06 90.32Z" fill="#279AD6"/><path d="M57.06 92.98L58.89 89.84L52.31 86.17L50.60 89.30Z" fill="#279DD5"/><path d="M57.72 91.93L59.52 88.77L52.82 85.11L51.14 88.27Z" fill="#26A0D4"/><path d="M58.37 90.88L60.15 87.69L53.33 84.05L51.67 87.22Z" fill="#25A3D3"/><path d="M59.02 89.81L60.77 86.61L53.83 82.97L52.20 86.17Z" fill="#25A5D2"/><path d="M59.65 88.73L61.38 85.51L54.33 81.89L52.72 85.10Z" fill="#24A8D1"/><path d="M60.28 87.64L61.98 84.41L54.82 80.80L53.23 84.02Z" fill="#24ABD0"/><path d="M60.90 86.55L62.57 83.30L55.32 79.70L53.74 82.94Z" fill="#23AECF"/><path d="M61.51 85.45L63.16 82.18L55.81 78.59L54.25 81.85Z" fill="#23B1CE"/><path d="M62.11 84.33L63.74 81.05L56.30 77.47L54.75 80.75Z" fill="#22B4CD"/><path d="M62.70 83.22L64.31 79.92L56.79 76.35L55.26 79.64Z" fill="#22B6CB"/><path d="M63.28 82.09L64.88 78.79L57.27 75.22L55.76 78.52Z" fill="#23B7C8"/><path d="M63.86 80.96L65.44 77.65L57.76 74.09L56.26 77.40Z" fill="#24B8C4"/><path d="M64.43 79.82L65.99 76.50L58.25 72.95L56.75 76.27Z" fill="#25B9C0"/><path d="M64.99 78.68L66.54 75.35L58.74 71.81L57.25 75.13Z" fill="#26BABD"/><path d="M65.55 77.54L67.08 74.20L59.23 70.66L57.75 73.99Z" fill="#27BBB9"/><path d="M66.10 76.39L67.62 73.04L59.72 69.51L58.24 72.85Z" fill="#28BCB5"/><path d="M66.64 75.24L68.15 71.89L60.22 68.36L58.74 71.70Z" fill="#29BDB1"/><path d="M67.17 74.08L68.68 70.73L60.71 67.20L59.24 70.55Z" fill="#2BBEAD"/><path d="M67.71 72.92L69.20 69.57L61.21 66.04L59.74 69.39Z" fill="#2CBEA9"/><path d="M68.23 71.76L69.72 68.41L61.72 64.88L60.24 68.24Z" fill="#2DBFA5"/><path d="M68.75 70.60L70.23 67.24L62.22 63.72L60.75 67.08Z" fill="#2FC0A1"/><path d="M69.27 69.44L70.74 66.08L62.73 62.56L61.26 65.92Z" fill="#30C19D"/><path d="M69.78 68.28L71.25 64.92L63.25 61.40L61.77 64.76Z" fill="#31C298"/><path d="M70.28 67.12L71.76 63.76L63.77 60.24L62.28 63.59Z" fill="#33C294"/><path d="M70.79 65.96L72.26 62.61L64.29 59.08L62.80 62.43Z" fill="#34C390"/><path d="M71.29 64.80L72.76 61.45L64.83 57.92L63.32 61.27Z" fill="#36C48B"/><path d="M71.78 63.64L73.26 60.30L65.36 56.76L63.85 60.11Z" fill="#37C587"/><path d="M72.28 62.49L73.76 59.15L65.90 55.61L64.38 58.96Z" fill="#39C582"/><path d="M72.77 61.34L74.25 58.01L66.45 54.46L64.92 57.80Z" fill="#3AC67D"/><path d="M73.26 60.19L74.75 56.87L67.01 53.32L65.46 56.65Z" fill="#3CC778"/><path d="M73.75 59.05L75.25 55.73L67.57 52.18L66.01 55.50Z" fill="#3DC773"/><path d="M74.24 57.91L75.74 54.60L68.14 51.04L66.56 54.35Z" fill="#3FC86E"/><path d="M74.73 56.78L76.24 53.48L68.72 49.91L67.12 53.21Z" fill="#48C96D"/><path d="M75.21 55.65L76.74 52.36L69.30 48.78L67.69 52.08Z" fill="#50CA6C"/><path d="M75.70 54.53L77.25 51.25L69.89 47.67L68.26 50.95Z" fill="#58CB6A"/><path d="M76.19 53.41L77.75 50.15L70.49 46.55L68.84 49.82Z" fill="#5FCC69"/><path d="M76.68 52.30L78.26 49.06L71.10 45.45L69.43 48.70Z" fill="#66CE68"/><path d="M77.18 51.20L78.77 47.98L71.72 44.36L70.02 47.59Z" fill="#6CCF66"/><path d="M77.67 50.11L79.28 46.90L72.35 43.27L70.62 46.49Z" fill="#72D065"/><path d="M78.17 49.03L79.80 45.83L72.98 42.19L71.23 45.39Z" fill="#78D164"/><path d="M78.67 47.95L80.33 44.78L73.63 41.12L71.85 44.31Z" fill="#7DD262"/><path d="M79.18 46.89L80.86 43.73L74.28 40.07L72.48 43.23Z" fill="#83D361"/><path d="M79.69 45.83L81.40 42.70L74.94 39.02L73.11 42.16Z" fill="#88D45F"/><path d="M80.21 44.79L81.94 41.68L75.62 37.98L73.75 41.10Z" fill="#8DD55D"/><path d="M80.73 43.75L82.49 40.67L76.30 36.96L74.41 40.06Z" fill="#92D65C"/><path d="M81.25 42.73L83.04 39.68L77.00 35.95L75.07 39.02Z" fill="#97D75A"/><path d="M81.79 41.72L83.61 38.69L77.70 34.96L75.74 38.00Z" fill="#9CD858"/><path d="M82.32 40.72L84.18 37.73L78.42 33.97L76.42 36.98Z" fill="#A0D956"/><path d="M82.87 39.74L84.76 36.77L79.15 33.00L77.11 35.98Z" fill="#A5DA54"/><path d="M83.43 38.77L85.35 35.84L79.89 32.05L77.81 35.00Z" fill="#A9DB52"/><path d="M83.99 37.81L85.95 34.91L80.64 31.11L78.52 34.03Z" fill="#AEDC50"/><path d="M84.56 36.87L86.56 34.01L81.40 30.19L79.24 33.07Z" fill="#B2DD4E"/><path d="M85.14 35.94L87.18 33.12L82.18 29.29L79.98 32.12Z" fill="#B6DD4C"/><path d="M85.73 35.02L87.82 32.24L82.96 28.40L80.72 31.20Z" fill="#BBDE4A"/><path d="M86.33 34.12L88.46 31.39L83.77 27.53L81.48 30.28Z" fill="#BFDF47"/><path d="M86.94 33.24L89.11 30.55L84.58 26.68L82.24 29.39Z" fill="#C3E044"/><path d="M87.56 32.38L89.78 29.73L85.41 25.85L83.02 28.51Z" fill="#C7E142"/><path d="M88.19 31.53L90.46 28.93L86.25 25.04L83.82 27.65Z" fill="#CBE23F"/><path d="M88.83 30.69L91.15 28.15L87.10 24.26L84.62 26.81Z" fill="#CDE240"/><path d="M89.49 29.88L91.86 27.39L87.97 23.49L85.44 25.99Z" fill="#CFE342"/><path d="M90.16 29.08L92.58 26.65L88.86 22.74L86.27 25.18Z" fill="#D0E344"/><path d="M90.84 28.30L93.31 25.93L89.75 22.02L87.12 24.40Z" fill="#D2E447"/><path d="M91.53 27.55L94.06 25.23L90.67 21.32L87.98 23.63Z" fill="#D4E449"/><path d="M92.24 26.80L94.82 24.56L91.59 20.64L88.85 22.89Z" fill="#D5E54B"/><path d="M92.97 26.08L95.60 23.90L92.54 19.99L89.74 22.17Z" fill="#D7E64D"/><path d="M93.71 25.38L96.39 23.27L93.49 19.37L90.65 21.47Z" fill="#D9E64F"/><path d="M94.46 24.70L97.20 22.66L94.47 18.77L91.57 20.80Z" fill="#DAE751"/><path d="M95.23 24.04L98.02 22.08L95.46 18.20L92.50 20.15Z" fill="#DCE753"/><path d="M96.02 23.40L98.87 21.52L96.46 17.65L93.45 19.52Z" fill="#DDE855"/><path d="M96.83 22.79L99.73 20.98L97.48 17.13L94.42 18.92Z" fill="#DFE857"/><path d="M97.66 22.19L100.61 20.47L98.51 16.64L95.41 18.34Z" fill="#E1E959"/><path d="M98.50 21.62L101.50 19.98L99.57 16.18L96.41 17.79Z" fill="#E2E95B"/><path d="M99.36 21.07L102.42 19.52L100.63 15.75L97.43 17.27Z" fill="#E4EA5D"/><path d="M100.25 20.55L103.35 19.09L101.72 15.35L98.46 16.77Z" fill="#E5EA5F"/><path d="M101.15 20.05L104.30 18.68L102.82 14.97L99.52 16.30Z" fill="#E7EB61"/><path d="M102.08 19.57L105.28 18.30L103.93 14.63L100.59 15.87Z" fill="#E9EB62"/><path d="M103.02 19.12L106.27 17.94L105.07 14.32L101.68 15.46Z" fill="#EAEC64"/><path d="M103.99 18.70L107.29 17.62L106.22 14.04L102.79 15.08Z" fill="#ECEC66"/><path d="M104.99 18.31L108.32 17.32L107.38 13.79L103.92 14.73Z" fill="#EEED68"/><path d="M106.00 17.94L109.38 17.05L108.57 13.58L105.06 14.41Z" fill="#EFED6A"/><path d="M107.04 17.60L110.46 16.81L109.77 13.39L106.23 14.12Z" fill="#F1EE6C"/><path d="M108.11 17.29L111.56 16.60L110.98 13.24L107.41 13.87Z" fill="#F3EE6D"/><path d="M109.20 17.01L112.69 16.42L112.22 13.12L108.62 13.65Z" fill="#F5EF6F"/><path d="M110.31 16.76L113.84 16.27L113.47 13.03L109.84 13.46Z" fill="#F6EF71"/><path d="M111.45 16.54L115.01 16.16L114.75 12.98L111.09 13.30Z" fill="#F8F073"/><path d="M112.62 16.36L116.21 16.07L116.04 12.96L112.36 13.18Z" fill="#FAF075"/><path d="M113.81 16.20L117.43 16.02L117.35 12.98L113.64 13.09Z" fill="#FCF177"/><path d="M115.03 16.09L117.49 16.01L117.47 13.03L114.95 13.04Z" fill="#FEF279"/><circle cx="117.48" cy="14.52" r="1.49" fill="#FFF27A"/></svg></div>
         <h1 id="esTitle">Open a still or a clip</h1>
         <p id="esText">Drop a file anywhere, paste it, or choose one. Log footage from ARRI, Sony, RED, Canon, Panasonic, Blackmagic and Apple is decoded when you pick its camera under Source.</p>
-        <button class="btn primary" id="emptyOpen">Choose file</button>
+        <button class="btn primary" id="emptyOpen"><i class="spin" aria-hidden="true"></i><span id="emptyOpenT">Choose file</span></button>
       </div>
       <div class="split-line" id="splitLine" hidden><div class="split-grip" id="splitGrip" role="slider" aria-label="Before and after split" tabindex="0"></div></div>
       <span class="vtag" id="tagBefore" hidden>Source</span>
@@ -420,8 +509,14 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
         <span class="lbl"><b>Generate</b><small>10 looks</small></span>
         <kbd aria-hidden="true">G</kbd>
       </button>
-      <div class="batch" id="batchNav" hidden>
-        <button id="batchPrev" aria-label="Previous batch">‹</button><span id="batchLbl">1 / 1</span><button id="batchNext" aria-label="Next batch">›</button>
+      <div class="dock-nav">
+        <div class="tabs small" id="stripTabs" role="tablist" aria-label="Looks in the strip">
+          <button role="tab" data-v="gen" aria-selected="true">Generated</button>
+          <button role="tab" data-v="saved" aria-selected="false">Saved<span class="n" id="savedN"></span></button>
+        </div>
+        <div class="batch" id="batchNav" hidden>
+          <button id="batchPrev" aria-label="Previous batch">‹</button><span id="batchLbl">1 / 1</span><button id="batchNext" aria-label="Next batch">›</button>
+        </div>
       </div>
     </div>
     <div class="strip" id="strip" aria-label="Generated looks">
@@ -443,34 +538,49 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
     </section>
 
     <div class="panel-body">
-      <section class="group first" id="gLayers">
-        <div class="group-h"><h3>Layers</h3><button class="link" id="layersToggle" hidden>Hide all</button></div>
-        <ol class="layers" id="layerList"></ol>
-      </section>
-
-      <section class="group look" id="gLook">
+      <section class="group look first" id="gLook">
         <div class="look-empty" id="lookEmpty">
           <h2>No look selected</h2>
-          <p class="muted">Press Generate. Pick a look to preview it on top of your layers, then add it to the stack.</p>
+          <p class="muted" id="lookEmptyText">Press Generate. Pick a look to preview it on your frame, refine it, save it for later and add it to the stack.</p>
         </div>
         <div id="lookBody" hidden>
           <div class="kick"><span id="lkKind">Preview</span><span id="lkProc"></span></div>
-          <h2 id="lkName"></h2>
+          <div class="lk-title">
+            <h2 id="lkName"></h2>
+            <input class="name-edit" id="lkNameEdit" type="text" maxlength="60" spellcheck="false" autocomplete="off" aria-label="Name of the saved look" hidden>
+          </div>
           <p class="qual" id="lkQual"></p>
-          <dl class="spec" id="lkSpec"></dl>
+          <div class="fit-row" id="fitRow" hidden>
+            <div class="seg" id="fitSeg" role="radiogroup" aria-label="How the saved look meets this frame">
+              <button role="radio" data-v="fit" aria-checked="true" title="Its colour as saved; its exposure, black, white and skin solved for this frame">Fitted to this frame</button><button role="radio" data-v="exact" aria-checked="false" title="Exactly as it was saved">As saved</button>
+            </div>
+          </div>
           <div class="actions">
             <button class="btn primary" id="addBtn" title="Add this look as a layer (A)">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3.5v9M3.5 8h9"/></svg>Add as layer
             </button>
+            <button class="btn" id="saveBtn" title="Save this look, with its Refine, to use in any project (S)">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M8 2.2l1.75 3.6 3.95.55-2.87 2.76.7 3.92L8 11.17l-3.53 1.86.7-3.92L2.3 6.35l3.95-.55z"/></svg><span id="saveLbl">Save look</span>
+            </button>
             <button class="btn" id="varBtn" title="More like this (V)">Variations</button>
             <button class="btn" id="removeBtn" hidden>Remove layer</button>
           </div>
+          <p class="saved-line" id="savedLine" hidden><button type="button" class="link" id="renameBtn">Rename</button><button type="button" class="link" id="exportLookBtn">Export file</button><button type="button" class="link danger" id="forgetBtn">Remove from saved</button></p>
           <div class="ctl big"><label for="amt">Amount</label><input type="range" id="amt" min="0" max="200" value="100" step="1"><output id="amtOut">100%</output></div>
-          <details class="refine" id="refine">
-            <summary><span>Refine</span><button type="button" class="link" id="rfReset">Reset</button></summary>
+          <details class="refine" id="refine" open>
+            <summary><span>Refine</span><button type="button" class="link" id="rfReset" disabled>Reset</button></summary>
             <div class="refine-grid" id="refineGrid"></div>
           </details>
+          <details class="details" id="lkDetails" open>
+            <summary><span>Details</span></summary>
+            <dl class="spec" id="lkSpec"></dl>
+          </details>
         </div>
+      </section>
+
+      <section class="group" id="gLayers" hidden>
+        <div class="group-h"><h3>Layers</h3><button class="link" id="layersToggle" hidden>Hide all</button></div>
+        <ol class="layers" id="layerList"></ol>
       </section>
 
       <section class="group" id="gProcess">
@@ -537,8 +647,8 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
       <li><strong>Output.</strong> Colours the display cannot show are compressed in OKLCh at constant lightness and hue, keeping their gradation out to the Rec.2020 boundary, then encoded for your Output: Rec.709 Gamma 2.4, Rec.709-A, sRGB or Display P3. The viewer shows the light that timeline would show; scopes read its code values.</li>
     </ol>
     <div class="stats" id="aboutStats"></div>
-    <p>Exported LUTs bake the entire grade, including the source decode, so they drop onto your clip in DaVinci Resolve or Premiere Pro. Inside Premiere Pro and DaVinci Resolve, the Nyans plugin reads the frame under your playhead and applies the grade to your timeline. Everything runs on your machine; your footage never leaves it.</p>
-    <p class="keys">Shortcuts: <kbd>G</kbd> generate, <kbd>F</kbd> grab the playhead frame (in a plugin), <kbd>Enter</kbd> apply to the timeline (in a plugin), <kbd>A</kbd> add as layer, <kbd>←</kbd> <kbd>→</kbd> browse looks, <kbd>V</kbd> variations, <kbd>B</kbd> grade on or off, <kbd>C</kbd> split compare, <kbd>E</kbd> export, <kbd>O</kbd> open, <kbd>Space</kbd> play. Click the image to switch the grade off and on; hold it to peek at the source.</p>
+    <p>Saved looks keep a look with its Refine for any project: on another frame a saved look is fitted to it (its colour stays; exposure, black, white and skin are solved for the new frame), or used exactly as saved. Exported LUTs bake the entire grade, including the source decode, so they drop onto your clip in DaVinci Resolve or Premiere Pro. Inside Premiere Pro and DaVinci Resolve, the Nyans plugin reads the frame under your playhead and applies the grade to your timeline. Everything runs on your machine; your footage never leaves it.</p>
+    <p class="keys">Shortcuts: <kbd>G</kbd> generate, <kbd>F</kbd> grab the playhead frame (in a plugin), <kbd>Enter</kbd> apply to the timeline (in a plugin), <kbd>A</kbd> add as layer, <kbd>S</kbd> save the look, <kbd>←</kbd> <kbd>→</kbd> browse looks, <kbd>V</kbd> variations, <kbd>B</kbd> grade on or off, <kbd>C</kbd> split compare, <kbd>E</kbd> export, <kbd>O</kbd> open, <kbd>Space</kbd> play. Click the image to switch the grade off and on; hold it to peek at the source.</p>
     <button class="btn close" id="aboutClose">Close</button>
   </div>
 </div>
@@ -1828,6 +1938,7 @@ function NyansEngineFactory() {
     }
     if (F.wbWarm) { const k = UR(rng, F.wbWarm); b.wb = [b.wb[0] * (1 + k), b.wb[1], b.wb[2] * (1 - 1.6 * k)]; }
     look.meta.tones = { p05: an.p[0.5], p2: an.p[2], p5: an.p[5], p10: an.p[10], p25: an.p[25], p40: an.p[40], p60: an.p[60], p98: an.p[98] };
+    look.meta.frame = frameRef(an);
     look.meta.floor = 0.18 * 2 ** an.p[0.5] * 2 ** b.ev; b.pedFrac = UR(rng, F.blk) * 0.5; b.ped = b.pedFrac * look.meta.floor;
     // contrast turns about the subject: skin when there are faces, else a point between grey and the frame's middle
     const pivotStops = an.skin && an.skinFrac > 0.008 ? 0.55 * Math.log2(Math.max(an.skin.Y, 1e-4) / 0.18) + 0.55 * b.ev : 0.6 * (an.key + b.ev);
@@ -1860,7 +1971,7 @@ function NyansEngineFactory() {
   const meanY = (r) => { let y = 0; for (let k = 0; k < r.n; k++) y += Math.max(r.OL[k * 3], 0) ** 3; return y / Math.max(r.n, 1); };
   /** black, shadow detail and white: the frame's darkest percent and brightest percent land on the family's targets (pedestal, toe, highlight
       compression), the lower tenth keeps its separation, nothing new clips */
-  function fitTone(look, an, iters = 4) {
+  function fitTone(look, an, iters = 4, holdKey = false) {
     const T = look.meta.targets, S = an.S, g = look.grade, b = look.base, F = FAM[look.meta.intent] || FAM.clean; if (!T) return;
     if (!an._tone) {
       const lo = [], hi = [], det = [];
@@ -1875,7 +1986,7 @@ function NyansEngineFactory() {
     // the targets: the frame's own black and white, moved by the family's shift and held inside its bounds
     const blackT = clamp(Math.max(an._tone.yrLo, 1e-5) * Math.pow(2, T.blackShift || 0), T.black[0], T.black[1]), whiteT = clamp(Math.max(an._tone.yrHi, 0.2) * Math.pow(2, T.whiteShift || 0), T.white[0], T.white[1]);
     // the key: the frame's middle stays within the family's band of its displayed level (a dark look darkens it on purpose; none darkens it by accident)
-    if (mid.length > 8 && yrMid > 1e-4 && iters > 2) {
+    if (mid.length > 8 && yrMid > 1e-4 && iters > 2 && !holdKey) {
       const band = F.keyBand || [-0.3, an.lowkey ? 0.45 : 0.6], yd = meanY(sampleRender(look, an, mid)), d = Math.log2(yd / yrMid);
       if (d < band[0]) b.ev += (band[0] - d) * 0.8; else if (d > band[1]) b.ev -= (d - band[1]) * 0.8;
       b.ev = Math.round(clamp(b.ev, an.wide ? -3 : -2, an.wide ? 3 : 1.5) * 100) / 100;
@@ -2158,6 +2269,65 @@ function NyansEngineFactory() {
     return sel;
   }
   function variations(an, base, opts = {}) { const plan = varPlan(opts), r = varBuild(an, base, plan.items, opts); return varFinish(base, r.res, r.ctx, opts); }
+  /** a saved look on another frame: its colour, contrast and saturation stay as they were made; what was measured on the frame it was made
+      for (the frame's tones and floor, the pivot, the pedestal) is measured again on this one, and its key, black, white and skin are solved
+      for it the way a fresh look's are, so nothing is crushed or clipped that this frame did not already have */
+  function frameRef(an) {
+    return { key: an.key, skinY: an.skin ? an.skin.Y : null, skinFrac: an.skinFrac || 0, lowkey: !!an.lowkey, wide: !!an.wide, mx99: an.mx99,
+      illum: an.illum ? an.illum.slice() : null, neutralFrac: an.neutralFrac || 0 };
+  }
+  /** the exposure a family's look starts from on a frame (its nominal key, before the look's own lean), as makeLook sets it */
+  function frameEv(F, fr) {
+    const follow = F.key[1] * (fr.wide ? 1.4 : 0.75) * (fr.lowkey && !fr.wide ? 0.6 : 1), maxEv = fr.wide ? 2.2 : (fr.lowkey ? 0.6 : 0.9);
+    const want = fr.skinY != null && fr.skinFrac > 0.008 ? F.key[0] - Math.log2(Math.max(fr.skinY, 1e-4) / 0.18) : (F.key[0] - 1.3) - fr.key;
+    return Math.min(clamp(want * follow, -maxEv, maxEv), Math.max(6.3 - fr.mx99, -0.5));
+  }
+  /** the share of a frame's measured cast a look takes out, at the family's usual strength */
+  function frameWb(fr) {
+    if (!fr.illum) return [1, 1, 1];
+    const est = fr.illum.map(v => Math.max(v, 1e-6)), lms = [M1[0] * est[0] + M1[1] * est[1] + M1[2] * est[2], M1[3] * est[0] + M1[4] * est[1] + M1[5] * est[2], M1[6] * est[0] + M1[7] * est[1] + M1[8] * est[2]];
+    const mean = (lms[0] + lms[1] + lms[2]) / 3, conf = clamp((fr.neutralFrac - 0.03) / 0.15, 0, 1), k = (fr.wide ? 0.7 : 0.45) * conf;
+    return lms.map(v => Math.pow(clamp(mean / v, 0.7, 1.4), k));
+  }
+  function sameFrame(a, b) {
+    const near = (x, y) => (x == null && y == null) || (x != null && y != null && Math.abs(x - y) <= 1e-3 * Math.max(1, Math.abs(x), Math.abs(y)));
+    return near(a.key, b.key) && near(a.mx99, b.mx99) && near(a.skinY, b.skinY) && near(a.skinFrac, b.skinFrac) && near(a.neutralFrac, b.neutralFrac) && a.wide === b.wide &&
+      (!a.illum === !b.illum) && (!a.illum || a.illum.every((v, i) => near(v, b.illum[i])));
+  }
+  function fitToFrame(an, look) {
+    prepare(an);
+    if (!look || look.v !== 2 || !look.meta) return look;
+    const l = copyLook(look), b = l.base, m = l.meta, F = FAM[m.intent] || FAM.clean, now = frameRef(an);
+    if (m.frame && sameFrame(m.frame, now)) return l;   // (on the frame it was made for, a look is already solved: it stays exactly as it is)
+    // the frame's balance: the look keeps its own lean from where its family would start on the frame it was made for, and starts from
+    // where its family starts on this one; the white balance likewise takes out this frame's cast instead of that frame's
+    if (m.frame) {
+      b.ev = clamp(b.ev - frameEv(F, m.frame) + frameEv(F, now), now.wide ? -3 : -2, now.wide ? 3 : 1.5);
+      const w0 = frameWb(m.frame), w1 = frameWb(now);
+      if (Array.isArray(b.wb)) b.wb = b.wb.map((v, i) => clamp(v * w1[i] / w0[i], 0.5, 2));
+    }
+    m.frame = now;
+    m.tones = { p05: an.p[0.5], p2: an.p[2], p5: an.p[5], p10: an.p[10], p25: an.p[25], p40: an.p[40], p60: an.p[60], p98: an.p[98] };
+    const pivotStops = an.skin && an.skinFrac > 0.008 ? 0.55 * Math.log2(Math.max(an.skin.Y, 1e-4) / 0.18) + 0.55 * b.ev : 0.6 * (an.key + b.ev);
+    b.pivot = stopsToLg(clamp(pivotStops, -3, 1.5));
+    m.floor = 0.18 * 2 ** an.p[0.5] * 2 ** b.ev;
+    if (b.pedFrac != null) b.ped = b.pedFrac * m.floor;
+    if (m.targets) {
+      fitTone(l, an, 6, true); fitSkin(l, an); fitTone(l, an, 4, true);
+      // the ends kept: if this frame's highlights still clip or its shadows still crush under the look, the look gives way a little at a
+      // time (highlight compression and a touch less exposure, or a little more exposure and shadow lift), the way a colourist would
+      const g = l.grade;
+      for (let i = 0; i < 8; i++) {
+        const pen = score(l, an).pen, clip = pen.clip || 0, crush = pen.crush || 0;
+        if (clip <= 0.12 && crush <= 0.12) break;
+        if (clip >= crush) { g.hiComp = clamp((g.hiComp || 0) + 0.3, -0.8, 2.5); if (clip > 0.3) b.ev = clamp(b.ev - 0.08, -3, 3); }
+        else { b.ev = clamp(b.ev + 0.06, -3, 3); g.shLift = clamp((g.shLift || 0) + 0.12, -1.2, 1.4); }
+        m.floor = 0.18 * 2 ** an.p[0.5] * 2 ** b.ev; if (b.pedFrac != null) b.ped = b.pedFrac * m.floor;
+        fitTone(l, an, 2, true);
+      }
+    }
+    return l;
+  }
 
   // ------------------------------------------------------------------ measurement, naming, the taste model
   function vscope(L, a, b) {
@@ -2314,7 +2484,7 @@ function NyansEngineFactory() {
   function printList() { return Object.keys(PRINTS).map(k => ({ id: k, label: PRINTS[k].label, desc: PRINTS[k].desc })); }
 
   return {
-    init, analyzeFrame, analyze, frameStats, generate, variations, refined, bake, genBudget, genPlan, genBuild, genSelect, genEvolvePlan, genEvolve, genMerge, genFinish, varPlan, varBuild, varFinish, cubeText, renderRGBA, compileChain, evalCode, applyStack, renderScene, decodeScene,
+    init, analyzeFrame, analyze, frameStats, generate, variations, fitToFrame, refined, bake, genBudget, genPlan, genBuild, genSelect, genEvolvePlan, genEvolve, genMerge, genFinish, varPlan, varBuild, varFinish, cubeText, renderRGBA, compileChain, evalCode, applyStack, renderScene, decodeScene,
     compile, compileProcess, normProcess, filmPix, autoRoll, renderSafe, lookSpec, describe, measure, inputList, outputList, stockList, printList, identityLook, newLook,
     glFilm, glRoll, nRender, nInverse, nRender3, nInverse3, encSrgbFast, encodeCode, encodeView, outMap, fmtEV, tasteFeatures, TASTE_N, holdSkin, skinMember, drt, drtInverse, toneTable,
     CONST: { TN, GL, GH, CMAX, CMAXP3, CMAXW, DIR_C, PRINT_AIM, INPUTS, OUTPUTS, M1, M1i, M2, M2i, LC4, C3, M709to2020, M2020to709, M709toP3, MP3to709, GIN_T, GIN_P, OUT_T, OUT_P, OUT_W, TF_G, EXP_EPS2, X_FLOOR, X_FW, SPN, SPU0, SPD, TM_N, TM_U0, TM_DU, TMB_LO, TMB_HI, FID_L, LG_K, LG_G, LG_EPS },
@@ -2603,7 +2773,34 @@ class Scopes {
     t.style.top = Math.max(8, (vr.top > 0 && vr.top < innerHeight - 60 ? vr.top : 54) + 12) + 'px';
     t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2800);
   }
-  function status(msg) { const s = $('#status'); if (msg) { s.textContent = msg; s.classList.add('on'); } else s.classList.remove('on'); }
+  let emptyLabel = 'Choose file';
+  const busyWord = m => (/^Reading/.test(m) ? 'Reading the frame…' : /^Opening/.test(m) ? 'Opening…' : m);
+  function status(msg) {
+    const s = $('#status'), es = $('#emptyState');
+    if (!es.hidden) { es.classList.toggle('busy', !!msg); $('#emptyOpenT').textContent = msg ? busyWord(msg) : emptyLabel; }
+    if (msg) { s.textContent = msg; s.classList.add('on'); } else s.classList.remove('on');
+  }
+
+  // ------------------------------------------------------------------ the top bar gives way in steps until it fits (.f1 to .f8 in the stylesheet);
+  // below 861px it is rows instead. It is measured again when the window, the editor's status line or the trial chip changes.
+  const barEl = $('#bar'), FITS = 8;
+  let fitRaf = 0;
+  function fitBar() {
+    fitRaf = 0;
+    for (let k = 1; k <= FITS; k++) barEl.classList.remove('f' + k);
+    if (window.innerWidth <= 860) return;
+    // (tight: something is pushed out, or the clip name or file name is cut to less than about 200px while the steps before it could free room)
+    const name = () => { const c = host ? $('#hostClip') : $('#meta'); return c && c.offsetParent && c.textContent ? c : null; };
+    const hn = $('#hostName'), ht = $('#hostTag');
+    const nameCut = () => !!host && !!hn.offsetParent && hn.getBoundingClientRect().right > ht.getBoundingClientRect().right - 8;   // (the editor's own name is never cut)
+    const tight = k => barEl.scrollWidth > barEl.clientWidth + 1 || nameCut() || (k < 5 && (c => !!c && c.scrollWidth > c.clientWidth + 1 && c.clientWidth < 200)(name()));
+    for (let k = 1; k <= FITS && tight(k); k++) barEl.classList.add('f' + k);
+  }
+  const scheduleFit = () => { if (!fitRaf) fitRaf = requestAnimationFrame(fitBar); };
+  window.addEventListener('resize', scheduleFit);
+  try { new ResizeObserver(scheduleFit).observe(barEl); } catch (e) { /* the resize event covers it */ }
+  try { new MutationObserver(scheduleFit).observe(barEl, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['hidden'] }); } catch (e) { /* measured on resize */ }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleFit).catch(() => {});
 
   // ------------------------------------------------------------------ workers: a pool shares the analysis, the search and LUT baking
   // Every worker reads the same frame; a press is split into seeded tasks that idle workers pull, so more cores mean a wider search
@@ -2619,6 +2816,7 @@ class Scopes {
         else if (m.type === 'build') { const res = E.genBuild(an, m.tasks, m.opts); post({ ok: true, res }, res.map(r => r.OL.buffer)); }
         else if (m.type === 'evolve') { const res = E.genEvolve(an, m.items, m.opts); post({ ok: true, res }, res.map(r => r.OL.buffer)); }
         else if (m.type === 'varBuild') { const r = E.varBuild(an, m.base, m.items, m.opts); post({ ok: true, r }, r.res.map(x => x.OL.buffer)); }
+        else if (m.type === 'fit') post({ ok: true, looks: m.looks.map(l => E.fitToFrame(an, l)) });
         else if (m.type === 'bake') { const lut = E.bake(m.spec, m.size, null, m.range, m.mode); post({ ok: true, lut }, [lut.buffer]); }
       } catch (err) { post({ ok: false, error: String((err && err.stack) || err) }); }
     };
@@ -2795,8 +2993,8 @@ class Scopes {
     } catch (e) { console.warn(e); }
     scopeBusy = false;
   }
-  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b ? 'true' : 'false'));
+  document.querySelectorAll('.scope-head .tabs button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.scope-head .tabs button').forEach(x => x.setAttribute('aria-selected', x === b ? 'true' : 'false'));
     scopes.mode = b.dataset.s; scopes.redraw();
   }));
 
@@ -2808,11 +3006,14 @@ class Scopes {
     x.drawImage(s.el, 0, 0, w, h); return { data: x.getImageData(0, 0, w, h).data, w, h };
   }
   function computeStats() { if (!state.src) return; const a = grab(256); state.stats = E.frameStats(a.data, a.w, a.h, state.input, state.output); }
+  let srcToken = 0;
   function sourceReady() {
     status('');
     $('#emptyState').hidden = true; $('#viewer').classList.add('has-src'); $('#app').classList.add('has-src');
     $('#genBtn').disabled = false; $('#exportBtn').disabled = false;
+    srcToken++;
     computeStats(); applyChain(); renderPanel();
+    if (state.batches.length || stripView === 'saved') renderStrip(false);   // (the thumbnails show the frame now open)
     if (!ready) setTimeout(startPool, 1200);
   }
   async function setImageSource(bitmap, name) {
@@ -2912,7 +3113,10 @@ class Scopes {
     } catch (e) { status(''); toast('That file could not be opened. Use JPEG, PNG, WebP, AVIF, MP4, MOV or WebM.'); console.warn(e); }
   }
   // (the picker's value is cleared just before it opens again, never right after a pick: a phone can release the picked file with it)
-  const pickFile = () => { const fi = $('#fileIn'); fi.value = ''; fi.click(); };
+  const pickFile = () => {
+    if (host && typeof host.pickFile === 'function') { host.pickFile(['png', 'jpg', 'jpeg', 'webp', 'avif', 'tif', 'tiff', 'mp4', 'mov', 'm4v', 'webm']).then(f => { if (f) openFile(f); }).catch(e => toast((e && e.message) || 'Could not open the file')); return; }
+    const fi = $('#fileIn'); fi.value = ''; fi.click();
+  };
   $('#openBtn').addEventListener('click', pickFile);
   $('#emptyOpen').addEventListener('click', () => (host ? grabFrame() : pickFile()));
   $('#fileIn').addEventListener('change', e => { const f = e.target.files && e.target.files[0]; if (f) openFile(f); });
@@ -2961,7 +3165,7 @@ class Scopes {
     const layers = visibleLayers().map(l => ({ look: l.look, refine: l.rf }));
     const spec = { input: state.input, output: state.output, roll: state.roll, stats: state.stats, layers, process: layers.length ? state.process : DIGITAL };
     if (lastAnalyzedSrc !== state.src) { prevSigs = []; prevIntents = []; }
-    lastAnalyzedSrc = state.src;
+    lastAnalyzedSrc = state.src; analyzedKey = anKey();
     if (await usePool()) {
       const rs = await Promise.all(alive().map(wk => wcall(wk, 'analyze', { rgba: a.data, w: a.w, h: a.h, spec })));
       return rs[0].summary;
@@ -3007,8 +3211,8 @@ class Scopes {
       prevSigs = found.map(l => l.sig).filter(Boolean); prevIntents = found.map(l => l.meta && l.meta.intent).filter(Boolean); found.forEach(l => { delete l.sig; });
       const looks = found.slice().sort((a, b) => a.order - b.order);
       const best = looks.reduce((a, b) => (b.score > a.score ? b : a), looks[0]);
-      state.batches.push({ kind: 'gen', looks, key: stackKey(), stacked: visibleLayers().length > 0 });
-      state.bi = state.batches.length - 1;
+      state.batches.push({ kind: 'gen', looks, key: stackKey(), stacked: visibleLayers().length > 0, src: srcToken });
+      state.bi = state.batches.length - 1; stripView = 'gen';
       state.cand = null; renderStrip(true); selectCandidate(best);
       state.lastPress = { ms: Math.round(performance.now() - t0), workers: alive().length, scale: searchScale() };
       status(''); toast(looks.length + ' looks composed' + (visibleLayers().length ? ' on top of your layers' : ' for this frame'));
@@ -3033,8 +3237,8 @@ class Scopes {
       } else { await new Promise(r => setTimeout(r, 20)); looks = E.variations(local.an, look, opts); }
       if (state.src !== srcAtStart) { status(''); return; }
       { const hold = +rfOf(base).skin || 0; if (hold > 0) looks.forEach(l => { rfOf(l).skin = hold; }); }   // (a held skin stays held in its variations)
-      state.batches.push({ kind: 'var', of: base.name, looks: [base].concat(looks), key: stackKey(), stacked: visibleLayers().length > 0 });
-      state.bi = state.batches.length - 1; renderStrip(true); selectCandidate(looks[0] || base);
+      state.batches.push({ kind: 'var', of: base.name, looks: [base].concat(looks), key: stackKey(), stacked: visibleLayers().length > 0, src: srcToken });
+      state.bi = state.batches.length - 1; stripView = 'gen'; renderStrip(true); selectCandidate(looks[0] || base);
       status(''); toast(looks.length + ' variations of ' + base.name);
     } catch (e) { console.error(e); status(''); toast('Could not grow variations here. Try another look.'); }
     finally { setBusy(false); }
@@ -3062,12 +3266,13 @@ class Scopes {
   }
   function frameEl(lk, i, develop) {
     const b = document.createElement('div'); b.className = 'frame' + (develop ? ' develop' : ''); b.tabIndex = 0; b.setAttribute('role', 'button');
-    { const [tw, th] = thumbSize(); b.style.width = Math.round(98 * tw / th) + 'px'; }
+    { const [tw, th] = thumbSize(); b.style.width = Math.max(96, Math.round(98 * tw / th)) + 'px'; }
     b.setAttribute('aria-pressed', state.cand === lk ? 'true' : 'false'); b.dataset.id = lk.id; b.title = lk.name + (lk.qual ? ', ' + lk.qual : '');
     const pic = document.createElement('div'); pic.className = 'pic';
     const c = document.createElement('canvas'); pic.appendChild(c);
     if (develop && !reduceMotion) c.style.animationDelay = (i * 50) + 'ms';
     if (lk._added) { const bd = document.createElement('span'); bd.className = 'badge'; bd.textContent = 'Added'; pic.appendChild(bd); }
+    if (lk._saved && libHas(lk._saved)) pic.appendChild(starBadge());
     const nm = document.createElement('span'); nm.className = 'nm';
     const t1 = document.createElement('b'); t1.textContent = lk.name; const t2 = document.createElement('small'); t2.textContent = lk.qual || ' ';
     nm.append(t1, t2); b.append(pic, nm);
@@ -3080,8 +3285,11 @@ class Scopes {
     b.addEventListener('dblclick', () => { selectCandidate(lk); runVariations(); });
     lk._el = b; return b;
   }
+  let stripView = 'gen';
   function renderStrip(develop) {
-    strip.innerHTML = '';
+    renderTabs();
+    if (stripView === 'saved') { renderSaved(); return; }
+    strip.innerHTML = ''; strip.setAttribute('aria-label', 'Generated looks');
     const batch = state.batches[state.bi];
     if (!batch) { const p = document.createElement('p'); p.className = 'empty'; p.textContent = 'Generated looks appear here. Each press reads the frame you are viewing, so no two batches are alike.'; strip.appendChild(p); $('#batchNav').hidden = true; return; }
     batch.looks.forEach((lk, i) => strip.appendChild(frameEl(lk, i, develop)));
@@ -3107,6 +3315,273 @@ class Scopes {
   strip.addEventListener('wheel', e => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && strip.scrollWidth > strip.clientWidth) { strip.scrollLeft += e.deltaY; e.preventDefault(); } }, { passive: false });
   $('#batchPrev').addEventListener('click', () => { if (state.bi > 0) { state.bi--; renderStrip(false); } });
   $('#batchNext').addEventListener('click', () => { if (state.bi < state.batches.length - 1) { state.bi++; renderStrip(false); } });
+
+  // ------------------------------------------------------------------ saved looks: kept for you, outside any project
+  // A saved look is one look with its Refine, its Amount and its process. In Premiere Pro and DaVinci Resolve they live in one file of yours
+  // (~/Library/Application Support/Nyans/looks.json, %APPDATA%\Nyans\looks.json), so both editors share them; in Final Cut Pro and the browser
+  // they stay in Nyans' own storage. Used on another frame a saved look is fitted to it by default: its colour stays as saved, its exposure,
+  // black, white and skin are solved for the new frame (E.fitToFrame); "As saved" uses it exactly as it was.
+  const LIB_KEY = 'nyans.looks.v1';
+  const libHost = host && host.looks && typeof host.looks.list === 'function' ? host.looks : null;
+  const validRec = r => { if (!(r && typeof r.id === 'string' && r.look && r.look.v === 2 && r.look.base && r.look.grade && r.look.post)) return false; try { E.refined(r.look, r.rf || {}); return true; } catch (e) { return false; } };
+  const renders = r => { try { E.lookSpec(E.refined(r.look, r.rf || {}), r.process || null); return true; } catch (e) { return false; } };   // (a file from elsewhere is checked through)
+  const lib = { list: [], loaded: false };
+  const libHas = id => lib.list.some(r => r.id === id);
+  const libGet = id => lib.list.find(r => r.id === id) || null;
+  const newId = () => 'N' + Date.now().toString(36) + Math.floor(Math.random() * 1e8).toString(36);
+  function syncSavedCount() { $('#savedN').textContent = lib.list.length ? String(lib.list.length) : ''; }
+  async function libLoad() {
+    let list = [];
+    try { list = libHost ? await libHost.list() : JSON.parse(localStorage.getItem(LIB_KEY) || '[]'); } catch (e) { list = []; }
+    lib.list = (Array.isArray(list) ? list : []).filter(validRec); lib.loaded = true; syncSavedCount();
+    return lib.list;
+  }
+  function libLocal(list) {
+    try { localStorage.setItem(LIB_KEY, JSON.stringify(list)); }
+    catch (e) { throw new Error(e && /quota/i.test(e.name + ' ' + e.message) ? 'There is no room left for saved looks here. Remove a few and save again.' : 'This window cannot keep saved looks. Export the look as a file instead.'); }
+    return list;
+  }
+  async function libPut(rec) {
+    rec.updated = new Date().toISOString();
+    if (libHost) lib.list = ((await libHost.put(rec)) || []).filter(validRec);
+    else { const list = lib.list.slice(), i = list.findIndex(r => r.id === rec.id); if (i >= 0) list[i] = rec; else list.unshift(rec); lib.list = libLocal(list); }
+    syncSavedCount(); savedCands.delete(rec.id);
+  }
+  async function libRemove(id) {
+    if (libHost) lib.list = ((await libHost.remove(id)) || []).filter(validRec);
+    else lib.list = libLocal(lib.list.filter(r => r.id !== id));
+    syncSavedCount(); savedCands.delete(id);
+  }
+  // (another editor, or another window, may have changed the file: it is read again whenever Nyans comes back to the front)
+  window.addEventListener('focus', () => { if (lib.loaded) libLoad().then(() => { if (stripView === 'saved') renderStrip(false); renderPanel(); }).catch(() => {}); });
+
+  const STAR = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 2.2l1.75 3.6 3.95.55-2.87 2.76.7 3.92L8 11.17l-3.53 1.86.7-3.92L2.3 6.35l3.95-.55z"/></svg>';
+  function starBadge() { const s = document.createElement('span'); s.className = 'badge star'; s.title = 'Saved'; s.innerHTML = STAR; return s; }
+
+  // the analysis a saved look is fitted to: the frame on screen, under the layers that are showing
+  let analyzedKey = null, fitMode = store.get('nyans.fitmode') === 'exact' ? 'exact' : 'fit';
+  const anKey = () => JSON.stringify([srcToken, video ? Math.round(video.currentTime * 25) : 0, state.input, state.output, visibleLayers().map(l => [l.id, l.rf]), state.process]);
+  async function ensureAnalysis() { if (analyzedKey !== anKey()) await analyzeCurrent(); }
+  async function fitLooks(looks) {
+    if (await usePool()) return (await wcall(alive()[0], 'fit', { looks: JSON.parse(JSON.stringify(looks)) })).looks;
+    return looks.map(l => E.fitToFrame(local.an, l));
+  }
+  const savedCands = new Map();   // rec id -> the look as a preview on this frame (it keeps its Refine while you browse)
+  async function savedCandidate(rec) {
+    let c = savedCands.get(rec.id);
+    const key = fitMode + '|' + anKey();
+    if (c && c._key === key) return c;
+    let look = rec.look;
+    if (fitMode === 'fit') { await ensureAnalysis(); look = (await fitLooks([rec.look]))[0]; }
+    const rf = c ? c._rf : Object.assign({}, RF_DEF, rec.rf || {});
+    c = Object.assign(stripLook(look), { name: rec.name, qual: rec.qual || '', id: 'S' + rec.id, process: rec.process ? E.normProcess(rec.process) : null, _saved: rec.id, _key: key, _rf: rf });
+    savedCands.set(rec.id, c);
+    return c;
+  }
+  async function useSaved(rec) {
+    if (!state.src) { toast(host ? 'Grab a frame first, then pick the look' : 'Open a still or a clip first, then pick the look'); return; }
+    if (state.busy) return;
+    try {
+      if (fitMode === 'fit' && analyzedKey !== anKey()) status('Fitting ' + rec.name + ' to this frame');
+      const c = await savedCandidate(rec); status('');
+      selectCandidate(c);
+    } catch (e) { status(''); console.warn(e); toast('Could not use ' + rec.name + ' here'); }
+  }
+
+  function renderTabs() {
+    $('#stripTabs').querySelectorAll('button').forEach(b => b.setAttribute('aria-selected', b.dataset.v === stripView ? 'true' : 'false'));
+    const batch = state.batches[state.bi];
+    $('#batchNav').hidden = stripView !== 'gen' || state.batches.length < 2;
+    $('#genBtn').title = batch && batch.src !== srcToken && stripView === 'gen' ? 'These looks were composed for an earlier frame. Generate looks for this one (G)' : 'Generate looks for this frame (G)';
+  }
+  function savedFrameEl(rec) {
+    const b = document.createElement('div'); b.className = 'frame saved-frame stored'; b.tabIndex = 0; b.setAttribute('role', 'button'); b.dataset.id = 'S' + rec.id;
+    const ar = state.src ? clamp(state.src.w / state.src.h, 0.6, 2.3) : 16 / 9;
+    b.style.width = Math.max(96, Math.round(98 * ar)) + 'px';
+    const c = savedCands.get(rec.id); b.setAttribute('aria-pressed', state.cand && state.cand._saved === rec.id ? 'true' : 'false');
+    b.title = rec.name + (rec.qual ? ', ' + rec.qual : '') + (rec.made && rec.made.app ? ' · saved in ' + rec.made.app : '');
+    const pic = document.createElement('div'); pic.className = 'pic'; const cv = document.createElement('canvas'); pic.appendChild(cv);
+    if (rec.thumb) { const img = new Image(); img.onload = () => { if (!b.classList.contains('stored')) return; cv.width = img.naturalWidth; cv.height = img.naturalHeight; cv.getContext('2d').drawImage(img, 0, 0); }; img.src = rec.thumb; }
+    const nm = document.createElement('span'); nm.className = 'nm';
+    const t1 = document.createElement('b'); t1.textContent = rec.name; const t2 = document.createElement('small'); t2.textContent = rec.qual || ' ';
+    nm.append(t1, t2); b.append(pic, nm);
+    b.addEventListener('click', () => useSaved(rec));
+    b.addEventListener('keydown', e => { if (e.key === 'Enter') useSaved(rec); });
+    if (c) c._el = b;
+    return b;
+  }
+  function importTile() {
+    const b = document.createElement('div'); b.className = 'frame tile'; b.tabIndex = 0; b.setAttribute('role', 'button'); b.title = 'Import a .nyanslook file';
+    const pic = document.createElement('div'); pic.className = 'pic'; pic.style.height = '98px';
+    pic.innerHTML = '<span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 11V2.5M4.5 6 8 2.5 11.5 6M2.5 10.5v3h11v-3"/></svg>Import a look</span>';
+    const nm = document.createElement('span'); nm.className = 'nm'; nm.innerHTML = '<b>&nbsp;</b><small>&nbsp;</small>';
+    b.append(pic, nm); b.addEventListener('click', importLook); b.addEventListener('keydown', e => { if (e.key === 'Enter') importLook(); });
+    return b;
+  }
+  let savedPaint = 0;
+  function renderSaved() {
+    strip.innerHTML = ''; strip.classList.remove('stale'); strip.setAttribute('aria-label', 'Saved looks');
+    if (!lib.list.length) {
+      const p = document.createElement('p'); p.className = 'empty';
+      p.innerHTML = 'Looks you save appear here, in every project' + (libHost ? ', and in Nyans in both Premiere Pro and DaVinci Resolve on this computer' : '') + '. Pick a look and press Save look. <button type="button" class="link" id="importLink">Import a look file</button>';
+      strip.appendChild(p); p.querySelector('#importLink').addEventListener('click', importLook);
+      return;
+    }
+    for (const rec of lib.list) strip.appendChild(savedFrameEl(rec));
+    strip.appendChild(importTile());
+    strip.scrollLeft = 0;
+    paintSaved().catch(e => console.warn(e));
+  }
+  /** each saved look shown on the frame now open (fitted to it, unless As saved is chosen); before a frame is open, as it was saved */
+  async function paintSaved() {
+    if (!state.src || state.busy) return;
+    const seq = ++savedPaint, recs = lib.list.slice();
+    if (fitMode === 'fit') {
+      const key = fitMode + '|' + anKey(), todo = recs.filter(r => { const c = savedCands.get(r.id); return !c || c._key !== key; });
+      if (todo.length) {
+        await ensureAnalysis(); if (seq !== savedPaint) return;
+        const fitted = await fitLooks(todo.map(r => r.look)); if (seq !== savedPaint) return;
+        todo.forEach((r, i) => { const old = savedCands.get(r.id); savedCands.set(r.id, Object.assign(stripLook(fitted[i]), { name: r.name, qual: r.qual || '', id: 'S' + r.id, process: r.process ? E.normProcess(r.process) : null, _saved: r.id, _key: key, _rf: old ? old._rf : Object.assign({}, RF_DEF, r.rf || {}) })); });
+      }
+    }
+    for (const r of recs) {
+      if (seq !== savedPaint || stripView !== 'saved') return;
+      const c = await savedCandidate(r), el = strip.querySelector('.frame[data-id="S' + r.id + '"]'); if (!el) continue;
+      c._el = el;
+      try { await paintThumb(c); el.classList.remove('stored'); } catch (e) { console.warn(e); }
+    }
+  }
+  $('#stripTabs').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    if (stripView === b.dataset.v) return;
+    stripView = b.dataset.v;
+    if (stripView === 'saved' && !lib.loaded) libLoad().then(() => renderStrip(false)).catch(() => renderStrip(false)); else renderStrip(false);
+  }));
+
+  // saving, renaming, exporting, importing, removing
+  const rfVal = (o, k) => { const v = o && o[k] != null ? +o[k] : RF_DEF[k]; return v; };
+  const rfEqual = (a, b) => Object.keys(RF_DEF).every(k => Math.abs(rfVal(a, k) - rfVal(b, k)) < 1e-6);
+  const procKey = p => JSON.stringify(p ? E.normProcess(p) : null);
+  const processFor = t => (t.kind === 'cand' ? (state.cand.process ? E.normProcess(state.cand.process) : E.normProcess(state.process)) : E.normProcess(state.process));
+  function linkedRec(t) { if (!t) return null; const id = t.kind === 'cand' ? state.cand._saved : t.layer.savedId; return id ? libGet(id) : null; }
+  const isDirty = (t, rec) => !rfEqual(t.rf, rec.rf) || procKey(processFor(t)) !== procKey(rec.process || processFor(t));
+  async function thumbData(t) {
+    try {
+      if (!state.src || !gpu) return null;
+      const th = 120, tw = Math.round(th * clamp(state.src.w / state.src.h, 0.6, 2.3)), look = t.kind === 'cand' ? state.cand : Object.assign({}, t.layer.look, { _rf: t.rf, process: state.process });
+      const spec = specFor({ cand: Object.assign(stripLook(look), { _rf: t.rf, process: look.process }), layers: [] }), lut = await lutFor(spec, FAST_N);
+      const px = view.renderTo(tw, th, { dither: 1, lut }), c = document.createElement('canvas'); c.width = tw; c.height = th;
+      c.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(px), tw, th), 0, 0);
+      return c.toDataURL('image/jpeg', 0.82);
+    } catch (e) { console.warn(e); return null; }
+  }
+  async function saveLook() {
+    const t = editTarget(); if (!t) { toast('Pick a look first'); return; }
+    if (!lib.loaded) await libLoad();
+    const rec0 = linkedRec(t);
+    try {
+      if (rec0 && !isDirty(t, rec0)) { startRename(); return; }   // (already saved as it is: the button renames it)
+      if (rec0) {
+        const rec = Object.assign({}, rec0, { rf: Object.assign({}, t.rf), process: processFor(t) });
+        rec.thumb = (await thumbData(t)) || rec0.thumb;
+        await libPut(rec); renderPanel(); if (stripView === 'saved') renderStrip(false);
+        toast('Saved the changes to ' + rec.name); return;
+      }
+      const lk = t.kind === 'cand' ? state.cand : t.layer.look, now = new Date().toISOString();
+      const rec = { v: 1, id: newId(), name: String((t.kind === 'cand' ? lk.name : t.layer.name) || 'Nyans look').replace(/\s+/g, ' ').trim().slice(0, 60), qual: (t.kind === 'cand' ? lk.qual : t.layer.qual) || '',
+        look: stripLook(lk), rf: Object.assign({}, t.rf), process: processFor(t), made: { app: host ? host.name : 'Browser', input: state.input, output: state.output }, created: now, updated: now, thumb: await thumbData(t) };
+      delete rec.look.process; delete rec.look.recipe;   // (the process is kept beside it; the family's working label stays inside Nyans)
+      await libPut(rec);
+      if (t.kind === 'cand') { state.cand._saved = rec.id; if (state.cand._el && !state.cand._el.querySelector('.badge.star')) state.cand._el.querySelector('.pic').appendChild(starBadge()); }
+      else t.layer.savedId = rec.id;
+      renderPanel(); if (stripView === 'saved') renderStrip(false);
+      toast('Saved. Find it under Saved, in every project.');
+      startRename(true);
+    } catch (e) { console.warn(e); toast((e && e.message) || 'Could not save the look'); }
+  }
+  $('#saveBtn').addEventListener('click', saveLook);
+  // renaming: the title becomes a field; Enter or leaving it keeps the name, Escape keeps the old one
+  const nameEdit = $('#lkNameEdit');
+  let renaming = null;
+  function startRename(fresh) {
+    const t = editTarget(), rec = linkedRec(t); if (!rec) return;
+    renaming = rec.id; nameEdit.value = rec.name; $('#lkName').hidden = true; nameEdit.hidden = false;
+    nameEdit.focus(); nameEdit.select();
+    if (fresh) nameEdit.placeholder = 'Name this look';
+  }
+  async function endRename(keep) {
+    if (!renaming) return;
+    const id = renaming, rec = libGet(id), v = nameEdit.value.replace(/\s+/g, ' ').trim().slice(0, 60);
+    renaming = null; nameEdit.hidden = true; $('#lkName').hidden = false;
+    if (keep && rec && v && v !== rec.name) {
+      try { await libPut(Object.assign({}, rec, { name: v })); const c = savedCands.get(id); if (c) c.name = v; if (state.cand && state.cand._saved === id && state.cand.id && state.cand.id[0] === 'S') state.cand.name = v; }
+      catch (e) { toast((e && e.message) || 'Could not rename the look'); }
+      if (stripView === 'saved') renderStrip(false);
+    }
+    renderPanel();
+  }
+  nameEdit.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); endRename(true); } else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); endRename(false); } });
+  nameEdit.addEventListener('blur', () => endRename(true));
+  $('#renameBtn').addEventListener('click', () => startRename());
+  $('#exportLookBtn').addEventListener('click', async () => {
+    const rec = linkedRec(editTarget()); if (!rec) return;
+    const blob = new Blob([JSON.stringify(Object.assign({ nyans: 'look' }, rec))], { type: 'application/json' });
+    await saveBlob(safeName(rec.name || 'Nyans look') + '.nyanslook', blob);
+  });
+  let forgetArmed = 0;
+  $('#forgetBtn').addEventListener('click', async () => {
+    const t = editTarget(), rec = linkedRec(t), b = $('#forgetBtn'); if (!rec) return;
+    if (!forgetArmed) { b.textContent = 'Click again to remove it'; b.classList.add('armed'); forgetArmed = setTimeout(() => { forgetArmed = 0; b.textContent = 'Remove from saved'; b.classList.remove('armed'); }, 3500); return; }
+    clearTimeout(forgetArmed); forgetArmed = 0; b.textContent = 'Remove from saved'; b.classList.remove('armed');
+    try {
+      await libRemove(rec.id);
+      if (state.cand && state.cand._saved === rec.id) delete state.cand._saved;
+      state.layers.forEach(l => { if (l.savedId === rec.id) delete l.savedId; });
+      strip.querySelectorAll('.badge.star').forEach(x => { const f = x.closest('.frame'), lk = f && findLook(f.dataset.id); if (!lk || !lk._saved || !libHas(lk._saved)) x.remove(); });
+      renderPanel(); if (stripView === 'saved') renderStrip(false);
+      toast('Removed ' + rec.name + ' from your saved looks');
+    } catch (e) { toast((e && e.message) || 'Could not remove the look'); }
+  });
+  const findLook = id => { for (const b of state.batches) { const l = b.looks.find(x => x.id === id); if (l) return l; } return null; };
+  // picking a file: the editor's own dialog where it has one (Premiere Pro), else the page's file field
+  function pickWith(input, types) {
+    if (host && typeof host.pickFile === 'function') return host.pickFile(types).catch(e => { toast((e && e.message) || 'Could not open the file'); return null; });
+    return new Promise(res => {
+      const el = $(input); el.value = '';
+      const done = () => { el.removeEventListener('change', done); res(el.files && el.files[0] ? el.files[0] : null); };
+      el.addEventListener('change', done); el.click();
+    });
+  }
+  async function importLook() {
+    const f = await pickWith('#lookIn', ['nyanslook', 'json']); if (!f) return;
+    try {
+      let j; try { j = JSON.parse(await f.text()); } catch (e) { throw new Error('That file is not a Nyans look'); }
+      const items = j && Array.isArray(j.looks) ? j.looks : [j];   // (one look, or a whole saved-looks file)
+      if (!lib.loaded) await libLoad();
+      let n = 0, last = null;
+      for (const it of items) {
+        const r = Object.assign({}, it); delete r.nyans;
+        if (!validRec(r) || !renders(r)) continue;
+        if (libHas(r.id) || typeof r.id !== 'string') r.id = newId();
+        r.v = 1; r.name = String(r.name || r.look.name || 'Imported look').replace(/\s+/g, ' ').trim().slice(0, 60); r.qual = String(r.qual || '');
+        if (r.thumb && !/^data:image\/(jpeg|png|webp);base64,/.test(String(r.thumb))) delete r.thumb;
+        await libPut(r); n++; last = r;
+      }
+      if (!n) throw new Error('That file holds no Nyans look');
+      stripView = 'saved'; renderStrip(false);
+      toast(n === 1 ? 'Imported ' + last.name : 'Imported ' + n + ' looks');
+    } catch (e) { toast((e && e.message) || 'That file is not a Nyans look'); }
+  }
+  // the fit of a saved look: to this frame, or exactly as saved
+  $('#fitSeg').querySelectorAll('button').forEach(b => b.addEventListener('click', async () => {
+    if (fitMode === b.dataset.v) return;
+    fitMode = b.dataset.v; store.set('nyans.fitmode', fitMode);
+    const id = state.cand && state.cand._saved, rec = id && state.cand.id && state.cand.id[0] === 'S' ? libGet(id) : null;
+    if (rec) { const keepRf = state.cand._rf; savedCands.delete(rec.id); const c = await savedCandidate(rec); c._rf = keepRf; selectCandidate(c); }
+    else renderPanel();
+    if (stripView === 'saved') paintSaved().catch(e => console.warn(e));
+    toast(fitMode === 'fit' ? 'Saved looks are fitted to this frame' : 'Saved looks are used exactly as saved');
+  }));
+  libLoad().catch(() => {});
 
   // ------------------------------------------------------------------ selection, layers
   function selectCandidate(lk) {
@@ -3137,7 +3612,9 @@ class Scopes {
     const lk = state.cand; if (!lk) return;
     { const b = state.batches[state.bi]; try { learnTaste(lk, b ? b.looks.filter(x => x !== lk && !x._added) : []); } catch (e) { console.warn(e); } }
     if (state.layers.length >= MAXL - 1) { toast('The stack holds ' + (MAXL - 1) + ' layers. Remove one to add another.'); return; }
-    const layer = { id: 'Y' + (++layerSeq), look: stripLook(lk), rf: Object.assign({}, rfOf(lk)), visible: true, name: lk.name, qual: lk.qual };
+    const rec = lk._saved ? libGet(lk._saved) : null;
+    const layer = { id: 'Y' + (++layerSeq), look: stripLook(lk), rf: Object.assign({}, rfOf(lk)), visible: true, name: rec ? rec.name : lk.name, qual: rec ? rec.qual : lk.qual };
+    if (rec) layer.savedId = rec.id;
     if (lk.process) state.process = E.normProcess(lk.process);
     state.layers.push(layer); lk._added = layer.id;
     if (lk._el && !lk._el.querySelector('.badge')) { const bd = document.createElement('span'); bd.className = 'badge'; bd.textContent = 'Added'; lk._el.querySelector('.pic').appendChild(bd); }
@@ -3207,18 +3684,34 @@ class Scopes {
     ol.appendChild(base);
     const t = $('#layersToggle'); t.hidden = !state.layers.length; t.textContent = state.layers.some(l => l.visible) ? 'Hide all' : 'Show all';
   }
+  /** the Save button (Save look, Saved, Save changes), the saved look's links and Reset follow the look as it is now */
+  function syncSaveState() {
+    const t = editTarget(); if (!t) return;
+    const rec = linkedRec(t), sb = $('#saveBtn'), dirty = rec && isDirty(t, rec);
+    sb.classList.toggle('on', !!rec && !dirty); sb.classList.toggle('dirty', !!dirty);
+    $('#saveLbl').textContent = !rec ? 'Save look' : dirty ? 'Save changes' : 'Saved';
+    sb.title = !rec ? 'Save this look, with its Refine, to use in any project (S)' : dirty ? 'Keep these changes in the saved look (S)' : 'Saved. Click to rename it';
+    $('#savedLine').hidden = !rec;
+    $('#rfReset').disabled = rfEqual(t.rf, RF_DEF);
+  }
   function renderPanel() {
     const t = editTarget(), has = !!t;
     $('#lookEmpty').hidden = has; $('#lookBody').hidden = !has;
+    $('#gLayers').hidden = !state.layers.length;
     if (has) {
-      const lk = t.look, isCand = t.kind === 'cand';
-      $('#lkKind').textContent = isCand ? 'Preview' : 'Layer ' + (state.layers.indexOf(t.layer) + 1);
+      const lk = t.look, isCand = t.kind === 'cand', rec = linkedRec(t), fromSaved = isCand && !!lk._saved && lk.id && lk.id[0] === 'S';
+      const kind = $('#lkKind'); kind.textContent = isCand ? (rec ? 'Saved look' : 'Preview') : 'Layer ' + (state.layers.indexOf(t.layer) + 1) + (rec ? ' · saved' : ''); kind.classList.toggle('saved-kick', !!rec);
       $('#lkProc').textContent = procLabel(isCand ? effProcess() : state.process);
-      $('#lkName').textContent = isCand ? lk.name : t.layer.name; $('#lkQual').textContent = (isCand ? lk.qual : t.layer.qual) || '';
+      if (!renaming) $('#lkName').textContent = rec ? rec.name : isCand ? lk.name : t.layer.name;
+      $('#lkQual').textContent = (rec ? rec.qual : isCand ? lk.qual : t.layer.qual) || '';
       renderSpec(lk, t.rf, effProcess());
       $('#addBtn').hidden = !isCand; $('#varBtn').hidden = !isCand; $('#removeBtn').hidden = isCand;
+      // a saved look met on another frame: fitted to it, or as saved
+      $('#fitRow').hidden = !(fromSaved && state.src);
+      $('#fitSeg').querySelectorAll('button').forEach(b => b.setAttribute('aria-checked', b.dataset.v === fitMode ? 'true' : 'false'));
       const a = Math.round((t.rf.intensity == null ? 1 : t.rf.intensity) * 100); $('#amt').value = a; $('#amtOut').textContent = a + '%';
       syncers.forEach(s => s());
+      syncSaveState();
     }
     renderLayers(); syncProcess(); syncApply();
   }
@@ -3239,6 +3732,7 @@ class Scopes {
   function onRefine() {
     applyChain(); scheduleSpec();
     clearTimeout(refineT);
+    syncSaveState();
     refineT = setTimeout(() => { const t = editTarget(); if (!t) return; if (t.kind === 'cand') paintThumb(state.cand).catch(e => console.warn(e)); renderLayers(); }, 350);
   }
   RF.forEach(d => {
@@ -3264,7 +3758,7 @@ class Scopes {
   function editProcess(fn) {
     const p = E.normProcess(effProcess()); fn(p);
     if (procOwnedByPreview()) state.cand.process = p; else { state.process = p; state.processTouched = true; }
-    applyChain(); syncProcess(); scheduleSpec();
+    applyChain(); syncProcess(); scheduleSpec(); syncSaveState();
     if (state.sel && state.sel.kind === 'cand') $('#lkProc').textContent = procLabel(p);
   }
   function syncProcess() {
@@ -3488,7 +3982,7 @@ class Scopes {
   // ------------------------------------------------------------------ host: inside Premiere Pro or DaVinci Resolve
   // The plugin shells provide window.NyansHost before this script runs: it reads the frame under the playhead and applies the baked grade
   // (the whole chain as a 65-point LUT, which carries all of it: every stage is colour, per pixel) to the timeline.
-  let applying = false;
+  let applying = false, applyDoneT = 0;
   function toBlob(d, type) {
     if (d instanceof Blob) return d;
     if (typeof d === 'string') {
@@ -3522,6 +4016,7 @@ class Scopes {
       status('Applying in ' + host.name);
       const r = await host.applyLook({ name: file, title: 'Nyans ' + name, cube, size: 65, target: $('#applyTo').value || null, input: state.input, output: state.output, spec });
       status(''); toast(r && r.message ? r.message : 'Applied in ' + host.name); $('#applyNote').textContent = (r && r.note) || '';
+      { const btn = $('#applyBtn'); btn.classList.remove('done'); void btn.offsetWidth; btn.classList.add('done'); $('#applyLbl').textContent = 'Applied'; clearTimeout(applyDoneT); applyDoneT = setTimeout(() => { btn.classList.remove('done'); $('#applyLbl').textContent = host.applyLabel || 'Apply to clip'; }, 1900); }
     } catch (e) { status(''); $('#applyNote').textContent = ''; toast((e && e.message) || 'Could not apply the grade'); console.warn(e); }
     finally { applying = false; syncApply(); }
   }
@@ -3529,12 +4024,12 @@ class Scopes {
   function syncApply() { if (host) $('#applyBtn').disabled = applying || !state.src || (!state.cand && !visibleLayers().length); }
   if (host) {
     document.documentElement.classList.add('hosted');
-    $('#hostTag').hidden = false; $('#hostTag').textContent = host.name;
+    $('#hostTag').hidden = false; $('#hostName').textContent = host.name; $('#hostTag').classList.add('idle');
     $('#grabBtn').hidden = false; $('#applyRow').hidden = false;
     $('#applyLbl').textContent = host.applyLabel || 'Apply to clip';
     $('#esTitle').textContent = 'Grab the frame under your playhead';
     $('#esText').textContent = 'Nyans reads the frame ' + host.name + ' shows at the playhead, composes looks for it and applies the one you pick to your timeline. You can also open a still or a clip.';
-    $('#emptyOpen').textContent = 'Grab frame';
+    emptyLabel = 'Grab frame'; $('#emptyOpenT').textContent = emptyLabel;
     const T = host.targets || [], sel = $('#applyTo');
     for (const t of T) { const o = document.createElement('option'); o.value = t.id; o.textContent = t.label; sel.appendChild(o); }
     $('#applyToWrap').hidden = T.length < 2;
@@ -3544,7 +4039,11 @@ class Scopes {
     if (host.defaults && host.defaults.output && !savedOutput && E.outputList().some(o => o.id === host.defaults.output)) { state.output = host.defaults.output; outSel.value = state.output; view.setColorSpace(isP3()); }
     $('#grabBtn').addEventListener('click', grabFrame);
     $('#applyBtn').addEventListener('click', applyToHost);
-    if (typeof host.onStatus === 'function') host.onStatus(t => { $('#hostTag').textContent = t ? host.name + '  ·  ' + t : host.name; });
+    if (typeof host.onStatus === 'function') host.onStatus(t => {
+      const clip = String(t || '').replace(/\s+/g, ' ').trim(), tag = $('#hostTag');
+      if ($('#hostClip').textContent !== clip) $('#hostClip').textContent = clip;
+      tag.classList.toggle('idle', !clip); tag.title = host.name + (clip ? ' · ' + clip : ': not connected to a timeline yet');
+    });
     if (host.autoGrab) setTimeout(() => { if (!state.src) grabFrame(); }, 350);   // (a shell opened from a clip starts on that clip's frame)
   }
 
@@ -3563,6 +4062,7 @@ class Scopes {
     const k = e.key.toLowerCase(), batch = state.batches[state.bi], list = batch ? batch.looks : [];
     if (k === 'g') { runGenerate(); e.preventDefault(); }
     else if (k === 'a') addCandidate();
+    else if (k === 's') { if (editTarget()) saveLook(); }
     else if (k === 'v') runVariations();
     else if (k === 'b') { if (state.src) setBypass(!state.bypass); }
     else if (k === 'e') { openMenu($('#exportBtn')); e.preventDefault(); }
@@ -3577,9 +4077,10 @@ class Scopes {
   });
 
   // ------------------------------------------------------------------ boot: an empty viewer until a still or a clip is opened
-  applyChain(); renderPanel(); scopes.draw(null, 0, 0);
+  applyChain(); renderPanel(); scopes.draw(null, 0, 0); fitBar();
   if (!gpu) toast('WebGL2 is unavailable, so the preview runs on the CPU at reduced size');
-  window.__nyans = { state, E, view, scopes, openFile, runGenerate, addCandidate, selectCandidate, setBypass, applyChain, exportLUT, specFor, specKey, bakeLUT, ensureFine, workers: () => alive().length, searchScale, grabFrame, applyToHost, host };
+  window.__nyans = { state, E, view, scopes, openFile, runGenerate, addCandidate, selectCandidate, setBypass, applyChain, exportLUT, specFor, specKey, bakeLUT, ensureFine, workers: () => alive().length, searchScale, grabFrame, applyToHost, host,
+    lib, libLoad, saveLook, useSaved, importLook, savedCandidate, fitBar: () => fitBar(), showStrip: v => { stripView = v; renderStrip(false); }, fitMode: () => fitMode };
 })();
 
 </script>
@@ -3952,7 +4453,10 @@ class Scopes {
     const n = daysLeft(), lic = licensed();
     chip.hidden = !!lic;
     chip.classList.toggle('ended', !lic && n <= 0);
-    chip.textContent = n <= 0 ? 'Trial ended' : 'Trial · ' + (n === 1 ? '1 day left' : n + ' days left');
+    // (two wordings: the bar shows the short one when it is tight)
+    chip.textContent = '';
+    chip.appendChild(el('span', { class: 'l', text: n <= 0 ? 'Trial ended' : 'Trial · ' + (n === 1 ? '1 day left' : n + ' days left') }));
+    chip.appendChild(el('span', { class: 's', text: n <= 0 ? 'Trial ended' : (n === 1 ? '1 day' : n + ' days') }));
     chip.title = n <= 0 ? 'Add a licence to export' + (host ? ' and apply looks' : '') : 'Your free trial: add a licence any time';
     const sh = $('#aboutScrim .sheet');
     if (sh) {
