@@ -28,7 +28,11 @@
   /* the platform's own interface face (San Francisco on a Mac and iPhone, Segoe UI on Windows): free to use and never shipped in the file */
   --f-ui: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --w-light: 300;
-  --sun: #FCCD73;
+  --accent: #6CD9CF;          /* the one accent: Apply, a saved look, the trial's end. Blue-green, between the brand's cyan and green */
+  --accent-hi: #88E6DE;
+  --accent-ink: #052825;
+  --accent-soft: rgba(108, 217, 207, 0.11);
+  --accent-line: rgba(108, 217, 207, 0.42);
   --t-xs: 11px; --t-s: 12.5px; --t-m: 14px; --t-l: 17px;
   --r-s: 5px; --r-m: 9px;
   --panel-w: 340px;
@@ -219,14 +223,46 @@ input[type=range]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px va
 .actions .btn[hidden] { display: none; }
 .apply { flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 12px 16px 14px; padding-right: max(16px, env(safe-area-inset-right, 0px)); border-top: 1px solid var(--hair); background: var(--panel); }
 .apply[hidden] { display: none; }
-.apply-btn { flex: 1 1 200px; height: 36px; background: var(--sun); color: #16110a; border-color: var(--sun); font-weight: 600; }
-.apply-btn:hover { background: #ffd98c; }
+.apply-btn { flex: 1 1 200px; height: 36px; background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; transition: background .15s, border-color .15s, box-shadow .2s; }
+.apply-btn:hover { background: var(--accent-hi); border-color: var(--accent-hi); box-shadow: 0 0 0 4px var(--accent-soft); }
 .apply-btn[disabled] { opacity: 0.45; }
 .apply-to { display: flex; align-items: center; gap: 10px; flex: 1 1 200px; min-width: 0; font-size: var(--t-s); color: var(--ink-2); white-space: nowrap; }
 .apply-to .select { flex: 1; min-width: 0; }
 .apply-to[hidden] { display: none; }
 .apply .pnote { flex: 1 0 100%; }
 .apply .pnote:empty { display: none; }
+/* the last step an editor leaves to you, as numbered steps with the file to pick */
+.guide { flex: 1 0 100%; order: -1; min-width: 0; max-width: 100%; box-sizing: border-box; padding: 12px 12px 12px 14px; border-radius: var(--r-m); border: 1px solid var(--accent-line); background: linear-gradient(180deg, rgba(108, 217, 207, 0.08), rgba(108, 217, 207, 0.025)); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.32); }
+.guide[hidden] { display: none; }
+.guide.in { animation: rise .32s var(--ease); }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.guide-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.guide-top b { font-size: var(--t-m); font-weight: 600; color: var(--ink); letter-spacing: -0.005em; }
+.guide-x { flex: none; width: 22px; height: 22px; margin: -3px -4px 0 0; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--ink-3); display: grid; place-items: center; cursor: pointer; }
+.guide-x:hover { color: var(--ink); background: rgba(255, 255, 255, 0.06); }
+.guide-x svg { width: 12px; height: 12px; }
+.guide-why { margin: 3px 0 0; font-size: var(--t-xs); color: var(--ink-2); line-height: 1.5; }
+.guide-steps { margin: 10px 0 0; padding: 0; list-style: none; counter-reset: g; display: flex; flex-direction: column; gap: 7px; }
+.guide-steps li { counter-increment: g; display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 9px; align-items: start; font-size: var(--t-s); color: var(--ink); line-height: 1.45; }
+.guide-steps li::before { content: counter(g); width: 18px; height: 18px; margin-top: 0.5px; border-radius: 50%; display: grid; place-items: center; font-size: 10.5px; font-weight: 650; color: var(--accent-ink); background: var(--accent); }
+.guide-file { display: flex; align-items: center; gap: 8px; margin-top: 11px; min-width: 0; }
+.guide-name { flex: 1; min-width: 0; padding: 6px 9px; border-radius: 6px; border: 1px solid var(--hair); background: rgba(0, 0, 0, 0.32); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.btn.guide-copy { flex: none; height: 28px; padding: 0 11px; font-size: var(--t-xs); }
+.btn.guide-copy.on { color: var(--accent); border-color: var(--accent-line); }
+.guide-after { margin: 8px 0 0; font-size: var(--t-xs); color: var(--ink-3); line-height: 1.45; }
+.guide-after:empty { display: none; }
+@media (prefers-reduced-motion: reduce) { .guide.in { animation: none; } }
+/* diagnostics (Alt+Shift+D) */
+.diag { position: fixed; z-index: 80; inset: 24px; display: flex; flex-direction: column; border-radius: 12px; border: 1px solid var(--hair-2); background: rgba(16, 16, 16, 0.97); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6); }
+.diag[hidden] { display: none; }
+.diag-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--hair); font-size: var(--t-s); }
+.diag-top span { display: flex; gap: 6px; }
+.diag pre { margin: 0; padding: 10px 12px; overflow: auto; font: 11px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--ink-2); white-space: pre-wrap; word-break: break-all; user-select: text; }
+.diag .diag-sum { flex: none; color: var(--ink); font-size: 12px; border-bottom: 1px solid var(--hair); }
+.diag .diag-all { flex: 1; }
+.diag-modes { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 12px 0; }
+.diag-modes .btn { height: 24px; padding: 0 8px; font-size: 11px; }
+.diag-modes .btn.on { color: var(--accent); border-color: var(--accent-line); }
 .ctl { display: grid; grid-template-columns: 80px minmax(0, 1fr) 46px; align-items: center; gap: 10px; min-height: 30px; }
 .ctl label, .ctl .clbl, .clbl { font-size: var(--t-s); color: var(--ink-2); white-space: nowrap; }
 .ctl output { font-size: var(--t-xs); color: var(--ink-3); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
@@ -329,8 +365,7 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 .strip { -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); }
 .frame .pic { display: grid; place-items: center; background: #0b0b0b; }
 .frame canvas { max-width: 100%; }
-.frame .badge.star { left: auto; right: 6px; top: 6px; padding: 2px 5px; background: rgba(14, 14, 14, 0.72); color: var(--sun); border: 1px solid rgba(252, 205, 115, 0.35); backdrop-filter: blur(6px); line-height: 1; }
-.frame .badge.star svg { width: 10px; height: 10px; display: block; }
+.frame .badge.saved-dot { left: auto; right: 7px; top: 7px; width: 8px; height: 8px; padding: 0; border-radius: 50%; background: var(--accent); border: 0; box-shadow: 0 0 0 2px rgba(10, 10, 10, 0.7); }
 .frame.saved-frame .pic { outline-offset: 2px; }
 .frame.saved-frame.stored canvas { opacity: 0.55; filter: saturate(0.6); }
 .frame.tile { flex: 0 0 auto; width: 132px; cursor: pointer; }
@@ -344,14 +379,13 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 .name-edit { display: block; width: 100%; margin: 0; padding: 0 0 2px; border: 0; border-bottom: 1px solid var(--hair-2); border-radius: 0; background: transparent; color: var(--ink); font: inherit; font-size: 30px; font-weight: var(--w-light); line-height: 1.05; letter-spacing: -0.02em; outline: none; }
 .name-edit:focus { border-bottom-color: var(--ink-2); }
 .name-edit[hidden] { display: none; }
-.kick .saved-kick { color: var(--sun); }
+.kick .saved-kick { color: var(--accent); }
 .fit-row { margin-top: 12px; }
 .fit-row[hidden] { display: none; }
 .fit-row .seg button { padding: 4px 11px; }
-#saveBtn svg { width: 14px; height: 14px; }
-#saveBtn.on { color: var(--sun); border-color: rgba(252, 205, 115, 0.4); }
-#saveBtn.on svg { fill: currentColor; }
-#saveBtn.dirty { color: var(--ink); border-color: rgba(252, 205, 115, 0.55); }
+#saveBtn { transition: color .2s, border-color .2s, background .2s; }
+#saveBtn.on { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); }
+#saveBtn.dirty { color: var(--ink); border-color: var(--accent-line); }
 .saved-line { display: flex; flex-wrap: wrap; gap: 2px 12px; margin: 10px 0 0; }
 .saved-line[hidden] { display: none; }
 .saved-line .link { padding: 2px 0; font-size: var(--t-xs); color: var(--ink-3); }
@@ -366,13 +400,13 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 .details .spec { margin-top: 4px; padding-top: 0; border-top: 0; }
 .apply-btn[disabled] { opacity: 1; background: var(--raised); border-color: var(--hair-2); color: var(--ink-3); }
 .lic-chip .s { display: none; }
-/* small confirmations: the Apply button says it was done, the star of a look just saved fills with a little lift */
+/* small confirmations: the Apply button says it was done, a look just saved settles into its accent */
 .apply-btn svg path { stroke-dasharray: 16; stroke-dashoffset: 0; }
 .apply-btn.done svg path { animation: tick .45s var(--ease) both; }
 @keyframes tick { from { stroke-dashoffset: 16; } to { stroke-dashoffset: 0; } }
-#saveBtn.on svg { animation: pop .38s var(--ease); }
-@keyframes pop { 0% { transform: scale(.6); } 60% { transform: scale(1.18); } 100% { transform: scale(1); } }
-@media (prefers-reduced-motion: reduce) { .apply-btn.done svg path, #saveBtn.on svg { animation: none; } }
+#saveBtn.just { animation: settle .5s var(--ease); }
+@keyframes settle { 0% { box-shadow: 0 0 0 0 rgba(108, 217, 207, 0.45); } 100% { box-shadow: 0 0 0 7px rgba(108, 217, 207, 0); } }
+@media (prefers-reduced-motion: reduce) { .apply-btn.done svg path, #saveBtn.just { animation: none; } }
 .strip { scroll-padding-inline: 28px; }   /* (a picked look scrolled into view stays clear of the strip's faded edges) */
 .frame { transition: transform .2s var(--ease); }
 .frame:hover { transform: translateY(-1px); }
@@ -425,6 +459,8 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
   .tabs button { padding: 4px 8px; }
 }
 @media (max-width: 520px) { .bar .field > span { display: none; } .bar .lic-chip .l { display: none; } .bar .lic-chip .s { display: inline; } }
+/* the narrowest panels (a Premiere panel goes down to 360 px): the first row keeps the brand, the actions, the trial and help on one line */
+@media (max-width: 420px) { .bar { column-gap: 6px; } .brand svg { height: 25px; } .bar .acts { gap: 4px; } .bar .acts .btn { width: 32px; } .bar .lic-chip { padding: 0 9px; } }
 @media (prefers-reduced-motion: reduce) {
   .gen .ring i, .gen .glow, .es-mark::before, .sweep .beam { animation: none !important; }
   .frame.develop .pic canvas { animation: none; }
@@ -560,7 +596,7 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3.5v9M3.5 8h9"/></svg>Add as layer
             </button>
             <button class="btn" id="saveBtn" title="Save this look, with its Refine, to use in any project (S)">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M8 2.2l1.75 3.6 3.95.55-2.87 2.76.7 3.92L8 11.17l-3.53 1.86.7-3.92L2.3 6.35l3.95-.55z"/></svg><span id="saveLbl">Save look</span>
+              <span id="saveLbl">Save look</span>
             </button>
             <button class="btn" id="varBtn" title="More like this (V)">Variations</button>
             <button class="btn" id="removeBtn" hidden>Remove layer</button>
@@ -616,6 +652,13 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 
     </div>
     <div class="apply" id="applyRow" hidden>
+      <div class="guide" id="applyGuide" role="status" hidden>
+        <div class="guide-top"><b id="guideTitle"></b><button type="button" class="guide-x" id="guideClose" aria-label="Close these steps"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>
+        <p class="guide-why" id="guideWhy"></p>
+        <ol class="guide-steps" id="guideSteps"></ol>
+        <div class="guide-file"><span class="guide-name" id="guideFile"></span><button type="button" class="btn guide-copy" id="guideCopy">Copy location</button></div>
+        <p class="guide-after" id="guideAfter"></p>
+      </div>
       <label class="apply-to" id="applyToWrap" hidden><span>Apply to</span><select class="select" id="applyTo" aria-label="Apply the grade to"></select></label>
       <button class="btn apply-btn" id="applyBtn" title="Apply the whole grade to your timeline (Enter)" disabled>
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8.5 6.4 12 13 4.5"/></svg><span id="applyLbl">Apply to clip</span>
@@ -3272,7 +3315,7 @@ class Scopes {
     const c = document.createElement('canvas'); pic.appendChild(c);
     if (develop && !reduceMotion) c.style.animationDelay = (i * 50) + 'ms';
     if (lk._added) { const bd = document.createElement('span'); bd.className = 'badge'; bd.textContent = 'Added'; pic.appendChild(bd); }
-    if (lk._saved && libHas(lk._saved)) pic.appendChild(starBadge());
+    if (lk._saved && libHas(lk._saved)) pic.appendChild(savedDot());
     const nm = document.createElement('span'); nm.className = 'nm';
     const t1 = document.createElement('b'); t1.textContent = lk.name; const t2 = document.createElement('small'); t2.textContent = lk.qual || ' ';
     nm.append(t1, t2); b.append(pic, nm);
@@ -3355,8 +3398,7 @@ class Scopes {
   // (another editor, or another window, may have changed the file: it is read again whenever Nyans comes back to the front)
   window.addEventListener('focus', () => { if (lib.loaded) libLoad().then(() => { if (stripView === 'saved') renderStrip(false); renderPanel(); }).catch(() => {}); });
 
-  const STAR = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 2.2l1.75 3.6 3.95.55-2.87 2.76.7 3.92L8 11.17l-3.53 1.86.7-3.92L2.3 6.35l3.95-.55z"/></svg>';
-  function starBadge() { const s = document.createElement('span'); s.className = 'badge star'; s.title = 'Saved'; s.innerHTML = STAR; return s; }
+  function savedDot() { const s = document.createElement('span'); s.className = 'badge saved-dot'; s.title = 'Saved'; return s; }
 
   // the analysis a saved look is fitted to: the frame on screen, under the layers that are showing
   let analyzedKey = null, fitMode = store.get('nyans.fitmode') === 'exact' ? 'exact' : 'fit';
@@ -3491,9 +3533,10 @@ class Scopes {
         look: stripLook(lk), rf: Object.assign({}, t.rf), process: processFor(t), made: { app: host ? host.name : 'Browser', input: state.input, output: state.output }, created: now, updated: now, thumb: await thumbData(t) };
       delete rec.look.process; delete rec.look.recipe;   // (the process is kept beside it; the family's working label stays inside Nyans)
       await libPut(rec);
-      if (t.kind === 'cand') { state.cand._saved = rec.id; if (state.cand._el && !state.cand._el.querySelector('.badge.star')) state.cand._el.querySelector('.pic').appendChild(starBadge()); }
+      if (t.kind === 'cand') { state.cand._saved = rec.id; if (state.cand._el && !state.cand._el.querySelector('.badge.saved-dot')) state.cand._el.querySelector('.pic').appendChild(savedDot()); }
       else t.layer.savedId = rec.id;
       renderPanel(); if (stripView === 'saved') renderStrip(false);
+      { const sb = $('#saveBtn'); sb.classList.remove('just'); void sb.offsetWidth; sb.classList.add('just'); setTimeout(() => sb.classList.remove('just'), 600); }
       toast('Saved. Find it under Saved, in every project.');
       startRename(true);
     } catch (e) { console.warn(e); toast((e && e.message) || 'Could not save the look'); }
@@ -3536,7 +3579,7 @@ class Scopes {
       await libRemove(rec.id);
       if (state.cand && state.cand._saved === rec.id) delete state.cand._saved;
       state.layers.forEach(l => { if (l.savedId === rec.id) delete l.savedId; });
-      strip.querySelectorAll('.badge.star').forEach(x => { const f = x.closest('.frame'), lk = f && findLook(f.dataset.id); if (!lk || !lk._saved || !libHas(lk._saved)) x.remove(); });
+      strip.querySelectorAll('.badge.saved-dot').forEach(x => { const f = x.closest('.frame'), lk = f && findLook(f.dataset.id); if (!lk || !lk._saved || !libHas(lk._saved)) x.remove(); });
       renderPanel(); if (stripView === 'saved') renderStrip(false);
       toast('Removed ' + rec.name + ' from your saved looks');
     } catch (e) { toast((e && e.message) || 'Could not remove the look'); }
@@ -4015,10 +4058,36 @@ class Scopes {
       const file = safeName('Nyans ' + name) + ' ' + (h >>> 0).toString(16).padStart(8, '0').slice(0, 6);
       status('Applying in ' + host.name);
       const r = await host.applyLook({ name: file, title: 'Nyans ' + name, cube, size: 65, target: $('#applyTo').value || null, input: state.input, output: state.output, spec });
-      status(''); toast(r && r.message ? r.message : 'Applied in ' + host.name); $('#applyNote').textContent = (r && r.note) || '';
-      { const btn = $('#applyBtn'); btn.classList.remove('done'); void btn.offsetWidth; btn.classList.add('done'); $('#applyLbl').textContent = 'Applied'; clearTimeout(applyDoneT); applyDoneT = setTimeout(() => { btn.classList.remove('done'); $('#applyLbl').textContent = host.applyLabel || 'Apply to clip'; }, 1900); }
+      status(''); toast(r && r.message ? r.message : 'Applied in ' + host.name);
+      if (r && r.pending && r.guide) { $('#applyNote').textContent = ''; showGuide(r.guide); }   // (the editor needs one step of yours: shown as steps, with the file)
+      else {
+        hideGuide(); $('#applyNote').textContent = (r && r.note) || '';
+        const btn = $('#applyBtn'); btn.classList.remove('done'); void btn.offsetWidth; btn.classList.add('done'); $('#applyLbl').textContent = 'Applied'; clearTimeout(applyDoneT); applyDoneT = setTimeout(() => { btn.classList.remove('done'); $('#applyLbl').textContent = host.applyLabel || 'Apply to clip'; }, 1900);
+      }
     } catch (e) { status(''); $('#applyNote').textContent = ''; toast((e && e.message) || 'Could not apply the grade'); console.warn(e); }
     finally { applying = false; syncApply(); }
+  }
+  /** the last step an editor leaves to you (Premiere: Lumetri's Look, which plugins cannot set), as numbered steps with the file to pick */
+  let guidePath = '';
+  function showGuide(g) {
+    const el = $('#applyGuide'); if (!el) return;
+    $('#guideTitle').textContent = g.title || 'One step left';
+    $('#guideWhy').textContent = g.why || '';
+    const ol = $('#guideSteps'); ol.innerHTML = ''; for (const t of g.steps || []) { const li = document.createElement('li'); li.textContent = t; ol.appendChild(li); }
+    guidePath = g.path || '';
+    const nm = $('#guideFile'); nm.textContent = g.file || guidePath.split(/[\\/]/).pop(); nm.title = guidePath;
+    $('#guideCopy').textContent = g.copied ? 'Copied' : 'Copy location'; $('#guideCopy').classList.toggle('on', !!g.copied);
+    $('#guideAfter').textContent = g.after || '';
+    el.hidden = false; el.classList.remove('in'); void el.offsetWidth; el.classList.add('in');
+  }
+  function hideGuide() { const el = $('#applyGuide'); if (el) el.hidden = true; }
+  async function copyText(t) {
+    try { if (host && typeof host.copyText === 'function' && (await host.copyText(t))) return true; } catch (e) { /* the page's own clipboard */ }
+    try { await navigator.clipboard.writeText(t); return true; } catch (e) { return false; }
+  }
+  if ($('#applyGuide')) {
+    $('#guideClose').addEventListener('click', hideGuide);
+    $('#guideCopy').addEventListener('click', async () => { const ok = await copyText(guidePath); $('#guideCopy').textContent = ok ? 'Copied' : 'Copy location'; $('#guideCopy').classList.toggle('on', ok); toast(ok ? 'The LUT\'s location is on your clipboard' : guidePath); });
   }
   /** the Apply button (a footer of the panel, always in view) waits for a frame and a look or a visible layer */
   function syncApply() { if (host) $('#applyBtn').disabled = applying || !state.src || (!state.cand && !visibleLayers().length); }
@@ -4045,7 +4114,36 @@ class Scopes {
       tag.classList.toggle('idle', !clip); tag.title = host.name + (clip ? ' · ' + clip : ': not connected to a timeline yet');
     });
     if (host.autoGrab) setTimeout(() => { if (!state.src) grabFrame(); }, 350);   // (a shell opened from a clip starts on that clip's frame)
+    if (typeof host.onRestart === 'function') host.onRestart(why => toast(why === 'menu' ? 'Nyans reloaded. Grab the frame to go on.' : 'Nyans reopened in this panel. Grab the frame to go on.'));
   }
+
+  // ------------------------------------------------------------------ diagnostics (Alt+Shift+D): what the window measures, and what the
+  // editor's panel reports (its sizes, its last lines, what it found in Lumetri), to read or copy for support
+  async function showDiag() {
+    let panel = null; try { panel = host && typeof host.diagnostics === 'function' ? await host.diagnostics() : null; } catch (e) { panel = { error: (e && e.message) || String(e) }; }
+    const de = document.documentElement, app = { host: host ? host.name : 'browser', inner: [window.innerWidth, window.innerHeight], client: [de.clientWidth, de.clientHeight], scroll: [de.scrollWidth, de.scrollHeight, window.scrollX, window.scrollY], dpr: window.devicePixelRatio, bar: ($('#bar') || {}).className || '', ua: navigator.userAgent };
+    let el = $('#diag');
+    if (!el) {
+      el = document.createElement('div'); el.id = 'diag'; el.className = 'diag';
+      el.innerHTML = '<div class="diag-top"><b>Nyans diagnostics</b><span><button type="button" class="btn" data-x="refresh">Refresh</button><button type="button" class="btn" data-x="copy">Copy</button><button type="button" class="btn" data-x="close">Close</button></span></div><div class="diag-modes"></div><pre class="diag-sum"></pre><pre class="diag-all"></pre>';
+      el.addEventListener('click', async e => {
+        const b = e.target.closest('button'); if (!b) return;
+        if (b.dataset.x === 'close') el.hidden = true;
+        else if (b.dataset.x === 'refresh') showDiag();
+        else if (b.dataset.mode) { try { await host.setSizing(b.dataset.mode); } catch (err) { toast(err.message); } setTimeout(showDiag, 400); }
+        else toast((await copyText(el.querySelector('.diag-sum').textContent + '\n' + el.querySelector('.diag-all').textContent)) ? 'Diagnostics copied' : 'Select the text to copy it');
+      });
+      document.body.appendChild(el);
+    }
+    // (the panel's measures one per line, so they read at a glance; the whole record below)
+    const sz = panel && panel.sizes, line = (k, r) => k.padEnd(11) + (r ? r.w + ' x ' + r.h + (r.x || r.y ? '  at ' + r.x + ',' + r.y : '') : '-');
+    el.querySelector('.diag-sum').textContent = sz ? ['mode ' + sz.mode + (sz.pinned ? ' (pinned)' : '') + '   WebView style ' + sz.style + '   dpr ' + sz.dpr, 'app inner  ' + app.inner.join(' x ') + '   client ' + app.client.join(' x ') + '   scroll ' + app.scroll.join(', ')].concat(['web', 'inner', 'outer', 'docClient', 'bodyClient', 'html', 'body', 'abs', 'fixed', 'vp'].map(k => line(k, sz[k]))).join('\n') : '';
+    const mb = el.querySelector('.diag-modes'); mb.innerHTML = '';
+    if (host && typeof host.setSizing === 'function' && panel && panel.modes) for (const m of panel.modes) { const b = document.createElement('button'); b.type = 'button'; b.className = 'btn' + (sz && sz.mode === m ? ' on' : ''); b.dataset.mode = m; b.textContent = m; mb.appendChild(b); }
+    el.querySelector('.diag-all').textContent = JSON.stringify({ app, panel }, null, 1);
+    el.hidden = false;
+  }
+  { const br = document.querySelector('.brand'); if (br) br.addEventListener('click', e => { if (e.detail === 3) showDiag(); }); }   // (three clicks on the logo, where a key cannot reach)
 
   // ------------------------------------------------------------------ about
   $('#aboutStats').innerHTML = [['10', 'different looks in every press, from 16 archetypes in 13 families'], ['7', 'negative stocks modelled from published characteristic data'], ['36', 'wavelengths integrated for every pixel of the print'], ['0.5', 'mean Delta E of the print model against its reference measurements']].map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join('');
@@ -4057,7 +4155,8 @@ class Scopes {
   // ------------------------------------------------------------------ keyboard
   window.addEventListener('keydown', e => {
     if (e.target.matches('input[type=text], textarea, select')) return;
-    if (e.key === 'Escape') { if (!menu.hidden || !aboutScrim.hidden) { menu.hidden = true; aboutScrim.hidden = true; } else if (state.bypass) setBypass(false); else if (state.cand) discardPreview(); return; }
+    if (e.key === 'Escape') { const dg = $('#diag'); if (dg && !dg.hidden) { dg.hidden = true; return; } if (!menu.hidden || !aboutScrim.hidden) { menu.hidden = true; aboutScrim.hidden = true; } else if (state.bypass) setBypass(false); else if (state.cand) discardPreview(); return; }
+    if (e.altKey && e.shiftKey && e.code === 'KeyD') { showDiag(); e.preventDefault(); return; }
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const k = e.key.toLowerCase(), batch = state.batches[state.bi], list = batch ? batch.looks : [];
     if (k === 'g') { runGenerate(); e.preventDefault(); }
@@ -4080,7 +4179,7 @@ class Scopes {
   applyChain(); renderPanel(); scopes.draw(null, 0, 0); fitBar();
   if (!gpu) toast('WebGL2 is unavailable, so the preview runs on the CPU at reduced size');
   window.__nyans = { state, E, view, scopes, openFile, runGenerate, addCandidate, selectCandidate, setBypass, applyChain, exportLUT, specFor, specKey, bakeLUT, ensureFine, workers: () => alive().length, searchScale, grabFrame, applyToHost, host,
-    lib, libLoad, saveLook, useSaved, importLook, savedCandidate, fitBar: () => fitBar(), showStrip: v => { stripView = v; renderStrip(false); }, fitMode: () => fitMode };
+    lib, libLoad, saveLook, useSaved, importLook, savedCandidate, fitBar: () => fitBar(), showStrip: v => { stripView = v; renderStrip(false); }, fitMode: () => fitMode, showDiag, showGuide, hideGuide };
 })();
 
 </script>
@@ -4328,7 +4427,7 @@ class Scopes {
 .lic-chip { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 11px; border-radius: 999px; border: 1px solid var(--hair-2, rgba(255,255,255,.16)); background: transparent; color: var(--ink-2, #bdbdbd); font: inherit; font-size: var(--t-xs, 12px); white-space: nowrap; cursor: pointer; transition: color .15s, border-color .15s, background .15s; }
 .lic-chip:hover { color: var(--ink, #f2f2f2); border-color: rgba(255,255,255,.34); }
 .lic-chip[hidden] { display: none; }
-.lic-chip.ended { color: #16110a; background: var(--sun, #f5c66e); border-color: var(--sun, #f5c66e); font-weight: 600; }
+.lic-chip.ended { color: var(--accent-ink, #052825); background: var(--accent, #6CD9CF); border-color: var(--accent, #6CD9CF); font-weight: 600; }
 .lic-sheet .lic-buy { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
 .lic-sheet .lic-buy .btn { flex: none; width: auto; margin: 0; height: 36px; padding: 0 18px; }
 .lic-sheet .lic-addr { font-size: var(--t-s, 13px); color: var(--ink-2, #bdbdbd); user-select: text; -webkit-user-select: text; }

@@ -1,1 +1,1 @@
-15845a2f1c3529c78dcdb2e82e9a1aa13cbe6f701cd815ddeb4cd746cd732a25  Nyans-plugins-1.3.0.zip
+5f416a1cfec61489c68485d75de5aa88c0eee6469fedc4448f04b294b27818d1  Nyans-plugins-1.3.6.zip
