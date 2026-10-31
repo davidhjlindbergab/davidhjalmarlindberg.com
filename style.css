@@ -11,6 +11,9 @@
   --paper: #f4f3ef;
   --gutter: 4.5vw;
   --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* corners: the full-width images get the larger radius, so every image reads equally soft */
+  --radius: clamp(14px, 1.5vw, 26px);
+  --radius-lg: clamp(16px, 2.4vw, 42px);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -44,7 +47,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 .masthead nav a { position: relative; padding-block: 5px; }
 .masthead nav a::after { content: ""; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: currentColor; transition: width .25s; }
 .masthead nav a:hover::after, .masthead nav a[aria-current]::after { width: 100%; }
-.count { font-size: 10px; vertical-align: super; margin-left: 3px; color: var(--muted); }
 .location { color: var(--muted); }
 
 /* ---------- intro ---------- */
@@ -62,7 +64,8 @@ h1 { font-size: clamp(64px, 8.35vw, 148px); font-weight: 400; line-height: .98; 
 
 /* ---------- work ---------- */
 .project { display: block; min-width: 0; margin: 0; }
-.image-frame { overflow: hidden; background: var(--frame); }
+.image-frame { overflow: hidden; background: var(--frame); border-radius: var(--radius); }
+.image-frame.wide { border-radius: var(--radius-lg); }
 .image-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .wide { aspect-ratio: 2.18 / 1; }
 .wide img { object-position: 50% 52%; }
@@ -126,13 +129,13 @@ h3 { position: relative; font-size: 21px; font-weight: 400; line-height: 1.2; le
 .portrait { aspect-ratio: 4 / 5; }
 .phone { aspect-ratio: 819 / 1456; }
 .gallery .wide img { object-position: 50% 50%; }
-.stage { aspect-ratio: 2.18 / 1; display: flex; align-items: center; justify-content: center; gap: 3.2%; background: #ebe5da; overflow: hidden; }
+.stage { aspect-ratio: 2.18 / 1; display: flex; align-items: center; justify-content: center; gap: 3.2%; background: #ebe5da; overflow: hidden; border-radius: var(--radius-lg); }
 .stage img { height: 80%; width: auto; border-radius: 1.3vw; box-shadow: 0 2.4vw 4vw -1.6vw rgba(70, 52, 30, .38); }
 .stage img:nth-child(2) { transform: translateY(-5%); }
 .listen { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: end; }
 .listen .square { aspect-ratio: 1 / 1; }
 .listen-copy { padding-bottom: 4px; }
-.player { width: 100%; height: 166px; border: 0; display: block; margin-top: 30px; background: var(--frame); }
+.player { width: 100%; height: 166px; border: 0; display: block; margin-top: 30px; background: var(--frame); border-radius: var(--radius); }
 .next { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 12px 24px; border-top: 1px solid var(--line); margin-top: 128px; padding: 18px 0 112px; }
 .next-k { font-size: 11px; color: var(--muted); }
 .next-name { display: inline-flex; align-items: baseline; gap: .3em; font-size: clamp(36px, 4.6vw, 84px); line-height: 1.05; letter-spacing: -0.055em; transition: transform .35s; }
@@ -168,14 +171,14 @@ h3 { position: relative; font-size: 21px; font-weight: 400; line-height: 1.2; le
 
 /* ---------- phones ---------- */
 @media (max-width: 650px) {
-  :root { --gutter: 22px; }
+  :root { --gutter: 22px; --radius: 16px; --radius-lg: 16px; }
   .masthead { height: 88px; gap: 12px; font-size: 11px; }
   .wordmark { font-size: 13px; letter-spacing: -0.3px; }
   .masthead nav { margin: 0; gap: 16px; }
-  .masthead nav a:nth-child(2), .masthead nav a:nth-child(3) { display: none; }
-  .count { font-size: 8px; }
+  .masthead nav a:nth-child(n+3) { display: none; }
   .intro { display: block; padding: 48px 0; }
-  h1 { font-size: clamp(56px, 12.5vw, 80px); letter-spacing: -0.06em; line-height: 1.02; }
+  /* never smaller than the old 56px unless the headline's longest line would no longer fit (it is 5.9em wide) */
+  h1 { font-size: min(clamp(56px, 12.5vw, 80px), calc((100vw - 2 * var(--gutter)) / 6.1)); letter-spacing: -0.06em; line-height: 1.02; }
   .project-page .intro h1 { max-width: none; }
   .intro-note { display: flex; align-items: flex-end; justify-content: space-between; width: 100%; margin-top: 30px; font-size: 14px; line-height: 1.6; padding: 0; }
   .intro-note p br:nth-child(2) { display: none; }
