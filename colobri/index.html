@@ -134,7 +134,8 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 
 /* ------------------------------------------------------------------ the opening: the bird live in its light, the wordmark beside it */
 .hero { position: relative; min-height: max(680px, 100svh); display: flex; overflow: hidden; background: var(--bg); }
-.hero-bg, .hero-air, .hero-scene { position: absolute; inset: 0; }
+.hero-bg { position: absolute; left: 0; right: 0; top: 0; height: max(680px, 100svh); }   /* (the bird and its light fill the first screen; the words may run on below it) */
+.hero-air, .hero-scene { position: absolute; inset: 0; }
 .hero-glow { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; transform-origin: 50% var(--bird-y, 40%); animation: breathe 11.3s ease-in-out infinite alternate, swell 15.7s ease-in-out infinite alternate; }
 @keyframes breathe { from { opacity: 1; } to { opacity: 0.8; } }
 @keyframes swell { from { transform: scale(1); } to { transform: scale(1.035); } }
@@ -158,30 +159,32 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .js .hero-copy > :nth-child(3) { animation-delay: .55s; }
 .js .hero-copy > :nth-child(4) { animation-delay: .65s; }
 @keyframes hero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-.hero-in { position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding: calc(72px + env(safe-area-inset-top, 0px)) var(--gr) clamp(48px, 7vh, 88px) var(--gl); pointer-events: none; }
+.hero-in { position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding: calc(64px + env(safe-area-inset-top, 0px)) var(--gr) clamp(36px, 6vh, 64px) var(--gl); pointer-events: none; }
 .hero-in a, .hero-in button { pointer-events: auto; }
-/* the opening: the bird alone, large and live in the middle (David, 1 Nov, round 16: no name beside or under it; COLOBRI is in the
-   bar). The bird's light (1.03 bw across, 0.63 high, bw the bird's width) is held by .hero-mark; the live logo is placed on it
-   (colobri.js) */
-.hero { --bw: min(500px, 38vw, calc((100svh - 410px) / 0.63)); }   /* (what is not the bird takes about 410 px) */
-.hero-lockup { position: relative; flex: none; width: var(--bw); height: calc(var(--bw) * 0.63); margin-top: auto; }
+/* the opening: the bird alone and live, as large as the first screen allows (David, round 18: the bird and its light much bigger, the
+   words lower), its words beneath it at the foot of the first screen, as Apple opens a product page: the picture first and large, the
+   headline under it. On a short screen the words run on just below the first screen. The bird's light (1.03 bw across, 0.63 high, bw
+   the bird's width) is held by .hero-mark; the live logo is placed on it (colobri.js) */
+.hero { --bw: min(52vw, calc((100svh - 250px) / 0.63), 980px); }
+.hero-lockup { position: relative; flex: none; width: var(--bw); height: calc(var(--bw) * 0.63); margin-block: auto; }
 .hero-mark { position: absolute; left: calc(var(--bw) * -0.015); top: 0; width: calc(var(--bw) * 1.03); height: calc(var(--bw) * 0.63); }
-.hero-copy { display: flex; flex-direction: column; align-items: center; margin-bottom: auto; }
-.hero h1 { margin-top: clamp(40px, 6vh, 64px); font-size: clamp(36px, 4.9vw, 64px); line-height: 1.05; letter-spacing: -0.0135em; }
-.hero .lead { margin-top: 16px; max-width: 34em; color: var(--ink-2); }
-.hero .ctas { margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 28px; }
-.hero .fine { margin-top: 18px; }
-@media (max-width: 760px) {
-  .hero { --bw: min(62vw, 300px); }
-  .hero h1 { font-size: clamp(34px, 9vw, 42px); }
+.hero-copy { display: flex; flex-direction: column; align-items: center; margin-top: clamp(16px, 3vh, 36px); }
+.hero h1 { margin: 0; font-size: clamp(40px, 5.6vw, 80px); line-height: 1.05; letter-spacing: -0.015em; }
+.hero-br { display: none; }
+.hero .lead { margin-top: 18px; max-width: 34em; color: var(--ink-2); text-wrap: balance; }
+/* (the Try button carries its own light: room above and below it, so its glow never meets the words, David round 18) */
+.hero .ctas { margin-top: 48px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 22px 32px; }
+.hero .fine { margin-top: 36px; }
+@media (max-width: 1024px) {
+  .hero { --bw: min(74vw, calc((100svh - 300px) / 0.63), 720px); }
 }
-@media (max-height: 820px) and (min-width: 761px) {
-  .hero { --bw: min(480px, 36vw, calc((100svh - 330px) / 0.63)); }
-  .hero-in { padding-top: 64px; padding-bottom: 36px; }
-  .hero h1 { margin-top: 28px; font-size: clamp(34px, 3.8vw, 50px); }
-  .hero .lead { margin-top: 12px; font-size: 17px; }
-  .hero .ctas { margin-top: 22px; }
-  .hero .fine { margin-top: 12px; }
+@media (max-width: 760px) {
+  .hero { --bw: min(92vw, 440px, calc((100svh - 340px) / 0.63)); }
+  .hero h1 { font-size: clamp(36px, 10vw, 44px); line-height: 1.08; }
+  .hero-br { display: inline; }
+  .hero .lead { margin-top: 14px; }
+  .hero .ctas { margin-top: 36px; }
+  .hero .fine { margin-top: 28px; }
 }
 
 /* ------------------------------------------------------------------ one frame, many looks */
@@ -223,8 +226,8 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .compare .after { clip-path: inset(0 0 0 var(--split)); }
 .compare .line { position: absolute; z-index: 2; top: 0; bottom: 0; left: var(--split); width: 0; border-left: 1.5px solid rgba(255, 255, 255, 0.92); box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.35); pointer-events: none; }
-.compare .grip { position: absolute; top: 50%; left: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; display: grid; place-items: center; background: rgba(0, 0, 0, 0.5); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.92); }
-.compare .grip svg { width: 20px; height: 20px; }
+.compare .grip, .flat .grip { position: absolute; top: 50%; left: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; display: grid; place-items: center; background: rgba(0, 0, 0, 0.5); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.92); }
+.compare .grip svg, .flat .grip svg { width: 20px; height: 20px; }
 .compare input { position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none; touch-action: pan-y; }
 .compare:has(input:focus-visible) .grip { outline: 2px solid var(--mark); outline-offset: 3px; }
 
@@ -290,18 +293,43 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 @media (max-width: 640px) { .trio .row { grid-template-columns: 1fr; gap: 18px; } }
 
 /* ------------------------------------------------------------------ the gallery */
-.gal { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }   /* (the first spans both columns) */
-.gal figure { position: relative; margin: 0; border-radius: var(--r); overflow: hidden; background: #000; aspect-ratio: 1456 / 816; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.gal { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }   /* (the first spans the row, then three side by side) */
+.gal figure { grid-column: span 2; }
 .gal figure.big { grid-column: 1 / -1; }
-.gal img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.gal .src { opacity: 0; transition: opacity .45s var(--ease); }
-.gal figure.as-shot .src { opacity: 1; }
-@media (hover: hover) { .gal figure:hover .src { opacity: 1; } }
-.gal .chip .as { display: none; }
-.gal figure.as-shot .chip .as { display: inline; }
-.gal figure.as-shot .chip .gr { display: none; }
-@media (hover: hover) { .gal figure:hover .chip .as { display: inline; } .gal figure:hover .chip .gr { display: none; } }
-@media (max-width: 700px) { .gal { grid-template-columns: 1fr; } }
+/* the frames that show themselves as shot when pointed at or touched: the gallery's, and one look on five frames */
+.gal figure, .bento .tile { position: relative; margin: 0; border-radius: var(--r); overflow: hidden; background: #000; aspect-ratio: 1456 / 816; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.gal img, .bento .tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.gal .src, .bento .src { opacity: 0; transition: opacity .45s var(--ease); }
+.gal figure.as-shot .src, .bento .tile.as-shot .src { opacity: 1; }
+.gal .chip .as, .bento .chip .as { display: none; }
+.gal figure.as-shot .chip .as, .bento .tile.as-shot .chip .as { display: inline; }
+.gal figure.as-shot .chip .gr, .bento .tile.as-shot .chip .gr { display: none; }
+@media (hover: hover) {
+  .gal figure:hover .src, .bento .tile:hover .src { opacity: 1; }
+  .gal figure:hover .chip .as, .bento .tile:hover .chip .as { display: inline; }
+  .gal figure:hover .chip .gr, .bento .tile:hover .chip .gr { display: none; }
+}
+@media (max-width: 860px) { .gal figure { grid-column: span 3; } .gal figure:last-child:nth-child(even) { grid-column: 1 / -1; } }
+@media (max-width: 700px) { .gal { grid-template-columns: 1fr; } .gal figure, .gal figure:last-child:nth-child(even) { grid-column: auto; } }
+
+/* ------------------------------------------------------------------ one look, five frames (round 18): two wide, then three */
+.bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+.bento .tile { grid-column: span 2; }
+.bento .tile.wide { grid-column: span 3; }
+@media (max-width: 700px) { .bento { grid-template-columns: 1fr; gap: 12px; } .bento .tile, .bento .tile.wide { grid-column: auto; } }
+
+/* ------------------------------------------------------------------ from flat to finished (round 18): edge to edge, as Apple gives a picture the
+   whole width at a turn of the page; the grade crosses the frame as the page scrolls past it, and the line can be dragged */
+.flat-sec .head { margin-bottom: clamp(40px, 5vw, 72px); }
+.flat { position: relative; margin: 0; width: 100%; aspect-ratio: 2880 / 1614; max-height: 92svh; overflow: hidden; background: #000; --split: 50%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.flat img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.flat .after { clip-path: inset(0 calc(100% - var(--split)) 0 0); }
+.flat .line { position: absolute; z-index: 2; top: 0; bottom: 0; left: var(--split); width: 0; border-left: 1.5px solid rgba(255, 255, 255, 0.92); box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.35); pointer-events: none; }
+.flat .chip.tl { left: max(16px, var(--gl)); top: 18px; }
+.flat .chip.tr { right: max(16px, var(--gr)); top: 18px; color: rgba(245, 245, 247, 0.8); }
+.flat input { position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none; touch-action: pan-y; }
+.flat:has(input:focus-visible) .grip { outline: 2px solid var(--mark); outline-offset: 3px; }
+@media (max-width: 760px) { .flat { aspect-ratio: 4 / 5; max-height: 80svh; } }
 
 /* ------------------------------------------------------------------ why: four numbers, then six reasons */
 .stats { list-style: none; margin: 0 0 clamp(72px, 9vw, 128px); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px clamp(24px, 3vw, 48px); }
@@ -367,8 +395,8 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .end .bird > * { position: absolute; inset: 0; width: 100%; height: 100%; }
 .end .bird img { object-fit: contain; }
 .end h2 { max-width: 16ch; margin: 0 auto; font-size: clamp(38px, 5.4vw, 72px); line-height: 1.05; letter-spacing: -0.0135em; }
-.end .ctas { margin-top: 36px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px 28px; }
-.end .fine { margin-top: 18px; }
+.end .ctas { margin-top: 52px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 22px 32px; }   /* (room for the Try button's light) */
+.end .fine { margin-top: 36px; }
 footer { border-top: 1px solid var(--line); padding-block: 40px calc(40px + env(safe-area-inset-bottom, 0px)); font-size: 12px; line-height: 1.33337; color: var(--ink-3); letter-spacing: -0.01em; }
 footer .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; align-items: start; }
 footer .foot-mark { display: flex; align-items: center; gap: 9px; margin: 0 0 14px; }
@@ -446,8 +474,8 @@ footer .legal a:hover { color: var(--ink); }
       <div class="hero-mark"></div>
     </div>
     <div class="hero-copy">
-      <h1 id="hero-title">Ten looks, composed for your shot.</h1>
-      <p class="lead">Colobri reads your frame and composes ten finished color grades for it in seconds. Not presets: looks made for this shot. Pick one, refine it and put it on your clip in Premiere Pro, DaVinci Resolve, Final Cut Pro or CapCut.</p>
+      <h1 id="hero-title">One click.<br class="hero-br"> A world of color.</h1>
+      <p class="lead">Colobri analyzes your frame and develops perfectly balanced color grades.</p>
       <div class="ctas">
         <a class="colobri-button" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
         <a class="more" href="#looks">See it on a frame<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
@@ -516,6 +544,43 @@ footer .legal a:hover { color: var(--ink); }
   </div>
 </section>
 
+<section class="sec" id="one-look" aria-labelledby="one-look-title">
+  <div class="wrap">
+    <div class="head rise">
+      <p class="eyebrow">One look, five frames</p>
+      <h2 id="one-look-title">Same look.<br> Made for each frame.</h2>
+      <p class="lead"><strong>Hillstar 4:7 means cyan in the shadows, a third of a stop darker, punchy contrast.</strong> Colobri reached it on five very different shots, each time starting from the frame itself, so they belong together without one grade pasted over all of them. <span class="hint-hover">Point at a frame to see it as shot.</span><span class="hint-touch" hidden>Touch a frame to see it as shot.</span></p>
+    </div>
+    <div class="bento rise" id="oneLook">
+      <figure class="tile wide" tabindex="0" role="button" aria-pressed="false" aria-label="A face between spiral horns, graded Hillstar 4:7. Show the frame as shot.">
+        <img srcset="images/onebird/l-hillstar-4-7-960.webp 960w, images/onebird/l-hillstar-4-7-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 600px" src="images/onebird/l-hillstar-4-7-1456.webp" width="1456" height="816" alt="A face between spiral horns, graded Hillstar 4:7." loading="lazy" decoding="async">
+        <img class="src" srcset="images/onebird/l-ungraded-960.webp 960w, images/onebird/l-ungraded-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 600px" src="images/onebird/l-ungraded-1456.webp" width="1456" height="816" alt="" loading="lazy" decoding="async">
+        <span class="chip bl"><span class="gr"><span class="dot" style="--sw:#3b98bd"></span><span class="code">Hillstar 4:7</span></span><span class="as">As shot</span></span>
+      </figure>
+      <figure class="tile wide" tabindex="0" role="button" aria-pressed="false" aria-label="A creature curled around a mottled shell, graded Hillstar 4:7. Show the frame as shot.">
+        <img srcset="images/onebird/b-hillstar-4-7-960.webp 960w, images/onebird/b-hillstar-4-7-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 600px" src="images/onebird/b-hillstar-4-7-1456.webp" width="1456" height="816" alt="A creature curled around a mottled shell, graded Hillstar 4:7." loading="lazy" decoding="async">
+        <img class="src" srcset="images/onebird/b-ungraded-960.webp 960w, images/onebird/b-ungraded-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 600px" src="images/onebird/b-ungraded-1456.webp" width="1456" height="816" alt="" loading="lazy" decoding="async">
+        <span class="chip bl"><span class="gr"><span class="dot" style="--sw:#3b98bd"></span><span class="code">Hillstar 4:7</span></span><span class="as">As shot</span></span>
+      </figure>
+      <figure class="tile" tabindex="0" role="button" aria-pressed="false" aria-label="A man on a rope bridge above a crowded harbor, graded Hillstar 4:7. Show the frame as shot.">
+        <img srcset="images/onebird/g-hillstar-4-7-960.webp 960w, images/onebird/g-hillstar-4-7-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 400px" src="images/onebird/g-hillstar-4-7-1456.webp" width="1456" height="816" alt="A man on a rope bridge above a crowded harbor, graded Hillstar 4:7." loading="lazy" decoding="async">
+        <img class="src" srcset="images/onebird/g-ungraded-960.webp 960w, images/onebird/g-ungraded-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 400px" src="images/onebird/g-ungraded-1456.webp" width="1456" height="816" alt="" loading="lazy" decoding="async">
+        <span class="chip bl"><span class="gr"><span class="dot" style="--sw:#3b98bd"></span><span class="code">Hillstar 4:7</span></span><span class="as">As shot</span></span>
+      </figure>
+      <figure class="tile" tabindex="0" role="button" aria-pressed="false" aria-label="Houses on a mossy cliff above a valley, graded Hillstar 4:7. Show the frame as shot.">
+        <img srcset="images/onebird/h-hillstar-4-7-960.webp 960w, images/onebird/h-hillstar-4-7-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 400px" src="images/onebird/h-hillstar-4-7-1456.webp" width="1456" height="816" alt="Houses on a mossy cliff above a valley, graded Hillstar 4:7." loading="lazy" decoding="async">
+        <img class="src" srcset="images/onebird/h-ungraded-960.webp 960w, images/onebird/h-ungraded-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 400px" src="images/onebird/h-ungraded-1456.webp" width="1456" height="816" alt="" loading="lazy" decoding="async">
+        <span class="chip bl"><span class="gr"><span class="dot" style="--sw:#3b98bd"></span><span class="code">Hillstar 4:7</span></span><span class="as">As shot</span></span>
+      </figure>
+      <figure class="tile" tabindex="0" role="button" aria-pressed="false" aria-label="A face framed by pale, carved shell forms, graded Hillstar 4:7. Show the frame as shot.">
+        <img srcset="images/onebird/a-hillstar-4-7-960.webp 960w, images/onebird/a-hillstar-4-7-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 400px" src="images/onebird/a-hillstar-4-7-1456.webp" width="1456" height="816" alt="A face framed by pale, carved shell forms, graded Hillstar 4:7." loading="lazy" decoding="async">
+        <img class="src" srcset="images/onebird/a-ungraded-960.webp 960w, images/onebird/a-ungraded-1456.webp 1456w" sizes="(max-width: 760px) 100vw, 400px" src="images/onebird/a-ungraded-1456.webp" width="1456" height="816" alt="" loading="lazy" decoding="async">
+        <span class="chip bl"><span class="gr"><span class="dot" style="--sw:#3b98bd"></span><span class="code">Hillstar 4:7</span></span><span class="as">As shot</span></span>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <section class="sec" id="how" aria-labelledby="how-title">
   <div class="wrap">
     <div class="head left rise">
@@ -532,6 +597,24 @@ footer .legal a:hover { color: var(--ink); }
       <figcaption>The picked look in the viewer, the others along the bottom, and everything to refine it on the right.</figcaption>
     </figure>
   </div>
+</section>
+
+<section class="sec flat-sec" id="flat" aria-labelledby="flat-title">
+  <div class="wrap">
+    <div class="head rise">
+      <p class="eyebrow">As shot, then graded</p>
+      <h2 id="flat-title">From flat to finished.</h2>
+      <p class="lead"><strong>Keep scrolling and the grade crosses the frame.</strong> Jacobin 5:6 on one side of the line, the frame as shot on the other: deeper blacks and firmer contrast, with the snow's highlights held. Drag the line to compare.</p>
+    </div>
+  </div>
+  <figure class="flat" id="flat-fig">
+    <img class="before" srcset="images/flat/m-ungraded-1280.webp 1280w, images/flat/m-ungraded-1920.webp 1920w, images/flat/m-ungraded-2880.webp 2880w" sizes="(max-width: 760px) 230vw, 100vw" src="images/flat/m-ungraded-1920.webp" width="2880" height="1614" alt="A rider in furs racing a horse across a frozen plain, as shot." loading="lazy" decoding="async">
+    <img class="after" srcset="images/flat/m-jacobin-5-6-1280.webp 1280w, images/flat/m-jacobin-5-6-1920.webp 1920w, images/flat/m-jacobin-5-6-2880.webp 2880w" sizes="(max-width: 760px) 230vw, 100vw" src="images/flat/m-jacobin-5-6-1920.webp" width="2880" height="1614" alt="The same frame graded Jacobin 5:6." loading="lazy" decoding="async">
+    <span class="chip tl"><span class="dot" style="--sw:#8a8a90"></span><span class="code">Jacobin 5:6</span></span>
+    <span class="chip tr">As shot</span>
+    <div class="line" aria-hidden="true"><span class="grip"><svg viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5 3 10l5 5M12 5l5 5-5 5"/></svg></span></div>
+    <input type="range" min="0" max="100" value="50" step="0.1" aria-label="Move the line between the graded frame and the frame as shot">
+  </figure>
 </section>
 
 <section class="sec" id="names" aria-labelledby="names-title">
@@ -577,9 +660,9 @@ footer .legal a:hover { color: var(--ink); }
     <div class="trio rise">
       <h3>One key and contrast, three birds</h3>
       <div class="row">
-        <figure><img src="images/names/b-emerald-5-7.webp" width="960" height="538" alt="A creature curled around a mottled shell, graded Emerald 5:7, green in the shadows." loading="lazy" decoding="async"><figcaption class="code">Emerald 5:7</figcaption></figure>
-        <figure><img src="images/names/b-hillstar-5-7.webp" width="960" height="538" alt="The same frame in Hillstar 5:7, cyan in the shadows." loading="lazy" decoding="async"><figcaption class="code">Hillstar 5:7</figcaption></figure>
-        <figure><img src="images/names/b-sapphirewing-5-7.webp" width="960" height="538" alt="The same frame in Sapphirewing 5:7, blue in the shadows." loading="lazy" decoding="async"><figcaption class="code">Sapphirewing 5:7</figcaption></figure>
+        <figure><img src="images/names/b2-emerald-5-7.webp" srcset="images/names/b2-emerald-5-7.webp 960w, images/names/b2-emerald-5-7-1440.webp 1440w" sizes="(max-width: 640px) 100vw, 400px" width="960" height="538" alt="A creature curled around a mottled shell, graded Emerald 5:7, green in the shadows." loading="lazy" decoding="async"><figcaption class="code">Emerald 5:7</figcaption></figure>
+        <figure><img src="images/names/b2-hillstar-5-7.webp" srcset="images/names/b2-hillstar-5-7.webp 960w, images/names/b2-hillstar-5-7-1440.webp 1440w" sizes="(max-width: 640px) 100vw, 400px" width="960" height="538" alt="The same frame in Hillstar 5:7, cyan in the shadows." loading="lazy" decoding="async"><figcaption class="code">Hillstar 5:7</figcaption></figure>
+        <figure><img src="images/names/b2-sapphirewing-5-7.webp" srcset="images/names/b2-sapphirewing-5-7.webp 960w, images/names/b2-sapphirewing-5-7-1440.webp 1440w" sizes="(max-width: 640px) 100vw, 400px" width="960" height="538" alt="The same frame in Sapphirewing 5:7, blue in the shadows." loading="lazy" decoding="async"><figcaption class="code">Sapphirewing 5:7</figcaption></figure>
       </div>
     </div>
   </div>

@@ -13,6 +13,18 @@
     Hillstar: '#3b98bd', Sapphirewing: '#4a6fd0', Violetear: '#7656cc', Woodstar: '#a552c1', Coronet: '#a64f8f', Sunangel: '#c4506f', Jacobin: '#8a8a90', Hermit: '#b4b4b8' };
   function dotFor(name) { var c = BIRD[String(name).split(' ')[0]]; return c ? '<span class="dot" style="--sw:' + c + '"></span>' : ''; }
 
+  // a frame that shows itself as shot when pointed at (CSS) or, on touch and from the keyboard, when pressed (the gallery and one look
+  // on five frames); the hint under each heading says which
+  function asShot(fig) {
+    var toggle = function () { var on = !fig.classList.contains('as-shot'); fig.classList.toggle('as-shot', on); fig.setAttribute('aria-pressed', on ? 'true' : 'false'); };
+    fig.addEventListener('click', function () { if (touch) toggle(); });
+    fig.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+  }
+  if (touch) {
+    Array.prototype.forEach.call(document.querySelectorAll('.hint-hover'), function (e) { e.hidden = true; });
+    Array.prototype.forEach.call(document.querySelectorAll('.hint-touch'), function (e) { e.hidden = false; });
+  }
+
   // ---------------------------------------------------------------------------------------------- the bar
   var bar = $('#bar');
   function onScroll() { if (bar) bar.classList.toggle('scrolled', window.scrollY > 8); }
@@ -33,8 +45,9 @@
     var MARK_W = 0.76, MARK_CX = 0.517, MARK_CY = 0.489, MARK_AR = 688 / 900;   // (where the bird is in the transparent still, colobri-mark.webp)
     var L = null, logo = null, flat = false, ready = false, intro = true, growing = null;
     var gs = reduce.matches ? 1 : 0.5;   // (while the opening grows the bird: its share of its full size)
+    var bg = $('.hero-bg', hero) || hero;   // (the first screen, where the bird and its light are; the words may run on below it)
     function layout() {
-      var h = hero.getBoundingClientRect(), m = mark.getBoundingClientRect(), bw = m.width / 1.03;
+      var h = bg.getBoundingClientRect(), m = mark.getBoundingClientRect(), bw = m.width / 1.03;
       return { w: h.width, h: h.height, bw: bw, cx: m.left - h.left + m.width / 2, cy: m.top - h.top + LIGHT_UP * bw };
     }
     function padFor() { return Math.max(0, Math.min(2, (BIRD_W * Math.min(L.w / FIT_W, L.h / FIT_H) / Math.max(1, L.bw * gs) - 1) / 2)); }
@@ -216,25 +229,51 @@
     var GAL = [
       { f: 'h', name: 'Jacobin 5:6', alt: 'Houses with red roofs built on a mossy cliff above a misty valley.', big: true },
       { f: 'a', name: 'Hillstar 5:7', alt: 'A face framed by pale, intricately carved shell forms.' },
-      { f: 'd', name: 'Hillstar 5:8', alt: 'Small pink flowers growing from a weathered, porous stone.' }
+      { f: 'd', name: 'Hillstar 5:8', alt: 'Small pink flowers growing from a weathered, porous stone.' },
+      { f: 'e', name: 'Coronet 5:6', alt: 'A man in a dark suit standing in a street lined with soldiers and a crowd.' }
     ];
     var gal = $('#gal'); if (!gal) return;
-    if (touch) { var hh = $('.hint-hover'), ht = $('.hint-touch'); if (hh) hh.hidden = true; if (ht) ht.hidden = false; }
     GAL.forEach(function (g) {
       var fig = document.createElement('figure'); if (g.big) fig.className = 'big';
       fig.tabIndex = 0; fig.setAttribute('role', 'button'); fig.setAttribute('aria-pressed', 'false');
       fig.setAttribute('aria-label', g.name + '. Show the frame as shot.');
-      var sizes = g.big ? '(max-width: 1280px) 100vw, 1240px' : '(max-width: 700px) 100vw, 420px';
+      var sizes = g.big ? '(max-width: 1280px) 100vw, 1240px' : '(max-width: 700px) 100vw, (max-width: 860px) 50vw, 400px';
       var src = function (kind) { return 'srcset="' + IMG + 'gallery/' + g.f + '-' + kind + '-960.webp 960w, ' + IMG + 'gallery/' + g.f + '-' + kind + '-1456.webp 1456w" sizes="' + sizes + '" src="' + IMG + 'gallery/' + g.f + '-' + kind + '-1456.webp"'; };
       fig.innerHTML = '<img ' + src('best') + ' width="1456" height="816" alt="' + g.alt + ' Graded in ' + g.name + '." loading="lazy" decoding="async">' +
         '<img class="src" ' + src('ungraded') + ' width="1456" height="816" alt="" loading="lazy" decoding="async">' +
         '<span class="chip bl"><span class="gr">' + dotFor(g.name) + '<span class="code">' + g.name + '</span></span><span class="as">As shot</span></span>';
-      var toggle = function () { var on = !fig.classList.contains('as-shot'); fig.classList.toggle('as-shot', on); fig.setAttribute('aria-pressed', on ? 'true' : 'false'); };
-      fig.addEventListener('click', function () { if (touch) toggle(); });
-      fig.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+      asShot(fig);
       gal.appendChild(fig);
     });
     gal.classList.add('rise');
+  })();
+
+  // ---------------------------------------------------------------------------------------------- one look on five frames (round 18)
+  Array.prototype.forEach.call(document.querySelectorAll('#oneLook .tile'), asShot);
+
+  // ---------------------------------------------------------------------------------------------- from flat to finished (round 18)
+  // The rider on the ice, edge to edge: the grade crosses the frame from the left as the page scrolls past it (as shot when it comes
+  // into view, nearly all graded once it fills the window); a drag or the keyboard takes over the line. With reduced motion it stays
+  // at the middle until moved.
+  (function flat() {
+    var fig = $('#flat-fig'); if (!fig) return;
+    var input = $('input', fig), down = false, manual = reduce.matches, raf = 0;
+    function set(p) { p = Math.max(0, Math.min(100, p)); fig.style.setProperty('--split', p.toFixed(2) + '%'); if (input) input.value = String(p); }
+    function at(e) { var r = fig.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); }
+    fig.addEventListener('pointerdown', function (e) { if (e.button) return; down = true; manual = true; at(e); if (e.pointerType !== 'touch') fig.setPointerCapture(e.pointerId); });
+    fig.addEventListener('pointermove', function (e) { if (down) at(e); });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { fig.addEventListener(ev, function () { down = false; }); });
+    if (input) input.addEventListener('input', function () { manual = true; set(+input.value); });
+    function follow() {
+      raf = 0; if (manual) return;
+      var r = fig.getBoundingClientRect(), vh = window.innerHeight || 800;
+      if (r.bottom < -vh || r.top > 2 * vh) return;
+      var t = (0.82 * vh - r.top) / (0.82 * vh + 0.12 * r.height);
+      set(3 + 94 * sm(t));
+    }
+    function kick() { if (!raf && !manual) raf = requestAnimationFrame(follow); }
+    if (manual) set(50); else { window.addEventListener('scroll', kick, { passive: true }); window.addEventListener('resize', kick); follow(); }
+    window.__cbFlat = { at: function (p) { manual = true; set(p); }, follow: function () { manual = false; follow(); } };
   })();
 
   // ---------------------------------------------------------------------------------------------- the bird at the end, made when it is near
