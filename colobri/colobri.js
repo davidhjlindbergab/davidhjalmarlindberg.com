@@ -1,0 +1,229 @@
+/* Colobri's page: the bird live in the opening, one frame in its looks, before and after, the gallery, and the sections rising into
+   place. The bird is the COLOBRI logo component (colobri-logo.js, as it came); everything else is plain DOM. */
+(function () {
+  'use strict';
+  var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var touch = window.matchMedia ? window.matchMedia('(hover: none)').matches : false;
+  var sm = function (t) { t = Math.max(0, Math.min(1, t)); return t * t * t * (t * (t * 6 - 15) + 10); };   // (smootherstep)
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var IMG = 'images/';
+
+  // the birds' colors, for the dot beside a look's name
+  var BIRD = { Rubythroat: '#c8464b', Firecrown: '#d06a3c', Topaz: '#cf8e3e', Sungem: '#c9ae45', Metaltail: '#8f9a45', Emerald: '#4f9a5b', Sylph: '#3a9a8f',
+    Hillstar: '#3b98bd', Sapphirewing: '#4a6fd0', Violetear: '#7656cc', Woodstar: '#a552c1', Coronet: '#a64f8f', Sunangel: '#c4506f', Jacobin: '#8a8a90', Hermit: '#b4b4b8' };
+  function dotFor(name) { var c = BIRD[String(name).split(' ')[0]]; return c ? '<span class="dot" style="--sw:' + c + '"></span>' : ''; }
+
+  // ---------------------------------------------------------------------------------------------- the bar
+  var bar = $('#bar');
+  function onScroll() { if (bar) bar.classList.toggle('scrolled', window.scrollY > 8); }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // ---------------------------------------------------------------------------------------------- the opening
+  // The logo as David set it: the live bird with COLOBRI to its right. The bird is on a clear ground with only its own glow; its light
+  // is placed on .hero-mark (1.03 of the bird's width across and 0.63 of it high), so the page's own layout decides where it is. Behind
+  // it lies one soft bell of the bird's colors (colobri-light.js, the same as in the app): big, subtle, and gone well before the
+  // opening's foot, so nothing shows as a part or an edge at any size. When the bird is ready it grows from half its size to full over
+  // 2 s, its light comes up round it and the word arrives as it settles.
+  (function hero() {
+    var CL = window.ColobriLight;
+    var hero = $('.hero'), mark = $('.hero-mark'), box = $('.hero-logo'), scene = $('.hero-scene'), glow = $('.hero-glow'), dith = $('.hero-dither');
+    if (!hero || !mark || !box || !scene || !CL) { if (hero) hero.classList.add('live'); return; }
+    var BIRD_W = 3378, FIT_W = 4650, FIT_H = 2950, LIGHT_UP = 0.325;
+    var MARK_W = 0.76, MARK_CX = 0.517, MARK_CY = 0.489, MARK_AR = 688 / 900;   // (where the bird is in the transparent still, colobri-mark.webp)
+    var L = null, logo = null, flat = false, ready = false, intro = true, growing = null;
+    var gs = reduce.matches ? 1 : 0.5;   // (while the opening grows the bird: its share of its full size)
+    function layout() {
+      var h = hero.getBoundingClientRect(), m = mark.getBoundingClientRect(), bw = m.width / 1.03;
+      return { w: h.width, h: h.height, bw: bw, cx: m.left - h.left + m.width / 2, cy: m.top - h.top + LIGHT_UP * bw };
+    }
+    function padFor() { return Math.max(0, Math.min(2, (BIRD_W * Math.min(L.w / FIT_W, L.h / FIT_H) / Math.max(1, L.bw * gs) - 1) / 2)); }
+    function posFor() { return [(L.cx + 0.0232 * L.bw) / Math.max(1, L.w), L.cy / Math.max(1, L.h)]; }
+
+    // the light: the bird's colors made very soft, one bell round the bird at a third of their strength, 2.3 bird widths out each way
+    // and 1.25 up and down, and in any case gone by the opening's foot (where the page goes on), so it meets the page unseen
+    var glowImg = null, glowTimer = 0, glowOn = false;
+    function paintGlow() {
+      if (!glow || !glowImg || !glowImg.naturalWidth) return;
+      if (CL.glow(glow, glowImg, { w: L.w, h: L.h, cx: L.cx, cy: L.cy, a: 0.32, from: 0, to: 1, rx: 2.3 * L.bw, ry: 1.25 * L.bw, foot: 0.86, cap: 5.2 * L.bw, ground: CL.ground(hero), anchor: true })) glowOn = true;
+    }
+    if (dith) CL.dither(dith, 'dither');
+
+    // the grow is the logo's own padding (so its haze grows with it and its canvas never shows as a shape); the still grows in CSS
+    function opened() {
+      if (ready) return; ready = true; hero.classList.add('live');
+      if (reduce.matches) { gs = 1; setTimeout(function () { intro = false; }, 700); return; }
+      if (flat) { gs = 1; return; }
+      growing = CL.grow({ step: function (s) { gs = s; if (logo) logo.setPadding(padFor()); }, done: function () { gs = 1; intro = false; growing = null; } });
+    }
+    scene.addEventListener('animationend', function (e) { if (flat && e.animationName === 'hero-grow') intro = false; });
+
+    // without WebGL2: the still of the bird with its glow on a clear ground, on the same light, opening the same way
+    var still = null;
+    function toFlat() {
+      if (flat) return; flat = true; hero.classList.add('flat');
+      if (growing) { growing.finish(); growing = null; }
+      if (logo) { try { logo.destroy(); } catch (e) { /* (already gone) */ } logo = null; }
+      still = document.createElement('img'); still.className = 'hero-still'; still.alt = ''; still.src = IMG + 'colobri-mark.webp';
+      box.remove(); scene.appendChild(still); place();
+      if (still.decode) still.decode().then(opened, opened); else still.onload = opened;
+    }
+    function place() {
+      L = layout();
+      hero.style.setProperty('--bird-x', Math.round(L.cx) + 'px'); hero.style.setProperty('--bird-y', Math.round(L.cy) + 'px');
+      if (logo) { if (logo.resize) logo.resize(); logo.setPadding(padFor()); logo.setPosition(posFor()); }
+      if (still) { var iw = L.bw / MARK_W, ih = iw * MARK_AR; still.style.width = iw + 'px'; still.style.height = ih + 'px'; still.style.left = (L.cx - MARK_CX * iw) + 'px'; still.style.top = (L.cy - MARK_CY * ih) + 'px'; }
+      // (while the window changes size the light stays centred on the bird at the size it was painted, and is painted again after)
+      if (glow) CL.at(glow, L.cx, L.cy);
+      clearTimeout(glowTimer); glowTimer = setTimeout(paintGlow, glowOn ? 140 : 0);
+    }
+    L = layout();
+    if (window.ColobriLogo && window.ColobriLogo.isSupported()) {
+      try {
+        logo = window.ColobriLogo.create(box, { background: 'transparent', interactive: true, padding: padFor(), position: posFor(), motion: 0.6, ariaLabel: '', startTime: 6, fadeIn: 0,
+          onReady: opened, onError: toFlat });
+      } catch (e) { toFlat(); }
+    } else toFlat();
+    if (glow) { glowImg = new Image(); glowImg.onload = function () { if (L) paintGlow(); }; glowImg.src = IMG + 'colobri-aura-glow.webp'; }
+    // (if the bird has not woken in 2.5 s, the page does not wait for it)
+    setTimeout(function () { if (!ready) opened(); }, 2500);
+    place();
+    if ('ResizeObserver' in window) new ResizeObserver(function () { place(); }).observe(hero);
+    else window.addEventListener('resize', place);
+    window.__cbHero = { logo: function () { return logo; }, layout: function () { return L; }, flat: function () { return flat; }, glow: function () { return glowOn ? glow.width + 'x' + glow.height : ''; },
+      ready: function () { return ready; }, intro: function () { return intro; }, gs: function () { return gs; },
+      grow: function (ms) { if (growing) growing.hold(ms); }, growOn: function () { if (growing) growing.go(); } };
+  })();
+
+  // ---------------------------------------------------------------------------------------------- one frame, many looks
+  (function looks() {
+    var LOOKS = [
+      { name: 'As shot', file: 'l-ungraded' },
+      { name: 'Sapphirewing 6:8', file: 'l-sapphirewing-6-8' },
+      { name: 'Hillstar 4:7', file: 'l-hillstar-4-7' },
+      { name: 'Sylph 5:8', file: 'l-sylph-5-8' },
+      { name: 'Violetear 5:6', file: 'l-violetear-5-6' },
+      { name: 'Hermit 5:5', file: 'l-hermit-5-5' },
+      { name: 'Hillstar 5:7', file: 'l-hillstar-5-7' },
+      { name: 'Sylph 5:6', file: 'l-sylph-5-6' }
+    ];
+    var stage = $('#vStage'), strip = $('#strip'), nameEl = $('#vName'), viewer = $('#viewer');
+    if (!stage || !strip) return;
+    var layers = [$('.v-a', stage), $('.v-b', stage)], front = 0, cur = -1, want = -1, auto = !reduce.matches, timer = 0, seen = false;
+    var srcImg = $('.v-src', stage);
+    function size() { var w = stage.getBoundingClientRect().width * (window.devicePixelRatio || 1); return w > 1400 ? 2400 : 1280; }
+    function url(i) { return IMG + 'looks/' + LOOKS[i].file + '-' + size() + '.webp'; }
+    var btns = LOOKS.map(function (lk, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'look'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', 'false'); b.tabIndex = -1;
+      b.innerHTML = '<span class="pic lit"><img src="' + IMG + 'looks/' + lk.file + '-t.webp" alt="" width="400" height="224" loading="lazy" decoding="async"></span><span class="nm' + (i ? ' code' : '') + '">' + lk.name + '</span>';
+      b.addEventListener('click', function () { stop(); show(i, false); });
+      strip.appendChild(b); return b;
+    });
+    function keep(i) {   // bring the picked look into the strip's view, without moving the page
+      var b = btns[i], sr = strip.getBoundingClientRect(), r = b.getBoundingClientRect(), pad = 24;
+      if (r.left < sr.left + pad) strip.scrollBy({ left: r.left - sr.left - pad, behavior: reduce.matches ? 'auto' : 'smooth' });
+      else if (r.right > sr.right - pad) strip.scrollBy({ left: r.right - sr.right + pad, behavior: reduce.matches ? 'auto' : 'smooth' });
+    }
+    function show(i, focus) {
+      if (i === cur) return; cur = i; want = i;
+      btns.forEach(function (b, k) { b.setAttribute('aria-checked', k === i ? 'true' : 'false'); b.tabIndex = k === i ? 0 : -1; });
+      if (focus) btns[i].focus({ preventScroll: true });
+      keep(i);
+      nameEl.innerHTML = (i ? dotFor(LOOKS[i].name) : '') + '<span' + (i ? ' class="code"' : '') + '>' + LOOKS[i].name + '</span>';
+      var back = layers[1 - front], u = url(i);
+      back.alt = i ? 'The frame graded in ' + LOOKS[i].name + '.' : 'A creature with spiral horns and a pale, patterned face, as shot.';
+      var go = function () { if (want !== i) return; back.style.opacity = 1; layers[front].style.opacity = 0; front = 1 - front; };
+      if (back.getAttribute('src') === u) { go(); return; }
+      back.src = u;
+      if (back.decode) back.decode().then(go, go); else back.onload = go;
+    }
+    layers[1].style.opacity = 0;
+    show(1);
+    strip.addEventListener('keydown', function (e) {
+      var k = e.key, n = btns.length, i = cur;
+      if (k === 'ArrowRight' || k === 'ArrowDown') i = (cur + 1) % n; else if (k === 'ArrowLeft' || k === 'ArrowUp') i = (cur - 1 + n) % n; else if (k === 'Home') i = 0; else if (k === 'End') i = n - 1; else return;
+      e.preventDefault(); stop(); show(i, true);
+    });
+    // hold the picture to see the frame as shot
+    function hold(on) { if (on && !srcImg.getAttribute('src')) srcImg.src = url(0); stage.classList.toggle('holding', on); if (on) stop(); }
+    stage.addEventListener('pointerdown', function (e) { if (e.button) return; hold(true); });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) { stage.addEventListener(ev, function () { hold(false); }); });
+    stage.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    // while it is in view and no one has touched it, it steps through the looks by itself
+    function stop() { auto = false; clearInterval(timer); timer = 0; }
+    function step() { show(cur >= LOOKS.length - 1 ? 0 : cur + 1); }
+    function preload() { for (var i = 0; i < LOOKS.length; i++) { var im = new Image(); im.decoding = 'async'; im.src = url(i); } }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting && !seen) { seen = true; setTimeout(preload, 300); }
+          if (e.isIntersecting && auto && !timer) timer = setInterval(step, 3400);
+          if (!e.isIntersecting && timer) { clearInterval(timer); timer = 0; }
+        });
+      }, { threshold: 0.55 }).observe(viewer);
+    } else preload();
+    viewer.addEventListener('keydown', stop);
+    window.__cbLooks = { show: function (i) { stop(); show(i); }, cur: function () { return cur; }, count: LOOKS.length };
+  })();
+
+  // ---------------------------------------------------------------------------------------------- before and after
+  (function compare() {
+    var fig = $('#compare'); if (!fig) return;
+    var input = $('input', fig), down = false;
+    function set(p) { p = Math.max(0, Math.min(100, p)); fig.style.setProperty('--split', p + '%'); if (input) input.value = String(p); }
+    function at(e) { var r = fig.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); }
+    fig.addEventListener('pointerdown', function (e) { if (e.button) return; down = true; at(e); if (e.pointerType !== 'touch') fig.setPointerCapture(e.pointerId); });
+    fig.addEventListener('pointermove', function (e) { if (down) at(e); });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { fig.addEventListener(ev, function () { down = false; }); });
+    if (input) input.addEventListener('input', function () { set(+input.value); });
+    set(50);
+  })();
+
+  // ---------------------------------------------------------------------------------------------- the gallery
+  (function gallery() {
+    var GAL = [
+      { f: 'h', name: 'Jacobin 5:6', alt: 'Houses with red roofs built on a mossy cliff above a misty valley.', big: true },
+      { f: 'a', name: 'Hillstar 5:7', alt: 'A face framed by pale, intricately carved shell forms.' },
+      { f: 'd', name: 'Hillstar 5:8', alt: 'Small pink flowers growing from a weathered, porous stone.' }
+    ];
+    var gal = $('#gal'); if (!gal) return;
+    if (touch) { var hh = $('.hint-hover'), ht = $('.hint-touch'); if (hh) hh.hidden = true; if (ht) ht.hidden = false; }
+    GAL.forEach(function (g) {
+      var fig = document.createElement('figure'); if (g.big) fig.className = 'big';
+      fig.tabIndex = 0; fig.setAttribute('role', 'button'); fig.setAttribute('aria-pressed', 'false');
+      fig.setAttribute('aria-label', g.name + '. Show the frame as shot.');
+      var sizes = g.big ? '(max-width: 1280px) 100vw, 1240px' : '(max-width: 700px) 100vw, 420px';
+      var src = function (kind) { return 'srcset="' + IMG + 'gallery/' + g.f + '-' + kind + '-960.webp 960w, ' + IMG + 'gallery/' + g.f + '-' + kind + '-1456.webp 1456w" sizes="' + sizes + '" src="' + IMG + 'gallery/' + g.f + '-' + kind + '-1456.webp"'; };
+      fig.innerHTML = '<img ' + src('best') + ' width="1456" height="816" alt="' + g.alt + ' Graded in ' + g.name + '." loading="lazy" decoding="async">' +
+        '<img class="src" ' + src('ungraded') + ' width="1456" height="816" alt="" loading="lazy" decoding="async">' +
+        '<span class="chip bl"><span class="gr">' + dotFor(g.name) + '<span class="code">' + g.name + '</span></span><span class="as">As shot</span></span>';
+      var toggle = function () { var on = !fig.classList.contains('as-shot'); fig.classList.toggle('as-shot', on); fig.setAttribute('aria-pressed', on ? 'true' : 'false'); };
+      fig.addEventListener('click', function () { if (touch) toggle(); });
+      fig.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+      gal.appendChild(fig);
+    });
+    gal.classList.add('rise');
+  })();
+
+  // ---------------------------------------------------------------------------------------------- the bird at the end, made when it is near
+  (function endBird() {
+    var el = $('#endBird'); if (!el) return;
+    var made = false;
+    function still() { el.innerHTML = '<img src="' + IMG + 'colobri-mark.webp" alt="">'; }
+    function make() {
+      if (made) return; made = true;
+      if (!(window.ColobriLogo && window.ColobriLogo.isSupported())) { still(); return; }
+      try { window.ColobriLogo.create(el, { background: 'transparent', interactive: true, padding: 0.06, motion: 0.6, ariaLabel: '', startTime: 21, onError: still }); } catch (e) { still(); }
+    }
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es, o) { if (es.some(function (e) { return e.isIntersecting; })) { o.disconnect(); make(); } }, { rootMargin: '600px 0px' }).observe(el);
+    else make();
+  })();
+
+  // ---------------------------------------------------------------------------------------------- sections rising into place
+  (function rise() {
+    var els = document.querySelectorAll('.rise');
+    if (!('IntersectionObserver' in window) || reduce.matches) { for (var i = 0; i < els.length; i++) els[i].classList.add('in'); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    for (var j = 0; j < els.length; j++) io.observe(els[j]);
+    window.__cbRiseAll = function () { for (var k = 0; k < els.length; k++) els[k].classList.add('in'); };
+  })();
+})();

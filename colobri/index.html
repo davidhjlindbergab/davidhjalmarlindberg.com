@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Colobri · Color grading composed for your shot</title>
+<meta name="description" content="Colobri reads your frame and composes ten finished color grades for it in seconds, each named after a hummingbird. Pick one, refine it and put it on your clip in Premiere Pro, DaVinci Resolve or Final Cut Pro, or grade right in your browser.">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="canonical" href="https://davidhjalmarlindberg.com/colobri/">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="Colobri">
+<meta property="og:title" content="Colobri · Color grading composed for your shot">
+<meta property="og:description" content="Ten finished looks for your frame in seconds, each named after a hummingbird. In your browser, and in Premiere Pro, DaVinci Resolve and Final Cut Pro.">
+<meta property="og:url" content="https://davidhjalmarlindberg.com/colobri/">
+<meta property="og:image" content="https://davidhjalmarlindberg.com/colobri/images/colobri-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Colobri hummingbird in its own light, with the COLOBRI wordmark beside it.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="images/colobri-icon-64.png" type="image/png">
+<link rel="apple-touch-icon" href="images/colobri-icon-256.png">
+<style>
+/* Colobri's page. A near-black ground (a grading tool is judged against a neutral surround; 4% above black, David, 1 Nov), the bird's
+   own light where something is chosen or acted on, and David's frames, as he graded them, everywhere else. The type follows Apple's product pages: large semibold headlines
+   set tight, a short label above them, quieter grey copy with the first words in white, generous room between sections and no rules. */
+:root {
+  color-scheme: dark;
+  --bg: #0a0a0a;
+  --card: #161618;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-2: rgba(255, 255, 255, 0.16);
+  --ink: #f5f5f7;
+  --ink-2: #a1a1a6;
+  --ink-3: #86868b;
+  --mark: #b6bcf8;                 /* the bird's lavender, for the labels */
+  --word: #7383f2;                 /* COLOBRI in the bar and the footer: David's blue, a little lighter at that size */
+  --word-lockup: #5c6fec;          /* COLOBRI beside the big bird: David's blue (his lockup, 1 Nov), fading out to the right */
+  --link: #4da3ff;                 /* the bird's blue, for links */
+  --ring-stops: #2a8cff 0%, #36b4ff 8%, #8ee0ff 12.5%, #3cb2ff 17%, #2794ff 26%, #a287ff 38%, #d466bb 48%, #fe636c 57%, #ff8a62 64%, #ffa496 69%, #ee7aa6 75%, #a98aff 83%, #4c93ff 90%, #219aff 95%, #2a8cff 100%;
+  --f: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI Variable Text", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --gl: max(22px, env(safe-area-inset-left, 0px));
+  --gr: max(22px, env(safe-area-inset-right, 0px));
+  --wide: 1200px;
+  --r: 22px;
+  --ease: cubic-bezier(.22, .7, .2, 1);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(52px + env(safe-area-inset-top, 0px)); -webkit-text-size-adjust: 100%; background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.47 var(--f); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: clip; }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+::selection { background: rgba(182, 188, 248, 0.3); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--mark); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: calc(var(--wide) + var(--gl) + var(--gr)); margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
+.word { display: block; height: auto; color: var(--word); -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 38%, rgba(0,0,0,.9) 52%, rgba(0,0,0,.78) 68%, rgba(0,0,0,.66) 84%, rgba(0,0,0,.58) 100%); mask-image: linear-gradient(90deg, #000 0%, #000 38%, rgba(0,0,0,.9) 52%, rgba(0,0,0,.78) 68%, rgba(0,0,0,.66) 84%, rgba(0,0,0,.58) 100%); }
+
+/* ------------------------------------------------------------------ type */
+.eyebrow { margin: 0; font-size: clamp(17px, 1.55vw, 21px); font-weight: 600; line-height: 1.2; letter-spacing: 0.004em; color: var(--mark); }
+h1, h2, h3 { margin: 0; font-weight: 600; text-wrap: balance; }
+h2 { font-size: clamp(34px, 4.6vw, 56px); line-height: 1.07; letter-spacing: -0.016em; }
+h3 { font-size: 19px; line-height: 1.26; letter-spacing: -0.008em; }
+.lead { margin: 0; font-size: clamp(17px, 1.55vw, 21px); line-height: 1.43; letter-spacing: 0.004em; color: var(--ink-3); text-wrap: pretty; }
+.lead strong, .lede strong { color: var(--ink); font-weight: 600; }
+.head { display: grid; justify-items: center; text-align: center; gap: 14px; max-width: 800px; margin: 0 auto clamp(48px, 6vw, 80px); }
+.head .lead { max-width: 36em; margin-top: 4px; }
+.head.left, .head.split { justify-items: start; text-align: left; max-width: none; }
+@media (min-width: 980px) {
+  .head.split { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); column-gap: clamp(48px, 6vw, 112px); align-items: end; }
+  .head.split .eyebrow { grid-column: 1; grid-row: 1; }
+  .head.split h2 { grid-column: 1; grid-row: 2; }
+  .head.split .lead { grid-column: 2; grid-row: 1 / span 2; margin: 0 0 4px; }
+}
+.code { font-variant-numeric: tabular-nums; }
+section { position: relative; }
+.sec { padding-block: clamp(88px, 10vw, 144px); }
+.hero + .sec { padding-top: clamp(64px, 8vw, 128px); }
+
+/* ------------------------------------------------------------------ the bird's living light: the chosen look's ring and the main buttons */
+@property --ra { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@property --rw { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@property --rb { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@property --rv { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@property --rl { syntax: "<number>"; inherits: false; initial-value: 0.6; }
+.lit::before, .lit::after {
+  content: ""; position: absolute; pointer-events: none; border-radius: inherit;
+  background:
+    conic-gradient(from calc(var(--rb) + var(--rv) + 40deg), rgb(128 218 255 / 0) 0deg, rgb(128 218 255 / calc(var(--rl) * 0.8)) 26deg, rgb(128 218 255 / 0) 60deg,
+      rgb(70 166 255 / 0) 172deg, rgb(70 166 255 / calc(0.8 - var(--rl) * 0.55)) 206deg, rgb(70 166 255 / 0) 244deg, rgb(70 166 255 / 0) 360deg),
+    conic-gradient(from calc(var(--ra) + var(--rw) + 200deg), var(--ring-stops));
+  background-blend-mode: screen, normal;
+  animation: ring-a 11s linear infinite, ring-w 9.4s ease-in-out infinite, ring-b 15s linear infinite, ring-v 6.1s ease-in-out infinite, ring-l 5.3s ease-in-out infinite alternate;
+}
+@keyframes ring-a { to { --ra: 360deg; } }
+@keyframes ring-w { 0%, 100% { --rw: 0deg; } 21% { --rw: 38deg; } 46% { --rw: -12deg; } 63% { --rw: 26deg; } 82% { --rw: -30deg; } }
+@keyframes ring-b { to { --rb: -360deg; } }
+@keyframes ring-v { 0%, 100% { --rv: 0deg; } 30% { --rv: -42deg; } 55% { --rv: 14deg; } 78% { --rv: -20deg; } }
+@keyframes ring-l { from { --rl: 0.25; } to { --rl: 1; } }
+.btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 26px; border-radius: 999px; border: 0;
+  background: #1c1c1e; color: var(--ink); font: 500 17px/1 var(--f); letter-spacing: -0.005em; text-decoration: none; white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  transition: background .5s var(--ease), transform .3s var(--ease); }
+.btn.lit::before { inset: 0; padding: 1.25px; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); opacity: 0.9; transition: opacity .5s var(--ease); }
+.btn.lit::after { display: none; }   /* (no light inside the button behind its word, only the ring: David, 1 Nov) */
+.btn:hover { background: #232326; }
+.btn.lit:hover::before { opacity: 1; }
+.btn:active { transform: scale(0.985); }
+.btn.small { min-height: 34px; padding: 0 16px; font-size: 14px; }
+.btn.solid { background: var(--ink); color: #000; }
+.btn.solid:hover { background: #fff; }
+.btn svg { width: 17px; height: 17px; flex: none; }
+.more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--link); font-size: 17px; text-decoration: none; }
+.more svg { width: 15px; height: 15px; transition: transform .3s var(--ease); }
+.more:hover { text-decoration: underline; text-underline-offset: 4px; }
+.more:hover svg { transform: translateX(3px); }
+.fine { margin: 0; font-size: 14px; line-height: 1.43; color: var(--ink-3); text-wrap: balance; }
+.fine a { color: var(--link); text-decoration: none; }
+.fine a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ------------------------------------------------------------------ the bar */
+.bar { position: fixed; z-index: 50; top: 0; left: 0; right: 0; padding-top: env(safe-area-inset-top, 0px); transition: background .4s var(--ease), border-color .4s var(--ease), backdrop-filter .4s; border-bottom: 1px solid transparent; }
+.bar.scrolled { background: rgba(10, 10, 10, 0.72); -webkit-backdrop-filter: saturate(1.8) blur(20px); backdrop-filter: saturate(1.8) blur(20px); border-bottom-color: var(--line); }
+.bar .wrap { display: flex; align-items: center; gap: 26px; height: 52px; }
+.bar .home { display: flex; align-items: center; gap: 9px; min-height: 44px; margin-right: auto; }
+.bar .home .bird { width: 44px; height: auto; margin: -6px 0 -6px -4px; }
+.bar .home .word { width: 98px; }
+.bar nav { display: flex; gap: 24px; }
+.bar nav a { color: var(--ink-2); font-size: 13px; letter-spacing: -0.005em; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; transition: color .2s; }
+.bar nav a:hover { color: var(--ink); }
+@media (max-width: 880px) { .bar nav { display: none; } }
+
+/* ------------------------------------------------------------------ the opening: the bird live in its light, the wordmark beside it */
+.hero { position: relative; min-height: max(680px, 100svh); display: flex; overflow: hidden; background: var(--bg); }
+.hero-bg, .hero-air, .hero-scene { position: absolute; inset: 0; }
+.hero-glow { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; transform-origin: 50% var(--bird-y, 40%); animation: breathe 11.3s ease-in-out infinite alternate, swell 15.7s ease-in-out infinite alternate; }
+@keyframes breathe { from { opacity: 1; } to { opacity: 0.8; } }
+@keyframes swell { from { transform: scale(1); } to { transform: scale(1.035); } }
+.hero-logo { position: absolute; inset: 0; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
+.hero-still { position: absolute; max-width: none; }
+.hero-dither { position: absolute; inset: 0; pointer-events: none; background: var(--dither, none) 0 0 / var(--dither-size, 128px) repeat; }
+/* the opening: when the bird is ready it grows from half its size to full over 2 s on a very soft ease in and out (by the logo's own
+   padding, colobri.js; the still without WebGL2 here), its outer light comes up round it, and the word arrives as it settles; the words
+   of the page rise in just after the bird starts */
+.hero-scene { opacity: 0; transform-origin: var(--bird-x, 50%) var(--bird-y, 40%); }
+.hero-air { opacity: 0; }
+.hero.live .hero-scene { animation: hero-fade 1.1s cubic-bezier(.25, .6, .3, 1) both; }   /* (the live bird grows by its padding, colobri.js) */
+.hero.flat.live .hero-scene { animation: hero-grow 2s cubic-bezier(.65, 0, .32, 1) both, hero-fade 1.1s cubic-bezier(.25, .6, .3, 1) both; }
+.hero.live .hero-air { animation: hero-fade 1.8s cubic-bezier(.4, 0, .3, 1) .25s both; }
+@keyframes hero-grow { from { transform: scale(0.5); } to { transform: scale(1); } }
+@keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
+.js .hero-copy > * { animation: hero-rise 1s cubic-bezier(.2, .7, .2, 1) both; }
+.js .hero-copy > :nth-child(1) { animation-delay: .35s; }
+.js .hero-copy > :nth-child(2) { animation-delay: .45s; }
+.js .hero-copy > :nth-child(3) { animation-delay: .55s; }
+.js .hero-copy > :nth-child(4) { animation-delay: .65s; }
+@keyframes hero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.hero-in { position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding: calc(72px + env(safe-area-inset-top, 0px)) var(--gr) clamp(48px, 7vh, 88px) var(--gl); pointer-events: none; }
+.hero-in a, .hero-in button { pointer-events: auto; }
+/* the logo as David set it (1 Nov): the bird, and COLOBRI to its right in Futura Round Bold, his blue fading out to the right; measured
+   on his frame in the bird's width (bw): the word 0.552 across, its left 0.342 right of the bird's middle, its top 0.050 below it; the
+   lockup runs 1.394 bw from the bird's left to the word's end and is centred. The bird's light (1.03 bw across, 0.63 high) is held by
+   .hero-mark; the live logo is placed on it (colobri.js) */
+.hero { --bw: min(500px, 38vw, calc((100svh - 410px) / 0.63)); }   /* (what is not the bird takes about 410 px) */
+.hero-lockup { position: relative; flex: none; width: calc(var(--bw) * 1.394); height: calc(var(--bw) * 0.63); margin-top: auto; }
+.hero-mark { position: absolute; left: calc(var(--bw) * -0.015); top: 0; width: calc(var(--bw) * 1.03); height: calc(var(--bw) * 0.63); }
+.hero-word { position: absolute; margin: 0; left: calc(var(--bw) * 0.842); top: calc(var(--bw) * 0.375); width: calc(var(--bw) * 0.552); opacity: 0; transition: opacity 1.4s cubic-bezier(.4, 0, .2, 1) 1.2s; }
+.hero.live .hero-word { opacity: 1; }
+.hero-word .word { width: 100%; color: var(--word-lockup); -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 36%, rgba(0,0,0,.93) 42%, rgba(0,0,0,.84) 48%, rgba(0,0,0,.74) 55%, rgba(0,0,0,.63) 63%, rgba(0,0,0,.52) 71%, rgba(0,0,0,.43) 79%, rgba(0,0,0,.35) 86%, rgba(0,0,0,.29) 93%, rgba(0,0,0,.25) 100%); mask-image: linear-gradient(90deg, #000 0%, #000 36%, rgba(0,0,0,.93) 42%, rgba(0,0,0,.84) 48%, rgba(0,0,0,.74) 55%, rgba(0,0,0,.63) 63%, rgba(0,0,0,.52) 71%, rgba(0,0,0,.43) 79%, rgba(0,0,0,.35) 86%, rgba(0,0,0,.29) 93%, rgba(0,0,0,.25) 100%); }
+.hero-copy { display: flex; flex-direction: column; align-items: center; margin-bottom: auto; }
+.hero h1 { margin-top: clamp(40px, 6vh, 64px); font-size: clamp(36px, 4.9vw, 64px); line-height: 1.05; letter-spacing: -0.018em; }
+.hero .lead { margin-top: 16px; max-width: 34em; color: var(--ink-2); }
+.hero .ctas { margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 28px; }
+.hero .fine { margin-top: 18px; }
+@media (max-width: 760px) {
+  .hero { --bw: min(62vw, 300px); }
+  .hero h1 { font-size: clamp(34px, 9vw, 42px); }
+}
+@media (max-height: 820px) and (min-width: 761px) {
+  .hero { --bw: min(480px, 36vw, calc((100svh - 330px) / 0.63)); }
+  .hero-in { padding-top: 64px; padding-bottom: 36px; }
+  .hero h1 { margin-top: 28px; font-size: clamp(34px, 3.8vw, 50px); }
+  .hero .lead { margin-top: 12px; font-size: 17px; }
+  .hero .ctas { margin-top: 22px; }
+  .hero .fine { margin-top: 12px; }
+}
+
+/* ------------------------------------------------------------------ one frame, many looks */
+.viewer { margin: 0; }
+.v-stage { position: relative; border-radius: var(--r); overflow: hidden; background: #000; aspect-ratio: 2912 / 1632; cursor: zoom-in; touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.v-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .55s var(--ease); }
+.v-stage .v-src { opacity: 0; transition-duration: .25s; }
+.v-stage.holding .v-src { opacity: 1; }
+.chip { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: 999px; background: rgba(0, 0, 0, 0.58); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); color: var(--ink); font-size: 13px; line-height: 1.2; letter-spacing: -0.003em; pointer-events: none; white-space: nowrap; }
+.chip.bl { left: 16px; bottom: 16px; }
+.chip.br { right: 16px; bottom: 16px; color: rgba(245, 245, 247, 0.8); }
+.chip.tl { left: 16px; top: 16px; }
+.chip.tr { right: 16px; top: 16px; }
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sw, #888); box-shadow: 0 0 10px var(--sw, #888); }
+.strip { display: flex; gap: 14px; margin: 22px -6px 0; padding: 8px 6px 6px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; scroll-snap-type: x proximity; }
+.strip::-webkit-scrollbar { display: none; }
+.look { position: relative; flex: none; display: grid; gap: 10px; justify-items: center; padding: 0; border: 0; background: none; color: var(--ink-3); font: 400 14px/1.2 var(--f); cursor: pointer; scroll-snap-align: center; -webkit-tap-highlight-color: transparent; }
+.look:focus-visible { outline: none; }   /* (the ring round the picture is the only mark: the picked look is the focused one) */
+.look .pic { position: relative; display: block; width: 164px; height: 92px; border-radius: 9px; }
+@media (min-width: 900px) { .strip { overflow: visible; } .look { flex: 1 1 0; min-width: 0; } .look .pic { width: 100%; height: auto; aspect-ratio: 16 / 9; } .look .nm { max-width: 100%; overflow: hidden; text-overflow: ellipsis; } }
+.look .pic img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; opacity: 0.8; transition: opacity .3s var(--ease); }
+.look:hover .pic img { opacity: 1; }
+.look .pic::before { inset: -3px; padding: 1.5px; border-radius: 11px; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); opacity: 0; transition: opacity .45s var(--ease); }
+.look .pic::after { inset: -10px; border-radius: 16px; z-index: -1; filter: blur(8px); opacity: 0; transition: opacity .5s var(--ease); }
+.look .pic::before, .look .pic::after { animation-play-state: paused; }
+.look[aria-checked="true"] { color: var(--ink); }
+.look[aria-checked="true"] .pic img { opacity: 1; }
+.look[aria-checked="true"] .pic::before { opacity: 1; animation-play-state: running; }
+.look[aria-checked="true"] .pic::after { opacity: 0.45; animation-play-state: running; }
+.look:focus-visible .pic::after { opacity: 0.8; }
+.look .nm { white-space: nowrap; transition: color .3s; }
+.v-note { margin: 18px auto 0; max-width: 46em; text-align: center; font-size: 14px; line-height: 1.43; color: var(--ink-3); text-wrap: balance; }
+.v-note .touch-hint { display: none; }
+@media (max-width: 760px) { .look .pic { width: 128px; height: 72px; } .chip.br { display: none; } .v-note .touch-hint { display: inline; } }
+
+/* ------------------------------------------------------------------ before and after */
+.compare { position: relative; margin: 0; border-radius: var(--r); overflow: hidden; aspect-ratio: 1680 / 720; background: #000; --split: 50%; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.compare .after { clip-path: inset(0 0 0 var(--split)); }
+.compare .line { position: absolute; z-index: 2; top: 0; bottom: 0; left: var(--split); width: 0; border-left: 1.5px solid rgba(255, 255, 255, 0.92); box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.35); pointer-events: none; }
+.compare .grip { position: absolute; top: 50%; left: 0; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; display: grid; place-items: center; background: rgba(0, 0, 0, 0.5); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1.5px solid rgba(255, 255, 255, 0.92); }
+.compare .grip svg { width: 20px; height: 20px; }
+.compare input { position: absolute; z-index: 3; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; -webkit-appearance: none; appearance: none; touch-action: pan-y; }
+.compare:has(input:focus-visible) .grip { outline: 2px solid var(--mark); outline-offset: 3px; }
+
+/* ------------------------------------------------------------------ not a preset: presets and LUT packs against Colobri */
+.vs { width: 100%; max-width: 1040px; margin: 0 auto; border-collapse: separate; border-spacing: 0; font-size: 17px; line-height: 1.42; }
+.vs th, .vs td { text-align: left; vertical-align: top; padding: 20px 28px 20px 0; border-top: 1px solid var(--line); }
+.vs thead th { border-top: 0; padding-top: 22px; padding-bottom: 16px; font-size: 14px; font-weight: 600; color: var(--ink-3); }
+.vs thead th.c { color: var(--word); }
+.vs tbody th { width: 22%; font-weight: 600; color: var(--ink); }
+.vs td { width: 39%; color: var(--ink-3); text-wrap: pretty; }
+.vs .c { padding-left: 26px; background: var(--card); color: var(--ink); }
+.vs thead .c { border-radius: 18px 18px 0 0; }
+.vs tbody tr:last-child .c { border-radius: 0 0 18px 18px; padding-bottom: 26px; }
+.vs tbody .c { border-top-color: rgba(255, 255, 255, 0.07); }
+@media (max-width: 760px) {
+  .vs, .vs tbody { display: block; }
+  .vs thead { display: none; }
+  .vs tr { display: grid; gap: 8px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .vs th, .vs td, .vs .c, .vs tbody th { display: block; width: auto; padding: 0; border: 0; background: none; }
+  .vs td::before { content: attr(data-l); display: block; font-size: 13px; font-weight: 600; color: var(--ink-3); margin-bottom: 2px; }
+  .vs td.c::before { color: var(--word); }
+  .vs tbody tr:last-child .c { padding-bottom: 0; }
+}
+
+/* ------------------------------------------------------------------ how it works */
+.steps { list-style: none; margin: 0 0 clamp(56px, 7vw, 96px); padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px clamp(28px, 4vw, 64px); }
+.steps li { display: grid; align-content: start; gap: 14px; }
+.steps .n { font-size: clamp(44px, 4.4vw, 64px); font-weight: 600; line-height: 1; letter-spacing: -0.03em; color: var(--mark); font-variant-numeric: tabular-nums; }
+.lede { margin: 0; font-size: 17px; line-height: 1.47; color: var(--ink-3); text-wrap: pretty; }
+.lede h3, .lede p { display: inline; margin: 0; font-size: inherit; line-height: inherit; letter-spacing: inherit; }
+.lede h3 { color: var(--ink); font-weight: 600; }
+@media (max-width: 860px) { .steps { grid-template-columns: 1fr; gap: 36px; } .steps li { grid-template-columns: 64px minmax(0, 1fr); align-items: baseline; } .steps .n { font-size: 44px; } }
+.shot { position: relative; margin: 0; }
+.shot::before { content: ""; position: absolute; inset: 8% 6% -4%; z-index: -1; border-radius: 50%; background: radial-gradient(closest-side, rgba(82, 92, 255, 0.22), rgba(212, 102, 187, 0.1) 55%, transparent); filter: blur(40px); }
+.shot img { width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--line-2); }
+.shot figcaption { margin-top: 18px; text-align: center; font-size: 14px; color: var(--ink-3); }
+
+/* ------------------------------------------------------------------ the names */
+.anatomy { display: grid; justify-items: center; gap: clamp(28px, 3.4vw, 48px); margin: 0 auto clamp(64px, 8vw, 112px); }
+.anatomy .nm { margin: 0; font-size: clamp(56px, 9.4vw, 136px); font-weight: 600; letter-spacing: -0.035em; line-height: 1; white-space: nowrap; }
+.anatomy .nm .colon { color: var(--ink-3); }
+.parts { width: 100%; max-width: 860px; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(20px, 3.4vw, 48px); }
+.parts > div { display: grid; align-content: start; gap: 6px; text-align: left; }
+.parts dt { font-size: 14px; font-weight: 600; color: var(--mark); }
+.parts dd { margin: 0; color: var(--ink-3); font-size: 17px; line-height: 1.47; text-wrap: pretty; }
+.parts dd b { color: var(--ink); font-weight: 600; font-size: 28px; line-height: 1.15; letter-spacing: -0.01em; display: block; margin-bottom: 4px; }
+@media (max-width: 620px) { .parts { grid-template-columns: 1fr; gap: 24px; } }
+.birds { list-style: none; margin: 0 0 clamp(64px, 8vw, 112px); padding: 0; display: grid; grid-template-columns: repeat(15, minmax(0, 1fr)); gap: 0; border-radius: 12px; overflow: hidden; }
+.birds li { display: grid; align-content: start; gap: 10px; justify-items: center; text-align: center; }
+.birds .sw { display: block; width: 100%; height: 56px; background: var(--c); }
+.birds .bn { font-size: 12px; letter-spacing: -0.012em; color: var(--ink); line-height: 1.25; padding: 0 1px; overflow-wrap: anywhere; }
+@media (min-width: 981px) { .birds .bn { overflow-wrap: normal; white-space: nowrap; } }
+.birds .bc { font-size: 12px; color: var(--ink-3); margin-top: -6px; }
+@media (max-width: 980px) { .birds { grid-template-columns: repeat(5, minmax(0, 1fr)); row-gap: 22px; border-radius: 0; } .birds .sw { height: 38px; border-radius: 8px; width: calc(100% - 8px); } }
+@media (max-width: 560px) { .birds { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.trio { margin: 0 0 clamp(48px, 6vw, 72px); }
+.trio:last-child { margin-bottom: 0; }
+.trio h3 { margin-bottom: 20px; text-align: center; font-size: 21px; }
+.trio .row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.trio figure { margin: 0; }
+.trio img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; }
+.trio figcaption { margin-top: 10px; text-align: center; font-size: 14px; color: var(--ink-2); }
+@media (max-width: 640px) { .trio .row { grid-template-columns: 1fr; gap: 18px; } }
+
+/* ------------------------------------------------------------------ the gallery */
+.gal { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }   /* (the first spans both columns) */
+.gal figure { position: relative; margin: 0; border-radius: var(--r); overflow: hidden; background: #000; aspect-ratio: 1456 / 816; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.gal figure.big { grid-column: 1 / -1; }
+.gal img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.gal .src { opacity: 0; transition: opacity .45s var(--ease); }
+.gal figure.as-shot .src { opacity: 1; }
+@media (hover: hover) { .gal figure:hover .src { opacity: 1; } }
+.gal .chip .as { display: none; }
+.gal figure.as-shot .chip .as { display: inline; }
+.gal figure.as-shot .chip .gr { display: none; }
+@media (hover: hover) { .gal figure:hover .chip .as { display: inline; } .gal figure:hover .chip .gr { display: none; } }
+@media (max-width: 700px) { .gal { grid-template-columns: 1fr; } }
+
+/* ------------------------------------------------------------------ why: four numbers, then six reasons */
+.stats { list-style: none; margin: 0 0 clamp(72px, 9vw, 128px); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px clamp(24px, 3vw, 48px); }
+.stats li { display: grid; align-content: start; gap: 12px; }
+.stats b { display: block; font-size: clamp(64px, 7.4vw, 104px); font-weight: 600; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums;
+  background: linear-gradient(100deg, #6cb8ff 0%, #8f9bff 38%, #c48bf0 68%, #ff8f8a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stats span { color: var(--ink-3); font-size: 17px; line-height: 1.4; max-width: 15em; text-wrap: pretty; }
+.stats span strong { color: var(--ink); font-weight: 600; }
+@media (max-width: 960px) { .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.feats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 44px clamp(28px, 4vw, 64px); }
+.feats li { padding-top: 22px; border-top: 1px solid var(--line-2); }
+@media (max-width: 960px) { .feats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 620px) { .feats { grid-template-columns: 1fr; gap: 32px; } }
+
+/* ------------------------------------------------------------------ editors and the details */
+.eds { list-style: none; margin: 0 0 clamp(64px, 8vw, 104px); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.eds li { display: grid; align-content: start; gap: 10px; padding: 30px 26px 32px; border-radius: var(--r); background: var(--card); }
+.eds .kind { font-size: 14px; font-weight: 600; color: var(--mark); }
+.eds h3 { font-size: 24px; line-height: 1.17; letter-spacing: -0.012em; }
+.eds p { margin: 0; color: var(--ink-3); font-size: 16px; line-height: 1.5; text-wrap: pretty; }
+@media (max-width: 1060px) { .eds { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .eds { grid-template-columns: 1fr; } }
+.spec { margin: 0; display: grid; grid-template-columns: 220px minmax(0, 1fr); border-top: 1px solid var(--line-2); }
+.spec dt, .spec dd { margin: 0; padding: 20px 0; border-bottom: 1px solid var(--line); }
+.spec dt { color: var(--ink); font-weight: 600; font-size: 17px; }
+.spec dd { color: var(--ink-3); font-size: 17px; text-wrap: pretty; }
+@media (max-width: 700px) { .spec { grid-template-columns: 1fr; } .spec dt { padding-bottom: 4px; border-bottom: 0; } .spec dd { padding-top: 0; } }
+
+/* ------------------------------------------------------------------ the licence */
+.buy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; max-width: 1060px; margin: 0 auto; padding: clamp(30px, 5vw, 64px); border-radius: 28px; background: var(--card); }
+.price { margin: 14px 0 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; color: var(--ink-3); font-size: 17px; }
+.price b { font-size: clamp(72px, 8vw, 104px); font-weight: 600; line-height: .95; letter-spacing: -0.045em; color: var(--ink); }
+.incl { list-style: none; margin: 28px 0 0; padding: 0; }
+.incl li { display: flex; gap: 12px; padding: 13px 0; border-top: 1px solid var(--line); color: var(--ink); font-size: 17px; line-height: 1.4; }
+.incl li svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--mark); }
+.go { display: grid; gap: 14px; }
+.go .btn { width: 100%; }
+.go .fine { text-wrap: pretty; }
+@media (max-width: 860px) { .buy { grid-template-columns: 1fr; } }
+
+/* ------------------------------------------------------------------ questions */
+.faq { max-width: 860px; margin: 0 auto; border-top: 1px solid var(--line-2); }
+.faq details { border-bottom: 1px solid var(--line-2); }
+.faq summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 24px 2px; cursor: pointer; list-style: none; font-size: 19px; font-weight: 600; letter-spacing: -0.008em; color: var(--ink); }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary svg { flex: none; width: 18px; height: 18px; color: var(--ink-3); transition: transform .35s var(--ease); }
+.faq details[open] summary svg { transform: rotate(45deg); }
+.faq .a { padding: 0 2px 26px; color: var(--ink-3); max-width: 62ch; }
+.faq .a p { margin: 0; text-wrap: pretty; }
+.faq .a p + p { margin-top: 10px; }
+
+/* ------------------------------------------------------------------ the end */
+.end { text-align: center; }
+.end .bird { position: relative; width: min(340px, 72vw); aspect-ratio: 3 / 2; margin: 0 auto 8px; }
+.end .bird > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+.end .bird img { object-fit: contain; }
+.end h2 { max-width: 16ch; margin: 0 auto; font-size: clamp(38px, 5.4vw, 72px); line-height: 1.05; letter-spacing: -0.02em; }
+.end .ctas { margin-top: 36px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px 28px; }
+.end .fine { margin-top: 18px; }
+footer { border-top: 1px solid var(--line); padding-block: 40px calc(40px + env(safe-area-inset-bottom, 0px)); font-size: 12px; line-height: 1.5; color: var(--ink-3); }
+footer .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; align-items: start; }
+footer .foot-mark { display: flex; align-items: center; gap: 9px; margin: 0 0 14px; }
+footer .foot-mark .bird { width: 40px; height: auto; margin: -6px 0 -6px -4px; }
+footer .word { width: 92px; }
+footer p { margin: 0; max-width: 46ch; text-wrap: pretty; }
+footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 22px; justify-content: flex-end; }
+footer ul a, footer ul button { display: inline-flex; align-items: center; min-height: 36px; padding: 0; border: 0; background: none; color: var(--ink-2); font: inherit; text-decoration: none; cursor: pointer; }
+footer ul a:hover, footer ul button:hover { color: var(--ink); }
+footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+footer .legal a { color: var(--ink-2); text-decoration: none; }
+footer .legal a:hover { color: var(--ink); }
+@media (max-width: 760px) { footer .wrap { grid-template-columns: 1fr; } footer ul { justify-content: flex-start; } }
+
+/* ------------------------------------------------------------------ arriving: sections rise into place as they come into view */
+.js .rise { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+.js .rise.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .rise { opacity: 1; transform: none; transition: none; }
+  .lit::before, .lit::after, .hero-glow { animation: none !important; }
+  .hero.live .hero-scene, .hero.flat.live .hero-scene, .hero.live .hero-air { animation: hero-fade .6s ease both; }
+  .hero-word { transition-delay: .2s; }
+  .js .hero-copy > * { animation: hero-fade .6s ease both; animation-delay: 0s !important; }
+  .btn, .more svg, .v-stage img { transition: none; }
+}
+</style>
+<script>document.documentElement.classList.add('js');</script>
+<script src="site.js" defer></script>
+<script src="colobri-logo.js" defer></script>
+<script src="colobri-light.js" defer></script>
+<script src="colobri.js" defer></script>
+</head>
+<body data-cb-page="colobri">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="cb-word" viewBox="0 -687.0 6189.1 711.0"><path fill="currentColor" d="M510 -620C510 -641 509 -644 502 -649C484 -663 400 -681 354 -681C156 -681 0 -525 0 -328C0 -238 30 -159 88 -98C157 -25 257 18 357 18C399 18 421 14 492 -9C497 -10 499 -11 502 -13C509 -18 510 -21 510 -42V-162C510 -188 507 -196 495 -196C491 -196 487 -194 483 -191C448 -162 412 -150 363 -150C257 -150 181 -224 181 -329C181 -436 256 -512 361 -512C404 -512 439 -500 478 -472C483 -468 487 -466 490 -466C505 -466 510 -475 510 -500Z M1298.49 -687C1205.49 -687 1117.49 -657 1054.49 -603C975.49 -536 929.49 -438 929.49 -338C929.49 -130 1085.49 24 1295.49 24C1393.49 24 1475.49 -4 1542.49 -60C1622.49 -127 1667.49 -226 1667.49 -332C1667.49 -424 1633.49 -510 1571.49 -575C1500.49 -650 1409.49 -687 1298.49 -687ZM1298.49 -519C1402.49 -519 1486.49 -435 1486.49 -332C1486.49 -228 1402.49 -144 1298.49 -144C1195.49 -144 1110.49 -228 1110.49 -329C1110.49 -435 1193.49 -519 1298.49 -519Z M2296.3432222222223 -147V-634C2297.3432222222223 -662 2291.3432222222223 -668 2263.3432222222223 -667H2156.3432222222223C2128.3432222222223 -668 2122.3432222222223 -662 2123.3432222222223 -634V-33C2122.3432222222223 -5 2128.3432222222223 1 2156.3432222222223 0H2471.3432222222223C2499.3432222222223 1 2505.3432222222223 -5 2504.3432222222223 -33V-114C2505.3432222222223 -142 2499.3432222222223 -148 2471.3432222222223 -147Z M3255.9634444444446 -687C3162.9634444444446 -687 3074.9634444444446 -657 3011.9634444444446 -603C2932.9634444444446 -536 2886.9634444444446 -438 2886.9634444444446 -338C2886.9634444444446 -130 3042.9634444444446 24 3252.9634444444446 24C3350.9634444444446 24 3432.9634444444446 -4 3499.9634444444446 -60C3579.9634444444446 -127 3624.9634444444446 -226 3624.9634444444446 -332C3624.9634444444446 -424 3590.9634444444446 -510 3528.9634444444446 -575C3457.9634444444446 -650 3366.9634444444446 -687 3255.9634444444446 -687ZM3255.9634444444446 -519C3359.9634444444446 -519 3443.9634444444446 -435 3443.9634444444446 -332C3443.9634444444446 -228 3359.9634444444446 -144 3255.9634444444446 -144C3152.9634444444446 -144 3067.9634444444446 -228 3067.9634444444446 -329C3067.9634444444446 -435 3150.9634444444446 -519 3255.9634444444446 -519Z M4113.8166666666675 -667C4085.816666666667 -668 4079.816666666667 -662 4080.816666666667 -634V-33C4079.816666666667 -5 4085.816666666667 1 4113.8166666666675 0H4358.8166666666675C4500.8166666666675 0 4588.8166666666675 -72 4588.8166666666675 -189C4588.8166666666675 -240 4572.8166666666675 -286 4545.8166666666675 -314C4523.8166666666675 -336 4500.8166666666675 -346 4452.8166666666675 -356C4504.8166666666675 -386 4525.8166666666675 -426 4525.8166666666675 -493C4525.8166666666675 -605 4459.8166666666675 -667 4337.8166666666675 -667ZM4253.8166666666675 -404V-534H4285.8166666666675C4338.8166666666675 -534 4366.8166666666675 -512 4366.8166666666675 -469C4366.8166666666675 -427 4338.8166666666675 -404 4285.8166666666675 -404ZM4253.8166666666675 -135V-275H4288.8166666666675C4345.8166666666675 -275 4360.8166666666675 -273 4380.8166666666675 -263C4400.8166666666675 -253 4413.8166666666675 -230 4413.8166666666675 -205C4413.8166666666675 -156 4377.8166666666675 -135 4291.8166666666675 -135Z M5388.66988888889 -273C5428.66988888889 -283 5450.66988888889 -293 5473.66988888889 -313C5511.66988888889 -346 5534.66988888889 -402 5534.66988888889 -461C5534.66988888889 -516 5513.66988888889 -570 5477.66988888889 -608C5438.66988888889 -649 5388.66988888889 -667 5313.66988888889 -667H5077.66988888889C5049.66988888889 -668 5043.66988888889 -662 5044.66988888889 -634V-33C5043.66988888889 -5 5049.66988888889 1 5077.66988888889 0H5184.66988888889C5212.66988888889 1 5218.66988888889 -5 5217.66988888889 -33V-256L5369.66988888889 -20C5382.66988888889 0 5382.66988888889 0 5406.66988888889 0H5544.66988888889C5569.66988888889 0 5578.66988888889 -5 5578.66988888889 -19C5578.66988888889 -25 5576.66988888889 -29 5565.66988888889 -43ZM5217.66988888889 -368V-534H5249.66988888889C5282.66988888889 -534 5307.66988888889 -527 5323.66988888889 -516C5342.66988888889 -502 5356.66988888889 -475 5356.66988888889 -451C5356.66988888889 -427 5342.66988888889 -399 5323.66988888889 -386C5307.66988888889 -374 5282.66988888889 -368 5249.66988888889 -368Z M6189.037111111112 -634C6190.037111111112 -662 6184.037111111112 -668 6156.037111111112 -667H6049.037111111112C6021.037111111112 -668 6015.037111111112 -662 6016.037111111112 -634V-33C6015.037111111112 -5 6021.037111111112 1 6049.037111111112 0H6156.037111111112C6184.037111111112 1 6190.037111111112 -5 6189.037111111112 -33Z"/></symbol></defs></svg>
+
+<header class="bar" id="bar">
+  <div class="wrap">
+    <a class="home" href="#top" aria-label="Colobri, back to the top"><img class="bird" src="images/colobri-bird-132.webp" width="132" height="101" alt=""><svg class="word" viewBox="0 0 6189.1 711" aria-hidden="true"><use href="#cb-word"/></svg></a>
+    <nav aria-label="Sections">
+      <a href="#looks">Looks</a>
+      <a href="#different">Not a preset</a>
+      <a href="#how">How it works</a>
+      <a href="#editors">Editors</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn small lit" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try free</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-air"><canvas class="hero-glow"></canvas></div>
+    <div class="hero-scene"><div class="hero-logo"></div></div>
+    <div class="hero-dither"></div>
+  </div>
+  <div class="hero-in">
+    <div class="hero-lockup" role="img" aria-label="Colobri">
+      <div class="hero-mark"></div>
+      <p class="hero-word"><svg class="word" viewBox="0 0 6189.1 711" aria-hidden="true"><use href="#cb-word"/></svg></p>
+    </div>
+    <div class="hero-copy">
+      <h1 id="hero-title">Ten looks, composed for your shot.</h1>
+      <p class="lead">Colobri reads your frame and composes ten finished color grades for it in seconds. Not presets: looks made for this shot. Pick one, refine it and put it on your clip in Premiere Pro, DaVinci Resolve or Final Cut Pro.</p>
+      <div class="ctas">
+        <a class="btn lit" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
+        <a class="more" href="#looks">See it on a frame<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      </div>
+      <p class="fine">Free for 7 days, then <a href="#pricing">€59 once</a>. No subscription.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="looks" aria-labelledby="looks-title">
+  <div class="wrap">
+    <div class="head rise">
+      <p class="eyebrow">One frame, many looks</p>
+      <h2 id="looks-title">Press Generate.<br> Pick your look.</h2>
+      <p class="lead"><strong>Every press composes ten looks for the frame you open,</strong> each from a different family, each solved for its exposure, its black and white and its skin. Here is one frame in seven of them.</p>
+    </div>
+    <figure class="viewer rise" id="viewer">
+      <div class="v-stage" id="vStage">
+        <img class="v-a" alt="" width="2912" height="1632" decoding="async">
+        <img class="v-b" alt="" width="2912" height="1632" decoding="async">
+        <img class="v-src" alt="" width="2912" height="1632" decoding="async" loading="lazy">
+        <span class="chip bl" id="vName" aria-live="polite"></span>
+        <span class="chip br" id="vHint">Hold it to see the raw material without a COLOBRI grade</span>
+      </div>
+      <div class="strip" id="strip" role="radiogroup" aria-label="Looks"></div>
+      <figcaption class="v-note"><span class="touch-hint">Hold the picture to see the raw material without a COLOBRI grade. </span>The frame as shot, and seven of the looks Colobri composed for it. Each name is the look's bird, then its key and contrast.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" id="compare-sec" aria-labelledby="compare-title">
+  <div class="wrap">
+    <div class="head split rise">
+      <p class="eyebrow">Before and after</p>
+      <h2 id="compare-title">Composed for the frame.<br> Not pasted on it.</h2>
+      <p class="lead"><strong>A preset puts the same numbers on every shot,</strong> wherever its blacks sit and however hot its highlights run. Colobri starts from the frame. Drag across it: as shot on the left, Sylph 5:7 on the right.</p>
+    </div>
+    <figure class="compare rise" id="compare">
+      <img class="before" src="images/compare/c-ungraded-1680.webp" srcset="images/compare/c-ungraded-1024.webp 1024w, images/compare/c-ungraded-1680.webp 1680w" sizes="(max-width: 1244px) 100vw, 1200px" width="1680" height="720" alt="A river winding through a green delta, seen from high above, as shot." loading="lazy" decoding="async">
+      <img class="after" src="images/compare/c-sylph-5-7-1680.webp" srcset="images/compare/c-sylph-5-7-1024.webp 1024w, images/compare/c-sylph-5-7-1680.webp 1680w" sizes="(max-width: 1244px) 100vw, 1200px" width="1680" height="720" alt="The same river graded in Sylph 5:7: deeper greens, a copper river and clean highlights." loading="lazy" decoding="async">
+      <span class="chip tl">As shot</span>
+      <span class="chip tr">Sylph 5:7</span>
+      <div class="line" aria-hidden="true"><span class="grip"><svg viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5 3 10l5 5M12 5l5 5-5 5"/></svg></span></div>
+      <input type="range" min="0" max="100" value="50" step="0.1" aria-label="Move the line between the frame as shot and the graded frame">
+    </figure>
+  </div>
+</section>
+
+<section class="sec" id="different" aria-labelledby="different-title">
+  <div class="wrap">
+    <div class="head rise">
+      <p class="eyebrow">Not a preset</p>
+      <h2 id="different-title">Presets were made for someone else's shot.</h2>
+      <p class="lead"><strong>Colobri's looks are made for yours.</strong> It measures the frame first, then builds every grade around it, so the look fits before you touch a slider.</p>
+    </div>
+    <table class="vs rise">
+      <thead><tr><th scope="col"><span class="sr">What</span></th><th scope="col">Presets and LUT packs</th><th scope="col" class="c">Colobri</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Made for</th><td data-l="Presets and LUT packs">Someone else's footage, under someone else's light.</td><td class="c" data-l="Colobri">The frame you open, measured before a single look is made.</td></tr>
+        <tr><th scope="row">Blacks and highlights</th><td data-l="Presets and LUT packs">Wherever the preset puts them. Shadows crush, skies clip.</td><td class="c" data-l="Colobri">Set from your frame's own levels. Nothing crushed, nothing clipped.</td></tr>
+        <tr><th scope="row">Skin</th><td data-l="Presets and LUT packs">Turns with the look.</td><td class="c" data-l="Colobri">Held inside healthy skin tones in every look.</td></tr>
+        <tr><th scope="row">Finding the look</th><td data-l="Presets and LUT packs">Scroll through hundreds, then fix the one you chose.</td><td class="c" data-l="Colobri">Ten finished looks in seconds, each from a different family.</td></tr>
+        <tr><th scope="row">Names</th><td data-l="Presets and LUT packs">"Cinematic 04".</td><td class="c" data-l="Colobri">A hummingbird for the color, then its key and contrast: Sylph 5:8.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="sec" id="how" aria-labelledby="how-title">
+  <div class="wrap">
+    <div class="head left rise">
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-title">Three steps.<br> The first two take seconds.</h2>
+    </div>
+    <ol class="steps rise">
+      <li><span class="n" aria-hidden="true">1</span><div class="lede"><h3>Open a frame.</h3> <p>A still or a clip: camera log, Rec.709, phone footage or AI-generated. Inside Premiere Pro, DaVinci Resolve or Final Cut Pro, Colobri reads the frame under your playhead.</p></div></li>
+      <li><span class="n" aria-hidden="true">2</span><div class="lede"><h3>Press Generate.</h3> <p>Ten looks, each from a different family, composed for that exact frame. Press again for ten new ones. No two presses are alike.</p></div></li>
+      <li><span class="n" aria-hidden="true">3</span><div class="lede"><h3>Refine and deliver.</h3> <p>Trim the look the way a colorist would, then export a .cube LUT, a full-resolution still or the graded clip, or put it on the clip in your timeline in one press.</p></div></li>
+    </ol>
+    <figure class="shot rise">
+      <img src="images/app/colobri-app-1440.webp" srcset="images/app/colobri-app-1440.webp 1440w, images/app/colobri-app-2880.webp 2880w" sizes="(max-width: 1244px) 100vw, 1200px" width="2880" height="1800" alt="The Colobri app with a frame open, a man in a dark suit in a crowded street: the picked look, Coronet 5:6, in the viewer, the other looks in a strip along the bottom, and the scopes, layers and refine controls on the right." loading="lazy" decoding="async">
+      <figcaption>The picked look in the viewer, the others along the bottom, and everything to refine it on the right.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="sec" id="names" aria-labelledby="names-title">
+  <div class="wrap">
+    <div class="head rise">
+      <p class="eyebrow">Named after hummingbirds</p>
+      <h2 id="names-title">Every look has a bird and two numbers.</h2>
+      <p class="lead"><strong>The bird is the look's color.</strong> Each one carries that color in its plumage, and a color always gets the same bird, so you come to know them. The numbers are the key and the contrast, with 5 as normal on both.</p>
+    </div>
+    <div class="anatomy rise">
+      <p class="nm code">Hillstar 4<span class="colon">:</span>7</p>
+      <dl class="parts">
+        <div><dt>The bird</dt><dd><b>Hillstar</b>Cyan in the shadows. The bird is the color of the look.</dd></div>
+        <div><dt>The key</dt><dd><b>4</b>A third of a stop darker. Each step is a third of a stop; 5 is normal.</dd></div>
+        <div><dt>The contrast</dt><dd><b>7</b>Punchy. Each step is about 6.5% more or less contrast; 5 is neutral.</dd></div>
+      </dl>
+    </div>
+    <ul class="birds rise" aria-label="The birds and their colors">
+      <li style="--c:#c8464b"><span class="sw"></span><span class="bn">Rubythroat</span><span class="bc">red</span></li>
+      <li style="--c:#d06a3c"><span class="sw"></span><span class="bn">Firecrown</span><span class="bc">ember</span></li>
+      <li style="--c:#cf8e3e"><span class="sw"></span><span class="bn">Topaz</span><span class="bc">amber</span></li>
+      <li style="--c:#c9ae45"><span class="sw"></span><span class="bn">Sungem</span><span class="bc">gold</span></li>
+      <li style="--c:#8f9a45"><span class="sw"></span><span class="bn">Metaltail</span><span class="bc">olive</span></li>
+      <li style="--c:#4f9a5b"><span class="sw"></span><span class="bn">Emerald</span><span class="bc">green</span></li>
+      <li style="--c:#3a9a8f"><span class="sw"></span><span class="bn">Sylph</span><span class="bc">teal</span></li>
+      <li style="--c:#3b98bd"><span class="sw"></span><span class="bn">Hillstar</span><span class="bc">cyan</span></li>
+      <li style="--c:#4a6fd0"><span class="sw"></span><span class="bn">Sapphirewing</span><span class="bc">blue</span></li>
+      <li style="--c:#7656cc"><span class="sw"></span><span class="bn">Violetear</span><span class="bc">violet</span></li>
+      <li style="--c:#a552c1"><span class="sw"></span><span class="bn">Woodstar</span><span class="bc">orchid</span></li>
+      <li style="--c:#a64f8f"><span class="sw"></span><span class="bn">Coronet</span><span class="bc">plum</span></li>
+      <li style="--c:#c4506f"><span class="sw"></span><span class="bn">Sunangel</span><span class="bc">rose</span></li>
+      <li style="--c:linear-gradient(180deg,#4a4a4d,#0e0e10)"><span class="sw"></span><span class="bn">Jacobin</span><span class="bc">neutral, punchy</span></li>
+      <li style="--c:linear-gradient(180deg,#7a7a7e,#3a3a3e)"><span class="sw"></span><span class="bn">Hermit</span><span class="bc">neutral, soft</span></li>
+    </ul>
+    <div class="trio rise">
+      <h3>One bird, more and more contrast</h3>
+      <div class="row">
+        <figure><img src="images/names/g-jacobin-5-7.webp" width="960" height="538" alt="A man on a rope bridge above a crowded market, graded Jacobin 5:7." loading="lazy" decoding="async"><figcaption class="code">Jacobin 5:7</figcaption></figure>
+        <figure><img src="images/names/g-jacobin-5-8.webp" width="960" height="538" alt="The same frame in Jacobin 5:8, with more contrast." loading="lazy" decoding="async"><figcaption class="code">Jacobin 5:8</figcaption></figure>
+        <figure><img src="images/names/g-jacobin-5-9.webp" width="960" height="538" alt="The same frame in Jacobin 5:9, punchier still." loading="lazy" decoding="async"><figcaption class="code">Jacobin 5:9</figcaption></figure>
+      </div>
+    </div>
+    <div class="trio rise">
+      <h3>One key and contrast, three birds</h3>
+      <div class="row">
+        <figure><img src="images/names/b-emerald-5-7.webp" width="960" height="538" alt="A creature curled around a mottled shell, graded Emerald 5:7, green in the shadows." loading="lazy" decoding="async"><figcaption class="code">Emerald 5:7</figcaption></figure>
+        <figure><img src="images/names/b-hillstar-5-7.webp" width="960" height="538" alt="The same frame in Hillstar 5:7, cyan in the shadows." loading="lazy" decoding="async"><figcaption class="code">Hillstar 5:7</figcaption></figure>
+        <figure><img src="images/names/b-sapphirewing-5-7.webp" width="960" height="538" alt="The same frame in Sapphirewing 5:7, blue in the shadows." loading="lazy" decoding="async"><figcaption class="code">Sapphirewing 5:7</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="gallery" aria-labelledby="gallery-title">
+  <div class="wrap">
+    <div class="head split rise">
+      <p class="eyebrow">Graded with Colobri</p>
+      <h2 id="gallery-title">Every frame on this page.</h2>
+      <p class="lead"><strong>Each one was graded in Colobri.</strong> <span class="hint-hover">Point at a frame to see the raw material without the grade.</span><span class="hint-touch" hidden>Touch a frame to see the raw material without the grade.</span></p>
+    </div>
+    <div class="gal" id="gal"></div>
+  </div>
+</section>
+
+<section class="sec" id="why" aria-labelledby="why-title">
+  <div class="wrap">
+    <div class="head left rise">
+      <p class="eyebrow">Why Colobri</p>
+      <h2 id="why-title">Built the way a colorist thinks.</h2>
+    </div>
+    <ul class="stats rise">
+      <li><b>10</b><span><strong>looks for every frame,</strong> each composed for it, every time you press.</span></li>
+      <li><b>65</b><span><strong>points in the LUT</strong> the viewer runs, the same one you export.</span></li>
+      <li><b>0</b><span><strong>frames uploaded.</strong> Colobri runs on your device.</span></li>
+      <li><b>7</b><span><strong>days free,</strong> with every feature and no card.</span></li>
+    </ul>
+    <ul class="feats rise">
+      <li><div class="lede"><h3>Composed for this shot.</h3> <p>Every look is built from your frame: its key, its black and white, the color of its neutrals, where the skin is. Nothing is pasted on top of it.</p></div></li>
+      <li><div class="lede"><h3>Nothing crushed, nothing clipped.</h3> <p>Black and white are set from the frame's own levels, so detail that was there stays there. Skin is held inside healthy skin tones in every look.</p></div></li>
+      <li><div class="lede"><h3>Film, modelled from data.</h3> <p>Negative and print are built from published characteristic data: spectral sensitivities, curves and dye densities, and every print is timed to grey the way a lab times it. Or work in clean digital.</p></div></li>
+      <li><div class="lede"><h3>Refine it like a colorist.</h3> <p>Amount up to 200%, exposure, contrast, warmth, tint, saturation, shadows, highlights, whites, blacks, density and skin hold, trimmed inside the grade, so a correction never fights the look.</p></div></li>
+      <li><div class="lede"><h3>Variations that vary.</h3> <p>Ask any look for variations and get a new set, each one a clear move: warmer, cooler, more contrast, softer, richer, lighter, darker. Each is labelled, so you know what you are comparing.</p></div></li>
+      <li><div class="lede"><h3>Your footage stays with you.</h3> <p>Frames are never uploaded, so nothing waits on a server, and every look you keep teaches Colobri your taste, on your device too.</p></div></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec" id="editors" aria-labelledby="editors-title">
+  <div class="wrap">
+    <div class="head split rise">
+      <p class="eyebrow">Workflow</p>
+      <h2 id="editors-title">In your editor.<br> In your browser.</h2>
+      <p class="lead"><strong>A panel in Premiere Pro and DaVinci Resolve Studio, and an effect in Final Cut Pro.</strong> Colobri reads the frame under your playhead and puts the look on your clip, and your editor renders it, in real time and in the final export.</p>
+    </div>
+    <ul class="eds rise">
+      <li><span class="kind">Panel</span><h3>Premiere Pro</h3><p>2025 (25.6) or later, on a Mac or a PC. Adds Lumetri Color to the selected clips and copies the look's LUT, ready to pick under Look.</p></li>
+      <li><span class="kind">Workflow integration</span><h3>DaVinci Resolve Studio</h3><p>Version 18 or later, on a Mac or a PC. Puts the look on a node of the clip, its color group or the whole timeline.</p></li>
+      <li><span class="kind">Effect</span><h3>Final Cut Pro</h3><p>10.6 or later, on macOS 13 Ventura or later. The look is stored in the clip, so it travels with the library and renders in every export.</p></li>
+      <li><span class="kind">No install</span><h3>Your browser</h3><p>On a Mac, a PC, a tablet or a phone. Open a still or a clip and grade it right there, with the same looks and the same exports.</p></li>
+    </ul>
+    <dl class="spec rise">
+      <dt>Reads</dt><dd>ARRI LogC3 and LogC4, Sony S-Log3, Canon Log 3, Panasonic V-Log, RED Log3G10, Blackmagic Film Gen 5, Apple Log, DaVinci Intermediate, Rec.709 and sRGB, and AI-generated stills and clips.</dd>
+      <dt>Delivers for</dt><dd>Rec.709 Gamma 2.4, Rec.709-A, sRGB and Display P3. The viewer, the scopes and every export follow your choice.</dd>
+      <dt>Exports</dt><dd>.cube LUTs at 33 and 65 points, full-resolution PNG and JPEG stills, and the graded clip. The viewer runs the same 65-point LUT you export, so what you see is what you deliver.</dd>
+      <dt>Scopes</dt><dd>Parade, histogram and vectorscope, a split compare and one-tap bypass.</dd>
+      <dt>Layers</dt><dd>Stack looks, and generate new ones on top of the grade you have built.</dd>
+      <dt>Saved looks</dt><dd>Keep a look with its refinements for any project, with a picture of the shot you saved it on. On a new frame it is fitted to the shot, so the blacks and highlights still hold.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="sec" id="pricing" aria-labelledby="pricing-title">
+  <div class="wrap">
+    <div class="buy rise">
+      <div>
+        <p class="eyebrow">One licence</p>
+        <h2 id="pricing-title" class="sr">Pricing</h2>
+        <p class="price"><b>€59</b>once, no subscription</p>
+        <ul class="incl">
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Colobri in your browser, and inside Premiere Pro, DaVinci Resolve Studio and Final Cut Pro</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Every Colobri 1.x version</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>For you, on up to two computers, Mac or PC</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Free for 7 days first, with every feature and no card</li>
+        </ul>
+      </div>
+      <div class="go">
+        <a class="btn lit" href="download/Colobri-plugins-1.4.0.zip" download data-cb-track="StartTrial" data-cb-what="Colobri plugins">Download free trial</a>
+        <a class="btn solid" href="mailto:david@nakaya.world?subject=Buying%20Colobri" data-cb-buy data-cb-track="InitiateCheckout">Buy for €59</a>
+        <p class="fine">One download for Mac and PC, with an installer for each editor. Start with Read me first. Rather not install anything? <a href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Open Colobri in your browser</a>: the same trial, and the same licence unlocks it.</p>
+        <p class="fine" data-cb-interim>Checkout opens shortly. Until then, Buy writes to david@nakaya.world, and you get the link to buy the moment it opens.</p>
+        <p class="fine">The price includes VAT. Checkout is by Lemon Squeezy, our reseller: card, PayPal, Apple Pay or Google Pay. Not for you? Write within 14 days for a full refund. <a href="terms/">Terms</a> · <a href="privacy/">Privacy</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="faq" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="head rise">
+      <p class="eyebrow">Questions</p>
+      <h2 id="faq-title">Good to know.</h2>
+    </div>
+    <div class="faq rise">
+      <details><summary>How does the free trial work?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>For 7 days you get every feature, in the browser and in every editor, with no card. After that Colobri still composes and shows looks, and every look you applied stays on your clips, but exporting and applying looks need a licence.</p></div></details>
+      <details><summary>How do I get my licence?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>Your key arrives by e-mail the moment you buy. Paste it into Colobri once in each editor and browser you use. Colobri checks it online once, then works offline.</p></div></details>
+      <details><summary>Does my footage leave my computer?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>No. Colobri runs on your device, in your browser or in your editor. Frames are never uploaded, so there is no queue and nothing to wait for.</p></div></details>
+      <details><summary>What footage can I grade?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>Camera log from ARRI, Sony, Canon, Panasonic, RED, Blackmagic and Apple, DaVinci Intermediate, Rec.709 and sRGB, phone footage, and AI-generated stills and clips. Pick the source and the output once, and the viewer, the scopes and every export follow.</p></div></details>
+      <details><summary>Is the look the same in my editor as in Colobri?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>Yes. The viewer runs the same 65-point LUT you export, baked from the same code, and the plugins put exactly that look on your clip. No surprises when it lands in Resolve, Premiere Pro or Final Cut Pro.</p></div></details>
+      <details><summary>What do the names mean?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>The bird is the look's color, taken from the tint in its shadows (or its highlights, when the shadows are clean): Sylph is teal, Sapphirewing blue, Firecrown ember. Neutral looks are Jacobin when they are punchy and Hermit when they are soft.</p><p>The first number is the key: each step is a third of a stop, 5 is normal. The second is the contrast: each step is about 6.5%, 5 is neutral. When two looks in one set would share a name, a third number tells their saturation apart.</p></div></details>
+      <details><summary>Can I use it on more than one computer?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>Yes: one licence is for you, on up to two computers, Mac or PC, in the browser and every editor.</p></div></details>
+      <details><summary>What if it is not for me?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>Write within 14 days of buying for a full refund.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec end" id="end" aria-labelledby="end-title">
+  <div class="wrap">
+    <div class="bird rise" id="endBird" aria-hidden="true"></div>
+    <h2 id="end-title" class="rise">Your next frame<br> has ten looks in it.</h2>
+    <div class="ctas rise">
+      <a class="btn lit" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
+      <a class="more" href="download/Colobri-plugins-1.4.0.zip" download data-cb-track="StartTrial" data-cb-what="Colobri plugins">Get the plugins<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </div>
+    <p class="fine rise">Runs in your browser. Free for 7 days, then €59 once.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p class="foot-mark" role="img" aria-label="Colobri"><img class="bird" src="images/colobri-bird-132.webp" width="132" height="101" alt=""><svg class="word" viewBox="0 0 6189.1 711" aria-hidden="true"><use href="#cb-word"/></svg></p>
+      <p>Colobri is color and colibri, the hummingbird. Every frame on this page was graded with Colobri.</p>
+    </div>
+    <ul>
+      <li><a href="terms/">Terms</a></li>
+      <li><a href="privacy/">Privacy</a></li>
+      <li><button type="button" data-cb-cookies hidden>Cookie settings</button></li>
+      <li><a href="mailto:david@nakaya.world">Support: david@nakaya.world</a></li>
+    </ul>
+    <div class="legal">
+      <span>© 2026 David HJ Lindberg AB</span>
+      <a href="../">David Hjalmar Lindberg</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
