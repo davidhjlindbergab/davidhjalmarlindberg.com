@@ -6163,7 +6163,7 @@ return ColobriLogo;
     if (gone) return; gone = true; clearTimeout(glowTimer); intro = false; if (growing) { growing.finish(); growing = null; }
     if (logo) { logo.ripple(); logo.setSpeed(1.4); }
     wrap.classList.add('out');
-    setTimeout(() => { if (logo) { logo.destroy(); logo = null; } wrap.remove(); glow.width = glow.height = 0; }, reduce.matches ? 0 : 700);
+    setTimeout(() => { if (logo) { try { logo.destroy(); } catch (e) { /* (let go regardless) */ } logo = null; } wrap.remove(); glow.width = glow.height = 0; }, reduce.matches ? 0 : 700);
   }
   if (app.classList.contains('has-src')) leave();
 
