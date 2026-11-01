@@ -147,12 +147,17 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 
 /* how it compares: the same moment, four ways of turning the music down */
 .ways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; margin-top: 72px; }
-.way img { width: 100%; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px var(--line); }
-.way--andrum img { box-shadow: 0 0 0 1px rgba(180, 136, 247, 0.45); }
+.way__pic { position: relative; isolation: isolate; }
+.way__pic picture { display: block; }
+.way__pic img { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px var(--line); }
+.way--andrum .way__pic img { box-shadow: 0 0 0 1px rgba(180, 136, 247, 0.45); }
+/* Andrum's picture sits in a soft glow of its own light: blue at the lows, violet, pink in the air */
+.way--andrum .way__pic::before { content: ""; position: absolute; z-index: -1; inset: 8% 3% 0%; border-radius: 36%;
+  background: linear-gradient(90deg, #3f6cf0, #8a5cf0 52%, #d05ae0); filter: blur(54px); opacity: 0.55; pointer-events: none; }
 .way figcaption { display: grid; gap: 6px; margin-top: 18px; }
 .way figcaption p { font-size: 16.5px; max-width: 30em; }
 .ways__note { margin-top: 32px; max-width: 52em; }
-@media (max-width: 767px) { .ways { grid-template-columns: 1fr; gap: 40px; margin-top: 56px; } .way img { border-radius: 10px; } }
+@media (max-width: 767px) { .ways { grid-template-columns: 1fr; gap: 40px; margin-top: 56px; } .way__pic img { border-radius: 10px; } .way--andrum .way__pic::before { filter: blur(30px); } }
 
 .versus { margin-top: 88px; border-bottom: 1px solid var(--line); }
 .versus__row { display: grid; grid-template-columns: minmax(0, 3.4fr) minmax(0, 4fr) minmax(0, 4fr); gap: 32px; padding: 20px 0;
