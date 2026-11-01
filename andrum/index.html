@@ -132,24 +132,124 @@
     </div>
   </section>
 
-  <!-- ===================================================================== how -->
+  <!-- ===================================================================== how it compares -->
   <section class="section" id="how" aria-labelledby="how-title">
     <div class="wrap">
-      <h2 id="how-title">Only where it’s needed. Only while it’s needed.</h2>
-      <div class="three">
-        <div>
-          <h3>Where the music hides the voice</h3>
-          <p>Every five milliseconds, Andrum compares the voice with the music in 61 bands, a sixth of an octave apart. It works out how much of the voice the music masks, the way your ear does, and turns down only the bands where a cut brings the voice back.</p>
+      <div class="section__head">
+        <h2 id="how-title">Where other tools cut, and where Andrum does.</h2>
+        <p class="lede">Every tool here can turn the music down for a voice. Andrum first works out where the music hides it: every five milliseconds it compares the voice with the music in 61 bands, the way your ear does, and turns down only there.</p>
+      </div>
+
+      <div class="ways">
+        <figure class="way">
+          <img src="assets/img/compare-compressor-1160.webp" srcset="assets/img/compare-compressor-580.webp 580w, assets/img/compare-compressor-1160.webp 1160w" sizes="(max-width: 767px) calc(100vw - 2 * var(--gutter)), 584px" width="1160" height="500" loading="lazy" decoding="async" alt="A sidechain compressor: the whole spectrum is turned down, from the bass to the air.">
+          <figcaption><h3>Sidechain compressor</h3><p>Turns the whole track down whenever the voice is there, the bass and the air too.</p></figcaption>
+        </figure>
+        <figure class="way">
+          <img src="assets/img/compare-dynamic-eq-1160.webp" srcset="assets/img/compare-dynamic-eq-580.webp 580w, assets/img/compare-dynamic-eq-1160.webp 1160w" sizes="(max-width: 767px) calc(100vw - 2 * var(--gutter)), 584px" width="1160" height="500" loading="lazy" decoding="async" alt="A dynamic EQ: one region round 2.5 kHz is turned down, the one set by hand.">
+          <figcaption><h3>Dynamic EQ</h3><p>Turns down the bands you set by hand, whether or not that’s where the voice is hidden.</p></figcaption>
+        </figure>
+        <figure class="way">
+          <img src="assets/img/compare-ducker-1160.webp" srcset="assets/img/compare-ducker-580.webp 580w, assets/img/compare-ducker-1160.webp 1160w" sizes="(max-width: 767px) calc(100vw - 2 * var(--gutter)), 584px" width="1160" height="500" loading="lazy" decoding="async" alt="A spectral ducker: a deep hole round 1 kHz, where the voice is loudest and already stands well above the music.">
+          <figcaption><h3>Spectral ducker</h3><p>Cuts deepest where the voice is loudest, often right where it already comes through.</p></figcaption>
+        </figure>
+        <figure class="way way--andrum">
+          <img src="assets/img/compare-andrum-1160.webp" srcset="assets/img/compare-andrum-580.webp 580w, assets/img/compare-andrum-1160.webp 1160w" sizes="(max-width: 767px) calc(100vw - 2 * var(--gutter)), 584px" width="1160" height="500" loading="lazy" decoding="async" alt="Andrum: small cuts only under the voice's harmonics in the low mids and in the presence round 3 kHz, where the music hid the voice. Round 1 kHz, where the voice already comes through, and in the bass and the air, the music is untouched.">
+          <figcaption><h3>Andrum</h3><p>Turns down only the bands where the music hides the voice, and only as far as it takes.</p></figcaption>
+        </figure>
+      </div>
+      <p class="fine ways__note">One moment of a voice over a pad and guitars. The fine line is the voice; the faded light above the music is what each tool turns down. This shows how each kind of tool works, not a measurement of any one product.</p>
+
+      <div class="versus" role="table" aria-label="Other tools and Andrum">
+        <div class="versus__row versus__row--head" role="row">
+          <span role="columnheader"><span class="visually-hidden">Question</span></span>
+          <span role="columnheader">Other tools</span>
+          <span role="columnheader">Andrum</span>
         </div>
-        <div>
-          <h3>While the voice is there</h3>
-          <p>When the voice rests, the music glides back. Esses, breaths and reverb tails can be left out of what Andrum listens to, so the music doesn’t flutter.</p>
+        <div class="versus__row" role="row">
+          <span role="rowheader">What you set</span>
+          <span role="cell" data-label="Other tools">Thresholds, ratios, frequencies and depths, band by band</span>
+          <span role="cell" data-label="Andrum">How clear the voice should be</span>
         </div>
-        <div>
-          <h3>With nothing to wait for</h3>
-          <p>Andrum runs at zero latency, so there’s nothing for your DAW or editor to make up for. For a kick through a bass, up to 30 ms of lookahead lands the dip before the hit.</p>
+        <div class="versus__row" role="row">
+          <span role="rowheader">When the voice already comes through</span>
+          <span role="cell" data-label="Other tools">They cut anyway</span>
+          <span role="cell" data-label="Andrum">It leaves the music alone</span>
+        </div>
+        <div class="versus__row" role="row">
+          <span role="rowheader">Esses, breaths and reverb tails</span>
+          <span role="cell" data-label="Other tools">Set off a cut, so the music flutters</span>
+          <span role="cell" data-label="Andrum">Can be left out of what it listens to</span>
+        </div>
+        <div class="versus__row" role="row">
+          <span role="rowheader">In a video editor</span>
+          <span role="cell" data-label="Other tools">Need a sidechain the editor can’t send</span>
+          <span role="cell" data-label="Andrum">Two Andrums link up, with no routing</span>
+        </div>
+        <div class="versus__row" role="row">
+          <span role="rowheader">What you see</span>
+          <span role="cell" data-label="Other tools">How much is cut</span>
+          <span role="cell" data-label="Andrum">How much is cut, and how clear the voice is with it and without it</span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== the details -->
+  <section class="section" id="details" aria-labelledby="details-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="details-title">Measured, not claimed.</h2>
+        <p class="lede">Every number here comes from Andrum’s own test suite, run on 1.8.1, the version you download.</p>
+      </div>
+      <dl class="specs">
+        <div>
+          <dt>Only what it takes</dt>
+          <dd class="specs__v">2.7<small>dB</small></dd>
+          <dd>With the voice 6 dB over the music and the dial at 80 %, Andrum cuts 2.7 dB on average, and the voice is 90 % clear. Its engine run as a plain spectral ducker cuts 11.7 dB.</dd>
+        </div>
+        <div>
+          <dt>Left alone</dt>
+          <dd class="specs__v">0.0<small>dB</small></dd>
+          <dd>With the voice 12 dB over the music, it’s already 93 % clear, and Andrum cuts nothing. Where the music is 30 dB over the voice, out of reach, it cuts nothing either.</dd>
+        </div>
+        <div>
+          <dt>Clean Key</dt>
+          <dd class="specs__v">2.4<small>dB</small></dd>
+          <dd>What’s left of a 12 dB cut at 6.4 kHz while the singer says “s”. The vowels keep all 12, and a reverb tail keeps 0.8.</dd>
+        </div>
+        <div>
+          <dt>Auto sensitivity</dt>
+          <dd class="specs__v">12.0 / 12.0<small>dB</small></dd>
+          <dd>The same room for a voice at −12 and at −42 dBFS, with no threshold to set. A fixed threshold gives 12.0 and 2.8.</dd>
+        </div>
+        <div>
+          <dt>Latency</dt>
+          <dd class="specs__v">0<small>samples</small></dd>
+          <dd>Nothing for your DAW or editor to make up for. Up to 30 ms of lookahead when you want it, for a kick through a bass.</dd>
+        </div>
+        <div>
+          <dt>Resolution</dt>
+          <dd class="specs__v">61<small>bands</small></dd>
+          <dd>A sixth of an octave apart, from 20 Hz to 20.5 kHz, worked out again every 5 ms.</dd>
+        </div>
+        <div>
+          <dt>Precision</dt>
+          <dd class="specs__v">0.64<small>dB</small></dd>
+          <dd>The most a cut strays from the one Andrum means to make, anywhere in the spectrum, from 44.1 to 192 kHz.</dd>
+        </div>
+        <div>
+          <dt>Transparency</dt>
+          <dd class="specs__v">Bit-exact</dd>
+          <dd>With no voice to make room for, the music comes out exactly as it went in, with lookahead or without.</dd>
+        </div>
+        <div>
+          <dt>Load</dt>
+          <dd class="specs__v">5.5<small>%</small></dd>
+          <dd>Of one core on our test machine, at 48 kHz in stereo with everything on. When its inputs fall silent, Andrum rests.</dd>
+        </div>
+      </dl>
+      <p class="fine specs__note">In the tests the voice is a sung voice and the music is pink noise, with Max cut at 12 dB.</p>
     </div>
   </section>
 

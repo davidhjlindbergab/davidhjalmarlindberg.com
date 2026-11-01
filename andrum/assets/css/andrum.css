@@ -39,6 +39,7 @@ h1, h2, h3, p, figure, dl, dd, ul { margin: 0; }
 ul { padding: 0; list-style: none; }
 strong { font-weight: 500; color: var(--frost); }
 [hidden] { display: none !important; }
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 .wrap { width: 100%; max-width: calc(var(--wrap) + 2 * var(--gutter)); margin: 0 auto;
         padding-left: max(var(--gutter), env(safe-area-inset-left, 0px)); padding-right: max(var(--gutter), env(safe-area-inset-right, 0px)); }
@@ -144,10 +145,43 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .split__text p { max-width: 29em; font-size: 18px; }
 @media (max-width: 1023px) { .split { grid-template-columns: 1fr; gap: 48px; } }
 
-.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; margin-top: 72px; }
-.three div { display: grid; gap: 12px; align-content: start; padding-top: 24px; border-top: 1px solid var(--line); }
-.three p { font-size: 16.5px; }
-@media (max-width: 1023px) { .three { grid-template-columns: 1fr; gap: 36px; margin-top: 56px; } }
+/* how it compares: the same moment, four ways of turning the music down */
+.ways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; margin-top: 72px; }
+.way img { width: 100%; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px var(--line); }
+.way--andrum img { box-shadow: 0 0 0 1px rgba(180, 136, 247, 0.45); }
+.way figcaption { display: grid; gap: 6px; margin-top: 18px; }
+.way figcaption p { font-size: 16.5px; max-width: 30em; }
+.ways__note { margin-top: 32px; max-width: 52em; }
+@media (max-width: 767px) { .ways { grid-template-columns: 1fr; gap: 40px; margin-top: 56px; } .way img { border-radius: 10px; } }
+
+.versus { margin-top: 88px; border-bottom: 1px solid var(--line); }
+.versus__row { display: grid; grid-template-columns: minmax(0, 3.4fr) minmax(0, 4fr) minmax(0, 4fr); gap: 32px; padding: 20px 0;
+               border-top: 1px solid var(--line); font-size: 16.5px; line-height: 1.5; }
+.versus__row [role="rowheader"] { color: var(--frost); font-weight: 500; font-size: 16px; }
+.versus__row [role="cell"] { color: var(--mist); }
+.versus__row [role="cell"]:last-child { color: var(--frost); }
+.versus__row--head { padding: 0 0 14px; border-top: 0; font-size: 14px; }
+.versus__row--head [role="columnheader"] { color: var(--faint); }
+.versus__row--head [role="columnheader"]:last-child { color: var(--lavender); }
+@media (max-width: 767px) {
+  .versus { margin-top: 64px; }
+  .versus__row { grid-template-columns: 1fr; gap: 6px; padding: 20px 0; }
+  .versus__row--head { display: none; }
+  .versus__row [role="rowheader"] { margin-bottom: 4px; }
+  .versus__row [role="cell"]::before { content: attr(data-label) ": "; color: var(--faint); }
+  .versus__row [role="cell"]:last-child::before { color: var(--lavender); }
+}
+
+/* the details: what the test suite measures */
+.specs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 40px; margin-top: 72px; }
+.specs div { display: grid; grid-template-rows: auto auto 1fr; gap: 10px; align-content: start; padding: 28px 0 44px; border-top: 1px solid var(--line); }
+.specs dt { font-size: 14px; color: var(--faint); }
+.specs dd { font-size: 15.5px; line-height: 1.55; max-width: 24em; }
+.specs .specs__v { font: 300 clamp(40px, 3.8vw, 52px)/1 var(--display); color: var(--frost); letter-spacing: -0.03em; margin-bottom: 6px; }
+.specs__v small { font: 400 15px/1 var(--text); color: var(--mist); margin-left: 6px; letter-spacing: 0; }
+.specs__note { margin-top: 8px; }
+@media (max-width: 1023px) { .specs { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 56px; } }
+@media (max-width: 639px) { .specs { grid-template-columns: 1fr; } .specs div { padding-bottom: 32px; } }
 
 .uses { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px 72px; align-items: center; margin-top: 72px; }
 .uses__text { display: grid; gap: 44px; }
