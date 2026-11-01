@@ -205,7 +205,7 @@ h3 { position: relative; font-size: 21px; font-weight: 400; line-height: 1.2; le
   .desktop-break { display: none; }
   .small-copy { font-size: 14px; line-height: 1.8; }
   .contact-line { display: block; padding: 36px 0 43px; }
-  .email { display: block; margin-top: 21px; font-size: clamp(25px, 7vw, 40px); letter-spacing: -1.2px; }
+  .email { display: block; margin-top: 21px; font-size: clamp(18px, 6.2vw, 40px); letter-spacing: -1.2px; }   /* the address on one line, down to 320 px */
   .colophon { font-size: 9px; gap: 15px; align-items: flex-start; padding: 20px 0 calc(25px + env(safe-area-inset-bottom, 0px)); }
   .colophon > span:last-child { text-align: right; max-width: 100px; line-height: 1.5; }
   .block { display: block; margin-top: 56px; padding-top: 33px; }
