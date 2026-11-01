@@ -73,7 +73,10 @@ const PROP_LABEL = {
   'letter-spacing': 'Letter spacing', color: 'Color', 'text-align': 'Alignment', 'text-transform': 'Case',
   'margin-top': 'Space above', 'margin-bottom': 'Space below', 'background-color': 'Background',
   'background-image': 'Background image', 'border-radius': 'Corners', display: 'Hidden', opacity: 'Opacity',
+  height: 'Height', width: 'Width',
 };
+// Set together with a height or width so the number is the size you see (see setSize); not listed on their own.
+const SIZE_HELPERS = new Set(['min-height', 'min-width', 'box-sizing']);
 const ATTR_LABEL = { src: 'Image', alt: 'Image description', href: 'Link', target: 'Opens in', content: 'Text', srcset: 'Image', sizes: 'Image sizes', type: 'Image type', rel: 'Link' };
 
 // ---------------------------------------------------------------- small helpers
@@ -799,6 +802,14 @@ async function setStyle(prop, value, opts = {}) {
   if (!opts.live) end();
   sync();
 }
+// Height and width are the size you see: padding and border included (box-sizing), and the page's own
+// smallest size (min-height, as on the site's buttons) can't hold it bigger.
+async function setSize(p, v) {
+  await setStyle(p, v, { live: true });
+  await setStyle('min-' + p, v, { live: true });
+  if (v != null) await setStyle('box-sizing', 'border-box', { live: true });
+  else if (ruleValue(p === 'height' ? 'width' : 'height') == null) await setStyle('box-sizing', null, { live: true });
+}
 function ruleValue(prop) {
   const t = styleTarget();
   if (!t) return null;
@@ -1050,6 +1061,7 @@ function changeList() {
       for (const sel of sels) {
         const props = new Set([...Object.keys(now[sel] || {}), ...Object.keys(was[sel] || {})]);
         for (const p of props) {
+          if (SIZE_HELPERS.has(p)) continue;
           const v = (now[sel] || {})[p];
           const w = (was[sel] || {})[p];
           if (v === w) continue;
@@ -1089,9 +1101,17 @@ function revertChange(c) {
   }
   else if (c.k === 'rule') {
     const R = S.rules[c.scope][c.dev];
-    const w = ((S.loaded.rules[c.scope][c.dev] || {})[c.sel] || {})[c.prop];
-    if (w == null) { if (R[c.sel]) { delete R[c.sel][c.prop]; if (!Object.keys(R[c.sel]).length) delete R[c.sel]; } }
-    else (R[c.sel] || (R[c.sel] = {}))[c.prop] = w;
+    const back = (prop) => {
+      const w = ((S.loaded.rules[c.scope][c.dev] || {})[c.sel] || {})[prop];
+      if (w == null) { if (R[c.sel]) { delete R[c.sel][prop]; if (!Object.keys(R[c.sel]).length) delete R[c.sel]; } }
+      else (R[c.sel] || (R[c.sel] = {}))[prop] = w;
+    };
+    back(c.prop);
+    if (c.prop === 'height' || c.prop === 'width') {
+      back('min-' + c.prop);
+      const d = R[c.sel] || {};
+      if (d.height == null && d.width == null) back('box-sizing');
+    }
   } else if (c.k === 'font') S.fonts[c.scope].delete(c.name);
   sync(); renderPanel();
 }
@@ -1180,6 +1200,9 @@ function elementPanel(info) {
   const colorHex = rgbToHex(css.color) || '#000000';
   const hiddenNow = ruleValue('display') === 'none';
   const link = info.link;
+  // inline elements (a word in a sentence) have no height or width of their own; buttons and boxes do
+  const sizable = !/^(inline|contents|none)$/.test(css.display || '');
+  const sizeNow = (p) => { const v = parseFloat(ruleValue(p)); return Number.isFinite(v) ? Math.round(v) : (p === 'height' ? info.h : info.w); };
   return `
   <div class="p-head">
     <div class="crumbs">${crumbs.map((b) => `<button type="button" data-act="pick" data-ref="${esc(b.ref)}" title="Select ${esc(shortName(b))}">${esc(shortName(b))}</button><span class="sep">›</span>`).join('')}<span>${esc(shortName(info))}</span></div>
@@ -1237,6 +1260,7 @@ function elementPanel(info) {
   </div>
   <div class="group">
     <div class="g-title">Box</div>
+    ${sizable ? ['height', 'width'].map((p) => `<div class="row"><label>${p === 'height' ? 'Height' : 'Width'}</label><input class="field num" type="number" min="0" step="1" data-act="size" data-p="${p}" value="${sizeNow(p)}"><span class="unit">px</span><span class="grow"></span><button class="reset ${set(p)}" data-act="sizereset" data-p="${p}" title="Back to the original">×</button></div>`).join('') : ''}
     <div class="row"><label>Space above</label><input class="field num" type="number" step="1" data-act="num" data-p="margin-top" data-u="px" value="${Math.round(parseFloat(css.mt) || 0)}"><span class="unit">px</span><span class="grow"></span><button class="reset ${set('margin-top')}" data-act="reset" data-p="margin-top">×</button></div>
     <div class="row"><label>Space below</label><input class="field num" type="number" step="1" data-act="num" data-p="margin-bottom" data-u="px" value="${Math.round(parseFloat(css.mb) || 0)}"><span class="unit">px</span><span class="grow"></span><button class="reset ${set('margin-bottom')}" data-act="reset" data-p="margin-bottom">×</button></div>
     <div class="row"><label>Background</label><div class="color"><input type="color" data-act="color" data-p="background-color" value="${bgHex || '#ffffff'}"><input class="field" data-act="colortext" data-p="background-color" value="${esc(bgHex || 'none')}" spellcheck="false"></div><button class="reset ${set('background-color')}" data-act="reset" data-p="background-color">×</button></div>
@@ -1275,14 +1299,25 @@ panel.addEventListener('click', async (e) => {
   else if (act === 'chip') setStyle(b.dataset.p, b.dataset.v);
   else if (act === 'toggle') setStyle(b.dataset.p, b.getAttribute('aria-pressed') === 'true' ? b.dataset.off : b.dataset.on);
   else if (act === 'reset') setStyle(b.dataset.p, null);
+  else if (act === 'sizereset') { begin(); await setSize(b.dataset.p, null); end(); }
   else if (act === 'reset2') { begin(); for (const p of b.dataset.p.split(',')) await setStyle(p, null, { live: true }); end(); }
   else if (act === 'hide') setStyle('display', ruleValue('display') === 'none' ? null : 'none');
   else if (act === 'newtab') { /* handled on change */ }
 });
+// While a field is being typed in the panel isn't redrawn, so its × (back to the original) is shown at once here.
+const showReset = (p) => { for (const r of panel.querySelectorAll(`[data-act="reset"][data-p="${p}"], [data-act="sizereset"][data-p="${p}"]`)) r.classList.add('on'); };
 panel.addEventListener('input', (e) => {
   const el = e.target;
   const act = el.dataset.act;
   if (!S || !S.sel) return;
+  if (act === 'size' || act === 'range' || act === 'num' || act === 'color') showReset(el.dataset.p);
+  if (act === 'size') {
+    const v = el.value;
+    if (v === '' || !(+v >= 0)) return;
+    begin();
+    setSize(el.dataset.p, Math.round(+v) + 'px');
+    return;
+  }
   if (act === 'range' || act === 'num') {
     const v = el.value;
     if (v === '') return;
@@ -1302,7 +1337,7 @@ panel.addEventListener('change', async (e) => {
   const el = e.target;
   const act = el.dataset.act;
   if (!S) return;
-  if (act === 'range' || act === 'num' || act === 'color') { end(); return; }
+  if (act === 'range' || act === 'num' || act === 'color' || act === 'size') { end(); return; }
   if (act === 'ptitle') {
     const id = +el.dataset.id;
     const t = tagOf(id);
