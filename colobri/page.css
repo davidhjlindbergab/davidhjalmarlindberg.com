@@ -60,7 +60,6 @@ footer a:hover, footer button:hover { color: var(--ink); }
 .btns .colobri-button { --cb-height: 48px; }
 body .colobri-button { font-family: var(--f); }   /* (its word in the pages' own face: SF Pro on Apple devices, Inter elsewhere) */
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
-@media (max-width: 560px) { .btns .btn, .btns .colobri-button { width: 100%; } }
 
 /* Apple's type scale at tablet and phone widths */
 @media (max-width: 1068px) {
