@@ -29,8 +29,7 @@
   --hair: rgba(255, 255, 255, 0.07);
   --hair-2: rgba(255, 255, 255, 0.13);
   --ink: #efefef;
-  --wordmark: #7383f2;         /* COLOBRI in the bar: David's blue, a little lighter at this size, fading gently to the right */
-  --wordmark-lockup: #5c6fec;  /* COLOBRI beside the opening's bird: David's blue (his lockup, 1 Nov, round 14), fading out to the right */
+  --wordmark: #f5f5f7;         /* COLOBRI in the bar: white, the thin monoline David chose (1 Nov, round 15) */
   --ink-2: #a9a9a9;
   --ink-3: #6f6f6f;
   /* the bird's light, measured on the logo: its rim, its glow, the wing, the body, the ember of its breast, its throat */
@@ -47,8 +46,8 @@
   --spec: var(--ring-grad);
   --spec-line: var(--prism);
   /* the system's own face: SF Pro on Apple devices (the system picks Text below 20 px and Display above), Segoe UI on Windows, Roboto on
-     Android. Titles ask for the Display cut by name where a browser does not pick it itself. The COLOBRI wordmark is outlines: Futura
-     Round Bold spaced as David set it, in his blue (--wordmark, --wordmark-lockup) */
+     Android. Titles ask for the Display cut by name where a browser does not pick it itself. The COLOBRI wordmark is a thin monoline with
+     round ends, drawn to match the title David chose (src/brand/wordmark.svg, tools/colobri_monoline.py), in white (--wordmark) */
   --f-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI Variable Text", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
   --f-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --f-brand: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -85,8 +84,10 @@ button { cursor: pointer; }
    then the editor tag go, the menus narrow again, Grab frame loses its word. Below 861px it becomes rows instead. */
 .bar { grid-area: bar; background: var(--night); display: flex; align-items: center; gap: 12px; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(14px, env(safe-area-inset-right, 0px)); border-bottom: 1px solid var(--hair); min-width: 0; }
 .bar > * { flex: none; }
-.brand { display: flex; align-items: center; user-select: none; margin-right: 10px; color: var(--wordmark); -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 38%, rgba(0,0,0,.9) 52%, rgba(0,0,0,.78) 68%, rgba(0,0,0,.66) 84%, rgba(0,0,0,.58) 100%); mask-image: linear-gradient(90deg, #000 0%, #000 38%, rgba(0,0,0,.9) 52%, rgba(0,0,0,.78) 68%, rgba(0,0,0,.66) 84%, rgba(0,0,0,.58) 100%); }
-.brand svg { display: block; height: 11.5px; width: auto; }   /* (COLOBRI, Futura Round Bold outlines with David's spacing, src/brand/wordmark.svg; its cap height sits on the bar's centre line) */
+.brand { display: flex; align-items: center; user-select: none; margin-right: 10px; color: var(--wordmark); }
+/* (COLOBRI, src/brand/wordmark.svg: its cap height sits on the bar's centre line; the stroke a little heavier than the big drawing's,
+   so the thin lines hold at this size) */
+.brand svg { display: block; height: 10px; width: auto; overflow: visible; stroke-width: 118; }
 .bar .io, .bar .acts { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .bar .io { gap: 12px; }
 .bar .acts { padding-left: 12px; border-left: 1px solid var(--hair); }
@@ -155,16 +156,10 @@ button { cursor: pointer; }
 @keyframes hero-swell { from { transform: scale(1); } to { transform: scale(1.035); } }
 .hero-still { position: absolute; display: block; max-width: none; }
 .hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--hero-dither, none) 0 0 / var(--hero-dither-size, 128px) repeat; }
-/* the word beside the bird, as on David's lockup: his blue, full over C O L and fading to a quarter at the I (measured on his frame) */
-.hero-word { position: absolute; left: 0; top: 0; color: var(--wordmark-lockup); pointer-events: none; opacity: 0; transition: opacity 1.4s cubic-bezier(.4, 0, .2, 1) 1.2s;
-  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 36%, rgba(0,0,0,.93) 42%, rgba(0,0,0,.84) 48%, rgba(0,0,0,.74) 55%, rgba(0,0,0,.63) 63%, rgba(0,0,0,.52) 71%, rgba(0,0,0,.43) 79%, rgba(0,0,0,.35) 86%, rgba(0,0,0,.29) 93%, rgba(0,0,0,.25) 100%); mask-image: linear-gradient(90deg, #000 0%, #000 36%, rgba(0,0,0,.93) 42%, rgba(0,0,0,.84) 48%, rgba(0,0,0,.74) 55%, rgba(0,0,0,.63) 63%, rgba(0,0,0,.52) 71%, rgba(0,0,0,.43) 79%, rgba(0,0,0,.35) 86%, rgba(0,0,0,.29) 93%, rgba(0,0,0,.25) 100%); }
-.hero.live .hero-word { opacity: 1; }
-.hero-word svg { display: block; width: 100%; height: auto; }
 @media (prefers-reduced-motion: reduce) {
   .hero-glow, .gen-glow { animation: none; }
   .hero.live .hero-scene, .hero.flat.live .hero-scene { animation: hero-fade .6s ease both; }
   .hero.live .hero-air { animation: hero-fade .6s ease both; }
-  .hero-word { transition-delay: .2s; }
 }
 .viewer:not(.has-src) .drop { display: none; }   /* (a file dragged in makes the bird bloom instead) */
 .split-line { position: absolute; top: 0; bottom: 0; width: 0; border-left: 1px solid rgba(255, 255, 255, 0.85); pointer-events: none; box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.4); }
@@ -619,7 +614,7 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 }
 @media (max-width: 520px) { .bar .field > span { display: none; } .bar .lic-chip .l { display: none; } .bar .lic-chip .s { display: inline; } }
 /* the narrowest panels (a Premiere panel goes down to 360 px): the first row keeps the brand, the actions, the trial and help on one line */
-@media (max-width: 420px) { .bar { column-gap: 6px; } .brand svg { height: 10.5px; } .bar .acts { gap: 4px; } .bar .acts .btn { width: 32px; } .bar .lic-chip { padding: 0 9px; } }
+@media (max-width: 420px) { .bar { column-gap: 6px; } .brand svg { height: 9px; } .bar .acts { gap: 4px; } .bar .acts .btn { width: 32px; } .bar .lic-chip { padding: 0 9px; } }
 @media (prefers-reduced-motion: reduce) {
   .sweep .beam, .gen.flat.busy .gen-img, .open-btn::before, .open-btn::after, .frame::before, .frame::after { animation: none !important; }
   .frame.develop .pic canvas { animation: none; }
@@ -642,7 +637,7 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 <body>
 <div class="app" id="app">
   <header class="bar" id="bar">
-    <div class="brand" role="img" aria-label="Colobri"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -687.0 6189.1 711.0" role="img" aria-label="Colobri"><path fill="currentColor" d="M510 -620C510 -641 509 -644 502 -649C484 -663 400 -681 354 -681C156 -681 0 -525 0 -328C0 -238 30 -159 88 -98C157 -25 257 18 357 18C399 18 421 14 492 -9C497 -10 499 -11 502 -13C509 -18 510 -21 510 -42V-162C510 -188 507 -196 495 -196C491 -196 487 -194 483 -191C448 -162 412 -150 363 -150C257 -150 181 -224 181 -329C181 -436 256 -512 361 -512C404 -512 439 -500 478 -472C483 -468 487 -466 490 -466C505 -466 510 -475 510 -500Z M1298.49 -687C1205.49 -687 1117.49 -657 1054.49 -603C975.49 -536 929.49 -438 929.49 -338C929.49 -130 1085.49 24 1295.49 24C1393.49 24 1475.49 -4 1542.49 -60C1622.49 -127 1667.49 -226 1667.49 -332C1667.49 -424 1633.49 -510 1571.49 -575C1500.49 -650 1409.49 -687 1298.49 -687ZM1298.49 -519C1402.49 -519 1486.49 -435 1486.49 -332C1486.49 -228 1402.49 -144 1298.49 -144C1195.49 -144 1110.49 -228 1110.49 -329C1110.49 -435 1193.49 -519 1298.49 -519Z M2296.3432222222223 -147V-634C2297.3432222222223 -662 2291.3432222222223 -668 2263.3432222222223 -667H2156.3432222222223C2128.3432222222223 -668 2122.3432222222223 -662 2123.3432222222223 -634V-33C2122.3432222222223 -5 2128.3432222222223 1 2156.3432222222223 0H2471.3432222222223C2499.3432222222223 1 2505.3432222222223 -5 2504.3432222222223 -33V-114C2505.3432222222223 -142 2499.3432222222223 -148 2471.3432222222223 -147Z M3255.9634444444446 -687C3162.9634444444446 -687 3074.9634444444446 -657 3011.9634444444446 -603C2932.9634444444446 -536 2886.9634444444446 -438 2886.9634444444446 -338C2886.9634444444446 -130 3042.9634444444446 24 3252.9634444444446 24C3350.9634444444446 24 3432.9634444444446 -4 3499.9634444444446 -60C3579.9634444444446 -127 3624.9634444444446 -226 3624.9634444444446 -332C3624.9634444444446 -424 3590.9634444444446 -510 3528.9634444444446 -575C3457.9634444444446 -650 3366.9634444444446 -687 3255.9634444444446 -687ZM3255.9634444444446 -519C3359.9634444444446 -519 3443.9634444444446 -435 3443.9634444444446 -332C3443.9634444444446 -228 3359.9634444444446 -144 3255.9634444444446 -144C3152.9634444444446 -144 3067.9634444444446 -228 3067.9634444444446 -329C3067.9634444444446 -435 3150.9634444444446 -519 3255.9634444444446 -519Z M4113.8166666666675 -667C4085.816666666667 -668 4079.816666666667 -662 4080.816666666667 -634V-33C4079.816666666667 -5 4085.816666666667 1 4113.8166666666675 0H4358.8166666666675C4500.8166666666675 0 4588.8166666666675 -72 4588.8166666666675 -189C4588.8166666666675 -240 4572.8166666666675 -286 4545.8166666666675 -314C4523.8166666666675 -336 4500.8166666666675 -346 4452.8166666666675 -356C4504.8166666666675 -386 4525.8166666666675 -426 4525.8166666666675 -493C4525.8166666666675 -605 4459.8166666666675 -667 4337.8166666666675 -667ZM4253.8166666666675 -404V-534H4285.8166666666675C4338.8166666666675 -534 4366.8166666666675 -512 4366.8166666666675 -469C4366.8166666666675 -427 4338.8166666666675 -404 4285.8166666666675 -404ZM4253.8166666666675 -135V-275H4288.8166666666675C4345.8166666666675 -275 4360.8166666666675 -273 4380.8166666666675 -263C4400.8166666666675 -253 4413.8166666666675 -230 4413.8166666666675 -205C4413.8166666666675 -156 4377.8166666666675 -135 4291.8166666666675 -135Z M5388.66988888889 -273C5428.66988888889 -283 5450.66988888889 -293 5473.66988888889 -313C5511.66988888889 -346 5534.66988888889 -402 5534.66988888889 -461C5534.66988888889 -516 5513.66988888889 -570 5477.66988888889 -608C5438.66988888889 -649 5388.66988888889 -667 5313.66988888889 -667H5077.66988888889C5049.66988888889 -668 5043.66988888889 -662 5044.66988888889 -634V-33C5043.66988888889 -5 5049.66988888889 1 5077.66988888889 0H5184.66988888889C5212.66988888889 1 5218.66988888889 -5 5217.66988888889 -33V-256L5369.66988888889 -20C5382.66988888889 0 5382.66988888889 0 5406.66988888889 0H5544.66988888889C5569.66988888889 0 5578.66988888889 -5 5578.66988888889 -19C5578.66988888889 -25 5576.66988888889 -29 5565.66988888889 -43ZM5217.66988888889 -368V-534H5249.66988888889C5282.66988888889 -534 5307.66988888889 -527 5323.66988888889 -516C5342.66988888889 -502 5356.66988888889 -475 5356.66988888889 -451C5356.66988888889 -427 5342.66988888889 -399 5323.66988888889 -386C5307.66988888889 -374 5282.66988888889 -368 5249.66988888889 -368Z M6189.037111111112 -634C6190.037111111112 -662 6184.037111111112 -668 6156.037111111112 -667H6049.037111111112C6021.037111111112 -668 6015.037111111112 -662 6016.037111111112 -634V-33C6015.037111111112 -5 6021.037111111112 1 6049.037111111112 0H6156.037111111112C6184.037111111112 1 6190.037111111112 -5 6189.037111111112 -33Z"/></svg></div>
+    <div class="brand" role="img" aria-label="Colobri"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11673.4 1000" role="img" aria-label="Colobri" fill="none" stroke="currentColor" stroke-width="75.2" stroke-linecap="round" stroke-linejoin="round"><path d="M787.4 884.9 A482.4 462.4 0 1 1 787.4 115.1 M1906.8 500 A445.5 462.4 0 1 1 2797.9 500 A445.5 462.4 0 1 1 1906.8 500 Z M5651.3 500 A444.6 462.4 0 1 1 6540.6 500 A444.6 462.4 0 1 1 5651.3 500 Z M4056.8 37.6 L4056.8 962.4 L4570.5 962.4 M7799.2 962.4 L7799.2 37.6 L8163.2 37.6 A228.4 228.4 0 0 1 8163.2 494.3 L7799.2 494.3 M7799.2 494.3 L8211.4 494.3 A234.1 234.1 0 0 1 8211.4 962.4 L7799.2 962.4 Z M9715.2 962.4 L9715.2 37.6 L10082.6 37.6 A254.6 254.6 0 0 1 10082.6 546.7 L9715.2 546.7 M10139.5 546.7 C10415.1 624.9 10229.7 880.3 10381.5 962.4 M11635.8 37.6 L11635.8 962.4"/></svg></div>
     <span class="host-tag" id="hostTag" hidden><i class="live" aria-hidden="true"></i><b id="hostName"></b><span class="clip" id="hostClip"></span></span>
     <span class="meta" id="meta"></span>
     <span class="spacer"></span>
@@ -6036,19 +6031,19 @@ return ColobriLogo;
 })();
 </script>
 <script>
-/* The opening screen. While no frame is open the viewer holds the Colobri logo as David set it (1 Nov, round 14): the bird, large and
-   live, with COLOBRI to its right (Futura Round Bold, his blue, fading out to the right as on his frame), the two centred together. The
+/* The opening screen. While no frame is open the viewer holds the bird alone, large and live in the middle (David, 1 Nov, round 15:
+   only the bird here; COLOBRI stays in the bar above). The
    bird is the COLOBRI logo component (src/brand/colobri-logo.js, v1.1, used as it is) on a clear ground, with only its own glow, and
    behind it one soft bell of the bird's colors (colobri-light.js): big, subtle and gone before the viewer's edges, so nothing shows as
-   a part or an edge. When the page opens, the bird grows from half size to full over 2 s on a very soft ease in and out, the light
-   comes up round it and the word arrives as it settles. It answers:
+   a part or an edge. When the page opens, the bird grows from half size to full over 2 s on a very soft ease in and out, and the light
+   comes up round it. It answers:
      the pointer          a soft light follows it and the colors drag after it; over the bird the cursor becomes a hand, and a click opens
                           a file (the button below does the same), sending a ripple of light through the bird and its aura
      a file dragged in    the bird quickens and its colors move more, with a ripple as the file comes in: drop it on the colobri
      a file being read    it runs at twice its pace until the frame is there
      a frame opening      one more ripple, the screen fades to the frame, and the logo is let go (its GPU context is freed)
    Reduced motion: a calmer bird at half pace, the outer light still, and the opening a plain fade. Without WebGL2: the kit's still of
-   the bird on its aura, feathered the same way, with the same outer light, opening and wordmark. */
+   the bird on its aura, feathered the same way, with the same outer light and opening. */
 (function () {
   'use strict';
   const viewer = document.getElementById('viewer'), app = document.getElementById('app'), es = document.getElementById('emptyState');
@@ -6063,19 +6058,13 @@ return ColobriLogo;
   // by its padding. So the padding that makes the bird bw pixels across in a w x h viewer is found from the viewer's size
   const BIRD_W = 3378, BIRD_H = 1929, FIT_W = 4650, FIT_H = 2950;
   // where the bird's light reaches above and below its middle, in bird widths (measured over the loop: 0.315-0.333 up, 0.296-0.315 down;
-  // the outline itself is 0.286 each way), and the word to its right as on David's lockup (round 14, measured on his frame): its left
-  // edge 0.342 of the bird's width right of the bird's middle, its top 0.050 below it, 0.552 across. The lockup runs from the bird's
-  // left (0.5 left of its middle) to the word's end (0.894 right of it): 1.394 bird widths, centred, so the bird sits 0.197 left of the
-  // middle. MARK_*: where the bird is in the transparent still (window.cbMark), for views without WebGL2
-  const LIGHT_UP = 0.325, LIGHT_DOWN = 0.305, WORD_X = 0.342, WORD_Y = 0.050, WORD_W = 0.552, LOCK_SHIFT = 0.197;
+  // the outline itself is 0.286 each way), so the bird and its light sit in the middle of the viewer.
+  // MARK_*: where the bird is in the transparent still (window.cbMark), for views without WebGL2
+  const LIGHT_UP = 0.325, LIGHT_DOWN = 0.305;
   const MARK_W = 0.76, MARK_CX = 0.517, MARK_CY = 0.489, MARK_AR = 428 / 560;
-  const barWord = document.querySelector('#bar .brand svg'), vb = barWord && barWord.viewBox && barWord.viewBox.baseVal;
-  const WORD_AR = vb && vb.height ? vb.width / vb.height : 10;
   function layout() {
     const r = viewer.getBoundingClientRect(), w = r.width, h = r.height, bw = Math.min(w < 640 ? 0.62 * w : 0.42 * w, 1.3 * h);
-    const cx = w / 2 - (barWord ? LOCK_SHIFT * bw : 0), cy = (h + (LIGHT_UP - LIGHT_DOWN) * bw) / 2;   // (the bird's middle)
-    const ww = barWord ? WORD_W * bw : 0, wh = ww / WORD_AR;
-    return { w, h, bw, cx, cy, ww, wh, wx: cx + WORD_X * bw, wy: cy + WORD_Y * bw };
+    return { w, h, bw, cx: w / 2, cy: (h + (LIGHT_UP - LIGHT_DOWN) * bw) / 2 };   // (the bird's middle)
   }
   // (while the opening grows the bird, gs is its share of its full size)
   let gs = reduce.matches ? 1 : 0.5;
@@ -6084,7 +6073,7 @@ return ColobriLogo;
   const posFor = L => [(L.cx + 0.0232 * L.bw) / Math.max(1, L.w), L.cy / Math.max(1, L.h)];
   let L = layout(), logo = null, flatOn = false, gone = false, ready = false, drag = false, busy = false;
 
-  // ---- the layers, back to front: the light, the bird (or its still), the wordmark
+  // ---- the layers, back to front: the light, the bird (or its still)
   // the light: the bird's colors made very soft (src/brand/colobri-aura-glow.webp), one bell round the bird at a third of their strength,
   // 2.3 bird widths across each way and 1.25 up and down, but always gone before the viewer's edges. It is painted once for each size,
   // with a fine dither, so its long, faint gradients show no bands; it breathes slowly in CSS
@@ -6106,12 +6095,7 @@ return ColobriLogo;
   // up the faint contour lines those steps can draw in the dark (it lifts the grey by less than one step on average)
   CL.dither(wrap, 'hero-dither');
 
-  // the wordmark: the bar's own (src/brand/wordmark.svg), to the right of the bird
-  const word = document.createElement('div'); word.className = 'hero-word';
-  if (barWord) { const s = barWord.cloneNode(true); s.removeAttribute('role'); s.removeAttribute('aria-label'); word.appendChild(s); wrap.appendChild(word); }
-
   function place() {
-    word.style.width = L.ww + 'px'; word.style.transform = 'translate(' + Math.round(L.wx) + 'px, ' + Math.round(L.wy) + 'px)';
     wrap.style.setProperty('--bird-x', L.cx + 'px'); wrap.style.setProperty('--bird-y', L.cy + 'px');
     if (logo) { logo.setPadding(padFor(L)); logo.setPosition(posFor(L)); }
     if (stillFit) stillFit();
@@ -6123,7 +6107,7 @@ return ColobriLogo;
   // without WebGL2: the kit's still of the bird with its glow on a clear ground (window.cbMark), on the same light
   let stillFit = null;
   // the opening: the bird and its aura grow from half size to full (by the logo's padding, colobri-light.js; the still, without WebGL2,
-  // in CSS), the light comes up, the word arrives; done when the growing ends (or at once with reduced motion)
+  // in CSS) and the light comes up; done when the growing ends (or at once with reduced motion)
   let intro = true, growing = null;
   scene.addEventListener('animationend', e => { if (flatOn && e.animationName === 'hero-grow') intro = false; });
   function opened() {
@@ -6179,7 +6163,7 @@ return ColobriLogo;
     if (gone) return; gone = true; clearTimeout(glowTimer); intro = false; if (growing) { growing.finish(); growing = null; }
     if (logo) { logo.ripple(); logo.setSpeed(1.4); }
     wrap.classList.add('out');
-    setTimeout(() => { if (logo) { logo.destroy(); logo = null; } wrap.remove(); glow.width = glow.height = 0; }, reduce.matches ? 0 : 700);
+    setTimeout(() => { if (logo) { try { logo.destroy(); } catch (e) { /* (let go regardless) */ } logo = null; } wrap.remove(); glow.width = glow.height = 0; }, reduce.matches ? 0 : 700);
   }
   if (app.classList.contains('has-src')) leave();
 
@@ -6190,7 +6174,7 @@ return ColobriLogo;
     grow(ms) { if (growing) growing.hold(ms); },
     growOn() { if (growing) growing.go(); },
     state: () => ({ ready, gone, flat: flatOn, live: !!logo, intro, gs: +gs.toFixed(3), drag, busy, bw: Math.round(L.bw), cy: Math.round(L.cy), padding: logo ? +padFor(L).toFixed(3) : null,
-      cx: Math.round(L.cx), word: barWord ? [Math.round(L.wx), Math.round(L.wy), Math.round(L.ww), Math.round(L.wh)] : null, glow: glowOn ? glow.width + 'x' + glow.height : '' }),
+      cx: Math.round(L.cx), word: null, glow: glowOn ? glow.width + 'x' + glow.height : '' }),
   };
 })();
 </script>

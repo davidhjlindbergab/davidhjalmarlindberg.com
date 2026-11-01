@@ -2,7 +2,7 @@
 :root {
   color-scheme: dark;
   --bg: #0a0a0a; --card: #161618; --line: rgba(255, 255, 255, 0.1); --line-2: rgba(255, 255, 255, 0.16);
-  --ink: #f5f5f7; --ink-2: #a1a1a6; --ink-3: #86868b; --mark: #b6bcf8; --word: #7383f2; --link: #4da3ff;
+  --ink: #f5f5f7; --ink-2: #a1a1a6; --ink-3: #86868b; --mark: #b6bcf8; --logo: #f5f5f7; --link: #4da3ff;
   --ring-stops: #2a8cff 0%, #36b4ff 8%, #8ee0ff 12.5%, #3cb2ff 17%, #2794ff 26%, #a287ff 38%, #d466bb 48%, #fe636c 57%, #ff8a62 64%, #ffa496 69%, #ee7aa6 75%, #a98aff 83%, #4c93ff 90%, #219aff 95%, #2a8cff 100%;
   --f: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI Variable Text", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
   --gl: max(22px, env(safe-area-inset-left, 0px)); --gr: max(22px, env(safe-area-inset-right, 0px));
@@ -17,10 +17,10 @@ a:hover { text-decoration-color: currentColor; }
 .in { width: 100%; max-width: calc(760px + var(--gl) + var(--gr)); margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
 .top { padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid var(--line); }
 .top .in { display: flex; align-items: center; justify-content: space-between; height: 52px; }
-.top .home { display: flex; align-items: center; gap: 9px; min-height: 44px; color: var(--word); }
+.top .home { display: flex; align-items: center; gap: 9px; min-height: 44px; }
 .top .home .bird { display: block; width: 44px; height: auto; margin: -6px 0 -6px -4px; }
-/* the name in the bar: David's blue, fading a little to the right (as on the product page) */
-.top .word { display: block; width: 98px; height: auto; -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 38%, rgba(0,0,0,.9) 52%, rgba(0,0,0,.78) 68%, rgba(0,0,0,.66) 84%, rgba(0,0,0,.58) 100%); mask-image: linear-gradient(90deg, #000 0%, #000 38%, rgba(0,0,0,.9) 52%, rgba(0,0,0,.78) 68%, rgba(0,0,0,.66) 84%, rgba(0,0,0,.58) 100%); }
+/* the name in the bar: COLOBRI, the thin monoline David chose, in white (as on the product page) */
+.top .word { display: block; width: 116px; height: auto; overflow: visible; fill: none; stroke: var(--logo); stroke-width: 118; stroke-linecap: round; stroke-linejoin: round; }
 .top .back { color: var(--ink-2); font-size: 13px; text-decoration: none; }
 .top .back:hover { color: var(--ink); }
 main { width: 100%; max-width: calc(760px + var(--gl) + var(--gr)); margin: 0 auto; padding: clamp(56px, 8vw, 96px) var(--gr) clamp(72px, 9vw, 120px) var(--gl); }

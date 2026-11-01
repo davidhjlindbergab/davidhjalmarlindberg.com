@@ -1,1 +1,1 @@
-8c9f46601ea22063c068fbe6d255df57b97befe0bd5a1b4570e761c97c1821f2  Colobri-plugins-1.4.0.zip
+019feaa25bc4fbd34696dad7ebc19ea4d4edf5df76ad172aa634ec3d1aa37183  Colobri-plugins-1.4.1.zip
