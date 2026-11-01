@@ -18,6 +18,15 @@
      dither(el, name)   a 128-pixel tile of a little white at random (one tile pixel to a screen pixel), for a layer over everything that
                         breaks up the GPU's whole-step contour lines in the dark; set as the CSS variables --<name> and --<name>-size
      ground(el)         the color behind an element (the first ancestor with a background), as [r, g, b]
+     live(host, o)      the light behind the bird, alive (round 16): a second, small copy of the live logo (window.ColobriLogo), drawn
+                        at 1/k of the box's size and `scale` times the bird's size, scaled back up and blurred in CSS (by blurBw of the
+                        bird's width), so the light has the bird's own colors and moves as it moves. It returns { el, start(L, gs),
+                        place(L, gs), follow(canvas), sync(logo), logo, destroy() }: follow passes the bird's pointer on to the light, so
+                        its colors drag after the pointer as the bird's do; sync sets the light to the bird's moment. The caller sets
+                        its strength (opacity) and its falloff (bellMask). L is { w, h, bw, cx, cy }, gs the bird's share of its size
+     bellMask(el, o)    a smooth round falloff for a light, as a CSS mask: full at the bird ({ cx, cy }), easing out like a bell
+                        (strongest at the bird, less and less further out) to nothing at the radii { rx, ry }, and arriving there flat,
+                        so no edge shows anywhere
    o: { w, h } the box in CSS pixels, { cx, cy } the bird's middle in it, bw the bird's width (its outline, 3378 logo units).
    A box that is tall for its width (a narrow window, a phone) is measured as if it were only as tall as the light's own shape round
    the bird (the aura: as wide as the box and 0.62 of that high, like the bird's light; the outer light: as high as wide): the light
@@ -162,5 +171,58 @@
     el.style.setProperty('--' + name, 'url(' + c.toDataURL() + ')');
     el.style.setProperty('--' + name + '-size', n / (window.devicePixelRatio || 1) + 'px');
   }
-  window.ColobriLight = { sm, edge, glow, at, grow, bezier, dither, ground };
+  // ---- the light behind the bird, alive: the bird itself a second time, small, larger than the bird, very soft
+  const BIRD_W = 3378, FIT_W = 4650, FIT_H = 2950;
+  function live(host, o) {
+    o = o || {}; const k = o.k || 5; let scale = o.scale || 1.5, blurBw = o.blurBw == null ? 0.3 : o.blurBw;
+    const el = document.createElement('div'); el.className = o.className || 'cl-live'; el.setAttribute('aria-hidden', 'true');
+    Object.assign(el.style, { position: 'absolute', left: '0', top: '0', transformOrigin: '0 0', transform: 'scale(' + k + ')', pointerEvents: 'none' });
+    host.appendChild(el);
+    let logo = null, L = null, gs = 1, unfollow = null;
+    const pad = () => Math.max(0, Math.min(2, (BIRD_W * Math.min(L.w / FIT_W, L.h / FIT_H) / Math.max(1, scale * L.bw * gs) - 1) / 2));
+    // (the logo's own middle sits a little left of the bird's light: moved right by 2.3% of the bird's width, as the bird is)
+    const pos = () => [(L.cx + 0.0232 * L.bw) / Math.max(1, L.w), L.cy / Math.max(1, L.h)];
+    function place(nL, g) {
+      L = nL; if (g != null) gs = g;
+      el.style.width = Math.max(1, L.w / k) + 'px'; el.style.height = Math.max(1, L.h / k) + 'px';
+      el.style.filter = 'blur(' + (blurBw * L.bw * Math.max(0.5, gs) / k).toFixed(2) + 'px)';
+      if (logo) { logo.setPadding(pad()); logo.setPosition(pos()); }
+    }
+    const POINTER = ['pointermove', 'pointerenter', 'pointerdown', 'pointerup', 'pointercancel', 'pointerleave'];
+    return {
+      el,
+      start(nL, g) {
+        place(nL, g);
+        // (interactive only for the pointer the bird passes on (follow): the light itself never takes a pointer; one pixel per CSS pixel
+        // of the small copy is plenty under the blur)
+        try { logo = window.ColobriLogo.create(el, { background: 'transparent', interactive: true, padding: pad(), position: pos(), motion: o.motion == null ? 0.6 : o.motion, startTime: o.startTime == null ? 6 : o.startTime, fadeIn: 0, ariaLabel: '', maxPixelRatio: 1, respectReducedMotion: o.respectReducedMotion }); }
+        catch (e) { logo = null; }
+        if (logo && logo.supported === false) { try { logo.destroy(); } catch (e) { /* (never started) */ } logo = null; }
+        return !!logo;
+      },
+      place,
+      set(n) { if (n.scale != null) scale = +n.scale; if (n.blurBw != null) blurBw = +n.blurBw; if (L) place(L); },
+      follow(src) {
+        if (unfollow) unfollow();
+        const pass = e => {
+          if (!logo || !logo.canvas || typeof PointerEvent === 'undefined') return;
+          try { logo.canvas.dispatchEvent(new PointerEvent(e.type, { clientX: e.clientX, clientY: e.clientY, pointerType: e.pointerType, pointerId: e.pointerId, isPrimary: e.isPrimary })); } catch (x) { /* (the light just doesn't follow) */ }
+        };
+        POINTER.forEach(t => src.addEventListener(t, pass, { passive: true }));
+        unfollow = () => { POINTER.forEach(t => src.removeEventListener(t, pass)); unfollow = null; };
+      },
+      sync(bird) { if (logo && bird && bird.getTime) { try { logo.setTime(bird.getTime()); } catch (e) { /* (next time) */ } } },
+      get logo() { return logo; },
+      destroy() { if (unfollow) unfollow(); if (logo) { try { logo.destroy(); } catch (e) { /* (let go regardless) */ } logo = null; } el.remove(); },
+    };
+  }
+  // a bell for a light's falloff: (1 - d^2)^2 e^(-k d^2), d the distance from the bird in radii (k 0 unless given): full there, 0.83 at
+  // 0.3, 0.56 at half way, a quarter at 0.7, and nothing at the radii, where it arrives flat (no slope), so it has no edge (32 stops)
+  function bellMask(el, o) {
+    const K = o.k == null ? 0 : o.k, stops = [];
+    for (let i = 0; i <= 32; i++) { const d = i / 32, q = 1 - d * d, a = q * q * Math.exp(-K * d * d); stops.push('rgba(0,0,0,' + a.toFixed(4) + ') ' + (d * 100).toFixed(2) + '%'); }
+    const g = 'radial-gradient(' + Math.round(o.rx) + 'px ' + Math.round(o.ry) + 'px at ' + Math.round(o.cx) + 'px ' + Math.round(o.cy) + 'px, ' + stops.join(', ') + ')';
+    el.style.webkitMaskImage = g; el.style.maskImage = g;
+  }
+  window.ColobriLight = { sm, edge, glow, at, grow, bezier, dither, ground, live, bellMask };
 })();
