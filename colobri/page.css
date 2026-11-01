@@ -52,12 +52,12 @@ footer a, footer button { display: inline-flex; align-items: center; min-height:
 footer a:hover, footer button:hover { color: var(--ink); }
 
 /* buttons: the main one is the Colobri button (colobri-button.css and .js, the bird's own light round the pill), at the others' height */
-.btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 26px; border-radius: 999px; border: 0; background: #1c1c1e; color: var(--ink); font: 400 17px/1 var(--f); text-decoration: none; white-space: nowrap; cursor: pointer; transition: background .5s var(--ease); letter-spacing: 0.0035em; }
+.btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 calc(max(48px, 1em) / 2); border-radius: 999px; border: 0; background: #1c1c1e; color: var(--ink); font: 400 17px/1 var(--f); text-decoration: none; white-space: nowrap; cursor: pointer; transition: background .5s var(--ease); letter-spacing: 0.0035em; }
 .btn:hover { background: #232326; }
-.btn.small { min-height: 40px; padding: 0 18px; font-size: 14.5px; border: 1px solid var(--line-2); }
+.btn.small { min-height: 40px; padding: 0 calc(max(40px, 1em) / 2 - 1px); font-size: 14.5px; border: 1px solid var(--line-2); }
 .btn.solid { background: var(--ink); color: #000; }
 .btn.solid:hover { background: #fff; }
-.btns .colobri-button { --cb-height: 48px; --cb-pad: 26px; }
+.btns .colobri-button { --cb-height: 48px; }
 body .colobri-button { font-family: var(--f); }   /* (its word in the pages' own face: SF Pro on Apple devices, Inter elsewhere) */
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
 @media (max-width: 560px) { .btns .btn, .btns .colobri-button { width: 100%; } }

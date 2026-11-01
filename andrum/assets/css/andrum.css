@@ -52,8 +52,9 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .fine { font-size: 14px; line-height: 1.55; color: var(--faint); }
 
 /* ---------------------------------------------------------------- buttons */
-/* buttons after apple.com: 44px pills with 17px regular text */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 21px;
+/* buttons after apple.com: 44px pills with 17px regular text. The words start and end where the round ends meet the
+   straight edge: half the height in from each end. */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 calc(max(44px, 1em) / 2);
        border-radius: 999px; font: 400 17px/1 var(--text); letter-spacing: -0.01em; text-decoration: none; white-space: nowrap;
        transition: background-color 0.2s, box-shadow 0.2s, color 0.2s; }
 .btn--primary { background: var(--frost); color: #06070d; }
@@ -103,7 +104,7 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .picture__motion.is-paused .i-play { display: block; }
 
 .player { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 8px; }
-.play { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 21px 0 4px; border: 0; border-radius: 999px;
+.play { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 22px 0 4px; border: 0; border-radius: 999px;
         background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px var(--line); color: var(--frost);
         font: 400 17px/1 var(--text); letter-spacing: -0.01em; cursor: pointer; transition: background-color 0.2s; }
 .play:hover { background: rgba(255, 255, 255, 0.1); }
@@ -116,7 +117,7 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .no-audio .play { display: none; }
 
 .ab { display: inline-flex; padding: 4px; border-radius: 999px; background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px var(--line); }
-.ab button { min-height: 40px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: var(--mist);
+.ab button { min-height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: transparent; color: var(--mist);
              font: 500 14px/1 var(--text); cursor: pointer; transition: background-color 0.2s, color 0.2s; }
 .ab button[aria-checked="true"] { background: rgba(255, 255, 255, 0.1); color: var(--frost); }
 .ab button:hover { color: var(--frost); }
@@ -128,7 +129,7 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .readouts dd small { font: 400 14px/1 var(--text); color: var(--mist); margin-left: 4px; letter-spacing: 0; }
 .player__note { flex-basis: 100%; font-size: 14px; color: var(--frost); }
 @media (max-width: 767px) { .readouts { margin-left: 0; width: 100%; } }
-@media (max-width: 639px) { .player { gap: 16px 10px; } .ab button { padding: 0 14px; } }
+@media (max-width: 639px) { .player { gap: 16px 10px; } }
 
 /* ---------------------------------------------------------------- sections */
 .section { padding-top: var(--section); }

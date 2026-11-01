@@ -102,7 +102,7 @@ section { position: relative; }
 @keyframes ring-b { to { --rb: -360deg; } }
 @keyframes ring-v { 0%, 100% { --rv: 0deg; } 30% { --rv: -42deg; } 55% { --rv: 14deg; } 78% { --rv: -20deg; } }
 @keyframes ring-l { from { --rl: 0.25; } to { --rl: 1; } }
-.btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 26px; border-radius: 999px; border: 0;
+.btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 calc(max(48px, 1em) / 2); border-radius: 999px; border: 0;
   background: #1c1c1e; color: var(--ink); font: 400 17px/1 var(--f); letter-spacing: 0.0035em; text-decoration: none; white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent;
   transition: background .5s var(--ease), transform .3s var(--ease); }
 .btn:hover { background: #232326; }
@@ -193,7 +193,7 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .v-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .55s var(--ease); }
 .v-stage .v-src { opacity: 0; transition-duration: .25s; }
 .v-stage.holding .v-src { opacity: 1; }
-.chip { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 7px 13px; border-radius: 999px; background: rgba(0, 0, 0, 0.58); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); color: var(--ink); font-size: 12px; line-height: 1.2; letter-spacing: -0.01em; pointer-events: none; white-space: nowrap; }
+.chip { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 8px; padding: 7px calc(0.6em + 7px); border-radius: 999px; background: rgba(0, 0, 0, 0.58); -webkit-backdrop-filter: blur(14px) saturate(1.4); backdrop-filter: blur(14px) saturate(1.4); color: var(--ink); font-size: 12px; line-height: 1.2; letter-spacing: -0.01em; pointer-events: none; white-space: nowrap; }
 .chip.bl { left: 16px; bottom: 16px; }
 .chip.br { right: 16px; bottom: 16px; color: rgba(245, 245, 247, 0.8); }
 .chip.tl { left: 16px; top: 16px; }
@@ -373,7 +373,7 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .go .btn { width: 100%; }
 /* (the two downloads side by side where both fit whole, else one above the other: the Colobri button at Buy's height) */
 .go .dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 214px), 1fr)); gap: 10px; }
-.go .dl .colobri-button { width: 100%; --cb-height: 48px; --cb-pad: 14px; }
+.go .dl .colobri-button { width: 100%; --cb-height: 48px; }
 .go .dl .colobri-button:first-child { z-index: 1; }   /* (stacked: the second's glow passes under the first, never over its warm lower edge) */
 .go .fine { text-wrap: pretty; }
 @media (max-width: 860px) { .buy { grid-template-columns: 1fr; } }
