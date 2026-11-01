@@ -76,7 +76,7 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 /* ---------------------------------------------------------------- the hero */
 .hero { position: relative; padding-top: clamp(36px, 6vh, 80px); }
 .hero__logo { margin-bottom: clamp(36px, 5.5vh, 60px); }
-.hero__logo img { width: 177px; height: auto; }
+.hero__logo img { width: 184px; height: auto; }
 .hero h1 { font: 300 clamp(46px, 6.6vw, 96px)/0.98 var(--display); letter-spacing: -0.038em; color: var(--frost);
            text-wrap: balance; }
 .hero__lead { margin-top: 26px; font-size: clamp(18px, 1.5vw, 21px); line-height: 1.5; max-width: 39em; text-wrap: pretty; }
@@ -257,7 +257,7 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 /* ---------------------------------------------------------------- the end */
 .foot { padding: var(--section) 0 56px; }
 .foot__in { display: grid; gap: 24px; padding-top: 40px; border-top: 1px solid var(--line); }
-.foot__logo img { width: 142px; height: auto; }
+.foot__logo img { width: 146px; height: auto; }
 .foot p { font-size: 15px; max-width: 46em; }
 .foot .fine { font-size: 13px; }
 
