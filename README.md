@@ -28,3 +28,12 @@ Plain HTML, CSS and JavaScript with no build step. Served by GitHub Pages from t
 - **The browser app** (`colobri/app/index.html`): the standalone build of the Colobri app, with the same 7-day trial and licence as the plugins.
 
 - **Meta domain verification**: the `facebook-domain-verification` meta tag in the front page's head (`index.html`) must stay.
+
+## The site editor (`/edit/`)
+
+- **What it is** (`edit/index.html` and `edit/editor.js`, no build step): David's visual editor at davidhjalmarlindberg.com/edit/. He clicks text, pictures, links, fonts, sizes, colors and spacing in a live preview of a page and presses Publish, which commits straight to `main` (the messages start with `Site editor:`). It uses his own fine-grained GitHub key (this repository only, Contents: Read and write), kept in his browser; there is no server. The page is `noindex`, and its address settings (`?api=`, `?site=` and the rest) work only on localhost, for testing.
+- **What it writes**: texts and attributes change in place in the page's HTML, and everything else in the file stays byte for byte. Style changes go into blocks the editor owns:
+  - for one page, `<link id="site-editor-fonts">` and `<style id="site-editor">` at the end of its `<head>`;
+  - for every page that uses `style.css`, an `@import … /* site-editor:fonts */` line at the top of `style.css` and a `/* site-editor:start */ … /* site-editor:end */` block at its end.
+  - An element styled on its own carries a `data-se="…"` marker that its rule points to. New pictures are made web-ready (WebP, at most 2560 px) and saved next to the picture they replace, or in the page's `images/` folder.
+- **Editing the site anywhere else**: pull `main` first, since pages can change from the editor at any time. Keep the editor's blocks and `data-se` markers; to tidy one up, move its rule into the page's own styles and remove the rule and its marker together. Leave `edit/` alone unless David asks.
