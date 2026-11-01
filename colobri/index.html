@@ -369,11 +369,11 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .incl { list-style: none; margin: 28px 0 0; padding: 0; }
 .incl li { display: flex; gap: 12px; padding: 13px 0; border-top: 1px solid var(--line); color: var(--ink); font-size: 17px; line-height: 1.4; }
 .incl li svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--mark); }
-.go { display: grid; gap: 14px; }
-.go .btn { width: 100%; }
-/* (the two downloads side by side where both fit whole, else one above the other: the Colobri button at Buy's height) */
-.go .dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 214px), 1fr)); gap: 10px; }
-.go .dl .colobri-button { width: 100%; --cb-height: 48px; }
+/* (every button as wide as its words, so the words meet the round ends: David's rule for all pills) */
+.go { display: grid; gap: 14px; justify-items: start; }
+/* (the two downloads side by side where both fit, else one above the other: the Colobri button at Buy's height) */
+.go .dl { display: flex; flex-wrap: wrap; gap: 10px; }
+.go .dl .colobri-button { --cb-height: 48px; }
 .go .dl .colobri-button:first-child { z-index: 1; }   /* (stacked: the second's glow passes under the first, never over its warm lower edge) */
 .go .fine { text-wrap: pretty; }
 @media (max-width: 860px) { .buy { grid-template-columns: 1fr; } }
