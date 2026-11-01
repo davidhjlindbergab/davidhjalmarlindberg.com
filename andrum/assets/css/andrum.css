@@ -146,6 +146,24 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .split__text p { max-width: 29em; font-size: 18px; }
 @media (max-width: 1023px) { .split { grid-template-columns: 1fr; gap: 48px; } }
 
+/* the limits: where Andrum works, and how it lets go past them. The captions are set over the
+   drawings' own positions (limits-fade.svg: the fades' ends at 44, 212 and 380 of 584, the limit
+   at 548; limits-soft.svg: three shapes centred at 88, 292 and 496), so they keep their size */
+.fades { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; margin-top: 56px; }
+.fades__pic img { width: 100%; height: auto; }
+.fades__caps { position: relative; height: 22px; margin-top: 10px; font-size: 13.5px; line-height: 22px; color: var(--mist); }
+.fades__caps span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
+.fades__caps--fade span:nth-child(1) { left: 7.53%; }
+.fades__caps--fade span:nth-child(2) { left: 36.3%; }
+.fades__caps--fade span:nth-child(3) { left: 65.07%; }
+.fades__caps--fade span:nth-child(4) { right: 0; transform: none; }
+.fades__caps--soft span:nth-child(1) { left: 15.07%; }
+.fades__caps--soft span:nth-child(2) { left: 50%; }
+.fades__caps--soft span:nth-child(3) { left: 84.93%; }
+.fades__text { display: grid; gap: 6px; margin-top: 18px; }
+.fades__text p { font-size: 16.5px; max-width: 30em; }
+@media (max-width: 1023px) { .fades { grid-template-columns: 1fr; gap: 44px; margin-top: 48px; } .fades > div { max-width: 584px; } }
+
 /* how it compares: the same moment, four ways of turning the music down */
 .ways { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; margin-top: 72px; }
 .way__pic { position: relative; isolation: isolate; }
