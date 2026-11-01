@@ -9,6 +9,17 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="stylesheet" href="/style.css">
+<script>
+/* the color grading app's old address goes to its page today, at the same place within it (the buy link to the pricing) */
+(function () {
+  var p = location.pathname, m = /^\/(n[a-z]{4})(\/.*)?$/i.exec(p);
+  if (m && m[1].toLowerCase() === ['n', 'y', 'a', 'n', 's'].join('')) {
+    var rest = m[2] || '/', hash = location.hash === '#buy' ? '#pricing' : location.hash;
+    if (/^\/download\//.test(rest)) rest = '/#pricing';
+    location.replace('/colobri' + rest + location.search + (rest.indexOf('#') < 0 ? hash : ''));
+  }
+})();
+</script>
 </head>
 <body>
 <header class="masthead wrap">
