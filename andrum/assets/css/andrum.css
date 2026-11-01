@@ -209,7 +209,7 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .get__row .fine { flex: 1 1 14em; }
 .note { margin-top: 4px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 14.5px; line-height: 1.6; }
 .note p + p { margin-top: 8px; }
-@media (max-width: 1023px) { .buy { grid-template-columns: 1fr; margin-top: 56px; } }
+@media (max-width: 1023px) { .buy { grid-template-columns: minmax(0, 1fr); margin-top: 56px; } }
 @media (max-width: 639px) {
   .buy__price, .buy__get { padding: 32px 24px; border-radius: 18px; }
   .price { font-size: 80px; }
