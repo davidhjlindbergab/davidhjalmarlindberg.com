@@ -6,22 +6,35 @@
 <title>Buy Andrum</title>
 <meta name="robots" content="noindex">
 <!--
-  Andrum's Buy button opens this address. Until the store opens it leads to the price on the Andrum
-  page; at the launch the store's version of this page (branch claude/andrum-store) replaces it and
-  goes straight to the checkout, so the button never needs a new Andrum.
+  A fixed address for the checkout: Andrum's Buy button, e-mails and links in posts point here, so
+  the checkout can change (test mode to the live store) without a new Andrum. The checkout link is
+  also in ../assets/js/store.js: change both together.
 -->
 <link rel="canonical" href="https://davidhjalmarlindberg.com/andrum/">
 <link rel="icon" href="../assets/img/andrum-icon-32.png" sizes="32x32" type="image/png">
-<meta http-equiv="refresh" content="0; url=../#buy">
 <style>
   html { background: #04060a; color-scheme: dark; }
   body { margin: 0; min-height: 100vh; display: grid; place-items: center; font: 400 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: #9aa3b4; }
   p { margin: 0 24px; text-align: center; }
   a { color: #f3f5f9; }
 </style>
-<script>window.location.replace("../#buy");</script>
+<script>
+  (function () {
+    var url = "https://davidhjalmarlindberg.lemonsqueezy.com/checkout/buy/a5a37f02-4e39-4237-87ed-7d6af71e3e5b";
+    var keep = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"], extra = "";
+    try {
+      var q = new URLSearchParams(window.location.search);
+      for (var i = 0; i < keep.length; i++) {
+        var v = q.get(keep[i]);
+        if (v) extra += "&" + encodeURIComponent("checkout[custom][" + keep[i] + "]") + "=" + encodeURIComponent(v.slice(0, 120));
+      }
+    } catch (e) { /* the plain link is fine */ }
+    window.location.replace(url + "?dark=1" + extra);
+  })();
+</script>
+<noscript><meta http-equiv="refresh" content="0; url=https://davidhjalmarlindberg.lemonsqueezy.com/checkout/buy/a5a37f02-4e39-4237-87ed-7d6af71e3e5b"></noscript>
 </head>
 <body>
-<p>Andrum goes on sale soon. <a href="../#buy">See the price, and try it free meanwhile</a>.</p>
+<p>Opening the checkout… If nothing happens, <a href="https://davidhjalmarlindberg.lemonsqueezy.com/checkout/buy/a5a37f02-4e39-4237-87ed-7d6af71e3e5b">continue to the checkout</a>.</p>
 </body>
 </html>

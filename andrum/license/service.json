@@ -1,0 +1,4 @@
+{
+  "_readme": "Where Andrum's licence service answers. Andrum (from 1.5.0) and the licence page read this before they send a licence key, so the service can move without a new Andrum. Set url to the service's /v1/license address, e.g. https://andrum-license.<your-subdomain>.workers.dev/v1/license; empty means not online yet.",
+  "url": ""
+}

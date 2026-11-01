@@ -39,8 +39,16 @@
     "@type": "Offer",
     "price": "59.00",
     "priceCurrency": "EUR",
-    "availability": "https://schema.org/PreOrder",
-    "url": "https://davidhjalmarlindberg.com/andrum/#buy"
+    "availability": "https://schema.org/InStock",
+    "url": "https://davidhjalmarlindberg.com/andrum/#buy",
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "applicableCountry": "SE",
+      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+      "merchantReturnDays": 14,
+      "returnFees": "https://schema.org/FreeReturn",
+      "url": "https://davidhjalmarlindberg.com/andrum/terms/#refunds"
+    }
   },
   "publisher": { "@type": "Organization", "name": "David HJ Lindberg AB" }
 }
@@ -68,7 +76,8 @@
       <p class="hero__lead">Andrum turns the music down only where it covers the voice, and only while the voice is there. The mix stays full, and every word comes through.</p>
       <div class="hero__actions">
         <a class="btn btn--primary" href="#download">Download the free trial</a>
-        <p class="hero__note">Every feature free for 7 days, for Mac and Windows. €59 when it goes on sale.</p>
+        <a class="btn btn--ghost" href="buy/" data-an-buy>Buy for €59</a>
+        <p class="hero__note">Every feature free for 7 days, for Mac and Windows.</p>
       </div>
     </div>
 
@@ -282,17 +291,29 @@
     <div class="wrap">
       <h2 id="buy-title">Try it free. Buy it once.</h2>
       <div class="buy">
-        <div class="buy__price">
+        <div class="buy__price" data-an-price>
           <p class="price">€59</p>
-          <p class="price__note">One licence, no subscription. On sale soon.</p>
+          <p class="price__note">One licence, no subscription. VAT included.</p>
           <ul class="facts">
             <li>Every feature, as an Audio Unit, a VST3 and a standalone app</li>
             <li>For one person, on up to two computers</li>
             <li>Every 1.x update included</li>
             <li>For any work, commercial and broadcast included</li>
-            <li>No iLok and no account</li>
+            <li>No iLok and no account: Andrum goes online once to fetch your licence, then works offline</li>
+            <li>14 days to change your mind: your money back, no questions asked</li>
           </ul>
-          <a class="btn btn--ghost" href="mailto:david@nakaya.world?subject=Andrum%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Hi%20David%2C%20please%20e-mail%20me%20when%20Andrum%20licences%20go%20on%20sale.">Tell me when it’s on sale</a>
+          <div class="buy__actions"><a class="btn btn--primary" href="buy/" data-an-buy>Buy for €59</a></div>
+          <p class="fine">Your licence key arrives by e-mail the moment you pay. <a href="license/">How to add it</a>.</p>
+        </div>
+        <div class="buy__price thanks" data-an-thanks hidden tabindex="-1" aria-labelledby="thanks-title">
+          <h3 id="thanks-title">Thank you.</h3>
+          <p>Your licence key is on its way to <strong data-an-thanks-email>your inbox</strong>, in the receipt from Lemon Squeezy.</p>
+          <ol>
+            <li>Copy the licence key from the receipt.</li>
+            <li>Open Andrum and click <span class="ui">Trial</span> at the bottom of its window.</li>
+            <li>Click <span class="ui">Paste license</span>. Andrum fetches your licence once and works offline from then on.</li>
+          </ol>
+          <div class="buy__actions"><a class="btn btn--primary" href="#download">Download Andrum</a><a class="btn btn--ghost" href="license/">How to add your licence</a></div>
         </div>
         <div class="buy__get" id="download">
           <h3>Download the free trial</h3>
@@ -312,7 +333,7 @@
           <div class="note">
             <p><strong>The first time you open the installer.</strong> This version isn’t signed by Apple or Microsoft yet, so your computer asks you once.</p>
             <p>On a Mac, open the disk image and double-click Install Andrum. When macOS stops it, open System Settings, then Privacy &amp; Security, click Open Anyway beside Install Andrum, and confirm. On Windows, if Windows says it protected your PC, click More info, then Run anyway.</p>
-            <p>Then rescan plug-ins in your app if it doesn’t find Andrum by itself. Version 1.8.1. File checksums: <a href="download/SHA256.txt">SHA-256</a>.</p>
+            <p>Then rescan plug-ins in your app if it doesn’t find Andrum by itself. Bought it? <a href="license/">Add your licence</a>. Version 1.8.1. File checksums: <a href="download/SHA256.txt">SHA-256</a>.</p>
           </div>
         </div>
       </div>
@@ -349,8 +370,28 @@
           <p>Andrum lets the sound through untouched until you add a licence. Nothing in your sessions breaks, and once you add a licence it works exactly as before.</p>
         </details>
         <details>
+          <summary>How do I add my licence?</summary>
+          <p>Right after you pay, Lemon Squeezy e-mails you a receipt with your licence key. Copy the key, open Andrum, click Trial at the bottom of its window, then Paste license. On a computer without internet, <a href="license/#offline">get your licence here</a> and add it as a file.</p>
+        </details>
+        <details>
           <summary>Can I use it on more than one computer?</summary>
-          <p>Yes. One licence covers one person on up to two computers, Mac or Windows. When you get a new computer, remove the licence from the old one in Andrum and add it on the new one.</p>
+          <p>Yes. One licence covers one person on up to two computers, Mac or Windows: paste the same key on each. When you get a new computer, remove the licence from the old one in Andrum and add it on the new one.</p>
+        </details>
+        <details>
+          <summary>Does it need the internet or an iLok?</summary>
+          <p>No iLok and no account. Andrum goes online once, when you paste your licence key, to fetch your licence. After that it never connects to the internet, and your licence keeps working offline.</p>
+        </details>
+        <details>
+          <summary>Can I get a refund?</summary>
+          <p>Yes. If Andrum isn’t right for you, write to <a href="mailto:davidhjlindbergab@gmail.com">davidhjlindbergab@gmail.com</a> within 14 days of buying and you get your money back in full, no questions asked. <a href="terms/#refunds">More about refunds</a>.</p>
+        </details>
+        <details>
+          <summary>Who takes the payment?</summary>
+          <p>Lemon Squeezy, which sells Andrum for us as merchant of record. It takes the payment, adds the right VAT or sales tax for your country (the €59 includes it) and e-mails your receipt with the licence key.</p>
+        </details>
+        <details>
+          <summary>How do I remove Andrum?</summary>
+          <p>On a Mac, open the Andrum disk image and double-click Uninstall Andrum. On Windows, open Settings, then Apps, choose Andrum and click Uninstall.</p>
         </details>
       </div>
     </div>
@@ -362,10 +403,18 @@
   <div class="wrap foot__in">
     <p class="foot__logo"><img src="assets/img/andrum-logo@2x.png" srcset="assets/img/andrum-logo@2x.png 2x, assets/img/andrum-logo@3x.png 3x" width="142" height="35" alt="Andrum" loading="lazy"></p>
     <p>Andrum is made in Sweden by <a href="../">David Hjalmar Lindberg</a>. Questions before you buy? Write to <a href="mailto:david@nakaya.world">david@nakaya.world</a>.</p>
-    <p class="fine">© 2026 David Hjalmar Lindberg. David HJ Lindberg AB, org.nr 559291-3353.<br>Audio Unit is a trademark of Apple Inc. VST is a registered trademark of Steinberg Media Technologies GmbH. Other product names are trademarks of their owners.</p>
+    <nav class="foot__links" aria-label="Licence and help">
+      <a href="license/">Add your licence</a>
+      <a href="terms/">Licence and terms</a>
+      <a href="terms/#refunds">Refunds</a>
+      <a href="privacy/">Privacy</a>
+      <button type="button" data-an-consent-open hidden>Cookie settings</button>
+    </nav>
+    <p class="fine">© 2026 David Hjalmar Lindberg. David HJ Lindberg AB, org.nr 559291-3353. Orders are processed by Lemon Squeezy, our reseller and merchant of record.<br>Audio Unit is a trademark of Apple Inc. VST is a registered trademark of Steinberg Media Technologies GmbH. Other product names are trademarks of their owners.</p>
   </div>
 </footer>
 
 <script src="assets/js/page.js" defer></script>
+<script src="assets/js/store.js" defer></script>
 </body>
 </html>
