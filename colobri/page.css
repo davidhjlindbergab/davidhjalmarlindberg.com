@@ -5,7 +5,6 @@
   color-scheme: dark;
   --bg: #0a0a0a; --card: #161618; --line: rgba(255, 255, 255, 0.1); --line-2: rgba(255, 255, 255, 0.16);
   --ink: #f5f5f7; --ink-2: #a1a1a6; --ink-3: #86868b; --mark: #b6bcf8; --logo: #f5f5f7; --link: #4da3ff;
-  --ring-stops: #2a8cff 0%, #36b4ff 8%, #8ee0ff 12.5%, #3cb2ff 17%, #2794ff 26%, #a287ff 38%, #d466bb 48%, #fe636c 57%, #ff8a62 64%, #ffa496 69%, #ee7aa6 75%, #a98aff 83%, #4c93ff 90%, #219aff 95%, #2a8cff 100%;
   --f: -apple-system, BlinkMacSystemFont, "Inter Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --gl: max(22px, env(safe-area-inset-left, 0px)); --gr: max(22px, env(safe-area-inset-right, 0px));
   --ease: cubic-bezier(.22, .7, .2, 1);
@@ -52,34 +51,15 @@ footer li + li { margin: 0; }
 footer a, footer button { display: inline-flex; align-items: center; min-height: 40px; padding: 0; border: 0; background: none; color: var(--ink-2); font: inherit; text-decoration: none; cursor: pointer; }
 footer a:hover, footer button:hover { color: var(--ink); }
 
-/* buttons: the bird's living light on the main one */
-@property --ra { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-@property --rw { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-@property --rb { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-@property --rv { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-@property --rl { syntax: "<number>"; inherits: false; initial-value: 0.6; }
-.btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 26px; border-radius: 999px; border: 0; background: #1c1c1e; color: var(--ink); font: 400 17px/1 var(--f); text-decoration: none; white-space: nowrap; cursor: pointer; transition: background .5s var(--ease); letter-spacing: 0.0035em; }
+/* buttons: the main one is the Colobri button (colobri-button.css and .js, the bird's own light round the pill), at the others' height */
+.btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 calc(max(48px, 1em) / 2); border-radius: 999px; border: 0; background: #1c1c1e; color: var(--ink); font: 400 17px/1 var(--f); text-decoration: none; white-space: nowrap; cursor: pointer; transition: background .5s var(--ease); letter-spacing: 0.0035em; }
 .btn:hover { background: #232326; }
-.btn.small { min-height: 40px; padding: 0 18px; font-size: 14.5px; border: 1px solid var(--line-2); }
+.btn.small { min-height: 40px; padding: 0 calc(max(40px, 1em) / 2 - 1px); font-size: 14.5px; border: 1px solid var(--line-2); }
 .btn.solid { background: var(--ink); color: #000; }
 .btn.solid:hover { background: #fff; }
-.btn.lit::before, .btn.lit::after { content: ""; position: absolute; pointer-events: none; border-radius: inherit;
-  background:
-    conic-gradient(from calc(var(--rb) + var(--rv) + 40deg), rgb(128 218 255 / 0) 0deg, rgb(128 218 255 / calc(var(--rl) * 0.8)) 26deg, rgb(128 218 255 / 0) 60deg,
-      rgb(70 166 255 / 0) 172deg, rgb(70 166 255 / calc(0.8 - var(--rl) * 0.55)) 206deg, rgb(70 166 255 / 0) 244deg, rgb(70 166 255 / 0) 360deg),
-    conic-gradient(from calc(var(--ra) + var(--rw) + 200deg), var(--ring-stops));
-  background-blend-mode: screen, normal;
-  animation: ring-a 11s linear infinite, ring-w 9.4s ease-in-out infinite, ring-b 15s linear infinite, ring-v 6.1s ease-in-out infinite, ring-l 5.3s ease-in-out infinite alternate; }
-.btn.lit::before { inset: 0; padding: 1.25px; -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); opacity: 0.9; }
-/* (no light inside the button, David 1 Nov: only the ring) */
-.btn.lit::after { display: none; }
-@keyframes ring-a { to { --ra: 360deg; } }
-@keyframes ring-w { 0%, 100% { --rw: 0deg; } 21% { --rw: 38deg; } 46% { --rw: -12deg; } 63% { --rw: 26deg; } 82% { --rw: -30deg; } }
-@keyframes ring-b { to { --rb: -360deg; } }
-@keyframes ring-v { 0%, 100% { --rv: 0deg; } 30% { --rv: -42deg; } 55% { --rv: 14deg; } 78% { --rv: -20deg; } }
-@keyframes ring-l { from { --rl: 0.25; } to { --rl: 1; } }
-@media (prefers-reduced-motion: reduce) { .btn.lit::before, .btn.lit::after { animation: none; } .btn { transition: none; } }
-@media (max-width: 560px) { .btns .btn { width: 100%; } }
+.btns .colobri-button { --cb-height: 48px; }
+body .colobri-button { font-family: var(--f); }   /* (its word in the pages' own face: SF Pro on Apple devices, Inter elsewhere) */
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
 
 /* Apple's type scale at tablet and phone widths */
 @media (max-width: 1068px) {

@@ -1,0 +1,23 @@
+name: Merge Claude's pull requests
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+    branches: [main]
+permissions:
+  contents: write
+  pull-requests: write
+  pages: write
+jobs:
+  merge:
+    if: startsWith(github.head_ref, 'claude/') && github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO: ${{ github.repository }}
+      PR: ${{ github.event.pull_request.number }}
+    steps:
+      - run: |
+          for i in 1 2 3 4 5 6; do gh pr merge "$PR" --repo "$REPO" --merge && exit 0; sleep 10; done
+          exit 1
+      - continue-on-error: true
+        run: gh api -X POST "repos/$REPO/pages/builds" || true

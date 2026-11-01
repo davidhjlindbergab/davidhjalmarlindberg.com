@@ -13,6 +13,18 @@
     Hillstar: '#3b98bd', Sapphirewing: '#4a6fd0', Violetear: '#7656cc', Woodstar: '#a552c1', Coronet: '#a64f8f', Sunangel: '#c4506f', Jacobin: '#8a8a90', Hermit: '#b4b4b8' };
   function dotFor(name) { var c = BIRD[String(name).split(' ')[0]]; return c ? '<span class="dot" style="--sw:' + c + '"></span>' : ''; }
 
+  // a frame that shows itself as shot when pointed at (CSS) or, on touch and from the keyboard, when pressed (the gallery and one look
+  // on five frames); the hint under each heading says which
+  function asShot(fig) {
+    var toggle = function () { var on = !fig.classList.contains('as-shot'); fig.classList.toggle('as-shot', on); fig.setAttribute('aria-pressed', on ? 'true' : 'false'); };
+    fig.addEventListener('click', function () { if (touch) toggle(); });
+    fig.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+  }
+  if (touch) {
+    Array.prototype.forEach.call(document.querySelectorAll('.hint-hover'), function (e) { e.hidden = true; });
+    Array.prototype.forEach.call(document.querySelectorAll('.hint-touch'), function (e) { e.hidden = false; });
+  }
+
   // ---------------------------------------------------------------------------------------------- the bar
   var bar = $('#bar');
   function onScroll() { if (bar) bar.classList.toggle('scrolled', window.scrollY > 8); }
@@ -23,18 +35,19 @@
   // .hero-mark (1.03 of the bird's width across and 0.63 of it high), so the page's own layout decides where it is. Behind it lies its
   // light, alive (David, 1 Nov, round 16: half again as strong, a really smooth falloff, the bird's own colors and movement): the bird a
   // second time, larger and very soft, in one smooth bell round it (colobri-light.js, the same as in the app), gone well before the
-  // page's edges and the opening's foot, so nothing shows as a part or an edge at any size. When the bird is ready it grows from half its
-  // size to full over 2 s and its light comes up round it.
+  // page's edges and the opening's foot, so nothing shows as a part or an edge at any size. When the bird is ready it comes into focus
+  // where it stays and its light rises round it (David, round 19: no zoom; short and clean: index.html, hero-focus, 0.9 s).
   (function hero() {
     var CL = window.ColobriLight;
     var hero = $('.hero'), mark = $('.hero-mark'), box = $('.hero-logo'), scene = $('.hero-scene'), glow = $('.hero-glow'), dith = $('.hero-dither');
     if (!hero || !mark || !box || !scene || !CL) { if (hero) hero.classList.add('live'); return; }
     var BIRD_W = 3378, FIT_W = 4650, FIT_H = 2950, LIGHT_UP = 0.325;
     var MARK_W = 0.76, MARK_CX = 0.517, MARK_CY = 0.489, MARK_AR = 688 / 900;   // (where the bird is in the transparent still, colobri-mark.webp)
-    var L = null, logo = null, flat = false, ready = false, intro = true, growing = null;
-    var gs = reduce.matches ? 1 : 0.5;   // (while the opening grows the bird: its share of its full size)
+    var L = null, logo = null, flat = false, ready = false, intro = true, growing = null;   // (growing: none since round 19, kept for the hooks)
+    var gs = 1;   // (the bird's share of its full size: all of it from the first frame, the opening does not grow it)
+    var bg = $('.hero-bg', hero) || hero;   // (the first screen, where the bird and its light are; the words may run on below it)
     function layout() {
-      var h = hero.getBoundingClientRect(), m = mark.getBoundingClientRect(), bw = m.width / 1.03;
+      var h = bg.getBoundingClientRect(), m = mark.getBoundingClientRect(), bw = m.width / 1.03;
       return { w: h.width, h: h.height, bw: bw, cx: m.left - h.left + m.width / 2, cy: m.top - h.top + LIGHT_UP * bw };
     }
     function padFor() { return Math.max(0, Math.min(2, (BIRD_W * Math.min(L.w / FIT_W, L.h / FIT_H) / Math.max(1, L.bw * gs) - 1) / 2)); }
@@ -71,20 +84,17 @@
     }
     if (dith) CL.dither(dith, 'dither');
 
-    // the grow is the logo's own padding (so its haze grows with it and its canvas never shows as a shape); the still grows in CSS
+    // the opening is CSS's: the bird comes into focus and its light rises round it; done when the bird is sharp (or soon after anyway)
     function opened() {
       if (ready) return; ready = true; hero.classList.add('live');
-      if (reduce.matches) { gs = 1; setTimeout(function () { intro = false; }, 700); return; }
-      if (flat) { gs = 1; return; }
-      growing = CL.grow({ step: function (s) { gs = s; if (logo) logo.setPadding(padFor()); if (light) light.place(L, gs); }, done: function () { gs = 1; intro = false; growing = null; } });
+      setTimeout(function () { intro = false; }, reduce.matches ? 700 : 1100);
     }
-    scene.addEventListener('animationend', function (e) { if (flat && e.animationName === 'hero-grow') intro = false; });
+    scene.addEventListener('animationend', function (e) { if (e.target === scene) intro = false; });
 
     // without WebGL2: the still of the bird with its glow on a clear ground, on the same light, opening the same way
     var still = null;
     function toFlat() {
       if (flat) return; flat = true; hero.classList.add('flat');
-      if (growing) { growing.finish(); growing = null; }
       if (logo) { try { logo.destroy(); } catch (e) { /* (already gone) */ } logo = null; }
       stopLight(); stillGlow();
       still = document.createElement('img'); still.className = 'hero-still'; still.alt = ''; still.src = IMG + 'colobri-mark.webp';
@@ -94,6 +104,7 @@
     function place() {
       L = layout();
       hero.style.setProperty('--bird-x', Math.round(L.cx) + 'px'); hero.style.setProperty('--bird-y', Math.round(L.cy) + 'px');
+      hero.style.setProperty('--focus-blur', Math.round(Math.max(8, Math.min(18, 0.03 * L.bw))) + 'px');   // (the opening's softness)
       if (logo) { if (logo.resize) logo.resize(); logo.setPadding(padFor()); logo.setPosition(posFor()); }
       if (light) { light.place(L, gs); CL.bellMask(lightBox, Object.assign({ cx: L.cx, cy: L.cy }, reach())); }
       if (still) { var iw = L.bw / MARK_W, ih = iw * MARK_AR; still.style.width = iw + 'px'; still.style.height = ih + 'px'; still.style.left = (L.cx - MARK_CX * iw) + 'px'; still.style.top = (L.cy - MARK_CY * ih) + 'px'; }
@@ -148,6 +159,8 @@
       b.addEventListener('click', function () { stop(); show(i, false); });
       strip.appendChild(b); return b;
     });
+    // the picked look's ring: the Colobri button's light round the picture (colobri-ring.js); without WebGL2 the CSS ring stays
+    var rings = btns.map(function (b) { var pic = b.querySelector('.pic'); try { return window.ColobriRing ? window.ColobriRing.create(pic) : null; } catch (e) { return null; } });
     function keep(i) {   // bring the picked look into the strip's view, without moving the page
       var b = btns[i], sr = strip.getBoundingClientRect(), r = b.getBoundingClientRect(), pad = 24;
       if (r.left < sr.left + pad) strip.scrollBy({ left: r.left - sr.left - pad, behavior: reduce.matches ? 'auto' : 'smooth' });
@@ -156,6 +169,7 @@
     function show(i, focus) {
       if (i === cur) return; cur = i; want = i;
       btns.forEach(function (b, k) { b.setAttribute('aria-checked', k === i ? 'true' : 'false'); b.tabIndex = k === i ? 0 : -1; });
+      rings.forEach(function (r, k) { if (r && r.supported) r.setOn(k === i); });
       if (focus) btns[i].focus({ preventScroll: true });
       keep(i);
       nameEl.innerHTML = (i ? dotFor(LOOKS[i].name) : '') + '<span' + (i ? ' class="code"' : '') + '>' + LOOKS[i].name + '</span>';
@@ -213,25 +227,51 @@
     var GAL = [
       { f: 'h', name: 'Jacobin 5:6', alt: 'Houses with red roofs built on a mossy cliff above a misty valley.', big: true },
       { f: 'a', name: 'Hillstar 5:7', alt: 'A face framed by pale, intricately carved shell forms.' },
-      { f: 'd', name: 'Hillstar 5:8', alt: 'Small pink flowers growing from a weathered, porous stone.' }
+      { f: 'd', name: 'Hillstar 5:8', alt: 'Small pink flowers growing from a weathered, porous stone.' },
+      { f: 'e', name: 'Coronet 5:6', alt: 'A man in a dark suit standing in a street lined with soldiers and a crowd.' }
     ];
     var gal = $('#gal'); if (!gal) return;
-    if (touch) { var hh = $('.hint-hover'), ht = $('.hint-touch'); if (hh) hh.hidden = true; if (ht) ht.hidden = false; }
     GAL.forEach(function (g) {
       var fig = document.createElement('figure'); if (g.big) fig.className = 'big';
       fig.tabIndex = 0; fig.setAttribute('role', 'button'); fig.setAttribute('aria-pressed', 'false');
       fig.setAttribute('aria-label', g.name + '. Show the frame as shot.');
-      var sizes = g.big ? '(max-width: 1280px) 100vw, 1240px' : '(max-width: 700px) 100vw, 420px';
+      var sizes = g.big ? '(max-width: 1280px) 100vw, 1240px' : '(max-width: 700px) 100vw, (max-width: 860px) 50vw, 400px';
       var src = function (kind) { return 'srcset="' + IMG + 'gallery/' + g.f + '-' + kind + '-960.webp 960w, ' + IMG + 'gallery/' + g.f + '-' + kind + '-1456.webp 1456w" sizes="' + sizes + '" src="' + IMG + 'gallery/' + g.f + '-' + kind + '-1456.webp"'; };
       fig.innerHTML = '<img ' + src('best') + ' width="1456" height="816" alt="' + g.alt + ' Graded in ' + g.name + '." loading="lazy" decoding="async">' +
         '<img class="src" ' + src('ungraded') + ' width="1456" height="816" alt="" loading="lazy" decoding="async">' +
         '<span class="chip bl"><span class="gr">' + dotFor(g.name) + '<span class="code">' + g.name + '</span></span><span class="as">As shot</span></span>';
-      var toggle = function () { var on = !fig.classList.contains('as-shot'); fig.classList.toggle('as-shot', on); fig.setAttribute('aria-pressed', on ? 'true' : 'false'); };
-      fig.addEventListener('click', function () { if (touch) toggle(); });
-      fig.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+      asShot(fig);
       gal.appendChild(fig);
     });
     gal.classList.add('rise');
+  })();
+
+  // ---------------------------------------------------------------------------------------------- one look on five frames (round 18)
+  Array.prototype.forEach.call(document.querySelectorAll('#oneLook .tile'), asShot);
+
+  // ---------------------------------------------------------------------------------------------- from flat to finished (round 18)
+  // The rider on the ice, edge to edge: the grade crosses the frame from the left as the page scrolls past it (as shot when it comes
+  // into view, nearly all graded once it fills the window); a drag or the keyboard takes over the line. With reduced motion it stays
+  // at the middle until moved.
+  (function flat() {
+    var fig = $('#flat-fig'); if (!fig) return;
+    var input = $('input', fig), down = false, manual = reduce.matches, raf = 0;
+    function set(p) { p = Math.max(0, Math.min(100, p)); fig.style.setProperty('--split', p.toFixed(2) + '%'); if (input) input.value = String(p); }
+    function at(e) { var r = fig.getBoundingClientRect(); set((e.clientX - r.left) / r.width * 100); }
+    fig.addEventListener('pointerdown', function (e) { if (e.button) return; down = true; manual = true; at(e); if (e.pointerType !== 'touch') fig.setPointerCapture(e.pointerId); });
+    fig.addEventListener('pointermove', function (e) { if (down) at(e); });
+    ['pointerup', 'pointercancel'].forEach(function (ev) { fig.addEventListener(ev, function () { down = false; }); });
+    if (input) input.addEventListener('input', function () { manual = true; set(+input.value); });
+    function follow() {
+      raf = 0; if (manual) return;
+      var r = fig.getBoundingClientRect(), vh = window.innerHeight || 800;
+      if (r.bottom < -vh || r.top > 2 * vh) return;
+      var t = (0.82 * vh - r.top) / (0.82 * vh + 0.12 * r.height);
+      set(3 + 94 * sm(t));
+    }
+    function kick() { if (!raf && !manual) raf = requestAnimationFrame(follow); }
+    if (manual) set(50); else { window.addEventListener('scroll', kick, { passive: true }); window.addEventListener('resize', kick); follow(); }
+    window.__cbFlat = { at: function (p) { manual = true; set(p); }, follow: function () { manual = false; follow(); } };
   })();
 
   // ---------------------------------------------------------------------------------------------- the bird at the end, made when it is near

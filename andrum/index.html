@@ -20,6 +20,8 @@
 <link rel="icon" href="assets/img/andrum-icon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/img/andrum-icon-64.png" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/andrum-icon-180.png">
+<link rel="preload" href="assets/fonts/InterDisplay-Light.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="assets/fonts/Inter-Regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="assets/css/andrum.css">
 <script type="application/ld+json">
 {
@@ -29,7 +31,7 @@
   "description": "A plug-in that turns the music down only where it covers the voice, and only while the voice is there.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "macOS 11 or later, Windows 10 or later",
-  "softwareVersion": "1.8.3",
+  "softwareVersion": "1.8.4",
   "downloadUrl": "https://davidhjalmarlindberg.com/andrum/#download",
   "image": "https://davidhjalmarlindberg.com/andrum/assets/img/andrum-og.jpg",
   "url": "https://davidhjalmarlindberg.com/andrum/",
@@ -51,6 +53,12 @@
   "publisher": { "@type": "Organization", "name": "David HJ Lindberg AB" }
 }
 </script>
+<style id="site-editor">
+/* Style changes from the site editor (/edit/). Remove this block to undo all of them. */
+a.btn.btn--primary { height: 58px !important; min-height: 58px !important; box-sizing: border-box !important; padding-left: 29px !important; padding-right: 29px !important; }
+[data-se="vmj9p"] { height: 58px !important; min-height: 58px !important; box-sizing: border-box !important; padding-left: 29px !important; padding-right: 29px !important; text-align: center !important; }
+a.btn.btn--ghost { height: 58px !important; min-height: 58px !important; box-sizing: border-box !important; padding-left: 29px !important; padding-right: 29px !important; }
+</style>
 </head>
 <body>
 
@@ -69,11 +77,11 @@
   <!-- ===================================================================== the hero -->
   <section class="hero" aria-labelledby="title">
     <div class="wrap hero__text">
-      <p class="hero__logo"><img src="assets/img/andrum-logo@2x.png" srcset="assets/img/andrum-logo@2x.png 2x, assets/img/andrum-logo@3x.png 3x" width="177" height="44" alt="Andrum"></p>
+      <p class="hero__logo"><img src="assets/img/andrum-logo@2x.png" srcset="assets/img/andrum-logo@2x.png 2x, assets/img/andrum-logo@3x.png 3x" width="184" height="50" alt="Andrum"></p>
       <h1 id="title">Make room for the voice.</h1>
       <p class="hero__lead">Andrum turns the music down only where it covers the voice, and only while the voice is there. The mix stays full, and every word comes through.</p>
       <div class="hero__actions">
-        <a class="btn btn--primary" href="#download">Download the free trial</a>
+        <a class="btn btn--primary" href="#download" data-se="vmj9p">Download the free trial</a>
         <a class="btn btn--ghost" href="buy/" data-an-buy>Buy for €59</a>
         <p class="hero__note">Every feature free for 7 days, for Mac and Windows.</p>
       </div>
@@ -136,6 +144,45 @@
       <figure>
         <img class="shot" src="assets/img/deck-1340.webp" srcset="assets/img/deck-670.webp 670w, assets/img/deck-1340.webp 1340w, assets/img/deck-2010.webp 2010w" sizes="(max-width: 1023px) calc(100vw - 2 * var(--gutter)), 680px" width="2010" height="639" loading="lazy" decoding="async" alt="Key Clarity in Andrum's window: the voice is 79 % clear with Andrum and 63 % without it, beside the Clarity dial, set to 92 %.">
       </figure>
+    </div>
+  </section>
+
+  <!-- ===================================================================== the limits -->
+  <section class="section" aria-labelledby="limits">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="limits">Choose where it works, and how softly it stops.</h2>
+        <p class="lede">Two limits keep Andrum to the part of the spectrum you pick. Past each one it doesn’t stop dead: it fades out over as much as three octaves, in the shape you give it, so there’s no hard line where its work ends.</p>
+      </div>
+      <figure class="window">
+        <picture>
+          <source media="(max-width: 767px)" srcset="assets/img/limits-phone-600.webp 600w, assets/img/limits-phone-1200.webp 1200w, assets/img/limits-phone-1800.webp 1800w" sizes="(max-width: 639px) calc(100vw - 40px), calc(100vw - 64px)" width="600" height="560">
+          <source media="(max-width: 1023px)" srcset="assets/img/limits-tablet-900.webp 900w, assets/img/limits-tablet-1800.webp 1800w, assets/img/limits-tablet-2700.webp 2700w" sizes="calc(100vw - 64px)" width="900" height="456">
+          <img src="assets/img/limits-2400.webp" srcset="assets/img/limits-1200.webp 1200w, assets/img/limits-2400.webp 2400w, assets/img/limits-3600.webp 3600w" sizes="(max-width: 1023px) calc(100vw - 64px), (max-width: 1279px) calc(100vw - 80px), 1200px" width="1200" height="496" loading="lazy" decoding="async" alt="Andrum’s window with both of its limits open, over a voice and a pad. The low limit, at 160 Hz, fades out over 2 octaves with 25 % softness; the high limit, at 6 kHz, over 1 octave with 60 % softness. Each fade is a curve that rises from a diamond on the horizon, where the fade ends, to the top of its limit, with a dot on it for its softness. Past the limits the music dims.">
+        </picture>
+      </figure>
+      <div class="fades">
+        <div>
+          <div class="fades__pic">
+            <img src="assets/img/limits-fade.svg" width="584" height="136" loading="lazy" decoding="async" alt="">
+            <div class="fades__caps fades__caps--fade" aria-hidden="true"><span>3 oct</span><span>2 oct</span><span>1 oct</span><span>No fade</span></div>
+          </div>
+          <div class="fades__text">
+            <h3>Fade</h3>
+            <p>How far past each limit Andrum fades out, from a hard edge to three octaves. In the window, drag the diamond.</p>
+          </div>
+        </div>
+        <div>
+          <div class="fades__pic">
+            <img src="assets/img/limits-soft.svg" width="584" height="136" loading="lazy" decoding="async" alt="">
+            <div class="fades__caps fades__caps--soft" aria-hidden="true"><span>0 %</span><span>25 %</span><span>100 %</span></div>
+          </div>
+          <div class="fades__text">
+            <h3>Softness</h3>
+            <p>The shape of the fade, from a straight ramp at 0 % to long, soft shoulders at 100 %. In the window, drag the dot.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -207,7 +254,7 @@
     <div class="wrap">
       <div class="section__head">
         <h2 id="details-title">Measured, not claimed.</h2>
-        <p class="lede">Every number here comes from Andrum’s own test suite, run on 1.8.3, the version you download.</p>
+        <p class="lede">Every number here comes from Andrum’s own test suite, run on 1.8.4, the version you download.</p>
       </div>
       <dl class="specs">
         <div>
@@ -318,12 +365,12 @@
           <p>Every feature, free for 7 days. After that, Andrum lets the sound through untouched and keeps every setting, so your sessions still open.</p>
           <div class="get">
             <div class="get__row">
-              <a class="btn btn--primary" href="download/Andrum-1.8.3-macOS.dmg" download>
+              <a class="btn btn--primary" href="download/Andrum-1.8.4-macOS.dmg" download>
                 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download for Mac</a>
               <span class="fine">macOS 11 or later, Apple silicon and Intel. Disk image, 23 MB.</span>
             </div>
             <div class="get__row">
-              <a class="btn btn--ghost" href="download/Andrum-1.8.3-Windows-Setup.exe" download>
+              <a class="btn btn--ghost" href="download/Andrum-1.8.4-Windows-Setup.exe" download>
                 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download for Windows</a>
               <span class="fine">Windows 10 and 11, 64-bit. Installer, 9 MB.</span>
             </div>
@@ -331,7 +378,7 @@
           <div class="note">
             <p><strong>The first time you open the installer.</strong> This version isn’t signed by Apple or Microsoft yet, so your computer asks you once.</p>
             <p>On a Mac, open the disk image and double-click Install Andrum. When macOS stops it, open System Settings, then Privacy &amp; Security, click Open Anyway beside Install Andrum, and confirm. On Windows, if Windows says it protected your PC, click More info, then Run anyway.</p>
-            <p>Then rescan plug-ins in your app if it doesn’t find Andrum by itself. Bought it? <a href="license/">Add your licence</a>. Version 1.8.3. File checksums: <a href="download/SHA256.txt">SHA-256</a>.</p>
+            <p>Then rescan plug-ins in your app if it doesn’t find Andrum by itself. Bought it? <a href="license/">Add your licence</a>. Version 1.8.4. File checksums: <a href="download/SHA256.txt">SHA-256</a>.</p>
           </div>
         </div>
       </div>
@@ -399,7 +446,7 @@
 
 <footer class="foot">
   <div class="wrap foot__in">
-    <p class="foot__logo"><img src="assets/img/andrum-logo@2x.png" srcset="assets/img/andrum-logo@2x.png 2x, assets/img/andrum-logo@3x.png 3x" width="142" height="35" alt="Andrum" loading="lazy"></p>
+    <p class="foot__logo"><img src="assets/img/andrum-logo@2x.png" srcset="assets/img/andrum-logo@2x.png 2x, assets/img/andrum-logo@3x.png 3x" width="146" height="40" alt="Andrum" loading="lazy"></p>
     <p>Andrum is made in Sweden by <a href="../">David Hjalmar Lindberg</a>. Questions before you buy? Write to <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>.</p>
     <nav class="foot__links" aria-label="Licence, help and press">
       <a href="license/">Add your licence</a>
