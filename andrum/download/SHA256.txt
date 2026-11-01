@@ -1,2 +1,2 @@
-d697147eaa829146ed72064d98bfe76cacbc2a32accdf37e163428ba3045819b  Andrum-1.8.1-macOS.dmg
-90715a0efbdecbba6403813b009aae53d627787ad517af805bdb7884fb6da485  Andrum-1.8.1-Windows-Setup.exe
+0444080345f32b7e25ebc609e32ef91c834e7763117a5eb5b17fd33ed29e0aac  Andrum-1.8.3-macOS.dmg
+312f9b4001027a16c6af594706b3efda99d420a4dc654778af57a4c1b8e7868e  Andrum-1.8.3-Windows-Setup.exe
