@@ -34,7 +34,7 @@
   window.cbTrack = track;
 
   // ------------------------------------------------------------------------------------------------ the banner
-  var css = '.cbc{position:fixed;z-index:60;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:470px;padding:20px 22px;border-radius:14px;background:#151517;border:1px solid rgba(255,255,255,0.12);box-shadow:0 24px 60px rgba(0,0,0,0.55);color:#CFCFCF;font:400 16px/1.5 -apple-system,BlinkMacSystemFont,\'SF Pro Text\',\'Segoe UI\',system-ui,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}'
+  var css = '.cbc{position:fixed;z-index:60;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:470px;padding:20px 22px;border-radius:14px;background:#151517;border:1px solid rgba(255,255,255,0.12);box-shadow:0 24px 60px rgba(0,0,0,0.55);color:#CFCFCF;font:400 14px/1.42859 -apple-system,BlinkMacSystemFont,\'Inter Web\',\'Helvetica Neue\',Helvetica,Arial,sans-serif;letter-spacing:-0.0055em;-webkit-font-smoothing:antialiased}'
     + '.cbc p{margin:0;text-wrap:pretty}.cbc strong{color:#EFEFEF;font-weight:500}.cbc a{color:#EFEFEF;text-underline-offset:3px}'
     + '.cbc__btns{display:flex;gap:10px;margin-top:16px}'
     + '.cbc button{flex:1 1 0;min-height:46px;padding:0 18px;border-radius:10px;border:1px solid rgba(255,255,255,0.22);background:transparent;color:#EFEFEF;font:inherit;font-weight:500;cursor:pointer;transition:background .2s ease,border-color .2s ease}'
