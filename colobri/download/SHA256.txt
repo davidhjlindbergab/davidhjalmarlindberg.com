@@ -1,1 +1,2 @@
-019feaa25bc4fbd34696dad7ebc19ea4d4edf5df76ad172aa634ec3d1aa37183  Colobri-plugins-1.4.1.zip
+afaca5767d64d809d9a01354dddad89b6c26cb72133603ad67649103efdad531  Colobri-for-Mac-1.5.0.zip
+dd4a989557ce82a9a7c0de9f0e05637baa0b1b19ea958deabc2d45115d0f2620  Colobri-for-Windows-1.5.0.zip

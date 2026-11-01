@@ -19,7 +19,7 @@
     location.replace('/colobri' + rest + location.search + (rest.indexOf('#') < 0 ? hash : ''));
   }
   // (an earlier version of the plugins' download goes to the pricing, where the current one is)
-  if (/^\/colobri\/download\/Colobri-plugins-[0-9.]+\.zip$/i.test(p)) location.replace('/colobri/#pricing');
+  if (/^\/colobri\/download\/Colobri-(plugins|for-(Mac|Windows))-[0-9.]+\.zip$/i.test(p)) location.replace('/colobri/#pricing');
 })();
 </script>
 </head>

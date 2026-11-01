@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Colobri · Color grading composed for your shot</title>
-<meta name="description" content="Colobri reads your frame and composes ten finished color grades for it in seconds, each named after a hummingbird. Pick one, refine it and put it on your clip in Premiere Pro, DaVinci Resolve or Final Cut Pro, or grade right in your browser.">
+<meta name="description" content="Colobri reads your frame and composes ten finished color grades for it in seconds, each named after a hummingbird. Pick one, refine it and put it on your clip in Premiere Pro, DaVinci Resolve, Final Cut Pro or CapCut, or grade right in your browser.">
 <meta name="theme-color" content="#0a0a0a">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/colobri/">
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="Colobri">
 <meta property="og:title" content="Colobri · Color grading composed for your shot">
-<meta property="og:description" content="Ten finished looks for your frame in seconds, each named after a hummingbird. In your browser, and in Premiere Pro, DaVinci Resolve and Final Cut Pro.">
+<meta property="og:description" content="Ten finished looks for your frame in seconds, each named after a hummingbird. In your browser, and in Premiere Pro, DaVinci Resolve, Final Cut Pro and CapCut.">
 <meta property="og:url" content="https://davidhjalmarlindberg.com/colobri/">
 <meta property="og:image" content="https://davidhjalmarlindberg.com/colobri/images/colobri-og.jpg">
 <meta property="og:image:width" content="1200">
@@ -135,6 +135,7 @@ section { position: relative; }
 .hero-glow { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; transform-origin: 50% var(--bird-y, 40%); animation: breathe 11.3s ease-in-out infinite alternate, swell 15.7s ease-in-out infinite alternate; }
 @keyframes breathe { from { opacity: 1; } to { opacity: 0.8; } }
 @keyframes swell { from { transform: scale(1); } to { transform: scale(1.035); } }
+.hero-light { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }   /* (the light alive: the bird again, small, scaled up and blurred, in one bell; colobri.js) */
 .hero-logo { position: absolute; inset: 0; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
 .hero-still { position: absolute; max-width: none; }
 .hero-dither { position: absolute; inset: 0; pointer-events: none; background: var(--dither, none) 0 0 / var(--dither-size, 128px) repeat; }
@@ -156,16 +157,12 @@ section { position: relative; }
 @keyframes hero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .hero-in { position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding: calc(72px + env(safe-area-inset-top, 0px)) var(--gr) clamp(48px, 7vh, 88px) var(--gl); pointer-events: none; }
 .hero-in a, .hero-in button { pointer-events: auto; }
-/* the logo as David set it (1 Nov, round 15): the bird, and COLOBRI to its right in the thin monoline of his frame, in white. In the bird's
-   width (bw): the word 1.1 across, its left 0.62 right of the bird's middle (just past the beak), its middle 0.07 below the bird's; the
-   lockup runs 2.22 bw from the bird's left to the word's end and is centred. On a phone the word sits under the bird instead. The
-   bird's light (1.03 bw across, 0.63 high) is held by .hero-mark; the live logo is placed on it (colobri.js) */
-.hero { --bw: min(480px, 36vw, calc((100svh - 410px) / 0.63)); }   /* (what is not the bird takes about 410 px) */
-.hero-lockup { position: relative; flex: none; width: calc(var(--bw) * 2.22); height: calc(var(--bw) * 0.63); margin-top: auto; }
+/* the opening: the bird alone, large and live in the middle (David, 1 Nov, round 16: no name beside or under it; COLOBRI is in the
+   bar). The bird's light (1.03 bw across, 0.63 high, bw the bird's width) is held by .hero-mark; the live logo is placed on it
+   (colobri.js) */
+.hero { --bw: min(500px, 38vw, calc((100svh - 410px) / 0.63)); }   /* (what is not the bird takes about 410 px) */
+.hero-lockup { position: relative; flex: none; width: var(--bw); height: calc(var(--bw) * 0.63); margin-top: auto; }
 .hero-mark { position: absolute; left: calc(var(--bw) * -0.015); top: 0; width: calc(var(--bw) * 1.03); height: calc(var(--bw) * 0.63); }
-.hero-word { position: absolute; margin: 0; left: calc(var(--bw) * 1.12); top: calc(var(--bw) * 0.348); width: calc(var(--bw) * 1.1); opacity: 0; transition: opacity 1.4s cubic-bezier(.4, 0, .2, 1) 1.2s; }
-.hero.live .hero-word { opacity: 1; }
-.hero-word .word { width: 100%; }
 .hero-copy { display: flex; flex-direction: column; align-items: center; margin-bottom: auto; }
 .hero h1 { margin-top: clamp(40px, 6vh, 64px); font-size: clamp(36px, 4.9vw, 64px); line-height: 1.05; letter-spacing: -0.018em; }
 .hero .lead { margin-top: 16px; max-width: 34em; color: var(--ink-2); }
@@ -173,13 +170,10 @@ section { position: relative; }
 .hero .fine { margin-top: 18px; }
 @media (max-width: 760px) {
   .hero { --bw: min(62vw, 300px); }
-  .hero-lockup { width: var(--bw); height: calc(var(--bw) * 0.79); }
-  .hero-word { left: calc(var(--bw) * 0.06); top: calc(var(--bw) * 0.69); width: calc(var(--bw) * 0.88); }
-  .hero-word .word { stroke-width: 96; }
   .hero h1 { font-size: clamp(34px, 9vw, 42px); }
 }
 @media (max-height: 820px) and (min-width: 761px) {
-  .hero { --bw: min(460px, 34vw, calc((100svh - 330px) / 0.63)); }
+  .hero { --bw: min(480px, 36vw, calc((100svh - 330px) / 0.63)); }
   .hero-in { padding-top: 64px; padding-bottom: 36px; }
   .hero h1 { margin-top: 28px; font-size: clamp(34px, 3.8vw, 50px); }
   .hero .lead { margin-top: 12px; font-size: 17px; }
@@ -319,12 +313,15 @@ section { position: relative; }
 @media (max-width: 620px) { .feats { grid-template-columns: 1fr; gap: 32px; } }
 
 /* ------------------------------------------------------------------ editors and the details */
-.eds { list-style: none; margin: 0 0 clamp(64px, 8vw, 104px); padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+/* (the three plugins in a row, then CapCut and the browser: six columns, three items of two, then two of three) */
+.eds { list-style: none; margin: 0 0 clamp(64px, 8vw, 104px); padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+.eds li { grid-column: span 2; }
+.eds li:nth-child(n+4) { grid-column: span 3; }
 .eds li { display: grid; align-content: start; gap: 10px; padding: 30px 26px 32px; border-radius: var(--r); background: var(--card); }
 .eds .kind { font-size: 14px; font-weight: 600; color: var(--mark); }
 .eds h3 { font-size: 24px; line-height: 1.17; letter-spacing: -0.012em; }
 .eds p { margin: 0; color: var(--ink-3); font-size: 16px; line-height: 1.5; text-wrap: pretty; }
-@media (max-width: 1060px) { .eds { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1060px) { .eds { grid-template-columns: repeat(2, minmax(0, 1fr)); } .eds li, .eds li:nth-child(n+4) { grid-column: auto; } .eds li:last-child { grid-column: 1 / -1; } }
 @media (max-width: 600px) { .eds { grid-template-columns: 1fr; } }
 .spec { margin: 0; display: grid; grid-template-columns: 220px minmax(0, 1fr); border-top: 1px solid var(--line-2); }
 .spec dt, .spec dd { margin: 0; padding: 20px 0; border-bottom: 1px solid var(--line); }
@@ -341,6 +338,9 @@ section { position: relative; }
 .incl li svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--mark); }
 .go { display: grid; gap: 14px; }
 .go .btn { width: 100%; }
+/* (the two downloads side by side where both fit whole, else one above the other) */
+.go .dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 214px), 1fr)); gap: 10px; }
+.go .dl .btn { padding: 0 14px; }
 .go .fine { text-wrap: pretty; }
 @media (max-width: 860px) { .buy { grid-template-columns: 1fr; } }
 
@@ -385,7 +385,6 @@ footer .legal a:hover { color: var(--ink); }
   .js .rise { opacity: 1; transform: none; transition: none; }
   .lit::before, .lit::after, .hero-glow { animation: none !important; }
   .hero.live .hero-scene, .hero.flat.live .hero-scene, .hero.live .hero-air { animation: hero-fade .6s ease both; }
-  .hero-word { transition-delay: .2s; }
   .js .hero-copy > * { animation: hero-fade .6s ease both; animation-delay: 0s !important; }
   .btn, .more svg, .v-stage img { transition: none; }
 }
@@ -424,11 +423,10 @@ footer .legal a:hover { color: var(--ink); }
   <div class="hero-in">
     <div class="hero-lockup" role="img" aria-label="Colobri">
       <div class="hero-mark"></div>
-      <p class="hero-word"><svg class="word" viewBox="0 0 11673.4 1000" aria-hidden="true"><use href="#cb-word"/></svg></p>
     </div>
     <div class="hero-copy">
       <h1 id="hero-title">Ten looks, composed for your shot.</h1>
-      <p class="lead">Colobri reads your frame and composes ten finished color grades for it in seconds. Not presets: looks made for this shot. Pick one, refine it and put it on your clip in Premiere Pro, DaVinci Resolve or Final Cut Pro.</p>
+      <p class="lead">Colobri reads your frame and composes ten finished color grades for it in seconds. Not presets: looks made for this shot. Pick one, refine it and put it on your clip in Premiere Pro, DaVinci Resolve, Final Cut Pro or CapCut.</p>
       <div class="ctas">
         <a class="btn lit" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
         <a class="more" href="#looks">See it on a frame<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
@@ -605,18 +603,19 @@ footer .legal a:hover { color: var(--ink); }
     <div class="head split rise">
       <p class="eyebrow">Workflow</p>
       <h2 id="editors-title">In your editor.<br> In your browser.</h2>
-      <p class="lead"><strong>A panel in Premiere Pro and DaVinci Resolve Studio, and an effect in Final Cut Pro.</strong> Colobri reads the frame under your playhead and puts the look on your clip, and your editor renders it, in real time and in the final export.</p>
+      <p class="lead"><strong>A panel in Premiere Pro and DaVinci Resolve Studio, an effect in Final Cut Pro, and looks for CapCut.</strong> Colobri reads the frame under your playhead and puts the look on your clip, and your editor renders it, in real time and in the final export.</p>
     </div>
     <ul class="eds rise">
       <li><span class="kind">Panel</span><h3>Premiere Pro</h3><p>2025 (25.6) or later, on a Mac or a PC. Adds Lumetri Color to the selected clips and copies the look's LUT, ready to pick under Look.</p></li>
       <li><span class="kind">Workflow integration</span><h3>DaVinci Resolve Studio</h3><p>Version 18 or later, on a Mac or a PC. Puts the look on a node of the clip, its color group or the whole timeline.</p></li>
       <li><span class="kind">Effect</span><h3>Final Cut Pro</h3><p>10.6 or later, on macOS 13 Ventura or later. The look is stored in the clip, so it travels with the library and renders in every export.</p></li>
+      <li><span class="kind">LUT</span><h3>CapCut</h3><p>On a Mac or a PC. CapCut takes no plugins, so Colobri saves the look as a LUT for it and shows the three steps that put it on your clip.</p></li>
       <li><span class="kind">No install</span><h3>Your browser</h3><p>On a Mac, a PC, a tablet or a phone. Open a still or a clip and grade it right there, with the same looks and the same exports.</p></li>
     </ul>
     <dl class="spec rise">
       <dt>Reads</dt><dd>ARRI LogC3 and LogC4, Sony S-Log3, Canon Log 3, Panasonic V-Log, RED Log3G10, Blackmagic Film Gen 5, Apple Log, DaVinci Intermediate, Rec.709 and sRGB, and AI-generated stills and clips.</dd>
       <dt>Delivers for</dt><dd>Rec.709 Gamma 2.4, Rec.709-A, sRGB and Display P3. The viewer, the scopes and every export follow your choice.</dd>
-      <dt>Exports</dt><dd>.cube LUTs at 33 and 65 points, full-resolution PNG and JPEG stills, and the graded clip. The viewer runs the same 65-point LUT you export, so what you see is what you deliver.</dd>
+      <dt>Exports</dt><dd>.cube LUTs at 33 and 65 points and a LUT for CapCut, full-resolution PNG and JPEG stills, and the graded clip. The viewer runs the same 65-point LUT you export, so what you see is what you deliver.</dd>
       <dt>Scopes</dt><dd>Parade, histogram and vectorscope, a split compare and one-tap bypass.</dd>
       <dt>Layers</dt><dd>Stack looks, and generate new ones on top of the grade you have built.</dd>
       <dt>Saved looks</dt><dd>Keep a look with its refinements for any project, with a picture of the shot you saved it on. On a new frame it is fitted to the shot, so the blacks and highlights still hold.</dd>
@@ -632,16 +631,19 @@ footer .legal a:hover { color: var(--ink); }
         <h2 id="pricing-title" class="sr">Pricing</h2>
         <p class="price"><b>€59</b>once, no subscription</p>
         <ul class="incl">
-          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Colobri in your browser, and inside Premiere Pro, DaVinci Resolve Studio and Final Cut Pro</li>
+          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Colobri in your browser, inside Premiere Pro, DaVinci Resolve Studio and Final Cut Pro, and looks for CapCut</li>
           <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Every Colobri 1.x version</li>
           <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>For you, on up to two computers, Mac or PC</li>
           <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Free for 7 days first, with every feature and no card</li>
         </ul>
       </div>
       <div class="go">
-        <a class="btn lit" href="download/Colobri-plugins-1.4.1.zip" download data-cb-track="StartTrial" data-cb-what="Colobri plugins">Download free trial</a>
+        <div class="dl" data-cb-dl>
+          <a class="btn lit" href="download/Colobri-for-Mac-1.5.0.zip" download data-cb-os="mac" data-cb-track="StartTrial" data-cb-what="Colobri for Mac">Download for Mac</a>
+          <a class="btn lit" href="download/Colobri-for-Windows-1.5.0.zip" download data-cb-os="win" data-cb-track="StartTrial" data-cb-what="Colobri for Windows">Download for Windows</a>
+        </div>
         <a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Buying%20Colobri" data-cb-buy data-cb-track="InitiateCheckout">Buy for €59</a>
-        <p class="fine">One download for Mac and PC, with an installer for each editor. Start with Read me first. Rather not install anything? <a href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Open Colobri in your browser</a>: the same trial, and the same licence unlocks it.</p>
+        <p class="fine">Both are the free trial. For Mac: Premiere Pro, DaVinci Resolve Studio and Final Cut Pro. For Windows: Premiere Pro and DaVinci Resolve Studio. Each has an installer for each editor; start with Read me first. Rather not install anything? <a href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Open Colobri in your browser</a>: the same trial, and the same licence unlocks it.</p>
         <p class="fine" data-cb-interim>Checkout opens shortly. Until then, Buy writes to me@davidhjalmarlindberg.com, and you get the link to buy the moment it opens.</p>
         <p class="fine">The price includes VAT. Checkout is by Lemon Squeezy, our reseller: card, PayPal, Apple Pay or Google Pay. Not for you? Write within 14 days for a full refund. <a href="terms/">Terms</a> · <a href="privacy/">Privacy</a></p>
       </div>
@@ -665,7 +667,9 @@ footer .legal a:hover { color: var(--ink); }
       <details><summary>What footage can I grade?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
         <div class="a"><p>Camera log from ARRI, Sony, Canon, Panasonic, RED, Blackmagic and Apple, DaVinci Intermediate, Rec.709 and sRGB, phone footage, and AI-generated stills and clips. Pick the source and the output once, and the viewer, the scopes and every export follow.</p></div></details>
       <details><summary>Is the look the same in my editor as in Colobri?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
-        <div class="a"><p>Yes. The viewer runs the same 65-point LUT you export, baked from the same code, and the plugins put exactly that look on your clip. No surprises when it lands in Resolve, Premiere Pro or Final Cut Pro.</p></div></details>
+        <div class="a"><p>Yes. The viewer runs the same 65-point LUT you export, baked from the same code, and the plugins put exactly that look on your clip. No surprises when it lands in Resolve, Premiere Pro, Final Cut Pro or CapCut.</p></div></details>
+      <details><summary>Does it work with CapCut?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>Yes, with CapCut on a Mac or a PC. CapCut takes no plugins, so in Colobri choose Export, then LUT for CapCut: Colobri saves the look as a LUT and shows the three steps that put it on your clip, under Adjustment, LUT, Import. CapCut's phone and web apps take only CapCut's own LUTs.</p></div></details>
       <details><summary>What do the names mean?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
         <div class="a"><p>The bird is the look's color, taken from the tint in its shadows (or its highlights, when the shadows are clean): Sylph is teal, Sapphirewing blue, Firecrown ember. Neutral looks are Jacobin when they are punchy and Hermit when they are soft.</p><p>The first number is the key: each step is a third of a stop, 5 is normal. The second is the contrast: each step is about 6.5%, 5 is neutral. When two looks in one set would share a name, a third number tells their saturation apart.</p></div></details>
       <details><summary>Can I use it on more than one computer?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
@@ -682,7 +686,7 @@ footer .legal a:hover { color: var(--ink); }
     <h2 id="end-title" class="rise">Your next frame<br> has ten looks in it.</h2>
     <div class="ctas rise">
       <a class="btn lit" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
-      <a class="more" href="download/Colobri-plugins-1.4.1.zip" download data-cb-track="StartTrial" data-cb-what="Colobri plugins">Get the plugins<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="more" href="#pricing">Get the plugins<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
     <p class="fine rise">Runs in your browser. Free for 7 days, then €59 once.</p>
   </div>
