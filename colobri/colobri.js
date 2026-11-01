@@ -35,16 +35,16 @@
   // .hero-mark (1.03 of the bird's width across and 0.63 of it high), so the page's own layout decides where it is. Behind it lies its
   // light, alive (David, 1 Nov, round 16: half again as strong, a really smooth falloff, the bird's own colors and movement): the bird a
   // second time, larger and very soft, in one smooth bell round it (colobri-light.js, the same as in the app), gone well before the
-  // page's edges and the opening's foot, so nothing shows as a part or an edge at any size. When the bird is ready it grows from half its
-  // size to full over 2 s and its light comes up round it.
+  // page's edges and the opening's foot, so nothing shows as a part or an edge at any size. When the bird is ready it comes into focus
+  // where it stays and its light rises round it (David, round 19: no zoom; short and clean: index.html, hero-focus, 0.9 s).
   (function hero() {
     var CL = window.ColobriLight;
     var hero = $('.hero'), mark = $('.hero-mark'), box = $('.hero-logo'), scene = $('.hero-scene'), glow = $('.hero-glow'), dith = $('.hero-dither');
     if (!hero || !mark || !box || !scene || !CL) { if (hero) hero.classList.add('live'); return; }
     var BIRD_W = 3378, FIT_W = 4650, FIT_H = 2950, LIGHT_UP = 0.325;
     var MARK_W = 0.76, MARK_CX = 0.517, MARK_CY = 0.489, MARK_AR = 688 / 900;   // (where the bird is in the transparent still, colobri-mark.webp)
-    var L = null, logo = null, flat = false, ready = false, intro = true, growing = null;
-    var gs = reduce.matches ? 1 : 0.5;   // (while the opening grows the bird: its share of its full size)
+    var L = null, logo = null, flat = false, ready = false, intro = true, growing = null;   // (growing: none since round 19, kept for the hooks)
+    var gs = 1;   // (the bird's share of its full size: all of it from the first frame, the opening does not grow it)
     var bg = $('.hero-bg', hero) || hero;   // (the first screen, where the bird and its light are; the words may run on below it)
     function layout() {
       var h = bg.getBoundingClientRect(), m = mark.getBoundingClientRect(), bw = m.width / 1.03;
@@ -84,20 +84,17 @@
     }
     if (dith) CL.dither(dith, 'dither');
 
-    // the grow is the logo's own padding (so its haze grows with it and its canvas never shows as a shape); the still grows in CSS
+    // the opening is CSS's: the bird comes into focus and its light rises round it; done when the bird is sharp (or soon after anyway)
     function opened() {
       if (ready) return; ready = true; hero.classList.add('live');
-      if (reduce.matches) { gs = 1; setTimeout(function () { intro = false; }, 700); return; }
-      if (flat) { gs = 1; return; }
-      growing = CL.grow({ step: function (s) { gs = s; if (logo) logo.setPadding(padFor()); if (light) light.place(L, gs); }, done: function () { gs = 1; intro = false; growing = null; } });
+      setTimeout(function () { intro = false; }, reduce.matches ? 700 : 1100);
     }
-    scene.addEventListener('animationend', function (e) { if (flat && e.animationName === 'hero-grow') intro = false; });
+    scene.addEventListener('animationend', function (e) { if (e.target === scene) intro = false; });
 
     // without WebGL2: the still of the bird with its glow on a clear ground, on the same light, opening the same way
     var still = null;
     function toFlat() {
       if (flat) return; flat = true; hero.classList.add('flat');
-      if (growing) { growing.finish(); growing = null; }
       if (logo) { try { logo.destroy(); } catch (e) { /* (already gone) */ } logo = null; }
       stopLight(); stillGlow();
       still = document.createElement('img'); still.className = 'hero-still'; still.alt = ''; still.src = IMG + 'colobri-mark.webp';
@@ -107,6 +104,7 @@
     function place() {
       L = layout();
       hero.style.setProperty('--bird-x', Math.round(L.cx) + 'px'); hero.style.setProperty('--bird-y', Math.round(L.cy) + 'px');
+      hero.style.setProperty('--focus-blur', Math.round(Math.max(8, Math.min(18, 0.03 * L.bw))) + 'px');   // (the opening's softness)
       if (logo) { if (logo.resize) logo.resize(); logo.setPadding(padFor()); logo.setPosition(posFor()); }
       if (light) { light.place(L, gs); CL.bellMask(lightBox, Object.assign({ cx: L.cx, cy: L.cy }, reach())); }
       if (still) { var iw = L.bw / MARK_W, ih = iw * MARK_AR; still.style.width = iw + 'px'; still.style.height = ih + 'px'; still.style.left = (L.cx - MARK_CX * iw) + 'px'; still.style.top = (L.cy - MARK_CY * ih) + 'px'; }
