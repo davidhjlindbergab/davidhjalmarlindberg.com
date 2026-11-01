@@ -2,7 +2,7 @@
    Pair with colobri-button.js. Copyright (c) 2026 David HJ Lindberg AB. */
 .colobri-button {
   --cb-height: 56px;
-  --cb-pad: 32px;
+  --cb-pad: calc(var(--cb-height) / 2);   /* the word starts and ends where the round ends meet the straight edge */
   --cb-font-size: 17px;
   --cb-fill: #161618;
   --cb-ink: #f5f5f7;
@@ -73,8 +73,8 @@
 .colobri-button:focus-visible { outline: 1.5px solid rgba(245, 245, 247, 0.9); outline-offset: 5px; }
 
 /* Sizes: the bar and in-page sections. Any height works; the light scales with it. */
-.colobri-button--small { --cb-height: 32px; --cb-pad: 15px; --cb-font-size: 14px; }
-.colobri-button--medium { --cb-height: 44px; --cb-pad: 24px; --cb-font-size: 16px; }
+.colobri-button--small { --cb-height: 32px; --cb-font-size: 14px; }
+.colobri-button--medium { --cb-height: 44px; --cb-font-size: 16px; }
 
 @media (prefers-reduced-motion: reduce) {
   .colobri-button { transition: color 0.3s ease, box-shadow 0.9s ease; }

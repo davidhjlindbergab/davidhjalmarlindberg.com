@@ -76,7 +76,7 @@ const PROP_LABEL = {
   height: 'Height', width: 'Width',
 };
 // Set together with a height or width so the number is the size you see (see setSize); not listed on their own.
-const SIZE_HELPERS = new Set(['min-height', 'min-width', 'box-sizing']);
+const SIZE_HELPERS = new Set(['min-height', 'min-width', 'box-sizing', 'padding-left', 'padding-right']);
 const ATTR_LABEL = { src: 'Image', alt: 'Image description', href: 'Link', target: 'Opens in', content: 'Text', srcset: 'Image', sizes: 'Image sizes', type: 'Image type', rel: 'Link' };
 
 // ---------------------------------------------------------------- small helpers
@@ -579,6 +579,7 @@ function cleanInfo(i) {
     sugg: list(i.sugg, 12).map((s) => ({ sel: str(s && s.sel, 300), n: Math.max(0, Math.round(num(s && s.n))) })).filter((s) => SEL_OK.test(s.sel)),
     stack: i.stack ? list(i.stack, 8).map(cleanBrief).filter((b) => b.ref) : undefined,
     w: Math.round(num(i.w)), h: Math.round(num(i.h)),
+    pill: i.pill && typeof i.pill === 'object' ? { bl: num(i.pill.bl), br: num(i.pill.br), cl: num(i.pill.cl), cr: num(i.pill.cr) } : null,
   };
 }
 // Edited text goes onto the website, so it may not bring anything that runs: no new scripts, frames, styles,
@@ -804,11 +805,21 @@ async function setStyle(prop, value, opts = {}) {
 }
 // Height and width are the size you see: padding and border included (box-sizing), and the page's own
 // smallest size (min-height, as on the site's buttons) can't hold it bigger.
+// On a pill (fully round ends) a new height also moves the words: they start and end exactly where the round
+// ends meet the straight edge, half the height in from each end. A circle at an end (a play dot) stays centred
+// in that round end instead.
 async function setSize(p, v) {
+  const pill = p === 'height' && S.sel ? S.sel.pill : null;
   await setStyle(p, v, { live: true });
   await setStyle('min-' + p, v, { live: true });
   if (v != null) await setStyle('box-sizing', 'border-box', { live: true });
   else if (ruleValue(p === 'height' ? 'width' : 'height') == null) await setStyle('box-sizing', null, { live: true });
+  if (pill) {
+    const H = parseFloat(v);
+    const side = (circle, border) => (v == null ? null : Math.max(0, Math.round(((circle ? (H - circle) / 2 : H / 2) - border) * 10) / 10) + 'px');
+    await setStyle('padding-left', side(pill.cl, pill.bl), { live: true });
+    await setStyle('padding-right', side(pill.cr, pill.br), { live: true });
+  }
 }
 function ruleValue(prop) {
   const t = styleTarget();
@@ -1109,6 +1120,7 @@ function revertChange(c) {
     back(c.prop);
     if (c.prop === 'height' || c.prop === 'width') {
       back('min-' + c.prop);
+      if (c.prop === 'height') { back('padding-left'); back('padding-right'); }
       const d = R[c.sel] || {};
       if (d.height == null && d.width == null) back('box-sizing');
     }
@@ -1260,7 +1272,8 @@ function elementPanel(info) {
   </div>
   <div class="group">
     <div class="g-title">Box</div>
-    ${sizable ? ['height', 'width'].map((p) => `<div class="row"><label>${p === 'height' ? 'Height' : 'Width'}</label><input class="field num" type="number" min="0" step="1" data-act="size" data-p="${p}" value="${sizeNow(p)}"><span class="unit">px</span><span class="grow"></span><button class="reset ${set(p)}" data-act="sizereset" data-p="${p}" title="Back to the original">×</button></div>`).join('') : ''}
+    ${sizable ? ['height', 'width'].filter((p) => p === 'height' || !info.pill || ruleValue('width') != null).map((p) => `<div class="row"><label>${p === 'height' ? 'Height' : 'Width'}</label><input class="field num" type="number" min="0" step="1" data-act="size" data-p="${p}" value="${sizeNow(p)}"><span class="unit">px</span><span class="grow"></span><button class="reset ${set(p)}" data-act="sizereset" data-p="${p}" title="Back to the original">×</button></div>`).join('') : ''}
+    ${sizable && info.pill ? `<p class="hint" style="margin:-2px 0 10px">A pill is as wide as its words: they start and end where the round ends meet the straight edge.</p>` : ''}
     <div class="row"><label>Space above</label><input class="field num" type="number" step="1" data-act="num" data-p="margin-top" data-u="px" value="${Math.round(parseFloat(css.mt) || 0)}"><span class="unit">px</span><span class="grow"></span><button class="reset ${set('margin-top')}" data-act="reset" data-p="margin-top">×</button></div>
     <div class="row"><label>Space below</label><input class="field num" type="number" step="1" data-act="num" data-p="margin-bottom" data-u="px" value="${Math.round(parseFloat(css.mb) || 0)}"><span class="unit">px</span><span class="grow"></span><button class="reset ${set('margin-bottom')}" data-act="reset" data-p="margin-bottom">×</button></div>
     <div class="row"><label>Background</label><div class="color"><input type="color" data-act="color" data-p="background-color" value="${bgHex || '#ffffff'}"><input class="field" data-act="colortext" data-p="background-color" value="${esc(bgHex || 'none')}" spellcheck="false"></div><button class="reset ${set('background-color')}" data-act="reset" data-p="background-color">×</button></div>
@@ -1874,8 +1887,27 @@ function agent() {
       css: { ff: cs.fontFamily, fs: cs.fontSize, fw: cs.fontWeight, fst: cs.fontStyle, lh: cs.lineHeight, ls: cs.letterSpacing, color: cs.color, ta: cs.textAlign, tt: cs.textTransform, bg: cs.backgroundColor, mt: cs.marginTop, mb: cs.marginBottom, br: cs.borderTopLeftRadius, display: cs.display },
       img, bgUrl: bgm ? bgm[1] : null,
       link: a ? { ref: refOf(a), id: a.getAttribute('data-ve'), href: a.getAttribute('href') || '', target: a.getAttribute('target') || '' } : null,
-      ancestors: anc, sugg: suggest(el), w: Math.round(r.width), h: Math.round(r.height),
+      ancestors: anc, sugg: suggest(el), w: Math.round(r.width), h: Math.round(r.height), pill: pillOf(el, cs, r),
     };
+  }
+  // Fully round ends (a pill button or chip): its borders, and the size of a circle sitting at either end.
+  function pillOf(el, cs, r) {
+    if (!r.height || r.width < r.height) return null;
+    const rs = [cs.borderTopLeftRadius, cs.borderTopRightRadius, cs.borderBottomRightRadius, cs.borderBottomLeftRadius];
+    if (!rs.every((v) => (/%/.test(v) ? parseFloat(v) >= 50 : parseFloat(v) >= r.height / 2 - 0.5))) return null;
+    const flow = [...el.childNodes].filter((n) => {
+      if (n.nodeType === 3) return /\S/.test(n.data);
+      if (n.nodeType !== 1) return false;
+      const c = getComputedStyle(n);
+      return c.display !== 'none' && c.position !== 'absolute' && c.position !== 'fixed';
+    });
+    const circle = (n) => {
+      if (!n || n.nodeType !== 1) return 0;
+      const q = n.getBoundingClientRect();
+      const c = getComputedStyle(n);
+      return q.width > 0 && Math.abs(q.width - q.height) < 1 && (/%/.test(c.borderTopLeftRadius) ? parseFloat(c.borderTopLeftRadius) >= 50 : parseFloat(c.borderTopLeftRadius) >= q.width / 2 - 0.5) ? Math.round(q.width * 10) / 10 : 0;
+    };
+    return { bl: parseFloat(cs.borderLeftWidth) || 0, br: parseFloat(cs.borderRightWidth) || 0, cl: circle(flow[0]), cr: circle(flow[flow.length - 1]) };
   }
   function labelFor(el) {
     const cs = getComputedStyle(el);
