@@ -154,6 +154,8 @@ button { cursor: pointer; }
   animation: hero-breathe 11.3s ease-in-out infinite alternate, hero-swell 15.7s ease-in-out infinite alternate; }
 @keyframes hero-breathe { from { opacity: 1; } to { opacity: 0.8; } }
 @keyframes hero-swell { from { transform: scale(1); } to { transform: scale(1.035); } }
+/* the light alive (hero.js): the bird a second time, small, scaled up and blurred, in one smooth bell (its mask) */
+.hero-light { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .hero-still { position: absolute; display: block; max-width: none; }
 .hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--hero-dither, none) 0 0 / var(--hero-dither-size, 128px) repeat; }
 @media (prefers-reduced-motion: reduce) {
@@ -197,7 +199,7 @@ input[type=range]:focus-visible { outline: none; }
 /* Generate is the bird itself (src/genbird.js draws it, lit and answering); the word sits under it */
 .gen { position: static; flex: none; display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; border-radius: 20px; background: none; color: var(--ink); cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 .gen-art { position: relative; display: block; width: 246px; height: 152px; }
-/* its light (genbird.js): the opening's soft light at 60% of its strength, centred on the bird, easing out before the launch window's edges */
+/* its light (genbird.js): the opening's soft light, softer here (36% of its strength, David, round 16), centred on the bird, easing out before the launch window's edges */
 .gen-logo { position: absolute; inset: 0; display: block; }
 .gen-air { position: absolute; display: block; }
 .gen-air { pointer-events: none; }
@@ -411,6 +413,14 @@ input[type=range]:focus-visible { outline: none; }
 .sheet .stat span { font-size: var(--t-xs); color: var(--ink-3); }
 .sheet .close { align-self: flex-end; }
 .sheet .keys { font-size: var(--t-s); color: var(--ink-3); line-height: 2; }
+/* the steps for CapCut: a short sheet, the guide's numbered steps at the sheet's size */
+.sheet-steps { width: min(520px, 100%); }
+.sheet-steps h2 { font-size: 28px; }
+.sheet .guide-steps { padding: 0; gap: 10px; }
+.sheet .guide-steps li { font-size: var(--t-m); color: var(--ink-2); max-width: none; }
+.sheet .guide-steps li::before { margin-top: 3px; }
+.sheet .guide-steps strong { color: var(--ink); font-weight: 600; }
+.sheet .guide-after { font-size: var(--t-s); }
 kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); background: var(--raised); border: 1px solid var(--hair-2); border-bottom-width: 2px; border-radius: 4px; padding: 1px 6px; }
 .spec-line { height: 2px; background: var(--spec-line); border-radius: 2px; opacity: 0.85; }
 .toast { position: fixed; z-index: 60; left: 50%; top: calc(66px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -12px); background: #242424; border: 1px solid var(--hair-2); color: var(--ink); padding: 9px 15px; border-radius: 999px; font-size: var(--t-s); opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; max-width: calc(100vw - 32px); overflow: hidden; text-overflow: ellipsis; }
@@ -600,7 +610,8 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
   .app.has-src .viewer { height: clamp(min(250px, 46vh), calc(100vw / var(--src-ar, 1.7778)), 46vh); }
   .app.has-src.tall .viewer { max-height: 64vh; max-height: 64svh; height: min(64vh, calc(100vw / var(--src-ar, 1))); height: min(64svh, calc(100vw / var(--src-ar, 1))); }
   .shelf-head { padding: 12px max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); }
-  .strip { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); min-height: 172px; }
+  /* (the strip as tall as its looks: their pictures (--th, set by app.js from the frame's shape) and one line of name, never an empty band) */
+  .strip { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); min-height: calc(var(--th) + 28px); align-items: flex-start; }
   .panel { border-left: 0; border-top: 1px solid var(--hair); }
   .scopes { order: 2; border-bottom: 0; border-top: 1px solid var(--hair); }   /* (the look and its Refine first, the scopes after them) */
   .panel-body { order: 1; }
@@ -829,7 +840,8 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 </div>
 
 <div class="menu" id="exportMenu" hidden role="menu">
-  <button role="menuitem" data-x="lut"><span>LUT for Resolve and Premiere</span><small>The whole grade as .cube, 33 and 65 points, in a zip</small></button>
+  <button role="menuitem" data-x="lut"><span>LUT for Resolve, Premiere and Final Cut Pro</span><small>The whole grade as .cube, 33 and 65 points, in a zip</small></button>
+  <button role="menuitem" data-x="capcut" id="capItem"><span>LUT for CapCut</span><small>One .cube for CapCut on Mac and Windows, with the steps</small></button>
   <button role="menuitem" data-x="png"><span>Still image, PNG</span><small>Full resolution</small></button>
   <button role="menuitem" data-x="jpg"><span>Still image, JPEG</span><small>Full resolution, quality 95</small></button>
   <hr id="clipSep" hidden>
@@ -850,9 +862,22 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
       <li><strong>Output.</strong> Colors the display cannot show are compressed in OKLCh at constant lightness and hue, keeping their gradation out to the Rec.2020 boundary, then encoded for your Output: Rec.709 Gamma 2.4, Rec.709-A, sRGB or Display P3. The viewer shows the light that timeline would show; scopes read its code values.</li>
     </ol>
     <div class="stats" id="aboutStats"></div>
-    <p>Saved looks keep a look with its Refine for any project, with a picture of the shot it was saved on so you know it again: on another frame a saved look is fitted to it (its color stays; exposure, black, white and skin are solved for the new frame), or used exactly as saved. Exported LUTs bake the entire grade, including the source decode, so they drop onto your clip in DaVinci Resolve or Premiere Pro. Inside Premiere Pro and DaVinci Resolve, the Colobri plugin reads the frame under your playhead and applies the grade to your timeline. Everything runs on your machine; your footage never leaves it.</p>
+    <p>Saved looks keep a look with its Refine for any project, with a picture of the shot it was saved on so you know it again: on another frame a saved look is fitted to it (its color stays; exposure, black, white and skin are solved for the new frame), or used exactly as saved. Exported LUTs bake the entire grade, including the source decode, so they drop onto your clip in DaVinci Resolve, Premiere Pro, Final Cut Pro or CapCut. Inside Premiere Pro, DaVinci Resolve and Final Cut Pro, the Colobri plugin reads the frame under your playhead and applies the grade to your clips. Everything runs on your machine; your footage never leaves it.</p>
     <p class="keys">Shortcuts: <kbd>G</kbd> generate, <kbd>F</kbd> grab the playhead frame (in a plugin), <kbd>Enter</kbd> apply to the timeline (in a plugin), <kbd>A</kbd> add as layer, <kbd>S</kbd> save the look, <kbd>←</kbd> <kbd>→</kbd> browse looks, <kbd>V</kbd> variations, <kbd>B</kbd> grade on or off, <kbd>C</kbd> split compare, <kbd>E</kbd> export, <kbd>O</kbd> open, <kbd>Space</kbd> play. Click the image to switch the grade off and on; hold it to peek at the source.</p>
     <button class="btn close" id="aboutClose">Close</button>
+  </div>
+</div>
+<div class="scrim" id="capScrim" hidden>
+  <div class="sheet sheet-steps" role="dialog" aria-modal="true" aria-labelledby="capTitle">
+    <h2 id="capTitle">Your look, in CapCut</h2>
+    <p>CapCut takes looks as LUTs. Three steps put this one on your clip:</p>
+    <ol class="guide-steps">
+      <li><span>In CapCut on your Mac or PC, open <strong>Adjustment</strong> › <strong>LUT</strong> and click <strong>Import</strong>.</span></li>
+      <li><span>Choose <strong id="capFile">the .cube Colobri saved</strong>.</span></li>
+      <li><span>Select your clip and double-click the look. To grade several clips at once, click the look's <strong>+</strong> instead and stretch the adjustment layer over them.</span></li>
+    </ol>
+    <p class="guide-after">Intensity, under LUT, softens the look. Your own LUTs go into CapCut for Mac and Windows; its phone and web apps take only CapCut's own.</p>
+    <button class="btn close" id="capClose">Done</button>
   </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -3061,9 +3086,14 @@ class Scopes {
   // ------------------------------------------------------------------ state
   // (skin: the Skin hold, signed; 0 is the look as composed, right holds skin natural through the grade, left lets it take more of the look)
   const RF_DEF = { intensity: 1, exposure: 0, contrast: 0, warmth: 0, tint: 0, saturation: 0, shadows: 0, highs: 0, whites: 0, blacks: 0, density: 0, skin: 0 };
+  // (an editor whose page keeps no localStorage (Premiere's panel) keeps the Output choice for it: host.store, read once at start)
+  const hostStore = host && host.store && typeof host.store.all === 'function' && typeof host.store.set === 'function' ? host.store : null;
   const store = {
     get(k, old) { try { const v = localStorage.getItem(k); if (v != null || !old) return v; const o = localStorage.getItem(old); if (o != null) localStorage.setItem(k, o); return o; } catch (e) { return null; } },
-    set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* storage unavailable */ } },
+    set(k, v) {
+      try { localStorage.setItem(k, v); } catch (e) { /* storage unavailable */ }
+      if (hostStore && k === 'colobri.output') Promise.resolve().then(() => hostStore.set(k, v)).catch(() => { /* (kept for this session) */ });
+    },
   };
   const savedOutput = store.get('colobri.output');
   const state = {
@@ -3603,7 +3633,14 @@ class Scopes {
   // picture's look), so a name is never cut short; the picture then sits at the left, over the name.
   const TH_AR = [0.45, 3];
   const picAr = ar => clamp(ar, TH_AR[0], TH_AR[1]);
-  const picW = ar => Math.round(THUMB_H * picAr(ar));
+  const picW = (ar, h = THUMB_H) => Math.round(h * picAr(ar));
+  // On a phone the strip is as tall as its looks (no empty band under them), and a tall frame (portrait, 4:5, 9:16) gets taller pictures
+  // there, up to 156 px, so its looks are not small slivers; wide and square frames keep the strip's own height (David, round 16)
+  const phoneMQ = window.matchMedia ? window.matchMedia('(max-width: 860px)') : { matches: false };
+  function thumbH() {
+    const ar = state.src ? state.src.w / state.src.h : 16 / 9;
+    return phoneMQ.matches && ar < 1 ? Math.round(clamp(THUMB_H / Math.sqrt(ar), THUMB_H, 156)) : THUMB_H;
+  }
   /** the part of a w x h frame the strip's picture shows: all of it, or its middle when it is taller or wider than the strip allows */
   function picCrop(w, h) {
     const ar = w / h, t = picAr(ar); if (Math.abs(ar - t) < 1e-4) return undefined;
@@ -3611,10 +3648,10 @@ class Scopes {
     const y = (1 - ar / t) / 2; return [0, y, 1, 1 - y];
   }
   /** a look's picture in the strip, from its shape: the picture's width (--pw); the look itself takes the wider of picture and name */
-  function sizeFrame(b, ar) {
-    const pw = picW(ar); b.style.setProperty('--pw', pw + 'px'); b.classList.toggle('narrow', pw < 132);
+  function sizeFrame(b, ar, h = THUMB_H) {
+    const pw = picW(ar, h); b.style.setProperty('--pw', pw + 'px'); b.classList.toggle('narrow', pw < 132);
   }
-  function thumbSize() { const dpr = Math.min(window.devicePixelRatio || 1, 2), th = Math.round(THUMB_H * dpr); return [Math.round(th * picAr(state.src.w / state.src.h)), th]; }
+  function thumbSize() { const dpr = Math.min(window.devicePixelRatio || 1, 2), th = Math.round(thumbH() * dpr); return [Math.round(th * picAr(state.src.w / state.src.h)), th]; }
   let thumbProxy = null;
   /** a look's thumbnail: its own 33-point LUT (the one the viewer shows the moment it is picked), applied to the frame on the GPU */
   async function renderThumb(lk) {
@@ -3632,7 +3669,7 @@ class Scopes {
   }
   function frameEl(lk, i, develop) {
     const b = document.createElement('div'); b.className = 'frame' + (develop ? ' develop' : ''); b.tabIndex = 0; b.setAttribute('role', 'button');
-    sizeFrame(b, state.src.w / state.src.h);
+    sizeFrame(b, state.src.w / state.src.h, thumbH());
     b.setAttribute('aria-pressed', state.cand === lk ? 'true' : 'false'); b.dataset.id = lk.id; b.title = lk.tip || (lk.name + (lk.qual ? ', ' + lk.qual : ''));
     const pic = document.createElement('div'); pic.className = 'pic';
     const c = document.createElement('canvas'); pic.appendChild(c);
@@ -3652,10 +3689,11 @@ class Scopes {
     lk._el = b; return b;
   }
   let stripView = 'gen';
+  if (phoneMQ.addEventListener) phoneMQ.addEventListener('change', () => { if (state.src) renderStrip(); });
   function renderStrip(develop) {
     renderTabs();
     if (stripView === 'saved') { renderSaved(); return; }
-    strip.innerHTML = ''; strip.setAttribute('aria-label', 'Generated looks');
+    strip.innerHTML = ''; strip.setAttribute('aria-label', 'Generated looks'); strip.style.setProperty('--th', thumbH() + 'px');
     const batch = state.batches[state.bi];
     if (!batch) { const p = document.createElement('p'); p.className = 'empty'; p.textContent = 'Generated looks appear here. Each press reads the frame you are viewing, so no two batches are alike.'; strip.appendChild(p); $('#batchNav').hidden = true; return; }
     batch.looks.forEach((lk, i) => strip.appendChild(frameEl(lk, i, develop)));
@@ -3794,7 +3832,7 @@ class Scopes {
   }
   let savedPaint = 0;
   function renderSaved() {
-    strip.innerHTML = ''; strip.classList.remove('stale'); strip.setAttribute('aria-label', 'Saved looks');
+    strip.innerHTML = ''; strip.classList.remove('stale'); strip.setAttribute('aria-label', 'Saved looks'); strip.style.setProperty('--th', THUMB_H + 'px');
     if (!lib.list.length) {
       const p = document.createElement('p'); p.className = 'empty';
       p.innerHTML = 'Looks you save appear here, in every project' + (libHost ? ', and in Colobri in both Premiere Pro and DaVinci Resolve on this computer' : '') + '. Pick a look and press Save look. <button type="button" class="link" id="importLink">Import a look file</button>';
@@ -4371,6 +4409,23 @@ class Scopes {
     const zip = await makeZip(files); status('');
     await saveBlob(base + '.zip', zip, { name: base + ' 33.cube.txt', blob: new Blob([files[0].data], { type: 'text/plain' }) });
   }
+  /** the look for CapCut, which has no plugins: on a Mac or a PC it takes a .cube under Adjustment > LUT > Import. One 33-point .cube
+      of the whole grade (in Rec.709's gamut: a Display P3 output is written as sRGB), then the three steps that put it on the clip */
+  async function exportCapCut() {
+    if (!state.src) return;
+    const spec = cleanSpec(specFor()); if (E.outputList().some(o => o.id === spec.output && o.p3)) spec.output = 'srgb';
+    const lut = await bakeLUT(spec, 33, p => status('Baking the look for CapCut  ' + Math.round(p * 100) + '%'));
+    const src = E.inputList().find(p => p.id === state.input), file = safeName(gradeName() + (state.input === 'srgb' ? '' : ' (' + src.short + ')')) + '.cube';
+    const cube = new Blob([E.cubeText(lut, 33, gradeName(), state.input, spec.output)], { type: 'text/plain' }); status('');
+    if (await saveBlob(file, cube, { name: file + '.txt', blob: cube })) showCapCut(file);
+  }
+  function showCapCut(file) {
+    $('#capFile').textContent = file; capScrim.hidden = false; $('#capClose').focus();
+  }
+  const capScrim = $('#capScrim');
+  $('#capClose').addEventListener('click', () => { capScrim.hidden = true; });
+  capScrim.addEventListener('click', e => { if (e.target === capScrim) capScrim.hidden = true; });
+  if (host) $('#capItem').hidden = true;   // (inside an editor the plugin applies the look itself)
   async function exportStill(kind) {
     if (!state.src) return;
     if (!gpu) { toast('Full-resolution stills need WebGL2, which this browser does not offer'); return; }
@@ -4430,7 +4485,7 @@ class Scopes {
   }
   $('#exportBtn').addEventListener('click', e => { e.stopPropagation(); menu.hidden ? openMenu(e.currentTarget) : (menu.hidden = true); });
   document.addEventListener('click', e => { if (!menu.hidden && !menu.contains(e.target)) menu.hidden = true; });
-  menu.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; menu.hidden = true; const x = b.dataset.x; (x === 'lut' ? exportLUT() : x === 'clip' ? exportClip() : exportStill(x)).catch(err => { status(''); console.error(err); toast('Export failed: ' + err.message); }); });
+  menu.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; menu.hidden = true; const x = b.dataset.x; (x === 'lut' ? exportLUT() : x === 'capcut' ? exportCapCut() : x === 'clip' ? exportClip() : exportStill(x)).catch(err => { status(''); console.error(err); toast('Export failed: ' + err.message); }); });
 
   // ------------------------------------------------------------------ host: inside Premiere Pro or DaVinci Resolve
   // The plugin shells provide window.NyansHost before this script runs: it reads the frame under the playhead and applies the baked grade
@@ -4445,8 +4500,10 @@ class Scopes {
     }
     return new Blob([d], { type: type || 'image/png' });
   }
+  let grabbing = false;   // (one grab at a time: a second F while the editor writes the frame waits for the first)
   async function grabFrame() {
-    if (!host || state.busy) return;
+    if (!host || state.busy || grabbing) return;
+    grabbing = true;
     status('Reading the frame in ' + host.name);
     try {
       const f = await host.grabFrame();
@@ -4454,6 +4511,7 @@ class Scopes {
       await setImageSource(bmp, f.name || 'Playhead frame');
       toast(f.note || 'Frame read from ' + host.name + '. Press Generate.');
     } catch (e) { status(''); toast((e && e.message) || 'Could not read the frame from ' + host.name); console.warn(e); }
+    finally { grabbing = false; }
   }
   async function applyToHost() {
     if (!host || !state.src || applying) return;
@@ -4516,6 +4574,13 @@ class Scopes {
     const ar = $('#applyRow');
     if (window.ResizeObserver) new ResizeObserver(() => document.documentElement.style.setProperty('--apply-h', ar.offsetHeight + 'px')).observe(ar);
     if (host.defaults && host.defaults.output && !savedOutput && E.outputList().some(o => o.id === host.defaults.output)) { state.output = host.defaults.output; outSel.value = state.output; view.setColorSpace(isP3()); }
+    if (hostStore && !savedOutput) {   // (the Output chosen in an earlier session, kept by the editor: unless it has been changed since this one began)
+      const bootOut = state.output;
+      Promise.resolve().then(() => hostStore.all()).then(all => {
+        const v = all && all['colobri.output'];
+        if (v && v !== state.output && state.output === bootOut && E.outputList().some(o => o.id === v)) { outSel.value = v; outSel.dispatchEvent(new Event('change')); }
+      }).catch(() => { /* the default stays */ });
+    }
     $('#grabBtn').addEventListener('click', grabFrame);
     $('#applyBtn').addEventListener('click', applyToHost);
     if (typeof host.onStatus === 'function') host.onStatus(t => {
@@ -4568,7 +4633,7 @@ class Scopes {
   window.addEventListener('pointerdown', () => document.documentElement.classList.remove('kbd-nav'), true);
   window.addEventListener('keydown', e => {
     if (e.target.matches('input[type=text], textarea, select')) return;
-    if (e.key === 'Escape') { const dg = $('#diag'); if (dg && !dg.hidden) { dg.hidden = true; return; } if (!menu.hidden || !aboutScrim.hidden) { menu.hidden = true; aboutScrim.hidden = true; } else if (state.bypass) setBypass(false); else if (state.cand) discardPreview(); return; }
+    if (e.key === 'Escape') { const dg = $('#diag'); if (dg && !dg.hidden) { dg.hidden = true; return; } if (!menu.hidden || !aboutScrim.hidden || !capScrim.hidden) { menu.hidden = true; aboutScrim.hidden = true; capScrim.hidden = true; } else if (state.bypass) setBypass(false); else if (state.cand) discardPreview(); return; }
     if (e.altKey && e.shiftKey && e.code === 'KeyD') { showDiag(); e.preventDefault(); return; }
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     const k = e.key.toLowerCase(), batch = state.batches[state.bi], list = batch ? batch.looks : [];
@@ -4591,7 +4656,7 @@ class Scopes {
   // ------------------------------------------------------------------ boot: an empty viewer until a still or a clip is opened
   applyChain(); renderPanel(); scopes.draw(null, 0, 0); fitBar();
   if (!gpu) toast('WebGL2 is unavailable, so the preview runs on the CPU at reduced size');
-  window.__nyans = { state, E, view, scopes, openFile, runGenerate, addCandidate, selectCandidate, setBypass, applyChain, exportLUT, specFor, specKey, bakeLUT, ensureFine, workers: () => alive().length, searchScale, grabFrame, applyToHost, host,
+  window.__nyans = { state, E, view, scopes, openFile, runGenerate, addCandidate, selectCandidate, setBypass, applyChain, exportLUT, exportCapCut, showCapCut, specFor, specKey, bakeLUT, ensureFine, workers: () => alive().length, searchScale, grabFrame, applyToHost, host,
     lib, libLoad, saveLook, useSaved, importLook, savedCandidate, fitBar: () => fitBar(), showStrip: v => { stripView = v; renderStrip(false); }, fitMode: () => fitMode, showDiag, showGuide, hideGuide };
 })();
 
@@ -5796,6 +5861,15 @@ return ColobriLogo;
      dither(el, name)   a 128-pixel tile of a little white at random (one tile pixel to a screen pixel), for a layer over everything that
                         breaks up the GPU's whole-step contour lines in the dark; set as the CSS variables --<name> and --<name>-size
      ground(el)         the color behind an element (the first ancestor with a background), as [r, g, b]
+     live(host, o)      the light behind the bird, alive (round 16): a second, small copy of the live logo (window.ColobriLogo), drawn
+                        at 1/k of the box's size and `scale` times the bird's size, scaled back up and blurred in CSS (by blurBw of the
+                        bird's width), so the light has the bird's own colors and moves as it moves. It returns { el, start(L, gs),
+                        place(L, gs), follow(canvas), sync(logo), logo, destroy() }: follow passes the bird's pointer on to the light, so
+                        its colors drag after the pointer as the bird's do; sync sets the light to the bird's moment. The caller sets
+                        its strength (opacity) and its falloff (bellMask). L is { w, h, bw, cx, cy }, gs the bird's share of its size
+     bellMask(el, o)    a smooth round falloff for a light, as a CSS mask: full at the bird ({ cx, cy }), easing out like a bell
+                        (strongest at the bird, less and less further out) to nothing at the radii { rx, ry }, and arriving there flat,
+                        so no edge shows anywhere
    o: { w, h } the box in CSS pixels, { cx, cy } the bird's middle in it, bw the bird's width (its outline, 3378 logo units).
    A box that is tall for its width (a narrow window, a phone) is measured as if it were only as tall as the light's own shape round
    the bird (the aura: as wide as the box and 0.62 of that high, like the bird's light; the outer light: as high as wide): the light
@@ -5940,7 +6014,60 @@ return ColobriLogo;
     el.style.setProperty('--' + name, 'url(' + c.toDataURL() + ')');
     el.style.setProperty('--' + name + '-size', n / (window.devicePixelRatio || 1) + 'px');
   }
-  window.ColobriLight = { sm, edge, glow, at, grow, bezier, dither, ground };
+  // ---- the light behind the bird, alive: the bird itself a second time, small, larger than the bird, very soft
+  const BIRD_W = 3378, FIT_W = 4650, FIT_H = 2950;
+  function live(host, o) {
+    o = o || {}; const k = o.k || 5; let scale = o.scale || 1.5, blurBw = o.blurBw == null ? 0.3 : o.blurBw;
+    const el = document.createElement('div'); el.className = o.className || 'cl-live'; el.setAttribute('aria-hidden', 'true');
+    Object.assign(el.style, { position: 'absolute', left: '0', top: '0', transformOrigin: '0 0', transform: 'scale(' + k + ')', pointerEvents: 'none' });
+    host.appendChild(el);
+    let logo = null, L = null, gs = 1, unfollow = null;
+    const pad = () => Math.max(0, Math.min(2, (BIRD_W * Math.min(L.w / FIT_W, L.h / FIT_H) / Math.max(1, scale * L.bw * gs) - 1) / 2));
+    // (the logo's own middle sits a little left of the bird's light: moved right by 2.3% of the bird's width, as the bird is)
+    const pos = () => [(L.cx + 0.0232 * L.bw) / Math.max(1, L.w), L.cy / Math.max(1, L.h)];
+    function place(nL, g) {
+      L = nL; if (g != null) gs = g;
+      el.style.width = Math.max(1, L.w / k) + 'px'; el.style.height = Math.max(1, L.h / k) + 'px';
+      el.style.filter = 'blur(' + (blurBw * L.bw * Math.max(0.5, gs) / k).toFixed(2) + 'px)';
+      if (logo) { logo.setPadding(pad()); logo.setPosition(pos()); }
+    }
+    const POINTER = ['pointermove', 'pointerenter', 'pointerdown', 'pointerup', 'pointercancel', 'pointerleave'];
+    return {
+      el,
+      start(nL, g) {
+        place(nL, g);
+        // (interactive only for the pointer the bird passes on (follow): the light itself never takes a pointer; one pixel per CSS pixel
+        // of the small copy is plenty under the blur)
+        try { logo = window.ColobriLogo.create(el, { background: 'transparent', interactive: true, padding: pad(), position: pos(), motion: o.motion == null ? 0.6 : o.motion, startTime: o.startTime == null ? 6 : o.startTime, fadeIn: 0, ariaLabel: '', maxPixelRatio: 1, respectReducedMotion: o.respectReducedMotion }); }
+        catch (e) { logo = null; }
+        if (logo && logo.supported === false) { try { logo.destroy(); } catch (e) { /* (never started) */ } logo = null; }
+        return !!logo;
+      },
+      place,
+      set(n) { if (n.scale != null) scale = +n.scale; if (n.blurBw != null) blurBw = +n.blurBw; if (L) place(L); },
+      follow(src) {
+        if (unfollow) unfollow();
+        const pass = e => {
+          if (!logo || !logo.canvas || typeof PointerEvent === 'undefined') return;
+          try { logo.canvas.dispatchEvent(new PointerEvent(e.type, { clientX: e.clientX, clientY: e.clientY, pointerType: e.pointerType, pointerId: e.pointerId, isPrimary: e.isPrimary })); } catch (x) { /* (the light just doesn't follow) */ }
+        };
+        POINTER.forEach(t => src.addEventListener(t, pass, { passive: true }));
+        unfollow = () => { POINTER.forEach(t => src.removeEventListener(t, pass)); unfollow = null; };
+      },
+      sync(bird) { if (logo && bird && bird.getTime) { try { logo.setTime(bird.getTime()); } catch (e) { /* (next time) */ } } },
+      get logo() { return logo; },
+      destroy() { if (unfollow) unfollow(); if (logo) { try { logo.destroy(); } catch (e) { /* (let go regardless) */ } logo = null; } el.remove(); },
+    };
+  }
+  // a bell for a light's falloff: (1 - d^2)^2 e^(-k d^2), d the distance from the bird in radii (k 0 unless given): full there, 0.83 at
+  // 0.3, 0.56 at half way, a quarter at 0.7, and nothing at the radii, where it arrives flat (no slope), so it has no edge (32 stops)
+  function bellMask(el, o) {
+    const K = o.k == null ? 0 : o.k, stops = [];
+    for (let i = 0; i <= 32; i++) { const d = i / 32, q = 1 - d * d, a = q * q * Math.exp(-K * d * d); stops.push('rgba(0,0,0,' + a.toFixed(4) + ') ' + (d * 100).toFixed(2) + '%'); }
+    const g = 'radial-gradient(' + Math.round(o.rx) + 'px ' + Math.round(o.ry) + 'px at ' + Math.round(o.cx) + 'px ' + Math.round(o.cy) + 'px, ' + stops.join(', ') + ')';
+    el.style.webkitMaskImage = g; el.style.maskImage = g;
+  }
+  window.ColobriLight = { sm, edge, glow, at, grow, bezier, dither, ground, live, bellMask };
 })();
 </script>
 <script>
@@ -5964,7 +6091,7 @@ return ColobriLogo;
   // the bird's outline is 3378 of the logo's units across; the logo fits 4650 x 2950 of them into its canvas, widened by its padding
   const BIRD_W = 3378, FIT_W = 4650, FIT_H = 2950, SHARE = 0.691;   // (the bird's share of its picture across, as before)
   const AT = [0.5285, 0.5];   // (the logo's own middle sits a little left of the bird's light, so the bird is moved right to the middle)
-  const LIGHT = 0.6;          // (the light's strength against the opening's)
+  const LIGHT = 0.36;         // (the light's strength against the opening's: 60% of what it was, David, round 16)
   const box = document.createElement('span'); box.className = 'gen-logo'; box.setAttribute('aria-hidden', 'true');
   // the light fills the launch window (inside its hairlines); it sits in the bird's picture, so it moves with it when pressed
   const air = document.createElement('span'); air.className = 'gen-air'; air.setAttribute('aria-hidden', 'true');
@@ -6042,8 +6169,11 @@ return ColobriLogo;
      a file dragged in    the bird quickens and its colors move more, with a ripple as the file comes in: drop it on the colobri
      a file being read    it runs at twice its pace until the frame is there
      a frame opening      one more ripple, the screen fades to the frame, and the logo is let go (its GPU context is freed)
-   Reduced motion: a calmer bird at half pace, the outer light still, and the opening a plain fade. Without WebGL2: the kit's still of
-   the bird on its aura, feathered the same way, with the same outer light and opening. */
+   The light behind the bird is the bird itself (David, 1 Nov, round 16: half again as strong, a really smooth falloff, the bird's colors
+   and movement): a second, small copy of the live logo, half again the bird's size and very soft (ColobriLight.live), in one smooth
+   bell round the bird; it moves as the bird moves and follows the pointer as the bird does.
+   Reduced motion: a calmer bird at half pace, and the opening a plain fade. Without WebGL2: the kit's still of the bird, feathered the
+   same way, on the still light (the bird's colors made very soft, colobri-aura-glow.webp), with the same opening. */
 (function () {
   'use strict';
   const viewer = document.getElementById('viewer'), app = document.getElementById('app'), es = document.getElementById('emptyState');
@@ -6074,15 +6204,23 @@ return ColobriLogo;
   let L = layout(), logo = null, flatOn = false, gone = false, ready = false, drag = false, busy = false;
 
   // ---- the layers, back to front: the light, the bird (or its still)
-  // the light: the bird's colors made very soft (src/brand/colobri-aura-glow.webp), one bell round the bird at a third of their strength,
-  // 2.3 bird widths across each way and 1.25 up and down, but always gone before the viewer's edges. It is painted once for each size,
-  // with a fine dither, so its long, faint gradients show no bands; it breathes slowly in CSS
+  // the light, alive: the bird a second time, LIGHT_SCALE its size, blurred by LIGHT_BLUR of its width, at LIGHT_A, in a bell round the
+  // bird 2.3 bird widths across each way and 1.25 up and down, but always gone before the viewer's edges (bellMask). Measured against
+  // the still light it replaces (1440 x 900, light alone, brightness above the ground in rings of 0.3-0.55, 0.55-0.8, 0.8-1 and 1-1.2
+  // bird widths): 18.8, 7.5, 1.6, 0.1 before; 28.9, 11.1, 2.4, 0.2 now, half again as strong all the way out, with the same easing
+  const LIGHT_SCALE = 1.6, LIGHT_BLUR = 0.22, LIGHT_A = 0.58;
   const air = document.createElement('div'); air.className = 'hero-air'; wrap.appendChild(air);
+  const lightBox = document.createElement('div'); lightBox.className = 'hero-light'; air.appendChild(lightBox);
+  let light = null, syncTimer = 0;
+  // the still light, without WebGL2: the bird's colors made very soft (src/brand/colobri-aura-glow.webp), one bell round the bird at a
+  // third of their strength. It is painted once for each size, with a fine dither, so its long, faint gradients show no bands; it
+  // breathes slowly in CSS
   const glow = document.createElement('canvas'); glow.className = 'hero-glow'; air.appendChild(glow);
   let glowImg = null, glowTimer = 0, glowOn = false;
+  const reach = () => ({ rx: Math.max(1, Math.min(2.3 * L.bw, L.cx, L.w - L.cx)), ry: Math.max(1, Math.min(1.25 * L.bw, L.cy, L.h - L.cy)) });
   function paintGlow() {
-    if (gone || !glowImg) return;
-    const rx = Math.max(1, Math.min(2.3 * L.bw, L.cx, L.w - L.cx)), ry = Math.max(1, Math.min(1.25 * L.bw, L.cy, L.h - L.cy));
+    if (gone || !glowImg || light) return;
+    const { rx, ry } = reach();
     if (CL.glow(glow, glowImg, { w: L.w, h: L.h, cx: L.cx, cy: L.cy, a: 0.32, from: 0, to: 1, rx, ry, cap: 5.2 * L.bw, ground: CL.ground(viewer), anchor: true })) glowOn = true;
   }
   if (window.cbGlow) { glowImg = new Image(); glowImg.onload = paintGlow; glowImg.src = window.cbGlow; }
@@ -6098,6 +6236,7 @@ return ColobriLogo;
   function place() {
     wrap.style.setProperty('--bird-x', L.cx + 'px'); wrap.style.setProperty('--bird-y', L.cy + 'px');
     if (logo) { logo.setPadding(padFor(L)); logo.setPosition(posFor(L)); }
+    if (light) { light.place(L, gs); CL.bellMask(lightBox, Object.assign({ cx: L.cx, cy: L.cy }, reach())); }
     if (stillFit) stillFit();
     // (while the window is being resized the light stays centred on the bird at the size it was painted, and is painted again after)
     CL.at(glow, L.cx, L.cy);
@@ -6114,12 +6253,22 @@ return ColobriLogo;
     if (ready) return; ready = true; wrap.classList.add('live');
     if (reduce.matches) { gs = 1; setTimeout(() => { intro = false; }, 700); return; }
     if (flatOn) { gs = 1; return; }
-    growing = CL.grow({ step: s => { gs = s; if (logo && !gone) logo.setPadding(padFor(L)); }, done: () => { gs = 1; intro = false; growing = null; } });
+    growing = CL.grow({ step: s => { gs = s; if (logo && !gone) logo.setPadding(padFor(L)); if (light && !gone) light.place(L, gs); }, done: () => { gs = 1; intro = false; growing = null; } });
   }
+  // (the light alive, or the still light when it can't be)
+  function startLight() {
+    light = CL.live(lightBox, { k: 5, scale: LIGHT_SCALE, blurBw: LIGHT_BLUR, motion: MOTION(), startTime: 6 });
+    if (!light.start(L, gs)) { light.destroy(); light = null; paintGlow(); return; }
+    lightBox.style.opacity = LIGHT_A;
+    if (logo && logo.canvas) light.follow(logo.canvas);
+    syncTimer = setInterval(() => { if (light && logo && !gone) light.sync(logo); }, 2500);   // (the two keep one time)
+  }
+  function stopLight() { clearInterval(syncTimer); if (light) { light.destroy(); light = null; } }
   function flat() {
     if (flatOn || gone) return; flatOn = true;
     if (growing) { growing.finish(); growing = null; }
     if (logo) { try { logo.destroy(); } catch (e) { /* (already let go) */ } logo = null; }
+    stopLight(); paintGlow();
     box.remove();
     const img = document.createElement('img'); img.className = 'hero-still'; img.alt = ''; img.src = window.cbMark || '';
     scene.appendChild(img); wrap.classList.add('flat'); opened();
@@ -6134,10 +6283,11 @@ return ColobriLogo;
         onReady: opened, onError: () => flat(),
       });
     } catch (e) { console.warn(e); flat(); }
+    if (logo && !flatOn) startLight();
   } else flat();
   place();
   if ('ResizeObserver' in window) new ResizeObserver(() => { if (gone) return; L = layout(); place(); }).observe(viewer);
-  if (reduce.addEventListener) reduce.addEventListener('change', () => { if (logo) logo.setMotion(drag || busy ? 0.85 : MOTION()); });
+  if (reduce.addEventListener) reduce.addEventListener('change', () => { const m = drag || busy ? 0.85 : MOTION(); if (logo) logo.setMotion(m); if (light && light.logo) light.logo.setMotion(m); });
 
   // ---- what it answers
   function onBird(e) { const r = viewer.getBoundingClientRect(), x = (e.clientX - r.left - L.cx) / (L.bw * 0.5), y = (e.clientY - r.top - L.cy) / (L.bw * 0.33); return x * x + y * y < 1; }
@@ -6148,10 +6298,11 @@ return ColobriLogo;
   function readState() {
     if (gone) return;
     const d = viewer.classList.contains('dragging'), b = isBusy();
-    if (logo) {
-      if (d && !drag) logo.ripple();
-      logo.setSpeed(b ? 2 : d ? 1.6 : 1); logo.setMotion(d || b ? 0.85 : MOTION());
-    }
+    [logo, light && light.logo].forEach(l => {
+      if (!l) return;
+      if (d && !drag) l.ripple();
+      l.setSpeed(b ? 2 : d ? 1.6 : 1); l.setMotion(d || b ? 0.85 : MOTION());
+    });
     drag = d; busy = b;
     if (viewer.classList.contains('has-src') || app.classList.contains('has-src')) leave();
   }
@@ -6161,20 +6312,24 @@ return ColobriLogo;
   // ---- a frame is open: one more ripple, the screen fades to the frame, and everything here is let go
   function leave() {
     if (gone) return; gone = true; clearTimeout(glowTimer); intro = false; if (growing) { growing.finish(); growing = null; }
-    if (logo) { logo.ripple(); logo.setSpeed(1.4); }
+    [logo, light && light.logo].forEach(l => { if (l) { l.ripple(); l.setSpeed(1.4); } });
     wrap.classList.add('out');
-    setTimeout(() => { if (logo) { try { logo.destroy(); } catch (e) { /* (let go regardless) */ } logo = null; } wrap.remove(); glow.width = glow.height = 0; }, reduce.matches ? 0 : 700);
+    setTimeout(() => { if (logo) { try { logo.destroy(); } catch (e) { /* (let go regardless) */ } logo = null; } stopLight(); wrap.remove(); glow.width = glow.height = 0; }, reduce.matches ? 0 : 700);
   }
   if (app.classList.contains('has-src')) leave();
 
   // for tests and screenshots: hold one moment of the loop (t in seconds; drag or busy as the screen shows them), live() lets go
   window.__hero = {
-    at(o) { o = o || {}; if (!logo) return; logo.setSpeed(1); logo.setMotion(o.drag || o.busy ? 0.85 : MOTION()); logo.pause(); logo.setTime(o.t == null ? 6 : o.t); },
-    live() { if (logo) { logo.play(); readState(); } },
+    at(o) { o = o || {}; [logo, light && light.logo].forEach(l => { if (!l) return; l.setSpeed(1); l.setMotion(o.drag || o.busy ? 0.85 : MOTION()); l.pause(); l.setTime(o.t == null ? 6 : o.t); }); },
+    live() { [logo, light && light.logo].forEach(l => { if (l) l.play(); }); if (logo) readState(); },
     grow(ms) { if (growing) growing.hold(ms); },
     growOn() { if (growing) growing.go(); },
     state: () => ({ ready, gone, flat: flatOn, live: !!logo, intro, gs: +gs.toFixed(3), drag, busy, bw: Math.round(L.bw), cy: Math.round(L.cy), padding: logo ? +padFor(L).toFixed(3) : null,
-      cx: Math.round(L.cx), word: null, glow: glowOn ? glow.width + 'x' + glow.height : '' }),
+      cx: Math.round(L.cx), word: null, glow: glowOn ? glow.width + 'x' + glow.height : '', light: light && light.logo ? 'live' : glowOn ? 'still' : '' }),
+    // (for measuring: the light alone, or the light's settings)
+    stillLight() { stopLight(); paintGlow(); },
+    lightOnly(on) { [logo && logo.canvas, wrap.querySelector('.hero-still')].forEach(el => { if (el) el.style.opacity = on ? '0' : ''; }); },   // (still taking the pointer)
+    tune(o) { if (!light) return; if (o.a != null) lightBox.style.opacity = o.a; if (o.k != null) CL.bellMask(lightBox, Object.assign({ cx: L.cx, cy: L.cy, k: o.k }, reach())); if (o.scale != null || o.blur != null) light.set({ scale: o.scale, blurBw: o.blur }); },
   };
 })();
 </script>
@@ -6301,7 +6456,7 @@ return ColobriLogo;
   const LS_PRODUCTS = [];              // the live product's id once the store is active: then only it unlocks (empty: the product of that name in this store)
   const LS_TEST_PRODUCTS = [1464033];  // test mode: its keys unlock only where nyans.licence.test is set to 1 (for testing)
   const TRIAL_DAYS = 7, PRICE = '€59', BUY_URL = 'https://davidhjalmarlindberg.com/colobri/#pricing', BUY_TEXT = 'davidhjalmarlindberg.com/colobri';
-  const SUPPORT = 'david@nakaya.world', RECHECK_MS = 7 * 864e5;
+  const SUPPORT = 'me@davidhjalmarlindberg.com', RECHECK_MS = 7 * 864e5;
   const K_SIGNED = 'nyans.licence', K_KEY = 'nyans.licence.key', K_TRIAL = 'nyans.trial.start', K_TEST = 'nyans.licence.test';
   const KEY_RE = /[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}/i;
   // what Colobri keeps between sessions (the trial's start, the key): an in-memory copy, read once at start from the editor when it keeps
@@ -6474,7 +6629,7 @@ return ColobriLogo;
       const who = lic.name || lic.email ? ['Licensed to ', el('span', { class: 'lic-who', text: lic.name || lic.email }), (lic.name && lic.email ? ', ' + lic.email : '') + (lic.order ? '. Order ' + lic.order : '') + '.'] : ['Your licence key is added here.'];
       sheet.appendChild(el('p', {}, who));
       if (lic.pending) sheet.appendChild(el('p', { text: 'Colobri could not reach Lemon Squeezy to check the key yet. Everything is unlocked, and Colobri checks the key the next time it starts with a connection.' }));
-      sheet.appendChild(el('p', { text: 'Your licence covers every Colobri 1.x version, for you, on up to two computers, in the browser and in every editor. Moving to another computer? Remove it here first, then add it there.' }));
+      sheet.appendChild(el('p', { text: 'Your licence covers every Colobri 1.x version, for you, on up to two computers, in the browser and in every editor. Moving to another computer? Remove it here first, and in each other editor and browser on this computer you added it to, then add it there.' }));
       let armed = false;
       const rm = el('button', { class: 'btn quiet', type: 'button', text: 'Remove from this computer' });
       rm.addEventListener('click', async () => {

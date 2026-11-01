@@ -19,11 +19,12 @@
   window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
   // ---------------------------------------------------------------------------------------------- the opening
-  // The logo as David set it: the live bird with COLOBRI to its right. The bird is on a clear ground with only its own glow; its light
-  // is placed on .hero-mark (1.03 of the bird's width across and 0.63 of it high), so the page's own layout decides where it is. Behind
-  // it lies one soft bell of the bird's colors (colobri-light.js, the same as in the app): big, subtle, and gone well before the
-  // opening's foot, so nothing shows as a part or an edge at any size. When the bird is ready it grows from half its size to full over
-  // 2 s, its light comes up round it and the word arrives as it settles.
+  // The logo as David set it: the live bird alone (round 16), on a clear ground with only its own glow; its light is placed on
+  // .hero-mark (1.03 of the bird's width across and 0.63 of it high), so the page's own layout decides where it is. Behind it lies its
+  // light, alive (David, 1 Nov, round 16: half again as strong, a really smooth falloff, the bird's own colors and movement): the bird a
+  // second time, larger and very soft, in one smooth bell round it (colobri-light.js, the same as in the app), gone well before the
+  // page's edges and the opening's foot, so nothing shows as a part or an edge at any size. When the bird is ready it grows from half its
+  // size to full over 2 s and its light comes up round it.
   (function hero() {
     var CL = window.ColobriLight;
     var hero = $('.hero'), mark = $('.hero-mark'), box = $('.hero-logo'), scene = $('.hero-scene'), glow = $('.hero-glow'), dith = $('.hero-dither');
@@ -39,11 +40,33 @@
     function padFor() { return Math.max(0, Math.min(2, (BIRD_W * Math.min(L.w / FIT_W, L.h / FIT_H) / Math.max(1, L.bw * gs) - 1) / 2)); }
     function posFor() { return [(L.cx + 0.0232 * L.bw) / Math.max(1, L.w), L.cy / Math.max(1, L.h)]; }
 
-    // the light: the bird's colors made very soft, one bell round the bird at a third of their strength, 2.3 bird widths out each way
-    // and 1.25 up and down, and in any case gone by the opening's foot (where the page goes on), so it meets the page unseen
+    // the light, alive: the bird a second time, 1.6 its size, blurred by 0.22 of its width, at 0.58, in one smooth bell 2.3 bird widths
+    // out each way and 1.25 up and down, and in any case gone by the page's edges and the opening's foot (where the page goes on), so it
+    // meets the page unseen; it moves as the bird moves and follows the pointer as the bird does (half again as strong as the still
+    // light it replaces, measured as in the app)
+    var LIGHT_SCALE = 1.6, LIGHT_BLUR = 0.22, LIGHT_A = 0.58, FOOT = 0.86;
+    var air = $('.hero-air'), lightBox = null, light = null, syncTimer = 0;
+    function reach() { return { rx: Math.max(1, Math.min(2.3 * L.bw, L.cx, L.w - L.cx)), ry: Math.max(1, Math.min(1.25 * L.bw, L.cy, FOOT * L.h - L.cy)) }; }
+    function startLight() {
+      if (!CL.live || !air || !logo) return;
+      lightBox = document.createElement('div'); lightBox.className = 'hero-light'; air.insertBefore(lightBox, air.firstChild);
+      light = CL.live(lightBox, { k: 5, scale: LIGHT_SCALE, blurBw: LIGHT_BLUR, motion: 0.6, startTime: 6 });
+      if (!light.start(L, gs)) { light.destroy(); light = null; lightBox.remove(); lightBox = null; return; }
+      lightBox.style.opacity = LIGHT_A;
+      if (logo.canvas) light.follow(logo.canvas);
+      syncTimer = setInterval(function () { if (light && logo) light.sync(logo); }, 2500);   // (the two keep one time)
+    }
+    function stopLight() { clearInterval(syncTimer); if (light) { light.destroy(); light = null; } if (lightBox) { lightBox.remove(); lightBox = null; } }
+    // the still light, without WebGL2: the bird's colors made very soft, one bell round the bird at a third of their strength (fetched
+    // only when it is needed)
     var glowImg = null, glowTimer = 0, glowOn = false;
+    function stillGlow() {
+      if (!glow) return;
+      if (glowImg) { if (L) paintGlow(); return; }
+      glowImg = new Image(); glowImg.onload = function () { if (L) paintGlow(); }; glowImg.src = IMG + 'colobri-aura-glow.webp';
+    }
     function paintGlow() {
-      if (!glow || !glowImg || !glowImg.naturalWidth) return;
+      if (!glow || !glowImg || !glowImg.naturalWidth || light) return;
       if (CL.glow(glow, glowImg, { w: L.w, h: L.h, cx: L.cx, cy: L.cy, a: 0.32, from: 0, to: 1, rx: 2.3 * L.bw, ry: 1.25 * L.bw, foot: 0.86, cap: 5.2 * L.bw, ground: CL.ground(hero), anchor: true })) glowOn = true;
     }
     if (dith) CL.dither(dith, 'dither');
@@ -53,7 +76,7 @@
       if (ready) return; ready = true; hero.classList.add('live');
       if (reduce.matches) { gs = 1; setTimeout(function () { intro = false; }, 700); return; }
       if (flat) { gs = 1; return; }
-      growing = CL.grow({ step: function (s) { gs = s; if (logo) logo.setPadding(padFor()); }, done: function () { gs = 1; intro = false; growing = null; } });
+      growing = CL.grow({ step: function (s) { gs = s; if (logo) logo.setPadding(padFor()); if (light) light.place(L, gs); }, done: function () { gs = 1; intro = false; growing = null; } });
     }
     scene.addEventListener('animationend', function (e) { if (flat && e.animationName === 'hero-grow') intro = false; });
 
@@ -63,6 +86,7 @@
       if (flat) return; flat = true; hero.classList.add('flat');
       if (growing) { growing.finish(); growing = null; }
       if (logo) { try { logo.destroy(); } catch (e) { /* (already gone) */ } logo = null; }
+      stopLight(); stillGlow();
       still = document.createElement('img'); still.className = 'hero-still'; still.alt = ''; still.src = IMG + 'colobri-mark.webp';
       box.remove(); scene.appendChild(still); place();
       if (still.decode) still.decode().then(opened, opened); else still.onload = opened;
@@ -71,6 +95,7 @@
       L = layout();
       hero.style.setProperty('--bird-x', Math.round(L.cx) + 'px'); hero.style.setProperty('--bird-y', Math.round(L.cy) + 'px');
       if (logo) { if (logo.resize) logo.resize(); logo.setPadding(padFor()); logo.setPosition(posFor()); }
+      if (light) { light.place(L, gs); CL.bellMask(lightBox, Object.assign({ cx: L.cx, cy: L.cy }, reach())); }
       if (still) { var iw = L.bw / MARK_W, ih = iw * MARK_AR; still.style.width = iw + 'px'; still.style.height = ih + 'px'; still.style.left = (L.cx - MARK_CX * iw) + 'px'; still.style.top = (L.cy - MARK_CY * ih) + 'px'; }
       // (while the window changes size the light stays centred on the bird at the size it was painted, and is painted again after)
       if (glow) CL.at(glow, L.cx, L.cy);
@@ -82,14 +107,19 @@
         logo = window.ColobriLogo.create(box, { background: 'transparent', interactive: true, padding: padFor(), position: posFor(), motion: 0.6, ariaLabel: '', startTime: 6, fadeIn: 0,
           onReady: opened, onError: toFlat });
       } catch (e) { toFlat(); }
+      if (logo && !flat) startLight();
     } else toFlat();
-    if (glow) { glowImg = new Image(); glowImg.onload = function () { if (L) paintGlow(); }; glowImg.src = IMG + 'colobri-aura-glow.webp'; }
+    if (!light) stillGlow();
     // (if the bird has not woken in 2.5 s, the page does not wait for it)
     setTimeout(function () { if (!ready) opened(); }, 2500);
     place();
     if ('ResizeObserver' in window) new ResizeObserver(function () { place(); }).observe(hero);
     else window.addEventListener('resize', place);
     window.__cbHero = { logo: function () { return logo; }, layout: function () { return L; }, flat: function () { return flat; }, glow: function () { return glowOn ? glow.width + 'x' + glow.height : ''; },
+      light: function () { return light && light.logo ? 'live' : glowOn ? 'still' : ''; }, lightLogo: function () { return light && light.logo; },
+      lightOnly: function (on) { [logo && logo.canvas, still].forEach(function (el) { if (el) el.style.opacity = on ? '0' : ''; }); },
+      stillLight: function () { stopLight(); stillGlow(); },
+      at: function (t) { [logo, light && light.logo].forEach(function (l) { if (l) { l.pause(); l.setTime(t); } }); },   // (for screenshots: one moment)
       ready: function () { return ready; }, intro: function () { return intro; }, gs: function () { return gs; },
       grow: function (ms) { if (growing) growing.hold(ms); }, growOn: function () { if (growing) growing.go(); } };
   })();

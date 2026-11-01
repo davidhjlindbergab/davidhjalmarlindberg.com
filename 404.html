@@ -19,7 +19,7 @@
     location.replace('/colobri' + rest + location.search + (rest.indexOf('#') < 0 ? hash : ''));
   }
   // (an earlier version of the plugins' download goes to the pricing, where the current one is)
-  if (/^\/colobri\/download\/Colobri-plugins-[0-9.]+\.zip$/i.test(p)) location.replace('/colobri/#pricing');
+  if (/^\/colobri\/download\/Colobri-(plugins|for-(Mac|Windows))-[0-9.]+\.zip$/i.test(p)) location.replace('/colobri/#pricing');
 })();
 </script>
 </head>
@@ -44,7 +44,7 @@
 <footer class="footer wrap" id="contact">
   <div class="contact-line">
     <p class="eyebrow">For collaborations &amp; conversations</p>
-    <a class="email" href="mailto:david@nakaya.world">david@nakaya.world</a>
+    <a class="email" href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>
   </div>
   <div class="colophon">
     <span>© 2026 David Hjalmar Lindberg<br>David HJ Lindberg AB · org.nr 559291-3353</span>
