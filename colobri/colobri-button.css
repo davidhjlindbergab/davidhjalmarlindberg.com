@@ -1,0 +1,87 @@
+/* Colobri button v1.0.1: the pill, its label and the plain ring shown until (or instead of) the live light.
+   Pair with colobri-button.js. Copyright (c) 2026 David HJ Lindberg AB. */
+.colobri-button {
+  --cb-height: 56px;
+  --cb-pad: 32px;
+  --cb-font-size: 17px;
+  --cb-fill: #161618;
+  --cb-ink: #f5f5f7;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--cb-height);
+  padding: 0 var(--cb-pad);
+  border: 0;
+  border-radius: 999px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--cb-fill);
+  color: var(--cb-ink);
+  font: 500 var(--cb-font-size)/1 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.012em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  box-shadow: 0 0 24px -6px rgba(39, 148, 255, 0.5);
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.18), color 0.3s ease, box-shadow 0.9s ease;
+}
+
+/* The plain ring in the bird's gradient: shown before the light is up, and where WebGL2 is missing. */
+.colobri-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(100deg, #fe636c, #d466bb 28%, #a287ff 55%, #2794ff 80%, #219aff) 0 0 / 200% 100%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: cb-ring-drift 23s ease-in-out infinite alternate;
+  transition: opacity 0.9s ease;
+}
+@keyframes cb-ring-drift {
+  0% { background-position: 0% 0; }
+  41% { background-position: 70% 0; }
+  100% { background-position: 100% 0; }
+}
+
+/* The live light (a canvas the script adds), reaching beyond the pill for the glow. */
+.colobri-button > .cb-light {
+  position: absolute;
+  z-index: -1;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+}
+.colobri-button.is-live { box-shadow: none; }
+.colobri-button.is-live::before { opacity: 0; animation-play-state: paused; }
+
+.colobri-button:hover { color: #fff; }
+.colobri-button:active { transform: scale(0.97); transition-duration: 0.09s, 0.3s, 0.9s; }
+.colobri-button:focus { outline: none; }
+.colobri-button:focus-visible { outline: 1.5px solid rgba(245, 245, 247, 0.9); outline-offset: 5px; }
+
+/* Sizes: the bar and in-page sections. Any height works; the light scales with it. */
+.colobri-button--small { --cb-height: 32px; --cb-pad: 15px; --cb-font-size: 14px; }
+.colobri-button--medium { --cb-height: 44px; --cb-pad: 24px; --cb-font-size: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .colobri-button { transition: color 0.3s ease, box-shadow 0.9s ease; }
+  .colobri-button:active { transform: none; }
+  .colobri-button::before { animation: none; }
+}
+@media (forced-colors: active) {
+  .colobri-button { border: 1px solid ButtonText; }
+  .colobri-button::before, .colobri-button > .cb-light { display: none; }
+}

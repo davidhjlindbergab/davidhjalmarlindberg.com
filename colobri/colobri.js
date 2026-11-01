@@ -148,6 +148,8 @@
       b.addEventListener('click', function () { stop(); show(i, false); });
       strip.appendChild(b); return b;
     });
+    // the picked look's ring: the Colobri button's light round the picture (colobri-ring.js); without WebGL2 the CSS ring stays
+    var rings = btns.map(function (b) { var pic = b.querySelector('.pic'); try { return window.ColobriRing ? window.ColobriRing.create(pic) : null; } catch (e) { return null; } });
     function keep(i) {   // bring the picked look into the strip's view, without moving the page
       var b = btns[i], sr = strip.getBoundingClientRect(), r = b.getBoundingClientRect(), pad = 24;
       if (r.left < sr.left + pad) strip.scrollBy({ left: r.left - sr.left - pad, behavior: reduce.matches ? 'auto' : 'smooth' });
@@ -156,6 +158,7 @@
     function show(i, focus) {
       if (i === cur) return; cur = i; want = i;
       btns.forEach(function (b, k) { b.setAttribute('aria-checked', k === i ? 'true' : 'false'); b.tabIndex = k === i ? 0 : -1; });
+      rings.forEach(function (r, k) { if (r && r.supported) r.setOn(k === i); });
       if (focus) btns[i].focus({ preventScroll: true });
       keep(i);
       nameEl.innerHTML = (i ? dotFor(LOOKS[i].name) : '') + '<span' + (i ? ' class="code"' : '') + '>' + LOOKS[i].name + '</span>';
