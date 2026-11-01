@@ -33,8 +33,8 @@
   --ink-2: #a1a1a6;
   --ink-3: #86868b;
   --mark: #b6bcf8;                 /* the bird's lavender, for the labels */
-  --word: #7383f2;                 /* COLOBRI in the bar and the footer: David's blue, a little lighter at that size */
-  --word-lockup: #5c6fec;          /* COLOBRI beside the big bird: David's blue (his lockup, 1 Nov), fading out to the right */
+  --word: #7383f2;                 /* the bird's blue-violet, for the Colobri column of the comparison */
+  --logo: #f5f5f7;                 /* COLOBRI: white, the thin monoline David chose (1 Nov, round 15) */
   --link: #4da3ff;                 /* the bird's blue, for links */
   --ring-stops: #2a8cff 0%, #36b4ff 8%, #8ee0ff 12.5%, #3cb2ff 17%, #2794ff 26%, #a287ff 38%, #d466bb 48%, #fe636c 57%, #ff8a62 64%, #ffa496 69%, #ee7aa6 75%, #a98aff 83%, #4c93ff 90%, #219aff 95%, #2a8cff 100%;
   --f: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI Variable Text", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -53,7 +53,8 @@ a { color: inherit; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 :focus-visible { outline: 2px solid var(--mark); outline-offset: 3px; border-radius: 6px; }
 .wrap { width: 100%; max-width: calc(var(--wide) + var(--gl) + var(--gr)); margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
-.word { display: block; height: auto; color: var(--word); -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 38%, rgba(0,0,0,.9) 52%, rgba(0,0,0,.78) 68%, rgba(0,0,0,.66) 84%, rgba(0,0,0,.58) 100%); mask-image: linear-gradient(90deg, #000 0%, #000 38%, rgba(0,0,0,.9) 52%, rgba(0,0,0,.78) 68%, rgba(0,0,0,.66) 84%, rgba(0,0,0,.58) 100%); }
+/* COLOBRI: a thin monoline with round ends (drawn to match the title David chose; its stroke is set per size so it holds when small) */
+.word { display: block; height: auto; overflow: visible; fill: none; stroke: var(--logo); stroke-width: 75.2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ------------------------------------------------------------------ type */
 .eyebrow { margin: 0; font-size: clamp(17px, 1.55vw, 21px); font-weight: 600; line-height: 1.2; letter-spacing: 0.004em; color: var(--mark); }
@@ -122,7 +123,7 @@ section { position: relative; }
 .bar .wrap { display: flex; align-items: center; gap: 26px; height: 52px; }
 .bar .home { display: flex; align-items: center; gap: 9px; min-height: 44px; margin-right: auto; }
 .bar .home .bird { width: 44px; height: auto; margin: -6px 0 -6px -4px; }
-.bar .home .word { width: 98px; }
+.bar .home .word { width: 116px; stroke-width: 118; }
 .bar nav { display: flex; gap: 24px; }
 .bar nav a { color: var(--ink-2); font-size: 13px; letter-spacing: -0.005em; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; transition: color .2s; }
 .bar nav a:hover { color: var(--ink); }
@@ -155,16 +156,16 @@ section { position: relative; }
 @keyframes hero-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .hero-in { position: relative; z-index: 1; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding: calc(72px + env(safe-area-inset-top, 0px)) var(--gr) clamp(48px, 7vh, 88px) var(--gl); pointer-events: none; }
 .hero-in a, .hero-in button { pointer-events: auto; }
-/* the logo as David set it (1 Nov): the bird, and COLOBRI to its right in Futura Round Bold, his blue fading out to the right; measured
-   on his frame in the bird's width (bw): the word 0.552 across, its left 0.342 right of the bird's middle, its top 0.050 below it; the
-   lockup runs 1.394 bw from the bird's left to the word's end and is centred. The bird's light (1.03 bw across, 0.63 high) is held by
-   .hero-mark; the live logo is placed on it (colobri.js) */
-.hero { --bw: min(500px, 38vw, calc((100svh - 410px) / 0.63)); }   /* (what is not the bird takes about 410 px) */
-.hero-lockup { position: relative; flex: none; width: calc(var(--bw) * 1.394); height: calc(var(--bw) * 0.63); margin-top: auto; }
+/* the logo as David set it (1 Nov, round 15): the bird, and COLOBRI to its right in the thin monoline of his frame, in white. In the bird's
+   width (bw): the word 1.1 across, its left 0.62 right of the bird's middle (just past the beak), its middle 0.07 below the bird's; the
+   lockup runs 2.22 bw from the bird's left to the word's end and is centred. On a phone the word sits under the bird instead. The
+   bird's light (1.03 bw across, 0.63 high) is held by .hero-mark; the live logo is placed on it (colobri.js) */
+.hero { --bw: min(480px, 36vw, calc((100svh - 410px) / 0.63)); }   /* (what is not the bird takes about 410 px) */
+.hero-lockup { position: relative; flex: none; width: calc(var(--bw) * 2.22); height: calc(var(--bw) * 0.63); margin-top: auto; }
 .hero-mark { position: absolute; left: calc(var(--bw) * -0.015); top: 0; width: calc(var(--bw) * 1.03); height: calc(var(--bw) * 0.63); }
-.hero-word { position: absolute; margin: 0; left: calc(var(--bw) * 0.842); top: calc(var(--bw) * 0.375); width: calc(var(--bw) * 0.552); opacity: 0; transition: opacity 1.4s cubic-bezier(.4, 0, .2, 1) 1.2s; }
+.hero-word { position: absolute; margin: 0; left: calc(var(--bw) * 1.12); top: calc(var(--bw) * 0.348); width: calc(var(--bw) * 1.1); opacity: 0; transition: opacity 1.4s cubic-bezier(.4, 0, .2, 1) 1.2s; }
 .hero.live .hero-word { opacity: 1; }
-.hero-word .word { width: 100%; color: var(--word-lockup); -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 36%, rgba(0,0,0,.93) 42%, rgba(0,0,0,.84) 48%, rgba(0,0,0,.74) 55%, rgba(0,0,0,.63) 63%, rgba(0,0,0,.52) 71%, rgba(0,0,0,.43) 79%, rgba(0,0,0,.35) 86%, rgba(0,0,0,.29) 93%, rgba(0,0,0,.25) 100%); mask-image: linear-gradient(90deg, #000 0%, #000 36%, rgba(0,0,0,.93) 42%, rgba(0,0,0,.84) 48%, rgba(0,0,0,.74) 55%, rgba(0,0,0,.63) 63%, rgba(0,0,0,.52) 71%, rgba(0,0,0,.43) 79%, rgba(0,0,0,.35) 86%, rgba(0,0,0,.29) 93%, rgba(0,0,0,.25) 100%); }
+.hero-word .word { width: 100%; }
 .hero-copy { display: flex; flex-direction: column; align-items: center; margin-bottom: auto; }
 .hero h1 { margin-top: clamp(40px, 6vh, 64px); font-size: clamp(36px, 4.9vw, 64px); line-height: 1.05; letter-spacing: -0.018em; }
 .hero .lead { margin-top: 16px; max-width: 34em; color: var(--ink-2); }
@@ -172,10 +173,13 @@ section { position: relative; }
 .hero .fine { margin-top: 18px; }
 @media (max-width: 760px) {
   .hero { --bw: min(62vw, 300px); }
+  .hero-lockup { width: var(--bw); height: calc(var(--bw) * 0.79); }
+  .hero-word { left: calc(var(--bw) * 0.06); top: calc(var(--bw) * 0.69); width: calc(var(--bw) * 0.88); }
+  .hero-word .word { stroke-width: 96; }
   .hero h1 { font-size: clamp(34px, 9vw, 42px); }
 }
 @media (max-height: 820px) and (min-width: 761px) {
-  .hero { --bw: min(480px, 36vw, calc((100svh - 330px) / 0.63)); }
+  .hero { --bw: min(460px, 34vw, calc((100svh - 330px) / 0.63)); }
   .hero-in { padding-top: 64px; padding-bottom: 36px; }
   .hero h1 { margin-top: 28px; font-size: clamp(34px, 3.8vw, 50px); }
   .hero .lead { margin-top: 12px; font-size: 17px; }
@@ -363,7 +367,7 @@ footer { border-top: 1px solid var(--line); padding-block: 40px calc(40px + env(
 footer .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; align-items: start; }
 footer .foot-mark { display: flex; align-items: center; gap: 9px; margin: 0 0 14px; }
 footer .foot-mark .bird { width: 40px; height: auto; margin: -6px 0 -6px -4px; }
-footer .word { width: 92px; }
+footer .word { width: 110px; stroke-width: 118; }
 footer p { margin: 0; max-width: 46ch; text-wrap: pretty; }
 footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 22px; justify-content: flex-end; }
 footer ul a, footer ul button { display: inline-flex; align-items: center; min-height: 36px; padding: 0; border: 0; background: none; color: var(--ink-2); font: inherit; text-decoration: none; cursor: pointer; }
@@ -393,11 +397,11 @@ footer .legal a:hover { color: var(--ink); }
 <script src="colobri.js" defer></script>
 </head>
 <body data-cb-page="colobri">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="cb-word" viewBox="0 -687.0 6189.1 711.0"><path fill="currentColor" d="M510 -620C510 -641 509 -644 502 -649C484 -663 400 -681 354 -681C156 -681 0 -525 0 -328C0 -238 30 -159 88 -98C157 -25 257 18 357 18C399 18 421 14 492 -9C497 -10 499 -11 502 -13C509 -18 510 -21 510 -42V-162C510 -188 507 -196 495 -196C491 -196 487 -194 483 -191C448 -162 412 -150 363 -150C257 -150 181 -224 181 -329C181 -436 256 -512 361 -512C404 -512 439 -500 478 -472C483 -468 487 -466 490 -466C505 -466 510 -475 510 -500Z M1298.49 -687C1205.49 -687 1117.49 -657 1054.49 -603C975.49 -536 929.49 -438 929.49 -338C929.49 -130 1085.49 24 1295.49 24C1393.49 24 1475.49 -4 1542.49 -60C1622.49 -127 1667.49 -226 1667.49 -332C1667.49 -424 1633.49 -510 1571.49 -575C1500.49 -650 1409.49 -687 1298.49 -687ZM1298.49 -519C1402.49 -519 1486.49 -435 1486.49 -332C1486.49 -228 1402.49 -144 1298.49 -144C1195.49 -144 1110.49 -228 1110.49 -329C1110.49 -435 1193.49 -519 1298.49 -519Z M2296.3432222222223 -147V-634C2297.3432222222223 -662 2291.3432222222223 -668 2263.3432222222223 -667H2156.3432222222223C2128.3432222222223 -668 2122.3432222222223 -662 2123.3432222222223 -634V-33C2122.3432222222223 -5 2128.3432222222223 1 2156.3432222222223 0H2471.3432222222223C2499.3432222222223 1 2505.3432222222223 -5 2504.3432222222223 -33V-114C2505.3432222222223 -142 2499.3432222222223 -148 2471.3432222222223 -147Z M3255.9634444444446 -687C3162.9634444444446 -687 3074.9634444444446 -657 3011.9634444444446 -603C2932.9634444444446 -536 2886.9634444444446 -438 2886.9634444444446 -338C2886.9634444444446 -130 3042.9634444444446 24 3252.9634444444446 24C3350.9634444444446 24 3432.9634444444446 -4 3499.9634444444446 -60C3579.9634444444446 -127 3624.9634444444446 -226 3624.9634444444446 -332C3624.9634444444446 -424 3590.9634444444446 -510 3528.9634444444446 -575C3457.9634444444446 -650 3366.9634444444446 -687 3255.9634444444446 -687ZM3255.9634444444446 -519C3359.9634444444446 -519 3443.9634444444446 -435 3443.9634444444446 -332C3443.9634444444446 -228 3359.9634444444446 -144 3255.9634444444446 -144C3152.9634444444446 -144 3067.9634444444446 -228 3067.9634444444446 -329C3067.9634444444446 -435 3150.9634444444446 -519 3255.9634444444446 -519Z M4113.8166666666675 -667C4085.816666666667 -668 4079.816666666667 -662 4080.816666666667 -634V-33C4079.816666666667 -5 4085.816666666667 1 4113.8166666666675 0H4358.8166666666675C4500.8166666666675 0 4588.8166666666675 -72 4588.8166666666675 -189C4588.8166666666675 -240 4572.8166666666675 -286 4545.8166666666675 -314C4523.8166666666675 -336 4500.8166666666675 -346 4452.8166666666675 -356C4504.8166666666675 -386 4525.8166666666675 -426 4525.8166666666675 -493C4525.8166666666675 -605 4459.8166666666675 -667 4337.8166666666675 -667ZM4253.8166666666675 -404V-534H4285.8166666666675C4338.8166666666675 -534 4366.8166666666675 -512 4366.8166666666675 -469C4366.8166666666675 -427 4338.8166666666675 -404 4285.8166666666675 -404ZM4253.8166666666675 -135V-275H4288.8166666666675C4345.8166666666675 -275 4360.8166666666675 -273 4380.8166666666675 -263C4400.8166666666675 -253 4413.8166666666675 -230 4413.8166666666675 -205C4413.8166666666675 -156 4377.8166666666675 -135 4291.8166666666675 -135Z M5388.66988888889 -273C5428.66988888889 -283 5450.66988888889 -293 5473.66988888889 -313C5511.66988888889 -346 5534.66988888889 -402 5534.66988888889 -461C5534.66988888889 -516 5513.66988888889 -570 5477.66988888889 -608C5438.66988888889 -649 5388.66988888889 -667 5313.66988888889 -667H5077.66988888889C5049.66988888889 -668 5043.66988888889 -662 5044.66988888889 -634V-33C5043.66988888889 -5 5049.66988888889 1 5077.66988888889 0H5184.66988888889C5212.66988888889 1 5218.66988888889 -5 5217.66988888889 -33V-256L5369.66988888889 -20C5382.66988888889 0 5382.66988888889 0 5406.66988888889 0H5544.66988888889C5569.66988888889 0 5578.66988888889 -5 5578.66988888889 -19C5578.66988888889 -25 5576.66988888889 -29 5565.66988888889 -43ZM5217.66988888889 -368V-534H5249.66988888889C5282.66988888889 -534 5307.66988888889 -527 5323.66988888889 -516C5342.66988888889 -502 5356.66988888889 -475 5356.66988888889 -451C5356.66988888889 -427 5342.66988888889 -399 5323.66988888889 -386C5307.66988888889 -374 5282.66988888889 -368 5249.66988888889 -368Z M6189.037111111112 -634C6190.037111111112 -662 6184.037111111112 -668 6156.037111111112 -667H6049.037111111112C6021.037111111112 -668 6015.037111111112 -662 6016.037111111112 -634V-33C6015.037111111112 -5 6021.037111111112 1 6049.037111111112 0H6156.037111111112C6184.037111111112 1 6190.037111111112 -5 6189.037111111112 -33Z"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="cb-word" viewBox="0 0 11673.4 1000"><path d="M787.4 884.9 A482.4 462.4 0 1 1 787.4 115.1 M1906.8 500 A445.5 462.4 0 1 1 2797.9 500 A445.5 462.4 0 1 1 1906.8 500 Z M5651.3 500 A444.6 462.4 0 1 1 6540.6 500 A444.6 462.4 0 1 1 5651.3 500 Z M4056.8 37.6 L4056.8 962.4 L4570.5 962.4 M7799.2 962.4 L7799.2 37.6 L8163.2 37.6 A228.4 228.4 0 0 1 8163.2 494.3 L7799.2 494.3 M7799.2 494.3 L8211.4 494.3 A234.1 234.1 0 0 1 8211.4 962.4 L7799.2 962.4 Z M9715.2 962.4 L9715.2 37.6 L10082.6 37.6 A254.6 254.6 0 0 1 10082.6 546.7 L9715.2 546.7 M10139.5 546.7 C10415.1 624.9 10229.7 880.3 10381.5 962.4 M11635.8 37.6 L11635.8 962.4"/></symbol></defs></svg>
 
 <header class="bar" id="bar">
   <div class="wrap">
-    <a class="home" href="#top" aria-label="Colobri, back to the top"><img class="bird" src="images/colobri-bird-132.webp" width="132" height="101" alt=""><svg class="word" viewBox="0 0 6189.1 711" aria-hidden="true"><use href="#cb-word"/></svg></a>
+    <a class="home" href="#top" aria-label="Colobri, back to the top"><img class="bird" src="images/colobri-bird-132.webp" width="132" height="101" alt=""><svg class="word" viewBox="0 0 11673.4 1000" aria-hidden="true"><use href="#cb-word"/></svg></a>
     <nav aria-label="Sections">
       <a href="#looks">Looks</a>
       <a href="#different">Not a preset</a>
@@ -420,7 +424,7 @@ footer .legal a:hover { color: var(--ink); }
   <div class="hero-in">
     <div class="hero-lockup" role="img" aria-label="Colobri">
       <div class="hero-mark"></div>
-      <p class="hero-word"><svg class="word" viewBox="0 0 6189.1 711" aria-hidden="true"><use href="#cb-word"/></svg></p>
+      <p class="hero-word"><svg class="word" viewBox="0 0 11673.4 1000" aria-hidden="true"><use href="#cb-word"/></svg></p>
     </div>
     <div class="hero-copy">
       <h1 id="hero-title">Ten looks, composed for your shot.</h1>
@@ -635,7 +639,7 @@ footer .legal a:hover { color: var(--ink); }
         </ul>
       </div>
       <div class="go">
-        <a class="btn lit" href="download/Colobri-plugins-1.4.0.zip" download data-cb-track="StartTrial" data-cb-what="Colobri plugins">Download free trial</a>
+        <a class="btn lit" href="download/Colobri-plugins-1.4.1.zip" download data-cb-track="StartTrial" data-cb-what="Colobri plugins">Download free trial</a>
         <a class="btn solid" href="mailto:david@nakaya.world?subject=Buying%20Colobri" data-cb-buy data-cb-track="InitiateCheckout">Buy for €59</a>
         <p class="fine">One download for Mac and PC, with an installer for each editor. Start with Read me first. Rather not install anything? <a href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Open Colobri in your browser</a>: the same trial, and the same licence unlocks it.</p>
         <p class="fine" data-cb-interim>Checkout opens shortly. Until then, Buy writes to david@nakaya.world, and you get the link to buy the moment it opens.</p>
@@ -678,7 +682,7 @@ footer .legal a:hover { color: var(--ink); }
     <h2 id="end-title" class="rise">Your next frame<br> has ten looks in it.</h2>
     <div class="ctas rise">
       <a class="btn lit" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
-      <a class="more" href="download/Colobri-plugins-1.4.0.zip" download data-cb-track="StartTrial" data-cb-what="Colobri plugins">Get the plugins<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="more" href="download/Colobri-plugins-1.4.1.zip" download data-cb-track="StartTrial" data-cb-what="Colobri plugins">Get the plugins<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
     <p class="fine rise">Runs in your browser. Free for 7 days, then €59 once.</p>
   </div>
@@ -688,7 +692,7 @@ footer .legal a:hover { color: var(--ink); }
 <footer>
   <div class="wrap">
     <div>
-      <p class="foot-mark" role="img" aria-label="Colobri"><img class="bird" src="images/colobri-bird-132.webp" width="132" height="101" alt=""><svg class="word" viewBox="0 0 6189.1 711" aria-hidden="true"><use href="#cb-word"/></svg></p>
+      <p class="foot-mark" role="img" aria-label="Colobri"><img class="bird" src="images/colobri-bird-132.webp" width="132" height="101" alt=""><svg class="word" viewBox="0 0 11673.4 1000" aria-hidden="true"><use href="#cb-word"/></svg></p>
       <p>Colobri is color and colibri, the hummingbird. Every frame on this page was graded with Colobri.</p>
     </div>
     <ul>
