@@ -1,30 +1,30 @@
 /*
-  Andrum's product page: the listening demo, Andrum's picture in the hero, the live window and the dock.
+  Andrum's product page: the picture in the hero, the demo you can hear with and without Andrum,
+  and the readouts beside it.
 
   - The demo is one 16-second loop in two versions, with and without Andrum, decoded once and played
     together in step (Web Audio), so switching between them is instant and seamless.
-  - The hero is Andrum's own picture of that loop (spectrum.js), drawn from what the plug-in measured,
-    with its readouts: the deepest cut, and how clear the voice is with Andrum and without it. While
-    the demo plays, the picture follows the sound; otherwise it runs on silently.
-  - The window video is Andrum's own window on the same loop; while the demo plays it follows the sound.
+  - The picture is Andrum's own picture of that loop (aurora.js), drawn from what the plug-in measured
+    while it ran on it. While the demo plays, the picture follows the sound; otherwise it runs on
+    silently.
+  - The readouts are the window's: the deepest cut, held the way the window holds it, and how clear
+    the voice is, with Andrum or without it.
 
-  Nothing here is needed for the page to read well: without WebGL 2 the hero keeps its picture,
-  without Web Audio the players hide, and with reduced motion nothing moves by itself.
+  Nothing here is needed for the page to read well: without WebGL 2 the picture's poster stays,
+  without Web Audio the Listen button hides, and with reduced motion the picture stands still until
+  Listen is pressed.
 
   The assets' folder comes from <main class="andrum" data-andrum-assets="assets/">.
 */
 (function () {
   "use strict";
 
-  const LOOP = 16;        // the demo loop, in seconds
-  const START = 11.4;     // where the picture rests (the posters show this moment)
-  const RATE = 30;        // Andrum's clarity readings per second, in spectrum.js
-  const ASKED = 86;       // the clarity the demo asked for
+  const LOOP = 16;          // the demo loop, in seconds
+  const START = 11.4;       // where the picture rests (the poster shows this moment)
   const MINUS = "−";
 
   const root = document.querySelector(".andrum");
   if (!root) return;
-  root.classList.add("an-js");
   const ASSETS = (root.getAttribute("data-andrum-assets") || "assets/").replace(/\/?$/, "/");
   const motionQuery = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
   const reduced = () => !!(motionQuery && motionQuery.matches);
@@ -32,20 +32,15 @@
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
   const state = {
-    on: true,             // With Andrum (true) or Without (false)
-    onAmount: 1,          // the picture's room, 0..1, following `on`
-    playing: false, loading: false, cancel: false, failed: false, everPlayed: false,
-    motionPaused: false,
-    t: START,             // where in the loop we are (seconds)
+    on: true,               // With Andrum (true) or Without (false)
+    onAmount: 1,            // the picture's room, 0..1, easing toward `on`
+    playing: false, loading: false, cancel: false, failed: false,
+    motionPaused: false,    // the visitor stopped the silent picture
+    t: START,               // where in the loop we are (seconds)
   };
   let pageVisible = !document.hidden;
   const views = [];
   const render = () => views.forEach((v) => v());
-
-  // ------------------------------------------------------------------------------ the sound
-  const AC = window.AudioContext || window.webkitAudioContext;
-  const sound = { ctx: null, clips: null, buffers: null, decoding: null, chain: null };
-  if (!AC) root.classList.add("no-audio");
 
   function loadScript(src) {
     return new Promise((resolve, reject) => {
@@ -57,8 +52,14 @@
   function fromBase64(text) {
     const bin = atob(text), out = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-    return out.buffer;
+    return out;
   }
+
+  // ------------------------------------------------------------------------------ the sound
+  const AC = window.AudioContext || window.webkitAudioContext;
+  const sound = { ctx: null, clips: null, buffers: null, decoding: null, chain: null };
+  if (!AC) root.classList.add("no-audio");
+
   function fetchClips() {
     if (!sound.clips) {
       const get = (name) => fetch(ASSETS + "audio/" + name).then((r) => {
@@ -68,7 +69,7 @@
       sound.clips = Promise.all([get("demo-with.mp3"), get("demo-without.mp3")]).catch(() =>
         // opened straight from the disk (file://), where fetch isn't allowed: the clips are in a script too
         loadScript(ASSETS + "data/demo-audio.js").then(() =>
-          [fromBase64(window.ANDRUM_AUDIO.with), fromBase64(window.ANDRUM_AUDIO.without)]));
+          [fromBase64(window.ANDRUM_AUDIO.with).buffer, fromBase64(window.ANDRUM_AUDIO.without).buffer]));
       sound.clips.catch(() => { sound.clips = null; });
     }
     return sound.clips;
@@ -79,8 +80,8 @@
       if (p && p.then) p.then(resolve, reject);
     });
   }
-  /** Fetches and decodes both clips (once). Decoding uses an offline context, so it can happen before
-      anyone presses play. */
+  /** Fetches and decodes both clips, once. Decoding uses an offline context, so it can happen before
+      anyone presses Listen. */
   function prepare() {
     if (!AC) return Promise.reject(new Error("no Web Audio"));
     if (!sound.decoding) {
@@ -89,14 +90,14 @@
       if (!ctx && Offline) { try { ctx = new Offline(2, 4800, 48000); } catch (e) { ctx = null; } }
       if (!ctx) return fetchClips();            // decoded at the first press, with the real context
       sound.decoding = fetchClips()
-        .then((clips) => Promise.all(clips.map((c) => decodeOne(ctx, c))))
+        .then((clips) => Promise.all(clips.map((c) => decodeOne(ctx, c.slice(0)))))
         .then((buffers) => { sound.buffers = buffers; return buffers; });
       sound.decoding.catch(() => { sound.decoding = null; });
     }
     return sound.decoding;
   }
 
-  function play(from) {
+  function play() {
     if (!AC || state.playing) return;
     if (state.loading) { state.cancel = false; return; }
     try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) { /* older Safari */ }
@@ -104,13 +105,12 @@
       try { sound.ctx = new AC({ latencyHint: "playback" }); } catch (e) { sound.ctx = new AC(); }
     }
     const ctx = sound.ctx;
-    // still inside the press: wake the context up and play a moment of silence (iOS needs both)
+    // still inside the press: wake the context and play a moment of silence (iOS needs both)
     if (ctx.state !== "running") ctx.resume();
     const blip = ctx.createBufferSource();
     blip.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
     blip.connect(ctx.destination);
     blip.start();
-    if (typeof from === "number" && isFinite(from)) state.t = wrap(from);
     state.failed = false; state.cancel = false;
     state.loading = !sound.buffers;
     render();
@@ -118,14 +118,14 @@
       state.loading = false;
       if (state.cancel) { state.cancel = false; render(); return; }
       start(state.t);
-      state.playing = true; state.everPlayed = true;
+      state.playing = true;
       render(); wake();
     };
     if (sound.buffers) { go(); return; }
     prepare().then((buffers) => {
       if (!sound.buffers) {
-        // decoded with the real context (no offline one): do it now
-        return Promise.all(buffers.map((c) => decodeOne(ctx, c))).then((b) => { sound.buffers = b; go(); });
+        // there was no offline context to decode with: decode with the real one now
+        return Promise.all(buffers.map((c) => decodeOne(ctx, c.slice(0)))).then((b) => { sound.buffers = b; go(); });
       }
       go();
     }).catch(() => {
@@ -168,7 +168,7 @@
     sound.chain = null;
   }
 
-  /** Where in the loop the listener is now (what comes out of the speakers, not what is being mixed). */
+  /** Where in the loop the listener is now: what comes out of the speakers, not what is being mixed. */
   function soundTime() {
     const c = sound.chain, ctx = sound.ctx;
     const latency = (ctx.outputLatency || 0) + (ctx.baseLatency || 0);
@@ -199,392 +199,250 @@
   }
 
   // ------------------------------------------------------------------------------ Andrum's clarity readings
-  let clarityWith = null, clarityWithout = null;
-  function readClarity() {
-    if (clarityWith || !window.ANDRUM_SPECTRUM) return;
-    clarityWith = new Uint8Array(fromBase64(window.ANDRUM_SPECTRUM.clarityWith));
-    clarityWithout = new Uint8Array(fromBase64(window.ANDRUM_SPECTRUM.clarityWithout));
+  let clarity = null;
+  function readClarity(d) {
+    if (!d || !d.clarityWith) return;
+    clarity = { with: fromBase64(d.clarityWith), without: fromBase64(d.clarityWithout), rate: d.clarityRate || 30 };
   }
   function clarityAt(t, on) {
-    const a = on ? clarityWith : clarityWithout;
-    if (!a || !a.length) return on ? 84 : 41;        // the loop's averages, until the readings arrive
-    const p = wrap(t) * RATE, i = Math.floor(p) % a.length, f = p - Math.floor(p);
+    const a = clarity && (on ? clarity.with : clarity.without);
+    if (!a || !a.length) return null;
+    const p = wrap(t) * clarity.rate, i = Math.floor(p) % a.length, f = p - Math.floor(p);
     return a[i] + (a[(i + 1) % a.length] - a[i]) * f;
   }
 
-  // ------------------------------------------------------------------------------ the players
-  const video = root.querySelector(".an-window__video");
-  const hint = root.querySelector("[data-an-hint]");
-  const hintText = hint ? hint.textContent : "";
-  root.querySelectorAll("[data-an-player]").forEach((el) => {
-    const button = el.querySelector("[data-an-play]");
-    const radios = Array.prototype.slice.call(el.querySelectorAll("[data-an-ab]"));
-    const followsVideo = el.hasAttribute("data-an-follow-video");
-    if (button) {
-      button.addEventListener("click", () => {
-        if (state.playing || state.loading) pause();
-        else play(followsVideo && video && video.readyState >= 2 ? video.currentTime : undefined);
-      });
-      ["pointerenter", "focus", "touchstart"].forEach((type) =>
-        button.addEventListener(type, () => { prepare().catch(() => {}); }, { once: true, passive: true }));
-    }
-    radios.forEach((radio) => {
-      radio.addEventListener("click", () => setOn(radio.getAttribute("data-an-ab") === "with"));
-      radio.addEventListener("keydown", (e) => {
-        if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) < 0) return;
-        e.preventDefault();
-        const next = radios[(radios.indexOf(radio) + 1) % radios.length];
-        setOn(next.getAttribute("data-an-ab") === "with");
-        next.focus();
-      });
-    });
-    views.push(() => {
-      el.classList.toggle("is-playing", state.playing);
-      el.classList.toggle("is-loading", state.loading);
-      if (button) {
-        button.setAttribute("aria-label", state.loading ? "Loading the demo, press to cancel"
-          : state.playing ? "Pause the demo" : "Play the demo");
-      }
-      radios.forEach((radio) => {
-        const selected = (radio.getAttribute("data-an-ab") === "with") === state.on;
-        radio.setAttribute("aria-checked", selected ? "true" : "false");
-        radio.tabIndex = selected ? 0 : -1;
-      });
-    });
-  });
-  views.push(() => {
-    if (!hint) return;
-    hint.textContent = state.failed ? "The demo didn't load. Check your connection and press play again." : hintText;
-    hint.parentNode.classList.toggle("is-error", state.failed);
-  });
+  // ------------------------------------------------------------------------------ the picture
+  const pic = {
+    el: root.querySelector("[data-picture]"),
+    canvas: null, a: null, live: false, visible: true, dirty: true,
+    scale: Math.min(window.devicePixelRatio || 1, 2), slow: 0, drawn: 0,
+  };
+  pic.canvas = pic.el ? pic.el.querySelector("canvas") : null;
 
-  // ------------------------------------------------------------------------------ the instrument
-  const instEl = root.querySelector("[data-an-inst]");
-  const inst = {
-    el: instEl,
-    stage: instEl ? instEl.querySelector("[data-an-stage]") : null,
-    canvas: instEl ? instEl.querySelector(".an-inst__canvas") : null,
-    bar: instEl ? instEl.querySelector("[data-an-bar]") : null,
-    sp: null, visible: true, dirty: true, slow: 0, drawn: 0, scale: 1, w: 0, h: 0, px: 1,
-    hover: null,            // { x, y } in CSS px over the stage, while the pointer is there
-    hoverA: 0,
-  };
-  const readout = {
-    deepest: instEl ? instEl.querySelector("[data-an-deepest]") : null,
-    kc: instEl ? { with: instEl.querySelector('[data-an-kc="with"]'), without: instEl.querySelector('[data-an-kc="without"]') } : null,
-    kcBar: instEl ? { with: instEl.querySelector('[data-an-kc-bar="with"]'), without: instEl.querySelector('[data-an-kc-bar="without"]') } : null,
-    hold: 0, timer: 0, shown: null, since: 1,
-    smooth: { with: null, without: null }, kcShown: { with: null, without: null }, kcSince: 1,
-  };
-  const bubble = {
-    el: instEl ? instEl.querySelector("[data-an-hover]") : null,
-    hz: instEl ? instEl.querySelector("[data-an-hover-hz]") : null,
-    voice: instEl ? instEl.querySelector("[data-an-hover-voice]") : null,
-    music: instEl ? instEl.querySelector("[data-an-hover-music]") : null,
-  };
+  /** The graph fills the picture, its top (-10 dB, which the demo never reaches: its loudest band
+      stands an eighth of the way down) a little above the picture's own; the light settles into the
+      night toward the lower edge. Its scale follows its height, as if the window's picture were drawn
+      that tall. (The posters are this picture, at START, drawn by this page.) */
+  function layoutFor(w, h) {
+    const top = -Math.round(h * 0.03), bottom = h;
+    const unit = clamp((bottom - top) / window.AndrumAurora.DESIGN_GRAPH_H, 0.75, 1.9);
+    return { top: top, bottom: bottom, fLo: 20, fHi: 20480, unit: unit, lineUnit: clamp(Math.sqrt(unit), 0.9, 1.3),
+             veil: false, limits: false, fade: h * 0.46 };
+  }
 
-  function instInit() {
-    if (!inst.canvas || !window.AndrumSpectrum || !window.ANDRUM_SPECTRUM) return;
+  function picInit() {
+    if (!pic.canvas || !window.AndrumAurora || !window.ANDRUM_SPECTRUM) return;
     try {
-      inst.sp = new window.AndrumSpectrum(inst.canvas, window.ANDRUM_SPECTRUM);
+      pic.a = new window.AndrumAurora(pic.canvas, window.ANDRUM_SPECTRUM);
     } catch (e) {
-      inst.sp = null;                       // no WebGL 2: the poster stays
+      pic.a = null;                         // no WebGL 2: the poster stays
       return;
     }
-    inst.canvas.addEventListener("webglcontextlost", (e) => {
+    pic.canvas.addEventListener("webglcontextlost", (e) => {
       e.preventDefault();
-      inst.sp = null;
-      instEl.classList.remove("is-live");
+      pic.a = null; pic.live = false;
+      root.classList.remove("an-gl");
+      render();
     });
-    inst.scale = Math.min(window.devicePixelRatio || 1, 2);
-    instLayout();
-    if (window.ResizeObserver) new ResizeObserver(instLayout).observe(inst.stage);
-    else window.addEventListener("resize", instLayout);
+    picLayout();
+    if (window.ResizeObserver) new ResizeObserver(picLayout).observe(pic.el);
+    else window.addEventListener("resize", picLayout);
     if (window.IntersectionObserver) {
       new IntersectionObserver((entries) => {
-        inst.visible = entries[entries.length - 1].isIntersecting;
-        if (inst.visible) { inst.dirty = true; wake(); }
-      }).observe(inst.stage);
+        pic.visible = entries[entries.length - 1].isIntersecting;
+        if (pic.visible) { pic.dirty = true; wake(); }
+      }).observe(pic.el);
     }
-    hoverInit();
-    inst.dirty = true;
+    pic.dirty = true;
     wake();
   }
 
-  /** The graph sits under the readouts' row and stands on the stage's lower edge; its scale follows
-      its height, as if the window's picture were drawn this tall. */
-  function instLayout() {
-    if (!inst.sp) return;
-    const r = inst.stage.getBoundingClientRect();
+  function picLayout() {
+    if (!pic.a) return;
+    const r = pic.el.getBoundingClientRect();
     if (!r.width || !r.height) return;
-    const s = Math.min(inst.scale, Math.sqrt(5e6 / (r.width * r.height)), 4096 / r.width);
-    const top = inst.bar ? inst.bar.offsetHeight + 8 : 100;
-    const bottom = r.height - 1;
-    const unit = clamp((bottom - top) / window.AndrumSpectrum.DESIGN_GRAPH_H, 0.8, 1.6);
-    const lineUnit = clamp(Math.sqrt(unit), 0.95, 1.22);
-    inst.sp.resize(r.width * s, r.height * s, s);
-    inst.sp.layout({ top: top, bottom: bottom, fLo: 20, fHi: 20480, unit: unit, lineUnit: lineUnit });
-    inst.stage.style.setProperty("--ring", (16 * lineUnit + 1).toFixed(1) + "px");
-    inst.w = r.width; inst.h = r.height; inst.px = s; inst.top = top; inst.bottom = bottom;
-    inst.dirty = true;
+    const s = Math.min(pic.scale, Math.sqrt(4.5e6 / (r.width * r.height)), 4096 / r.width);
+    pic.a.resize(r.width * s, r.height * s, s);
+    pic.a.layout(layoutFor(r.width, r.height));
+    pic.dirty = true;
     wake();
   }
 
-  function instDraw(dt) {
-    const hover = inst.hover && inst.hoverA > 0 ? { x: inst.hover.x, a: inst.hoverA } : null;
-    inst.sp.frame(state.t, state.onAmount, hover);
-    inst.dirty = false;
+  function picDraw(dt) {
+    pic.a.frame(state.t, state.onAmount);
+    pic.dirty = false;
+    if (!pic.live) {
+      // shown once the first frame is in: the canvas comes in over the poster
+      pic.live = true;
+      requestAnimationFrame(() => { root.classList.add("an-gl"); render(); });
+    }
     // if frames keep taking longer than 1/36 s, draw fewer pixels (after the first second's warm-up)
-    inst.drawn++;
-    if (inst.drawn > 60 && dt > 1 / 36) inst.slow++; else inst.slow = Math.max(0, inst.slow - 1);
-    if (inst.slow > 40 && inst.scale > 0.6) { inst.scale *= 0.8; inst.slow = 0; instLayout(); }
-    if (!instEl.classList.contains("is-live")) requestAnimationFrame(() => instEl.classList.add("is-live"));
+    pic.drawn++;
+    if (pic.drawn > 60 && dt > 1 / 36) pic.slow++; else pic.slow = Math.max(0, pic.slow - 1);
+    if (pic.slow > 40 && pic.scale > 0.6) { pic.scale *= 0.8; pic.slow = 0; picLayout(); }
   }
 
-  // ---- the readouts
+  // ------------------------------------------------------------------------------ the readouts
+  const read = {
+    deepest: root.querySelector("[data-deepest]"),
+    clarity: root.querySelector("[data-clarity]"),
+    hold: null, timer: 0, since: 1, shown: null,
+    smooth: null, cSince: 1, cShown: null,
+  };
   const fmt1 = (v) => (Math.round(v * 10) / 10).toFixed(1);
+  const setNumber = (el, text) => { if (el && el.firstChild) el.firstChild.nodeValue = text; };
+
   function updateReadouts(dt) {
     let moving = false;
-    if (readout.deepest && inst.sp) {
-      // the window's hold: a new peak shows at once; a lower one only after 1.2 s, and then eases down
-      const peak = inst.sp.read(state.t, state.onAmount).deepest;
-      if (!state.on) { readout.hold = peak; readout.timer = 0; }      // without Andrum there is no cut to hold
-      readout.timer += dt;
-      if (peak >= readout.hold || readout.timer > 1.2) {
-        const k = peak >= readout.hold ? 1 : 1 - Math.pow(0.85, dt * 60);
-        readout.hold += (peak - readout.hold) * k;
-        if (peak >= readout.hold) readout.timer = 0;
+    if (read.deepest && pic.a) {
+      // the window's hold: a deeper cut shows at once; a shallower one only after 1.2 s, and then eases up
+      const peak = pic.a.read(state.t, state.on ? state.onAmount : 0).deepest;   // Without: no cut, at once
+      if (read.hold === null || !state.on) { read.hold = peak; read.timer = 0; }
+      read.timer += dt;
+      if (peak >= read.hold || read.timer > 1.2) {
+        const k = peak >= read.hold ? 1 : 1 - Math.pow(0.85, dt * 60);
+        read.hold += (peak - read.hold) * k;
+        if (peak >= read.hold) read.timer = 0;
       }
-      readout.since += dt;
-      const text = readout.hold > 0.05 ? MINUS + fmt1(readout.hold) : "0.0";
-      if (text !== readout.shown && readout.since > 0.06) { readout.deepest.textContent = text; readout.shown = text; readout.since = 0; }
-      if (Math.abs(peak - readout.hold) > 0.05) moving = true;
+      read.since += dt;
+      const text = read.hold > 0.05 ? MINUS + fmt1(read.hold) : "0.0";
+      if (text !== read.shown && read.since > 0.06) { setNumber(read.deepest, text); read.shown = text; read.since = 0; }
+      if (Math.abs(peak - read.hold) > 0.05) moving = true;
     }
-    if (readout.kc) {
-      readout.kcSince += dt;
-      const show = readout.kcSince > 0.1;
-      ["with", "without"].forEach((k) => {
-        const target = clarityAt(state.t, k === "with");
-        const m = readout.smooth;
-        if (m[k] === null) m[k] = target;
-        m[k] += (target - m[k]) * (1 - Math.exp(-dt / 0.2));
-        if (Math.abs(target - m[k]) > 0.3) moving = true;
-        const v = Math.round(m[k]);
-        if (show && v !== readout.kcShown[k] && readout.kc[k]) { readout.kc[k].textContent = String(v); readout.kcShown[k] = v; }
-        if (readout.kcBar[k]) readout.kcBar[k].style.transform = "scaleX(" + clamp(m[k] / 100, 0, 1).toFixed(4) + ")";
-      });
-      if (show) readout.kcSince = 0;
+    const target = clarityAt(state.t, state.on);
+    if (read.clarity && target !== null) {
+      if (read.smooth === null) read.smooth = target;
+      read.smooth += (target - read.smooth) * (1 - Math.exp(-dt / 0.2));
+      if (Math.abs(target - read.smooth) > 0.3) moving = true;
+      read.cSince += dt;
+      const v = String(Math.round(read.smooth));
+      if (v !== read.cShown && read.cSince > 0.1) { setNumber(read.clarity, v); read.cShown = v; read.cSince = 0; }
     }
     return moving;
   }
 
-  // ---- the hover bubble: what the window's own bubble says under the mouse
-  function formatHz(hz) {
-    if (hz >= 1000) {
-      const k = hz / 1000;
-      return (k >= 10 ? k.toFixed(1) : k.toFixed(2)).replace(/0+$/, "").replace(/\.$/, "") + " kHz";
-    }
-    return Math.round(hz) + " Hz";
-  }
-  function hoverInit() {
-    const stage = inst.stage;
-    const move = (e) => {
-      const r = stage.getBoundingClientRect();
-      const x = e.clientX - r.left, y = e.clientY - r.top;
-      const inGraph = x >= 0 && x <= r.width && y >= (inst.top || 0) - 10 && y <= r.height;
-      const overBar = inst.bar && e.target && inst.bar.contains(e.target) && e.target !== inst.bar;
-      if (!inGraph || overBar) { leave(); return; }
-      inst.hover = { x: x, y: y };
-      wake();
-    };
-    const leave = () => { if (inst.hover) { inst.hover = null; wake(); } };
-    stage.addEventListener("pointermove", (e) => { if (e.pointerType !== "touch" || e.buttons) move(e); });
-    stage.addEventListener("pointerdown", (e) => { if (e.pointerType === "touch") move(e); });
-    stage.addEventListener("pointerleave", leave);
-    stage.addEventListener("pointerup", (e) => { if (e.pointerType === "touch") leave(); });
-    stage.addEventListener("pointercancel", leave);
-  }
-  function updateHover(dt) {
-    const want = inst.hover ? 1 : 0;
-    const prev = inst.hoverA;
-    inst.hoverA = want ? Math.min(1, prev + dt / 0.12) : Math.max(0, prev - dt / 0.15);
-    if (!bubble.el || !inst.sp) return inst.hoverA !== prev;
-    bubble.el.classList.toggle("is-shown", !!inst.hover);
-    if (inst.hover) {
-      const h = inst.hover;
-      const info = inst.sp.inspect(state.t, state.onAmount, h.x);
-      bubble.hz.textContent = formatHz(info.hz);
-      const silent = info.key < -110;
-      bubble.voice.textContent = "Voice " + (silent ? "silent" : MINUS + Math.round(Math.abs(info.key)) + " dB")
-        + (!silent && info.keep < 0.95 ? ", " + Math.round((1 - info.keep) * 100) + " % left out" : "");
-      const untouched = Math.abs(info.cut) < 0.05;
-      bubble.music.textContent = untouched ? "Music untouched" : "Music down " + fmt1(Math.abs(info.cut)) + " dB";
-      bubble.music.classList.toggle("is-untouched", untouched);
-      const bw = bubble.el.offsetWidth, bh = bubble.el.offsetHeight;
-      let bx = h.x + 16;
-      if (bx + bw > inst.w - 8) bx = h.x - 16 - bw;
-      const by = clamp(h.y - bh / 2, (inst.top || 0) + 4, inst.h - bh - 26);
-      bubble.el.style.transform = "translate(" + Math.round(bx) + "px," + Math.round(by) + "px)";
-    }
-    return inst.hoverA !== prev;
-  }
+  // ------------------------------------------------------------------------------ the player
+  const player = root.querySelector("[data-player]");
+  const playButton = root.querySelector("[data-play]");
+  const playLabel = root.querySelector("[data-play-label]");
+  const radios = Array.prototype.slice.call(root.querySelectorAll("[data-ab]"));
+  const note = root.querySelector("[data-player-note]");
 
-  views.push(() => { if (instEl) instEl.classList.toggle("is-off", !state.on); });
-
-  // ------------------------------------------------------------------------------ the window video
-  const videoToggle = root.querySelector("[data-an-video-toggle]");
-  // "auto": plays while on screen (with reduced motion, only while the demo plays); or as the visitor chose
-  const vid = { near: false, visible: false, mode: "auto" };
-
-  function updateVideo() {
-    if (!video) return;
-    const auto = state.playing || !reduced();
-    const want = vid.visible && pageVisible && (vid.mode === "playing" || (vid.mode === "auto" && auto));
-    if (want && video.paused) {
-      if (state.playing) video.currentTime = state.t;
-      const p = video.play();
-      if (p && p.catch) p.catch(() => {});
-    } else if (!want && !video.paused) {
-      video.pause();
-    }
-    if (videoToggle) {
-      const paused = vid.mode === "paused" || (vid.mode === "auto" && !auto);
-      videoToggle.setAttribute("aria-label", paused ? "Play the window video" : "Pause the window video");
-      videoToggle.classList.toggle("is-paused", paused);
-    }
-  }
-
-  function syncVideo() {
-    if (!video || !state.playing || video.paused || video.readyState < 2) return;
-    let d = video.currentTime - state.t;
-    if (d > LOOP / 2) d -= LOOP;
-    if (d < -LOOP / 2) d += LOOP;
-    if (Math.abs(d) > 0.12) video.currentTime = state.t;
-  }
-
-  if (video && window.IntersectionObserver) {
-    new IntersectionObserver((entries) => {
-      if (entries[entries.length - 1].isIntersecting && !vid.near) {
-        vid.near = true;
-        video.preload = "auto";
-      }
-    }, { rootMargin: "600px 0px" }).observe(video);
-    new IntersectionObserver((entries) => {
-      vid.visible = entries[entries.length - 1].isIntersecting;
-      updateVideo();
-    }, { threshold: 0.25 }).observe(video);
-  }
-  if (videoToggle) {
-    videoToggle.addEventListener("click", () => {
-      vid.mode = videoToggle.classList.contains("is-paused") ? "playing" : "paused";
-      updateVideo();
+  if (playButton) {
+    playButton.addEventListener("click", () => {
+      if (state.playing || state.loading) pause(); else play();
     });
+    ["pointerenter", "focus", "touchstart"].forEach((type) =>
+      playButton.addEventListener(type, () => { prepare().catch(() => {}); }, { once: true, passive: true }));
   }
-  views.push(updateVideo);
+  radios.forEach((radio) => {
+    radio.addEventListener("click", () => setOn(radio.getAttribute("data-ab") === "with"));
+    radio.addEventListener("keydown", (e) => {
+      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) < 0) return;
+      e.preventDefault();
+      const next = radios[(radios.indexOf(radio) + 1) % radios.length];
+      setOn(next.getAttribute("data-ab") === "with");
+      next.focus();
+    });
+  });
+  views.push(() => {
+    if (player) {
+      player.classList.toggle("is-playing", state.playing);
+      player.classList.toggle("is-loading", state.loading);
+    }
+    if (playButton) {
+      playButton.setAttribute("aria-label", state.loading ? "Loading the demo. Press to cancel."
+        : state.playing ? "Pause the demo" : "Listen to the demo");
+    }
+    if (playLabel) playLabel.textContent = state.loading ? "Loading" : state.playing ? "Pause" : "Listen";
+    radios.forEach((radio) => {
+      const selected = (radio.getAttribute("data-ab") === "with") === state.on;
+      radio.setAttribute("aria-checked", selected ? "true" : "false");
+      radio.tabIndex = selected ? 0 : -1;
+    });
+    if (note) note.hidden = !state.failed;
+  });
 
-  // ------------------------------------------------------------------------------ pausing the picture
-  const motionButton = root.querySelector("[data-an-motion]");
-  if (motionButton) {
-    motionButton.addEventListener("click", () => {
+  // ------------------------------------------------------------------------------ stopping the picture
+  // While nothing plays, the picture runs on by itself; this stops it (and it never runs with reduced motion).
+  const motion = root.querySelector("[data-motion]");
+  if (motion) {
+    motion.addEventListener("click", () => {
       state.motionPaused = !state.motionPaused;
       render(); wake();
     });
     views.push(() => {
-      motionButton.hidden = reduced() && !state.playing;
-      motionButton.setAttribute("aria-pressed", state.motionPaused ? "true" : "false");
-      motionButton.textContent = state.motionPaused ? "Move the picture" : "Pause the picture";
+      motion.hidden = !pic.live || state.playing || reduced();
+      motion.classList.toggle("is-paused", state.motionPaused);
+      motion.setAttribute("aria-label", state.motionPaused ? "Play the picture" : "Pause the picture");
     });
   }
 
-  // ------------------------------------------------------------------------------ the dock
-  // Once the demo has been played, a small dock keeps it (and the download) in reach while no player is
-  // on screen, until the price comes into view.
-  const dock = root.querySelector("[data-an-dock]");
-  if (dock && window.IntersectionObserver) {
-    const players = Array.prototype.slice.call(root.querySelectorAll(".an-inst [data-an-player], .an-window"));
-    const heroButtons = root.querySelector(".an-hero .an-actions");
-    const price = root.querySelector(".an-price") || root.querySelector(".an-final");
-    const setDock = (show) => {
-      dock.classList.toggle("is-shown", show);
-      if ("inert" in dock) dock.inert = !show; else dock.setAttribute("aria-hidden", show ? "false" : "true");
-    };
-    const onScreen = (el) => { const r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < window.innerHeight; };
-    const updateDock = () => {
-      const pastHero = heroButtons && heroButtons.getBoundingClientRect().bottom < 0;
-      const atPrice = price && price.getBoundingClientRect().top < window.innerHeight;
-      setDock(state.everPlayed && !!pastHero && !atPrice && !players.some(onScreen));
-    };
-    setDock(false);
-    dock.hidden = false;
-    const io = new IntersectionObserver(updateDock);
-    players.concat([heroButtons, price]).filter(Boolean).forEach((w) => io.observe(w));
-    views.push(updateDock);
+  // ------------------------------------------------------------------------------ the download for this computer
+  {
+    const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+    const rows = root.querySelectorAll(".get__row");
+    if (/^win/i.test(platform) && rows.length === 2) {
+      const mac = rows[0].querySelector(".btn"), win = rows[1].querySelector(".btn");
+      if (mac && win) {
+        rows[0].parentNode.insertBefore(rows[1], rows[0]);
+        mac.classList.replace("btn--primary", "btn--ghost");
+        win.classList.replace("btn--ghost", "btn--primary");
+      }
+    }
   }
 
   // ------------------------------------------------------------------------------ the clock
-  // (For films of the page, source/tools/record_hero.py sets window.ANDRUM_CAPTURE before this runs and
-  // then steps the clock itself, one frame at a time: AndrumCapture.step(ms).)
-  const capture = window.ANDRUM_CAPTURE ? { now: 0 } : null;
-  const schedule = (fn) => { if (!capture) requestAnimationFrame(fn); };
   let running = false, last = 0;
   function wake() {
-    if (running || capture) return;
+    if (running) return;
     running = true;
     last = performance.now();
     requestAnimationFrame(tick);
   }
-  if (capture) {
-    window.AndrumCapture = {
-      step: function (ms) { last = capture.now; capture.now += ms; tick(capture.now); return state.t; },
-    };
-  }
   function tick(now) {
-    const dt = Math.min(0.1, Math.max(0, (now - last) / 1000));
+    const dt = clamp((now - last) / 1000, 0, 0.1);
     last = now;
+    const live = !!pic.a && pic.visible && pageVisible;
     const moving = !state.motionPaused && !reduced();
-    const live = !!inst.sp && inst.visible && pageVisible;
     if (state.playing) state.t = soundTime();
     else if (moving && live) state.t = wrap(state.t + dt);
     const target = state.on ? 1 : 0;
     const easing = Math.abs(state.onAmount - target) > 0.002;
-    if (easing) state.onAmount = reduced() ? target : state.onAmount + (target - state.onAmount) * (1 - Math.exp(-dt / 0.09));
-    else state.onAmount = target;
-    const hovering = updateHover(dt) || !!inst.hover;
+    state.onAmount = easing && !reduced() ? state.onAmount + (target - state.onAmount) * (1 - Math.exp(-dt / 0.09)) : target;
     const animating = live && (moving || state.playing);
-    if (live && (animating || easing || inst.dirty || hovering)) instDraw(dt);
+    if (live && (animating || easing || pic.dirty)) picDraw(dt);
     const readoutsMoving = updateReadouts(dt);
-    syncVideo();
-    if (animating || (live && easing) || state.playing || readoutsMoving || hovering) schedule(tick);
+    if (animating || (live && easing) || state.playing || readoutsMoving) requestAnimationFrame(tick);
     else running = false;
   }
 
   document.addEventListener("visibilitychange", () => {
     pageVisible = !document.hidden;
     if (!pageVisible && state.playing) pause();
-    updateVideo();
-    if (pageVisible) { inst.dirty = true; wake(); }
+    if (pageVisible) { pic.dirty = true; wake(); }
   });
   if (motionQuery) {
-    const onChange = () => { inst.dirty = true; render(); wake(); };
+    const onChange = () => { pic.dirty = true; render(); wake(); };
     if (motionQuery.addEventListener) motionQuery.addEventListener("change", onChange);
     else if (motionQuery.addListener) motionQuery.addListener(onChange);
   }
 
   // ------------------------------------------------------------------------------ start
   render();
-  // the picture's renderer and Andrum's measurements load after the page (the poster stands in until then)
+  // the picture's renderer and Andrum's measurements (the poster stands in until they're here)
   const need = (src, ready) => (ready() ? Promise.resolve() : loadScript(ASSETS + src));
-  Promise.all([need("js/spectrum.js", () => !!window.AndrumSpectrum), need("data/spectrum.js", () => !!window.ANDRUM_SPECTRUM)])
+  Promise.all([need("js/aurora.js", () => !!window.AndrumAurora), need("data/spectrum.js", () => !!window.ANDRUM_SPECTRUM)])
     .then(() => {
-      readClarity();
-      const go = () => setTimeout(instInit, 0);
-      if (document.readyState === "complete") go(); else window.addEventListener("load", go, { once: true });
-      wake();
+      readClarity(window.ANDRUM_SPECTRUM);
+      picInit();
+      render(); wake();
     }, () => { /* no picture: the poster stays */ });
-  // fetch the demo in the background once the page has settled, unless the visitor saves data
+  // fetch the demo once the page has settled, unless the visitor saves data
   const conn = navigator.connection || {};
   if (AC && !conn.saveData && !/(^|-)2g$/.test(conn.effectiveType || "")) {
     const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 2500));
-    window.addEventListener("load", () => idle(() => prepare().catch(() => {}), { timeout: 5000 }), { once: true });
+    const later = () => idle(() => prepare().catch(() => {}), { timeout: 5000 });
+    if (document.readyState === "complete") later(); else window.addEventListener("load", later, { once: true });
   }
 })();
