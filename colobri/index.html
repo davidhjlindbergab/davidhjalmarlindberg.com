@@ -143,15 +143,15 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .hero-logo { position: absolute; inset: 0; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
 .hero-still { position: absolute; max-width: none; }
 .hero-dither { position: absolute; inset: 0; pointer-events: none; background: var(--dither, none) 0 0 / var(--dither-size, 128px) repeat; }
-/* the opening: when the bird is ready it grows from half its size to full over 2 s on a very soft ease in and out (by the logo's own
-   padding, colobri.js; the still without WebGL2 here), its outer light comes up round it, and the word arrives as it settles; the words
-   of the page rise in just after the bird starts */
-.hero-scene { opacity: 0; transform-origin: var(--bird-x, 50%) var(--bird-y, 40%); }
+/* the opening (David, round 19: no zoom; short and clean): when the bird is ready it comes into focus where it stays, from clear and
+   soft to sharp in 0.9 s on an ease out (its opacity full by half way; the blur about 3% of the bird's width, --focus-blur from
+   colobri.js), and its light rises round it a moment behind, done by 1.4 s; nothing grows or moves (the still without WebGL2 the same);
+   the words of the page rise in just after the bird starts */
+.hero-scene { opacity: 0; }
 .hero-air { opacity: 0; }
-.hero.live .hero-scene { animation: hero-fade 1.1s cubic-bezier(.25, .6, .3, 1) both; }   /* (the live bird grows by its padding, colobri.js) */
-.hero.flat.live .hero-scene { animation: hero-grow 2s cubic-bezier(.65, 0, .32, 1) both, hero-fade 1.1s cubic-bezier(.25, .6, .3, 1) both; }
-.hero.live .hero-air { animation: hero-fade 1.8s cubic-bezier(.4, 0, .3, 1) .25s both; }
-@keyframes hero-grow { from { transform: scale(0.5); } to { transform: scale(1); } }
+.hero.live .hero-scene { animation: hero-focus .9s cubic-bezier(.2, .65, .25, 1) both; }
+.hero.live .hero-air { animation: hero-fade 1.3s cubic-bezier(.25, .1, .25, 1) .12s both; }
+@keyframes hero-focus { from { opacity: 0; filter: blur(var(--focus-blur, 12px)); } 55% { opacity: 1; } to { opacity: 1; filter: none; } }
 @keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
 .js .hero-copy > * { animation: hero-rise 1s cubic-bezier(.2, .7, .2, 1) both; }
 .js .hero-copy > :nth-child(1) { animation-delay: .35s; }
@@ -418,7 +418,7 @@ footer .legal a:hover { color: var(--ink); }
   html { scroll-behavior: auto; }
   .js .rise { opacity: 1; transform: none; transition: none; }
   .lit::before, .lit::after, .hero-glow { animation: none !important; }
-  .hero.live .hero-scene, .hero.flat.live .hero-scene, .hero.live .hero-air { animation: hero-fade .6s ease both; }
+  .hero.live .hero-scene, .hero.live .hero-air { animation: hero-fade .6s ease both; }
   .js .hero-copy > * { animation: hero-fade .6s ease both; animation-delay: 0s !important; }
   .btn, .more svg, .v-stage img { transition: none; }
 }
