@@ -1,0 +1,57 @@
+name: Instagram
+# Every night: David's newest posts, follower count and profile picture into instagram/feed.json and instagram/media/,
+# for the phone on the front page (instagram/phone.js). Needs the secret INSTAGRAM_TOKEN (README, Instagram).
+# With the optional secret GH_SECRETS_PAT (a key that may write this repository's secrets) the token renews itself.
+on:
+  schedule:
+    - cron: '23 2 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+concurrency:
+  group: instagram
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      HAS_TOKEN: ${{ secrets.INSTAGRAM_TOKEN != '' }}
+      HAS_PAT: ${{ secrets.GH_SECRETS_PAT != '' }}
+    steps:
+      - if: env.HAS_TOKEN != 'true'
+        run: echo "::notice::No INSTAGRAM_TOKEN secret yet, so the phone keeps the posts it has. README, Instagram, says how to add it."
+      - if: env.HAS_TOKEN == 'true'
+        uses: actions/checkout@v4
+      - if: env.HAS_TOKEN == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - if: env.HAS_TOKEN == 'true'
+        run: pip install --quiet pillow
+      - if: env.HAS_TOKEN == 'true'
+        name: Fetch the newest posts
+        env:
+          INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ vars.INSTAGRAM_USER_ID || '17841454963593364' }}
+          REFRESH: ${{ env.HAS_PAT == 'true' && '1' || '' }}
+          NEW_TOKEN_FILE: ${{ runner.temp }}/instagram-token
+        run: python3 scripts/instagram_sync.py
+      - if: env.HAS_TOKEN == 'true' && env.HAS_PAT == 'true'
+        name: Keep the token alive
+        env:
+          GH_TOKEN: ${{ secrets.GH_SECRETS_PAT }}
+        run: |
+          f="${{ runner.temp }}/instagram-token"
+          if [ -s "$f" ]; then gh secret set INSTAGRAM_TOKEN --repo "$GITHUB_REPOSITORY" < "$f" && echo "Token renewed for 60 days."; fi
+          rm -f "$f"
+      - if: env.HAS_TOKEN == 'true'
+        name: Publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add instagram
+          if git diff --cached --quiet; then echo "Nothing new on Instagram."; exit 0; fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "Instagram: the newest posts"
+          for i in 1 2 3; do git pull -q --rebase && git push -q && break; sleep 5; done
+          gh api -X POST "repos/$GITHUB_REPOSITORY/pages/builds" >/dev/null || true
