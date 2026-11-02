@@ -118,8 +118,10 @@ button { cursor: pointer; }
   background-position: calc(100% - 14px) 52%, calc(100% - 10px) 52%; background-size: 4px 4px; background-repeat: no-repeat; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 32px; padding: 0 14px; border-radius: 7px; border: 1px solid var(--hair-2); background: var(--raised); font-size: var(--t-s); font-weight: 500; white-space: nowrap; transition: background .15s, border-color .15s, box-shadow .3s var(--ease); }
 .btn:hover { background: var(--raised-2); }
-.btn.primary { background: var(--ink); color: #000; border-color: var(--ink); }
-.btn.primary:hover { background: #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05), 0 8px 26px rgba(134, 201, 255, 0.16); }
+/* the one thing to do next is a light pill (David, 2 Nov: the light pill on the site, the same here; its words start and end where the
+   round ends meet the straight edge: half the height each side, border included); the tools beside it stay quiet */
+.btn.primary { background: #f5f5f7; color: #0b0b0f; border-color: #f5f5f7; border-radius: 999px; padding: 0 15px; }
+.btn.primary:hover { background: #fff; border-color: #fff; }
 .btn.quiet { background: transparent; border-color: transparent; color: var(--ink-2); }
 .btn.quiet:hover { color: var(--ink); background: var(--raised); }
 .btn[disabled] { opacity: 0.38; pointer-events: none; }
@@ -287,12 +289,9 @@ input[type=range]:focus-visible { outline: none; }
 .actions .btn[hidden] { display: none; }
 .apply { flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 12px 16px 14px; padding-right: max(16px, env(safe-area-inset-right, 0px)); border-top: 1px solid var(--hair); background: var(--panel); }
 .apply[hidden] { display: none; }
-.apply-btn { position: relative; isolation: isolate; flex: 1 1 200px; height: 38px; border: 0; border-radius: 9px; background: #0b0b0b; color: #fff; font-weight: 500; letter-spacing: 0.005em; transition: background .2s, box-shadow .3s var(--ease); }
-.apply-btn::before { content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; background: var(--prism); pointer-events: none;
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-.apply-btn::after { content: none; }   /* (no light inside the button behind its word, only the ring: David, 1 Nov, round 14) */
-.apply-btn:hover { background: #111; }
-.apply-btn[disabled] { opacity: 0.45; }
+/* Apply: the light pill, as wide as its words (David's rule for every pill: never stretched by the layout) */
+.apply-btn { flex: none; height: 38px; padding: 0 19px; border: 0; border-radius: 999px; background: #f5f5f7; color: #0b0b0f; font-weight: 500; letter-spacing: 0.005em; transition: background .2s, opacity .2s; }
+.apply-btn:hover { background: #fff; }
 .apply-to { display: flex; align-items: center; gap: 10px; flex: 1 1 200px; min-width: 0; font-size: var(--t-s); color: var(--ink-2); white-space: nowrap; }
 .apply-to .select { flex: 1; min-width: 0; }
 .apply-to[hidden] { display: none; }
@@ -515,8 +514,7 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 .details summary span::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 9px; border-right: 1.3px solid currentColor; border-bottom: 1.3px solid currentColor; transform: translateY(-2px) rotate(-45deg); transition: transform .2s; }
 .details[open] summary span::before { transform: translateY(-3px) rotate(45deg); }
 .details .spec { margin-top: 4px; padding-top: 0; border-top: 0; }
-.apply-btn[disabled] { opacity: 1; background: var(--raised); color: var(--ink-3); }
-.apply-btn[disabled]::before { background: var(--hair-2); }
+.apply-btn[disabled] { opacity: 1; background: var(--raised); color: var(--ink-3); }   /* (nothing to apply yet: a quiet pill) */
 .lic-chip .s { display: none; }
 /* small confirmations: the Apply button says it was done, a look just saved settles into its accent */
 .apply-btn svg path { stroke-dasharray: 16; stroke-dashoffset: 0; }
@@ -4629,9 +4627,11 @@ class Scopes {
     $('#hostTag').hidden = false; $('#hostName').textContent = host.name; $('#hostTag').classList.add('idle');
     $('#grabBtn').hidden = false; $('#applyRow').hidden = false;
     $('#applyLbl').textContent = host.applyLabel || 'Apply to clip';
-    $('#esTitle').textContent = 'Grab the frame under your playhead';
-    $('#esText').textContent = 'Or drop a still or a clip on the colobri';
-    emptyLabel = 'Grab frame'; $('#emptyOpenT').textContent = emptyLabel;
+    // (in an editor the frame comes from the playhead: "Put the playhead on a frame, and grab it" under the bird; F grabs it too, and a
+    // still or a clip dropped on the bird still opens)
+    $('#esTitle').querySelectorAll('span').forEach(t => { t.textContent = 'Put the playhead on a frame'; });
+    { const or = $('#esText .es-or'); if (or) or.textContent = 'and '; }
+    emptyLabel = 'grab it'; $('#emptyOpenT').textContent = emptyLabel;
     const T = host.targets || [], sel = $('#applyTo');
     for (const t of T) { const o = document.createElement('option'); o.value = t.id; o.textContent = t.label; sel.appendChild(o); }
     $('#applyToWrap').hidden = T.length < 2;

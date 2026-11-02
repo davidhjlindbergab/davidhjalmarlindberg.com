@@ -51,14 +51,16 @@ footer li + li { margin: 0; }
 footer a, footer button { display: inline-flex; align-items: center; min-height: 40px; padding: 0; border: 0; background: none; color: var(--ink-2); font: inherit; text-decoration: none; cursor: pointer; }
 footer a:hover, footer button:hover { color: var(--ink); }
 
-/* buttons: the main one is the Colobri button (colobri-button.css and .js, the bird's own light round the pill), at the others' height */
+/* buttons: the main one is the light pill (.btn.solid: David, 2 Nov), as wide as its words, its sides half its height */
 .btn { position: relative; isolation: isolate; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 calc(max(48px, 1em) / 2); border-radius: 999px; border: 0; background: #1c1c1e; color: var(--ink); font: 400 17px/1 var(--f); text-decoration: none; white-space: nowrap; cursor: pointer; transition: background .5s var(--ease); letter-spacing: 0.0035em; }
 .btn:hover { background: #232326; }
 .btn.small { min-height: 40px; padding: 0 calc(max(40px, 1em) / 2 - 1px); font-size: 14.5px; border: 1px solid var(--line-2); }
 .btn.solid { background: var(--ink); color: #000; }
 .btn.solid:hover { background: #fff; }
-.btns .colobri-button { --cb-height: 48px; }
-body .colobri-button { font-family: var(--f); }   /* (its word in the pages' own face: SF Pro on Apple devices, Inter elsewhere) */
+/* (the other system's download and the browser, as quiet words beside the light pill: David, 2 Nov) */
+.btns { align-items: center; column-gap: 26px; }
+.alt { display: inline-flex; align-items: center; min-height: 48px; color: var(--ink-2); font-size: 17px; text-decoration: underline; text-decoration-color: rgba(245, 245, 247, 0.28); text-underline-offset: 5px; transition: color .25s var(--ease), text-decoration-color .25s var(--ease); }
+.alt:hover { color: var(--ink); text-decoration-color: rgba(245, 245, 247, 0.6); }
 @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
 
 /* Apple's type scale at tablet and phone widths */

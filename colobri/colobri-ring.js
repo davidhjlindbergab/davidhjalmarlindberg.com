@@ -1,5 +1,7 @@
 /*!
- * Colobri ring v1.0.0
+ * Colobri ring v1.1.0
+ * 1.1.0: it wears the same palette as the Colobri button (ColobriRing.setPalette, as ColobriButton.setPalette), so both follow the
+ * logo's looks; without one it is 1.0.0. Without WebGL2 a ring's controls now do nothing instead of throwing.
  * The ring round a picked look, in the same light as the Colobri button (colobri-button.js v1.0.1): its iridescent ribbon laid round
  * the picture as it is round the pill (a pale wing tip at the left, blue and violet along the top, the head's blue at the right, a white
  * throat at the lower right, the warm belly along the bottom), focus that drifts in and out, a slow undulation, a light that trails the
@@ -16,8 +18,26 @@
 }(typeof self !== 'undefined' ? self : this, function () {
 'use strict';
 
-const VERSION = '1.0.0';
+const VERSION = '1.1.0';
 const LOOP = 40;                        // the logo's and the button's loop: every ambient motion repeats seamlessly after 40 s
+
+// the bird laid round the picture as round the button's pill (the button's ANCHORS): x, y in ring coordinates, hue, saturation;
+// a palette changes the hues and saturations (setPalette, the button's format)
+const ANCHORS = Object.freeze([
+  -1.00,  0.00, 198.0, 0.30,   // wing tip: pale cyan
+  -0.70, -0.97, 224.0, 0.88,   // upper wing: azure
+  -0.30, -1.00, 258.0, 0.80,   // back: indigo
+   0.20, -1.00, 274.0, 0.70,   // back: violet
+   0.62, -0.95, 236.0, 0.90,   // nape: blue
+   1.00,  0.00, 210.0, 0.82,   // head and beak: the head's blue
+   0.80,  0.86, 300.0, 0.10,   // throat: white
+   0.45,  1.00, 386.0, 0.42,   // belly: peach
+   0.00,  1.00, 375.0, 0.70,   // belly: ember
+  -0.42,  1.00, 356.0, 0.72,   // belly: coral
+  -0.72,  0.93, 318.0, 0.70    // lower wing: orchid
+]);
+const HUE_LIM = Object.freeze([185, 398]), GLOW = Object.freeze([240, 1]);
+const PAL = { an: new Float32Array(ANCHORS), lim: HUE_LIM.slice(), glow: GLOW.slice() };
 
 const DEFAULTS = Object.freeze({
   host: null,                           // the element the light's canvas goes in (positioned); null: the picture itself
@@ -83,6 +103,9 @@ uniform vec4 uRip[4];       // ripples: x, y, age (s), amplitude
 uniform float uRipV;
 uniform float uFocus;
 uniform vec3 uGround;
+uniform vec4 uAN[11];       // the bird laid round the picture: x, y, hue, saturation (ANCHORS, or the look's palette)
+uniform vec2 uHueLim;
+uniform vec2 uGlowHS;       // the glow's hue and saturation
 out vec4 outColor;
 
 vec3 mod289(vec3 x){ return x - floor(x * (1.0/289.0)) * 289.0; }
@@ -172,21 +195,8 @@ vec2 nearestOnRound(vec2 p, vec2 h, float r){
 }
 float edgeF(float x){ return 1.0 / (1.0 + exp(clamp(-1.702 * x, -60.0, 60.0))); }
 
-// the bird laid round the picture, exactly as round the pill: x, y in ring coordinates (-1..1), hue, saturation
+// the bird laid round the picture, exactly as round the pill (uAN: ANCHORS, or the look's palette)
 const int NA = 11;
-const vec4 AN[NA] = vec4[NA](
-  vec4(-1.00,  0.00, 198.0, 0.30),   // wing tip: pale cyan
-  vec4(-0.70, -0.97, 224.0, 0.88),   // upper wing: azure
-  vec4(-0.30, -1.00, 258.0, 0.80),   // back: indigo
-  vec4( 0.20, -1.00, 274.0, 0.70),   // back: violet
-  vec4( 0.62, -0.95, 236.0, 0.90),   // nape: blue
-  vec4( 1.00,  0.00, 210.0, 0.82),   // head and beak: the head's blue
-  vec4( 0.80,  0.86, 300.0, 0.10),   // throat: white
-  vec4( 0.45,  1.00, 386.0, 0.42),   // belly: peach
-  vec4( 0.00,  1.00, 375.0, 0.70),   // belly: ember
-  vec4(-0.42,  1.00, 356.0, 0.72),   // belly: coral
-  vec4(-0.72,  0.93, 318.0, 0.70)    // lower wing: orchid
-);
 
 void main(){
   vec2 fc = gl_FragCoord.xy;
@@ -253,16 +263,16 @@ void main(){
 
     float sw0 = 0.0, H = 0.0, S = 0.0;
     for (int i = 0; i < NA; i++){
-      vec2 e = (c - AN[i].xy) / vec2(0.27, 0.56);
+      vec2 e = (c - uAN[i].xy) / vec2(0.27, 0.56);
       float k = exp(-0.5 * dot(e, e)) + 1e-6;
-      sw0 += k; H += k * AN[i].z; S += k * AN[i].w;
+      sw0 += k; H += k * uAN[i].z; S += k * uAN[i].w;
     }
     H /= sw0; S /= sw0;
     float warm = smoothstep(318.0, 368.0, H);
     float hn = snoise(pp / (2.9*U) + vec2(11.0, 3.0) + uO34.xy);
     H += (uHue.x + uHue.y * (2.0*warm - 1.0) + uHue.z * hn) * mix(1.0, 0.45, warm) * uMotion;
     H += (20.0 * ring + 5.0 * kFocus) * mix(1.0, 0.6, warm);
-    H = clamp(H, 185.0, 398.0);
+    H = clamp(H, uHueLim.x, uHueLim.y);
 
     // ---- depth of field: the back and the tips drift in and out of focus, the belly stays sharp
     float soft = 0.22;
@@ -303,8 +313,8 @@ void main(){
   float edge = 1.0 - smoothstep(0.35 * uReach, uReach, dp0);    // gone before the canvas border, following the picture's shape
   edge *= edge;
   float ga = gl * outside * (1.0 - cov) * edge;
-  float Hg = 240.0 - 26.6 * pow(clamp((gl - 0.25) / 0.75, 0.0, 1.0), 1.5) + (uGlowHue + 7.0*gn) * uMotion;
-  vec3 Cg = hsv1(Hg, 1.0);
+  float Hg = uGlowHS.x - 26.6 * pow(clamp((gl - 0.25) / 0.75, 0.0, 1.0), 1.5) + (uGlowHue + 7.0*gn) * uMotion;
+  vec3 Cg = hsv1(Hg, uGlowHS.y);
 
   // ---- light is added to the ground, never laid over it (as in the button)
   vec3 G = uGround;
@@ -452,7 +462,10 @@ function create(target, options) {
   pic.__colobriRing = api;
 
   const r = getRenderer();
-  if (!r) return api;                                            // the page's own CSS ring stays
+  if (!r) {                                                      // the page's own CSS ring stays; the controls do nothing
+    ['setOn', 'ripple', 'resize', 'setTime', 'destroy'].forEach(function (k) { api[k] = function () {}; });
+    return api;
+  }
   api.supported = true;
   if (o.liveClass) host.classList.add(o.liveClass);              // (from now on the page's CSS ring gives way to this one)
 
@@ -641,6 +654,9 @@ function create(target, options) {
     gl.uniform1f(U.uRipV, 2.3 * (A + B));
     gl.uniform1f(U.uFocus, st.focus);
     gl.uniform3f(U.uGround, ground[0], ground[1], ground[2]);
+    gl.uniform4fv(U.uAN, PAL.an);
+    gl.uniform2f(U.uHueLim, PAL.lim[0], PAL.lim[1]);
+    gl.uniform2f(U.uGlowHS, PAL.glow[0], PAL.glow[1]);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     ctx.clearRect(0, 0, st.w, st.h);
     ctx.drawImage(R.canvas, 0, R.canvas.height - st.h, st.w, st.h, 0, 0, st.w, st.h);
@@ -705,5 +721,24 @@ function get(el) {
   return (el && el.__colobriRing) || null;
 }
 
-return Object.freeze({ create: create, get: get, isSupported: isSupported, version: VERSION, loopSeconds: LOOP, defaults: DEFAULTS });
+// the colors every ring wears: the Colobri button's palette format (colobri-button.js, setPalette); null puts 1.0.0's back
+function setPalette(p) {
+  if (!p) { PAL.an.set(ANCHORS); PAL.lim = HUE_LIM.slice(); PAL.glow = GLOW.slice(); kick(); return; }
+  let lo = Infinity, hi = -Infinity;
+  for (let i = 0; i < 11; i++) {
+    const a = p.anchors && p.anchors[i];
+    const h = a && isFinite(a[0]) ? +a[0] : ANCHORS[4 * i + 2], s = a && isFinite(a[1]) ? clamp(+a[1], 0, 1) : ANCHORS[4 * i + 3];
+    PAL.an[4 * i + 2] = h; PAL.an[4 * i + 3] = s;
+    if (h < lo) lo = h; if (h > hi) hi = h;
+  }
+  PAL.lim = p.lim && isFinite(p.lim[0]) && isFinite(p.lim[1]) ? [+p.lim[0], +p.lim[1]] : [lo - 13, hi + 12];
+  PAL.glow = p.glow && isFinite(p.glow[0]) ? [+p.glow[0], isFinite(p.glow[1]) ? clamp(+p.glow[1], 0, 1) : 1] : GLOW.slice();
+  kick();
+}
+function getPalette() {
+  const an = []; for (let i = 0; i < 11; i++) an.push([PAL.an[4 * i + 2], PAL.an[4 * i + 3]]);
+  return { anchors: an, lim: PAL.lim.slice(), glow: PAL.glow.slice() };
+}
+
+return Object.freeze({ create: create, get: get, isSupported: isSupported, setPalette: setPalette, getPalette: getPalette, version: VERSION, loopSeconds: LOOP, defaults: DEFAULTS });
 }));
