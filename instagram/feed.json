@@ -1,0 +1,206 @@
+{
+ "version": 1,
+ "source": "seed",
+ "updated": "2026-11-02T00:00:00Z",
+ "profile": {
+  "username": "david.hjalmar.lindberg",
+  "name": "David Lindberg",
+  "category": "Digital creator",
+  "verified": true,
+  "website": "https://www.nakaya.world/",
+  "followers": "205K",
+  "posts": "328",
+  "picture": "media/avatar.webp",
+  "url": "https://www.instagram.com/david.hjalmar.lindberg/"
+ },
+ "highlights": [
+  {
+   "title": "What is Nakãya?",
+   "cover": "media/hl-nakaya.webp",
+   "url": "https://www.instagram.com/stories/highlights/18076055003220623/"
+  },
+  {
+   "title": "Music",
+   "cover": "media/hl-music.webp",
+   "url": "https://www.instagram.com/stories/highlights/18045506888355841/"
+  },
+  {
+   "title": "Podcasts",
+   "cover": "media/hl-podcasts.webp",
+   "url": "https://www.instagram.com/stories/highlights/18209428534236975/"
+  }
+ ],
+ "pinned": [
+  "DQomP_aCAdz"
+ ],
+ "media": [
+  {
+   "id": "DQomP_aCAdz",
+   "type": "reel",
+   "pinned": true,
+   "url": "https://www.instagram.com/reel/DQomP_aCAdz/",
+   "time": "2025-11-04T12:20:51Z",
+   "caption": "During these past 3 years I’ve been working on trying to understand this project that came to me from nowhere and has been developed and uncovered more…",
+   "alt": "A being from Nakãya with a golden crest, above the words Stop scrolling.",
+   "color": "#312b24",
+   "thumb": "media/DQomP_aCAdz-s.webp",
+   "image": "media/DQomP_aCAdz-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "De6y_YoI6J9",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/De6y_YoI6J9/",
+   "time": "2026-10-25T13:18:02Z",
+   "caption": "💡",
+   "alt": "Three beings from Nakãya, the middle one glowing through its skin.",
+   "color": "#726156",
+   "thumb": "media/De6y_YoI6J9-s.webp",
+   "image": "media/De6y_YoI6J9-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "DexdyGNI2qm",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/DexdyGNI2qm/",
+   "time": "2026-10-21T22:19:33Z",
+   "caption": "@david.hjalmar.lindberg, our Creative Director, shares some thoughts behind the scenes of DINOS. We open this saturday, october 24th.",
+   "alt": "David in the DINOS tunnels, talking about the sound of the experience.",
+   "color": "#494236",
+   "thumb": "media/DexdyGNI2qm-s.webp",
+   "image": "media/DexdyGNI2qm-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "Dei3YzDoc-k",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/Dei3YzDoc-k/",
+   "time": "2026-10-16T06:14:41Z",
+   "caption": "We’re opening a new huge project called DINOS in Stockholm on October 24th. We call it “an adult experience for children”.",
+   "alt": "A dinosaur’s head in the morning light.",
+   "color": "#4d4e43",
+   "thumb": "media/Dei3YzDoc-k-s.webp",
+   "image": "media/Dei3YzDoc-k-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "DehKYioIHkR",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/DehKYioIHkR/",
+   "time": "2026-10-15T14:22:11Z",
+   "caption": "👁️ These are some experiments to bring my project Nakãya back to life, and to see how far I can take it with the current AI tools.",
+   "alt": "A pale, speckled being from Nakãya with long white hair.",
+   "color": "#474a51",
+   "thumb": "media/DehKYioIHkR-s.webp",
+   "image": "media/DehKYioIHkR-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "Deeiup6oE1x",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/Deeiup6oE1x/",
+   "time": "2026-10-14T13:57:12Z",
+   "caption": "❄️ These are some experiments to bring my project Nakãya back to life, and to see how far I can take it with the current AI tools.",
+   "alt": "Beings from Nakãya pull one of their own out of a hole in the ice.",
+   "color": "#6b6256",
+   "thumb": "media/Deeiup6oE1x-s.webp",
+   "image": "media/Deeiup6oE1x-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "DecHD-xIjn-",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/DecHD-xIjn-/",
+   "time": "2026-10-13T15:16:58Z",
+   "caption": "Sneaking. These are some experiments for my project Nakãya, to try and see how far I can take it with the current AI tools.",
+   "alt": "A speckled being from Nakãya with green eyes.",
+   "color": "#473c2b",
+   "thumb": "media/DecHD-xIjn--s.webp",
+   "image": "media/DecHD-xIjn--l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "DeY9r3txDKk",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/DeY9r3txDKk/",
+   "time": "2026-10-12T09:57:18Z",
+   "caption": "Meet @david.hjalmar.lindberg, Creative Director of DINOS and creator of Nakaya World, the creative mind behind the immersive sound and visuals.",
+   "alt": "David in the DINOS tunnels, under the words How does Nakãya connect to DINOS?",
+   "color": "#5d513f",
+   "thumb": "media/DeY9r3txDKk-s.webp",
+   "image": "media/DeY9r3txDKk-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "DeWeEU8INkq",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/DeWeEU8INkq/",
+   "time": "2026-10-11T10:42:33Z",
+   "caption": "I revisited Nakãya last night. Music: A Path by @apechimba",
+   "alt": "A being from Nakãya with teal and orange speckles.",
+   "color": "#554334",
+   "thumb": "media/DeWeEU8INkq-s.webp",
+   "image": "media/DeWeEU8INkq-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "Dd6PX6LIzWS",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/Dd6PX6LIzWS/",
+   "time": "2026-09-30T11:35:25Z",
+   "caption": "But something bigger is coming. Book your tickets at dinos.se 🦖",
+   "alt": "Small dinosaurs run across a Stockholm street, under the words They were bigger than we thought.",
+   "color": "#978b7e",
+   "thumb": "media/Dd6PX6LIzWS-s.webp",
+   "image": "media/Dd6PX6LIzWS-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "DcgB5H6IyqM",
+   "type": "reel",
+   "pinned": false,
+   "url": "https://www.instagram.com/reel/DcgB5H6IyqM/",
+   "time": "2026-08-26T10:45:58Z",
+   "caption": "OPENING OCTOBER 22! Tickets at dinos.se. This is a huge and exciting project I’ve been working on…",
+   "alt": "A dinosaur walks past a café table.",
+   "color": "#796f64",
+   "thumb": "media/DcgB5H6IyqM-s.webp",
+   "image": "media/DcgB5H6IyqM-l.webp",
+   "w": 600,
+   "h": 750
+  },
+  {
+   "id": "DZ0SQKXjnwo",
+   "type": "carousel",
+   "pinned": false,
+   "url": "https://www.instagram.com/p/DZ0SQKXjnwo/",
+   "time": "2026-06-20T17:59:33Z",
+   "caption": "🤖 How Do We Stay Human in Times of AI?",
+   "alt": "Poster for David Lindberg and Nils von Heijne’s talk at Colibri Spirit Festival.",
+   "color": "#817161",
+   "thumb": "media/DZ0SQKXjnwo-s.webp",
+   "image": "media/DZ0SQKXjnwo-l.webp",
+   "w": 600,
+   "h": 750
+  }
+ ]
+}
