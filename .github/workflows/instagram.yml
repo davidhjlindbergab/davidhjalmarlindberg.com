@@ -33,6 +33,7 @@ jobs:
         name: Fetch the newest posts
         env:
           INSTAGRAM_TOKEN: ${{ secrets.INSTAGRAM_TOKEN }}
+          INSTAGRAM_USER_ID: ${{ vars.INSTAGRAM_USER_ID || '17841454963593364' }}
           REFRESH: ${{ env.HAS_PAT == 'true' && '1' || '' }}
           NEW_TOKEN_FILE: ${{ runner.temp }}/instagram-token
         run: python3 scripts/instagram_sync.py

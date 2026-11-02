@@ -4,8 +4,9 @@
 Runs every night from .github/workflows/instagram.yml, or by hand:
     INSTAGRAM_TOKEN=... python3 scripts/instagram_sync.py
 
-It uses the Instagram API with Instagram Login (graph.instagram.com) with a long-lived token for
-@david.hjalmar.lindberg. What the API cannot tell is kept from the feed.json already there: the category
+It reads @david.hjalmar.lindberg with the token in INSTAGRAM_TOKEN: an Instagram login token
+(graph.instagram.com/me) or, as the app "David Hjalmar Lindberg site" makes it, a read-only system-user
+token that never expires (graph.facebook.com/<INSTAGRAM_USER_ID>); it tries the first, then the second. What the API cannot tell is kept from the feed.json already there: the category
 under the name, the highlights (titles, covers and links) and which posts are pinned ("pinned": shortcodes).
 Without a token it changes nothing, so the site keeps the feed it has.
 
@@ -13,8 +14,9 @@ Needs Pillow. With ffmpeg on the machine, the newest reels are also saved as sho
 muted, in the phone; without it the phone shows their covers.
 
 Environment:
-    INSTAGRAM_TOKEN   the long-lived token (never printed)
-    REFRESH=1         also renew the token and write the new one to NEW_TOKEN_FILE (the workflow stores it)
+    INSTAGRAM_TOKEN   the token (never printed)
+    INSTAGRAM_USER_ID the account's Instagram ID, for a system-user token (17841454963593364)
+    REFRESH=1         renew an Instagram login token and write the new one to NEW_TOKEN_FILE (the workflow stores it)
 """
 import io
 import json
@@ -37,6 +39,8 @@ HERE = ROOT / "instagram"
 MEDIA = HERE / "media"
 FEED = HERE / "feed.json"
 API = "https://graph.instagram.com"
+API_FB = "https://graph.facebook.com/v23.0"
+PROFILE = "id,username,name,profile_picture_url,followers_count,media_count"
 GRID = 12          # posts in the phone's grid
 CLIPS = 3          # newest reels kept as short clips
 CLIP_SECONDS = 15
@@ -48,9 +52,9 @@ def fail(message):
     sys.exit(1)
 
 
-def call(path, token, **params):
+def call(path, token, base=API, **params):
     params["access_token"] = token
-    url = f"{API}/{path}?{urllib.parse.urlencode(params)}"
+    url = f"{base}/{path}?{urllib.parse.urlencode(params)}"
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "davidhjalmarlindberg.com"}), timeout=40) as r:
             return json.load(r)
@@ -126,29 +130,36 @@ def main():
     old = json.loads(FEED.read_text("utf-8")) if FEED.exists() else {}
     MEDIA.mkdir(parents=True, exist_ok=True)
 
-    if os.environ.get("REFRESH") == "1":
+    # which kind of token: an Instagram login token, or a system-user token for the account's Instagram ID
+    user_id = os.environ.get("INSTAGRAM_USER_ID", "").strip() or "17841454963593364"
+    base, who = API, "me"
+    try:
+        me = call(who, token, base, fields=PROFILE)
+    except RuntimeError as first:
+        base, who = API_FB, user_id
         try:
-            fresh = call("refresh_access_token", token, grant_type="ig_refresh_token")
+            me = call(who, token, base, fields=PROFILE)
+        except RuntimeError as e:
+            fail(f"Instagram said no ({first}; {e}). The token may have been revoked: make a new one (README, Instagram).")
+    try:
+        extra = call(who, token, base, fields="biography,website")
+    except RuntimeError:
+        extra = {}
+
+    if base == API and os.environ.get("REFRESH") == "1":
+        try:
+            fresh = call("refresh_access_token", token, base, grant_type="ig_refresh_token")
             days = int(fresh.get("expires_in", 0)) // 86400
             target = os.environ.get("NEW_TOKEN_FILE")
-            if fresh.get("access_token") and target:
+            if fresh.get("access_token") and fresh["access_token"] != token and target:
                 Path(target).write_text(fresh["access_token"], "utf-8")
             print(f"Token renewed, good for {days} days.")
         except RuntimeError as e:
             print(f"::warning::Could not renew the token this time ({e}). It keeps working until it expires.")
 
-    try:
-        me = call("me", token, fields="id,username,name,profile_picture_url,followers_count,media_count")
-    except RuntimeError as e:
-        fail(f"Instagram said no: {e}. The token may have expired: make a new one (README, Instagram).")
-    try:
-        extra = call("me", token, fields="biography,website")
-    except RuntimeError:
-        extra = {}
-
     items, after = [], None
     while len(items) < 48:
-        page = call("me/media", token, fields=FIELDS, limit=24, **({"after": after} if after else {}))
+        page = call(f"{who}/media", token, base, fields=FIELDS, limit=24, **({"after": after} if after else {}))
         items += page.get("data", [])
         after = page.get("paging", {}).get("cursors", {}).get("after")
         if not after or not page.get("paging", {}).get("next"):
