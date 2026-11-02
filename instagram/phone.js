@@ -276,7 +276,7 @@
   function desktop(feed, view, isNew, newestIso, tint) {
     const p = feed.profile;
     const first = !store.get().v;
-    const stage = h('div', { class: 'ig ig-stage', 'data-state': 'hidden' });
+    const stage = h('div', { class: 'ig ig-stage' + (first ? ' is-waking' : ''), 'data-state': 'hidden' });
     const glow = h('div', { class: 'ig-glow', 'aria-hidden': 'true' });
     tint.target = glow;
     const glass = h('span', { class: 'ig-glass', 'aria-hidden': 'true' });
@@ -292,30 +292,52 @@
     const fold = h('button', { type: 'button', class: 'ig-fold' }, 'Fold away', icon('right'));
     const newDot = isNew ? h('span', { class: 'ig-tab-new', 'aria-hidden': 'true' }) : null;
     const tab = h('button', { type: 'button', class: 'ig-tab', 'aria-label': label }, icon('left'), newDot, h('span', { class: 'ig-tab-label', text: '@' + p.username, 'aria-hidden': 'true' }));
-    stage.append(h('div', { class: 'ig-veil', 'aria-hidden': 'true' }), glow, phone, fold, tab);
+    stage.append(h('div', { class: 'ig-veil', 'aria-hidden': 'true' }), glow, h('div', { class: 'ig-shade', 'aria-hidden': 'true' }), phone, fold, tab);
     after(stage);
-
-    /* folded away, the phone rests below the 'Selected work' line, so it never covers the intro text */
-    const line = document.querySelector('#work .section-line') || document.querySelector('.intro');
-    function place() {
-      const top = phone.offsetTop, tall = phone.offsetHeight, screenH = stage.clientHeight;
-      if (!tall || !screenH) return;
-      let rest = screenH - tall * 0.5;
-      if (line) rest = Math.max(rest, line.getBoundingClientRect().bottom + scrollY + 24);
-      rest = Math.min(rest, screenH - tall * 0.3);
-      stage.style.setProperty('--ig-ajar-y', Math.round(rest - top) + 'px');
-    }
-    place();
-    let placing = 0;
-    const onResize = () => { cancelAnimationFrame(placing); placing = requestAnimationFrame(place); };
-    addEventListener('resize', onResize);
     view.el.inert = true;
     tint.apply((view.newest || {}).color);
 
+    /* Where the folded phone rests. The stage is the screen, seen in perspective (1800px) from 45% across, so the
+       phone's far edge lands where edge() says. Beside the intro text when the phone and its tab fit there, as a door
+       left ajar; otherwise lower, in the corner under the 'Selected work' line, so it never covers the text. */
+    const P = 1800, ORIGIN = 0.45, TAB = 34, GAP = 12;
+    const note = document.querySelector('.intro-note');
+    const line = document.querySelector('#work .section-line') || document.querySelector('.intro');
+    function edge(W, w, tx, deg) {
+      const r = deg * Math.PI / 180, x0 = W * ORIGIN;
+      const X = W + tx - w * Math.cos(r), Z = w * Math.sin(r);
+      return x0 + (X - x0) * P / (P - Z);
+    }
+    function layout() {
+      const W = stage.clientWidth, H = stage.clientHeight, w = phone.offsetWidth, tall = phone.offsetHeight, top = phone.offsetTop;
+      if (!W || !w) return;
+      const rest = edge(W, w, W * 0.03, -72), lean = edge(W, w, W * 0.022, -63);
+      const clear = note ? note.getBoundingClientRect().right + 16 : -Infinity;
+      let y = 0;
+      if (lean - GAP - TAB < clear) {
+        let low = H - tall * 0.52;
+        if (line) low = Math.max(low, line.getBoundingClientRect().bottom + scrollY + 24);
+        y = Math.round(Math.min(low, H - tall * 0.3) - top);
+      }
+      const shownTop = top + y, shownBottom = Math.min(H, top + y + tall);
+      stage.style.setProperty('--ig-ajar-y', y + 'px');
+      stage.style.setProperty('--ig-tab-top', Math.round((shownTop + shownBottom) / 2 - 106) + 'px');
+      stage.style.setProperty('--ig-tab-right', Math.round(W - rest + GAP) + 'px');
+      stage.style.setProperty('--ig-tab-dx', Math.round(lean - rest) + 'px');
+    }
+    layout();
+    let laying = 0;
+    const onResize = () => { cancelAnimationFrame(laying); laying = requestAnimationFrame(layout); };
+    addEventListener('resize', onResize);
+
     function set(state, byHand) {
+      const was = stage.dataset.state;
+      if (state === was) return;
       stage.dataset.state = state;
       view.el.inert = state !== 'open';
       if (state === 'open') {
+        if (was === 'hidden') setTimeout(() => stage.classList.remove('is-waking'), 650);
+        else stage.classList.remove('is-waking');
         store.set({ v: 1, seen: newestIso });
         view.seen();
         if (newDot) newDot.remove();
@@ -323,10 +345,10 @@
         view.resume();
         if (byHand) setTimeout(() => view.title.focus({ preventScroll: true }), 420);
       } else {
+        stage.classList.remove('is-waking');
         view.pause();
         resetTilt();
-        if (state === 'ajar') store.set({ v: 1, folded: true });
-        if (byHand) tab.focus({ preventScroll: true });
+        if (byHand && state === 'ajar') { store.set({ v: 1, folded: true }); tab.focus({ preventScroll: true }); }
       }
     }
     const open = () => set('open', true);
@@ -361,27 +383,46 @@
     phone.addEventListener('pointerleave', () => { cancelAnimationFrame(tiltFrame); resetTilt(); });
 
     function knock() {
-      if (reduce.matches) return;
+      if (reduce.matches || stage.dataset.state !== 'ajar') return;
       phone.classList.remove('is-knocking'); void phone.offsetWidth; phone.classList.add('is-knocking');
       setTimeout(() => phone.classList.remove('is-knocking'), 1600);
     }
 
+    /* the phone belongs to the opening screen: scrolling on into the work swings it shut, scrolling back opens it ajar */
+    const deep = () => scrollY > innerHeight * 0.32;
+    let ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const s = stage.dataset.state;
+        if (s === 'hidden') return;
+        if (deep()) { if (s === 'open' || s === 'ajar') set('away'); }
+        else if (s === 'away') set('ajar');
+      });
+    }
+    addEventListener('scroll', onScroll, { passive: true });
+
     /* enter: open on a first visit (unless the visitor is already reading further down), else ajar */
-    const nearTop = () => scrollY < innerHeight * 0.35;
     const twoFrames = (fn) => requestAnimationFrame(() => requestAnimationFrame(fn));
     let timer = setTimeout(() => {
-      if (first && nearTop()) {
-        twoFrames(() => set('open', false));
-      } else {
-        stage.dataset.next = 'ajar';
-        twoFrames(() => set('ajar', false));
-        store.set({ v: 1 });
-        if (isNew) timer = setTimeout(knock, 1500);
-      }
+      store.set({ v: 1 });
+      if (deep()) { stage.dataset.next = 'ajar'; twoFrames(() => set('away')); return; }
+      if (first) { twoFrames(() => set('open')); return; }
+      stage.dataset.next = 'ajar';
+      twoFrames(() => set('ajar'));
+      if (isNew) timer = setTimeout(knock, 1500);
     }, first ? 900 : 350);
 
     return {
-      destroy() { clearTimeout(timer); removeEventListener('resize', onResize); view.pause(); stage.remove(); }
+      destroy() {
+        clearTimeout(timer);
+        removeEventListener('resize', onResize);
+        removeEventListener('scroll', onScroll);
+        view.pause();
+        stage.remove();
+      }
     };
   }
 

@@ -28,22 +28,25 @@
 
 /* ---------- the stage: the first screen's right side, scrolling away with it ---------- */
 .ig-stage {
-  /* the phone: as tall as the screen allows, never wider than 340px */
-  --ig-w: min(clamp(286px, 21.5vw, 340px), calc((100vh - 210px) / 2.09));
-  --ig-w: min(clamp(286px, 21.5vw, 340px), calc((100svh - 210px) / 2.09));
+  /* the phone: as tall as the screen allows, never wider than 372px */
+  --ig-w: min(clamp(286px, 21.5vw, 372px), calc((100vh - 210px) / 2.09));
+  --ig-w: min(clamp(286px, 21.5vw, 372px), calc((100svh - 210px) / 2.09));
   --ig-h: calc(var(--ig-w) * 2.09);
   --ig-top: max(124px, calc((100vh - var(--ig-h)) / 2 - 22px));
   --ig-top: max(124px, calc((100svh - var(--ig-h)) / 2 - 22px));
   --ig-gutter: var(--gutter, 4.5vw);
-  /* folded away it rests in the lower right corner, below the intro and the 'Selected work' line, about half out of frame
-     (phone.js measures the line and sets --ig-ajar-y in px; this is the fallback) */
-  --ig-ajar-y: calc(max(330px + 16.4vw, 100vh - var(--ig-h) * .5) - var(--ig-top));
-  position: absolute; top: 0; right: 0;
-  width: min(62vw, 980px); height: 100vh; height: 100svh;
+  /* folded away: phone.js works out whether the phone rests beside the intro (0) or lower, in the corner,
+     and where its tab goes (the right edge of the phone in perspective, minus a gap) */
+  --ig-ajar-y: 0px;
+  --ig-tab-top: calc(var(--ig-top) + var(--ig-h) / 2 - 106px);
+  --ig-tab-right: calc(var(--ig-w) * .52 + 12px);
+  --ig-tab-dx: -36px;
+  /* the stage is the screen: the phone only ever meets the screen's own edges */
+  position: fixed; inset: 0;
   z-index: 5;                      /* above the page, under the Plugins menu (10) */
   pointer-events: none;
   overflow: hidden;
-  perspective: 1800px; perspective-origin: 12% 50%;
+  perspective: 1800px; perspective-origin: 45% 50%;
 }
 
 /* a soft paper veil behind the phone, so the page underneath steps back */
@@ -71,7 +74,7 @@
   transform-origin: 100% 50%;
   /* the lean toward the pointer (--ig-tx, --ig-ty) rides on the same transform, so the screen stays flat for clicks */
   transform: translateX(var(--ig-x)) translateY(var(--ig-y)) rotateY(calc(var(--ig-ry) + var(--ig-ty, 0deg))) rotateX(var(--ig-tx, 0deg));
-  transition: transform 1.1s var(--ig-spring);
+  transition: transform 1.1s var(--ig-spring), opacity .6s ease;
   pointer-events: auto;
 }
 .ig-phone.is-tilting { transition: transform .22s cubic-bezier(.2, .8, .2, 1); }
@@ -79,8 +82,14 @@
 .ig-stage[data-state="hidden"][data-next="ajar"] .ig-phone { --ig-y: var(--ig-ajar-y); }
 .ig-stage[data-state="open"] .ig-phone { --ig-x: calc(-1 * var(--ig-gutter)); --ig-y: 0px; --ig-ry: -12deg; }
 .ig-stage[data-state="ajar"] .ig-phone { --ig-x: 3vw; --ig-ry: -72deg; transition-duration: .95s; }
+/* scrolled on into the work, the door swings shut; back at the top it opens ajar again */
+.ig-stage[data-state="away"] .ig-phone { --ig-x: calc(var(--ig-w) * .4 + 3vw); --ig-ry: -90deg; opacity: 0; transition-duration: .8s, .5s; pointer-events: none; }
 @media (hover: hover) {
-  .ig-stage[data-state="ajar"] .ig-phone:hover { --ig-x: 2.2vw; --ig-ry: -63deg; transition: transform .8s var(--ig-lean); }
+  /* pointing at the phone or its tab leans it out a little, and the tab moves with it */
+  .ig-stage[data-state="ajar"] .ig-phone:hover,
+  .ig-stage[data-state="ajar"]:has(.ig-tab:hover) .ig-phone { --ig-x: 2.2vw; --ig-ry: -63deg; transition: transform .8s var(--ig-lean); }
+  .ig-stage[data-state="ajar"] .ig-phone:hover ~ .ig-tab,
+  .ig-stage[data-state="ajar"] .ig-tab:hover { transform: translateX(var(--ig-tab-dx)); transition: opacity .5s ease, transform .8s var(--ig-lean), color .25s; }
 }
 .ig-stage[data-state="ajar"] .ig-phone.is-knocking { animation: ig-knock 1.5s cubic-bezier(.45, 0, .2, 1) 1; }
 @keyframes ig-knock {
@@ -135,7 +144,16 @@
   background: var(--ig-glass);
 }
 .ig-cover img { width: 100%; height: 100%; object-fit: cover; }
-.ig-stage[data-state="ajar"] .ig-cover { opacity: 1; }
+.ig-stage[data-state="ajar"] .ig-cover, .ig-stage[data-state="away"] .ig-cover { opacity: 1; }
+/* the phone's shadow on the page while it stands ajar */
+.ig-shade {
+  position: absolute; right: 0;
+  top: calc(var(--ig-top) + var(--ig-ajar-y) - 30px);
+  width: calc(var(--ig-w) * 1.1); height: calc(var(--ig-h) + 60px);
+  background: radial-gradient(64% 48% at 100% 50%, rgba(20, 20, 18, .2), rgba(20, 20, 18, 0) 72%);
+  opacity: 0; transition: opacity .9s ease;
+}
+.ig-stage[data-state="ajar"] .ig-shade { opacity: 1; transition-delay: .25s; }
 .ig-hit {
   position: absolute; inset: 0; z-index: 10;
   border-radius: calc(var(--ig-w) * .17);
@@ -167,9 +185,8 @@
 /* ---------- ajar: the handle beside the edge ---------- */
 .ig .ig-tab {
   position: absolute;
-  top: calc(var(--ig-top) + var(--ig-ajar-y) + (100vh - var(--ig-top) - var(--ig-ajar-y)) / 2 - 106px);
-  top: calc(var(--ig-top) + var(--ig-ajar-y) + (100svh - var(--ig-top) - var(--ig-ajar-y)) / 2 - 106px);
-  right: calc(var(--ig-w) * .58 + 10px);
+  top: var(--ig-tab-top);
+  right: var(--ig-tab-right);
   width: 34px; height: 212px; border-radius: 980px;
   background: rgba(244, 243, 239, .94);
   box-shadow: 0 8px 22px -12px rgba(20, 20, 18, .5);
@@ -187,7 +204,9 @@
 .ig-tab:focus-visible { outline: 1px solid var(--ig-ink); outline-offset: 3px; }
 
 /* ---------- inside the screen ---------- */
-.ig-view { position: absolute; inset: 0; }
+.ig-view { position: absolute; inset: 0; transition: opacity .7s ease, transform 1.1s var(--ig-ease); }
+/* on the first visit the screen wakes as the phone lands */
+.ig-stage.is-waking .ig-view { opacity: 0; transform: scale(1.03); transition: none; }
 .ig-view :focus-visible { outline: 2px solid var(--ig-paper); outline-offset: 2px; }
 .ig-view a, .ig-view button { color: var(--ig-paper); text-decoration: none; }
 
@@ -340,7 +359,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ig-phone, .ig-page, .ig-sheet, .ig-dock, .ig-veil, .ig-glow, .ig-cover, .ig-slide, .ig-fold, .ig-tab { transition-duration: .01ms !important; transition-delay: 0s !important; }
+  .ig-phone, .ig-page, .ig-sheet, .ig-dock, .ig-veil, .ig-glow, .ig-shade, .ig-cover, .ig-slide, .ig-fold, .ig-tab, .ig-view { transition-duration: .01ms !important; transition-delay: 0s !important; }
   .ig-phone.is-knocking { animation: none; }
   .ig-caption.is-in { animation: none; }
 }
