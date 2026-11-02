@@ -82,7 +82,7 @@ section { position: relative; }
 .hero + .sec { padding-top: clamp(64px, 8vw, 128px); }
 
 /* ------------------------------------------------------------------ the bird's living light, as CSS: the picked look's ring where WebGL2 is missing (the live ring is
-   colobri-ring.js; the buttons are the Colobri button: colobri-button.css and .js) */
+   colobri-ring.js, in the colors of the bird's look: colobri-hues.js) */
 @property --ra { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 @property --rw { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
 @property --rb { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
@@ -109,10 +109,15 @@ section { position: relative; }
 .btn:active { transform: scale(0.985); }
 .btn.solid { background: var(--ink); color: #000; }
 .btn.solid:hover { background: #fff; }
+/* (the buttons, David 2 Nov: the one thing to do next is the light pill above, as wide as its words, its sides half its height; the
+   other download is quiet words beside it; a small light pill in the bar; Buy a dark pill with a hairline until checkout opens) */
+.btn.small { min-height: 36px; padding: 0 18px; font-size: 14px; }
+.btn.line { background: transparent; border: 1px solid var(--line-2); padding: 0 calc(max(48px, 1em) / 2 - 1px); }
+.btn.line:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.24); }
+.alt { display: inline-flex; align-items: center; gap: 7px; min-height: 48px; color: var(--ink-2); font-size: 17px; text-decoration: underline; text-decoration-color: rgba(245, 245, 247, 0.28); text-underline-offset: 5px; transition: color .25s var(--ease), text-decoration-color .25s var(--ease); }
+.alt:hover { color: var(--ink); text-decoration-color: rgba(245, 245, 247, 0.6); }
 .btn svg { width: 17px; height: 17px; flex: none; }
 .more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--link); font-size: 17px; text-decoration: none; }
-.ctas > .more { position: relative; z-index: 1; }   /* (over the Colobri button's glow beside it, so its light never sits on the words) */
-body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word in the page's own face: SF Pro on Apple devices, Inter elsewhere) */
 .more svg { width: 15px; height: 15px; transition: transform .3s var(--ease); }
 .more:hover { text-decoration: underline; text-underline-offset: 4px; }
 .more:hover svg { transform: translateX(3px); }
@@ -139,7 +144,10 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .hero-glow { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; transform-origin: 50% var(--bird-y, 40%); animation: breathe 11.3s ease-in-out infinite alternate, swell 15.7s ease-in-out infinite alternate; }
 @keyframes breathe { from { opacity: 1; } to { opacity: 0.8; } }
 @keyframes swell { from { transform: scale(1); } to { transform: scale(1.035); } }
-.hero-light { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }   /* (the light alive: the bird again, small, scaled up and blurred, in one bell; colobri.js) */
+.hero-light { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }   /* (the bird's soft sky: colobri.js, ColobriLight.sky) */
+/* (the sky eases out before the first screen's foot, so the page goes on below it unseen: 1.6.0) */
+.hero-air { -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 54%, rgba(0, 0, 0, 0.86) 63%, rgba(0, 0, 0, 0.6) 72%, rgba(0, 0, 0, 0.32) 81%, rgba(0, 0, 0, 0.12) 89%, rgba(0, 0, 0, 0.03) 95%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0, #000 54%, rgba(0, 0, 0, 0.86) 63%, rgba(0, 0, 0, 0.6) 72%, rgba(0, 0, 0, 0.32) 81%, rgba(0, 0, 0, 0.12) 89%, rgba(0, 0, 0, 0.03) 95%, transparent 100%); }
 .hero-logo { position: absolute; inset: 0; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
 .hero-still { position: absolute; max-width: none; }
 .hero-dither { position: absolute; inset: 0; pointer-events: none; background: var(--dither, none) 0 0 / var(--dither-size, 128px) repeat; }
@@ -371,10 +379,8 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .incl li svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--mark); }
 /* (every button as wide as its words, so the words meet the round ends: David's rule for all pills) */
 .go { display: grid; gap: 14px; justify-items: start; }
-/* (the two downloads side by side where both fit, else one above the other: the Colobri button at Buy's height) */
-.go .dl { display: flex; flex-wrap: wrap; gap: 10px; }
-.go .dl .colobri-button { --cb-height: 48px; }
-.go .dl .colobri-button:first-child { z-index: 1; }   /* (stacked: the second's glow passes under the first, never over its warm lower edge) */
+/* (the visitor's own download as the light pill, the other system's as words beside it: site.js swaps them on Windows) */
+.go .dl { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 26px; }
 .go .fine { text-wrap: pretty; }
 @media (max-width: 860px) { .buy { grid-template-columns: 1fr; } }
 
@@ -395,7 +401,7 @@ body .colobri-button { font-family: var(--f); }   /* (the Colobri button's word 
 .end .bird > * { position: absolute; inset: 0; width: 100%; height: 100%; }
 .end .bird img { object-fit: contain; }
 .end h2 { max-width: 16ch; margin: 0 auto; font-size: clamp(38px, 5.4vw, 72px); line-height: 1.05; letter-spacing: -0.0135em; }
-.end .ctas { margin-top: 52px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 22px 32px; }   /* (room for the Try button's light) */
+.end .ctas { margin-top: 52px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 22px 32px; }
 .end .fine { margin-top: 36px; }
 footer { border-top: 1px solid var(--line); padding-block: 40px calc(40px + env(safe-area-inset-bottom, 0px)); font-size: 12px; line-height: 1.33337; color: var(--ink-3); letter-spacing: -0.01em; }
 footer .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px 40px; align-items: start; }
@@ -435,14 +441,14 @@ footer .legal a:hover { color: var(--ink); }
   .lead { font-size: 17px; line-height: 1.47059; letter-spacing: 0.0035em; }
 }
 </style>
-<link rel="stylesheet" href="colobri-button.css">
 <script>document.documentElement.classList.add('js');</script>
-<script src="site.js" defer></script>
-<script src="colobri-logo.js" defer></script>
-<script src="colobri-light.js" defer></script>
-<script src="colobri-ring.js" defer></script>
-<script src="colobri.js" defer></script>
-<script src="colobri-button.js" defer></script>
+<script src="site.js?v=1.6.0" defer></script>
+<script src="colobri-logo.js?v=2.1.0" defer></script>
+<script src="colobri-hues-data.js?v=2.1.0" defer></script>
+<script src="colobri-hues.js?v=1.0.0" defer></script>
+<script src="colobri-light.js?v=1.6.0" defer></script>
+<script src="colobri-ring.js?v=1.1.0" defer></script>
+<script src="colobri.js?v=1.6.0" defer></script>
 </head>
 <body data-cb-page="colobri">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="cb-word" viewBox="0 0 11673.4 1000"><path d="M787.4 884.9 A482.4 462.4 0 1 1 787.4 115.1 M1906.8 500 A445.5 462.4 0 1 1 2797.9 500 A445.5 462.4 0 1 1 1906.8 500 Z M5651.3 500 A444.6 462.4 0 1 1 6540.6 500 A444.6 462.4 0 1 1 5651.3 500 Z M4056.8 37.6 L4056.8 962.4 L4570.5 962.4 M7799.2 962.4 L7799.2 37.6 L8163.2 37.6 A228.4 228.4 0 0 1 8163.2 494.3 L7799.2 494.3 M7799.2 494.3 L8211.4 494.3 A234.1 234.1 0 0 1 8211.4 962.4 L7799.2 962.4 Z M9715.2 962.4 L9715.2 37.6 L10082.6 37.6 A254.6 254.6 0 0 1 10082.6 546.7 L9715.2 546.7 M10139.5 546.7 C10415.1 624.9 10229.7 880.3 10381.5 962.4 M11635.8 37.6 L11635.8 962.4"/></symbol></defs></svg>
@@ -458,7 +464,7 @@ footer .legal a:hover { color: var(--ink); }
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="colobri-button colobri-button--small" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try free</a>
+    <a class="btn solid small" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try free</a>
   </div>
 </header>
 
@@ -477,7 +483,7 @@ footer .legal a:hover { color: var(--ink); }
       <h1 id="hero-title">One click.<br class="hero-br"> A world of color.</h1>
       <p class="lead">Colobri analyzes your frame and develops perfectly balanced color grades.</p>
       <div class="ctas">
-        <a class="colobri-button" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
+        <a class="btn solid" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
         <a class="more" href="#looks">See it on a frame<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
       </div>
       <p class="fine">Free for 7 days, then <a href="#pricing">€59 once</a>. No subscription.</p>
@@ -743,10 +749,10 @@ footer .legal a:hover { color: var(--ink); }
       </div>
       <div class="go">
         <div class="dl" data-cb-dl>
-          <a class="colobri-button" href="download/Colobri-for-Mac-1.5.0.zip" download data-cb-os="mac" data-cb-track="StartTrial" data-cb-what="Colobri for Mac">Download for Mac</a>
-          <a class="colobri-button" href="download/Colobri-for-Windows-1.5.0.zip" download data-cb-os="win" data-cb-track="StartTrial" data-cb-what="Colobri for Windows">Download for Windows</a>
+          <a class="btn solid" href="download/Colobri-for-Mac-1.6.0.zip" download data-cb-os="mac" data-cb-track="StartTrial" data-cb-what="Colobri for Mac">Download for Mac</a>
+          <a class="alt" href="download/Colobri-for-Windows-1.6.0.zip" download data-cb-os="win" data-cb-track="StartTrial" data-cb-what="Colobri for Windows">Download for Windows</a>
         </div>
-        <a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Buying%20Colobri" data-cb-buy data-cb-track="InitiateCheckout">Buy for €59</a>
+        <a class="btn line" href="mailto:me@davidhjalmarlindberg.com?subject=Buying%20Colobri" data-cb-buy data-cb-track="InitiateCheckout">Buy for €59</a>
         <p class="fine">Both are the free trial. For Mac: Premiere Pro, DaVinci Resolve Studio and Final Cut Pro. For Windows: Premiere Pro and DaVinci Resolve Studio. Each has an installer for each editor; start with Read me first. Rather not install anything? <a href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Open Colobri in your browser</a>: the same trial, and the same licence unlocks it.</p>
         <p class="fine" data-cb-interim>Checkout opens shortly. Until then, Buy writes to me@davidhjalmarlindberg.com, and you get the link to buy the moment it opens.</p>
         <p class="fine">The price includes VAT. Checkout is by Lemon Squeezy, our reseller: card, PayPal, Apple Pay or Google Pay. Not for you? Write within 14 days for a full refund. <a href="terms/">Terms</a> · <a href="privacy/">Privacy</a></p>
@@ -789,7 +795,7 @@ footer .legal a:hover { color: var(--ink); }
     <div class="bird rise" id="endBird" aria-hidden="true"></div>
     <h2 id="end-title" class="rise">Your next frame<br> has ten looks in it.</h2>
     <div class="ctas rise">
-      <a class="colobri-button" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
+      <a class="btn solid" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
       <a class="more" href="#pricing">Get the plugins<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
     <p class="fine rise">Runs in your browser. Free for 7 days, then €59 once.</p>

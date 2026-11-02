@@ -11,7 +11,8 @@
                         radii (in pixels; the opening's light since round 14: bigger, smoother, subtler, with no edge anywhere). With
                         `anchor` the canvas is sized in pixels and stays centred on the bird while the box changes size (at(canvas, cx,
                         cy)), so it is never stretched while it waits to be painted again
-     grow(o)            the opening: the bird grows from `from` (0.5) of its size to full over `dur` (2000) ms on a very soft ease in and
+     grow(o)            (not used since round 19: David did not like the zoom; the openings now come into focus in CSS)
+                        the opening: the bird grows from `from` (0.5) of its size to full over `dur` (2000) ms on a very soft ease in and
                         out (cubic-bezier .65, 0, .32, 1), by its padding, so its haze grows with it and the canvas never shows as a
                         shape; o.step(s) is called each frame with the bird's share of its full size, o.done() at the end. It returns
                         { hold(ms), go(), finish() } (hold stops it at that moment, for tests and screenshots)
@@ -22,8 +23,10 @@
                         at 1/k of the box's size and `scale` times the bird's size, scaled back up and blurred in CSS (by blurBw of the
                         bird's width), so the light has the bird's own colors and moves as it moves. It returns { el, start(L, gs),
                         place(L, gs), follow(canvas), sync(logo), logo, destroy() }: follow passes the bird's pointer on to the light, so
-                        its colors drag after the pointer as the bird's do; sync sets the light to the bird's moment. The caller sets
-                        its strength (opacity) and its falloff (bellMask). L is { w, h, bw, cx, cy }, gs the bird's share of its size
+                        its colors drag after the pointer as the bird's do (and with the logo 2.x a click carries the next look through
+                        both); sync sets the light to the bird's moment (1.1 only); o.seed gives a 2.x light the bird's order of looks.
+                        The caller sets its strength (opacity) and its falloff (bellMask). L is { w, h, bw, cx, cy }, gs the bird's share
+                        of its size
      bellMask(el, o)    a smooth round falloff for a light, as a CSS mask: full at the bird ({ cx, cy }), easing out like a bell
                         (strongest at the bird, less and less further out) to nothing at the radii { rx, ry }, and arriving there flat,
                         so no edge shows anywhere
@@ -180,8 +183,10 @@
     host.appendChild(el);
     let logo = null, L = null, gs = 1, unfollow = null;
     const pad = () => Math.max(0, Math.min(2, (BIRD_W * Math.min(L.w / FIT_W, L.h / FIT_H) / Math.max(1, scale * L.bw * gs) - 1) / 2));
-    // (the logo's own middle sits a little left of the bird's light: moved right by 2.3% of the bird's width, as the bird is)
-    const pos = () => [(L.cx + 0.0232 * L.bw) / Math.max(1, L.w), L.cy / Math.max(1, L.h)];
+    // (the logo's own middle sits a little left of the bird's light: moved right by 2.3% of the bird's width, as the bird is; o.dx gives
+    // the bird's own share when it is another, as the logo 2.x's is)
+    const dx = o.dx == null ? 0.0232 : +o.dx;
+    const pos = () => [(L.cx + dx * L.bw) / Math.max(1, L.w), L.cy / Math.max(1, L.h)];
     function place(nL, g) {
       L = nL; if (g != null) gs = g;
       el.style.width = Math.max(1, L.w / k) + 'px'; el.style.height = Math.max(1, L.h / k) + 'px';
@@ -195,7 +200,8 @@
         place(nL, g);
         // (interactive only for the pointer the bird passes on (follow): the light itself never takes a pointer; one pixel per CSS pixel
         // of the small copy is plenty under the blur)
-        try { logo = window.ColobriLogo.create(el, { background: 'transparent', interactive: true, padding: pad(), position: pos(), motion: o.motion == null ? 0.6 : o.motion, startTime: o.startTime == null ? 6 : o.startTime, fadeIn: 0, ariaLabel: '', maxPixelRatio: 1, respectReducedMotion: o.respectReducedMotion }); }
+        // (o.seed: with the logo 2.x, the bird's own seed, so the light moves through the same looks in the same order)
+        try { logo = window.ColobriLogo.create(el, { background: 'transparent', interactive: true, padding: pad(), position: pos(), motion: o.motion == null ? 0.6 : o.motion, startTime: o.startTime == null ? 6 : o.startTime, fadeIn: 0, ariaLabel: '', maxPixelRatio: 1, respectReducedMotion: o.respectReducedMotion, seed: o.seed }); }
         catch (e) { logo = null; }
         if (logo && logo.supported === false) { try { logo.destroy(); } catch (e) { /* (never started) */ } logo = null; }
         return !!logo;
@@ -211,7 +217,86 @@
         POINTER.forEach(t => src.addEventListener(t, pass, { passive: true }));
         unfollow = () => { POINTER.forEach(t => src.removeEventListener(t, pass)); unfollow = null; };
       },
-      sync(bird) { if (logo && bird && bird.getTime) { try { logo.setTime(bird.getTime()); } catch (e) { /* (next time) */ } } },
+      // (the 1.1 logo only: setting a 2.x logo's time would drop the looks a click has carried, and the two run together anyway)
+      sync(bird) { if (logo && bird && bird.getTime && typeof bird.getLook !== 'function') { try { logo.setTime(bird.getTime()); } catch (e) { /* (next time) */ } } },
+      get logo() { return logo; },
+      destroy() { if (unfollow) unfollow(); if (logo) { try { logo.destroy(); } catch (e) { /* (let go regardless) */ } logo = null; } el.remove(); },
+    };
+  }
+  // ---- the sky (round 19, David: the background gradient "even softer and bigger so no area of the window is not touched by the
+  // gradient even if it's less towards the edges because of the fade, but fade should be even longer so it reaches longer", some of it
+  // may go out of frame; and its colors and movement connected to the bird): his After Effects frame of it, made live. On the window's
+  // own ground (painted again as the sky's base, so the bloom adds its light to it), and reaching `margin` (of the window's larger
+  // side) past every edge:
+  //   the blue   one deep blue (the hue of the bird's glow in its look now), opaque c0 at the bird, e0 at the nearer pair of the
+  //              window's mid-edges and k0 at its farthest corner, through a smooth falloff fitted to those three (c0 e^-(d/s)^p), so
+  //              it touches every part of the window and is faintest at its corners
+  //   the bloom  the bird a second time, `scale` its size, as light only (grayscale, lifted by `lift`), very soft (blurred by blurBw
+  //              of the bird's width), in the same blue at full color, added as light (screen) at `bloom`: the glow round the bird,
+  //              shaped like it; it flexes, swells, brightens with its looks and its ripples and follows the pointer as the bird does
+  //              (the bird's seed and time, and its pointer passed on by follow)
+  // sky(host, o) returns { el, start(L), place(L), follow(canvas), tint([hue, sat]), logo, destroy() }; L is { w, h, bw, cx, cy } and
+  // o.dx the bird's own offset (see live). Fitted to David's frame (1 Nov, 23:53), measured round the bird in the bird's widths and at
+  // the window's edges and corners: the blue c0 0.3, e0 0.12, k0 0.025; the bloom 1.45 times the bird, blurred by 0.42 of its width,
+  // lifted 1.5, at full strength; the hue the glow's + 8 (248 for the original look, whose glow is 240; the frame's blue is 251).
+  const hsv = (h, s, v) => { const f = n => { const k = (n + h / 60) % 6; return v * (1 - s * Math.max(0, Math.min(k, 4 - k, 1))); }; return [f(5), f(3), f(1)].map(x => Math.round(255 * x)); };
+  function sky(host, o) {
+    o = o || {};
+    const k = o.k || 5, scale = o.scale || 1.45, blurBw = o.blurBw == null ? 0.42 : o.blurBw, dx = o.dx == null ? 0.0232 : +o.dx;
+    const c0 = o.c0 || 0.3, e0 = o.e0 || 0.12, k0 = o.k0 || 0.025, hueAdd = o.hueAdd == null ? 8 : o.hueAdd, lift = o.lift || 1.5;
+    const el = document.createElement('div'); el.className = o.className || 'cl-sky'; el.setAttribute('aria-hidden', 'true');
+    // (on its own ground, the window's, so the bloom is added as light to the ground and the blue: a blend mode only reaches as far
+    // as the nearest group, and the opening's light fades in as one)
+    const gnd = o.ground || ground(host);
+    Object.assign(el.style, { position: 'absolute', pointerEvents: 'none', isolation: 'isolate', background: 'rgb(' + gnd.join(',') + ')' });
+    const blue = document.createElement('div'); Object.assign(blue.style, { position: 'absolute', inset: '0' }); el.appendChild(blue);
+    const bloom = document.createElement('div'); Object.assign(bloom.style, { position: 'absolute', inset: '0', isolation: 'isolate', mixBlendMode: 'screen', opacity: String(o.bloom == null ? 1 : o.bloom), background: '#000' });
+    const copy = document.createElement('div'); Object.assign(copy.style, { position: 'absolute', left: '0', top: '0', transformOrigin: '0 0', transform: 'scale(' + k + ')' });
+    const tintEl = document.createElement('div'); Object.assign(tintEl.style, { position: 'absolute', inset: '0', mixBlendMode: 'multiply', background: 'rgb(var(--sky-b, 34 0 255))' });
+    bloom.appendChild(copy); bloom.appendChild(tintEl); el.appendChild(bloom);
+    host.appendChild(el);
+    let logo = null, L = null, S = null, unfollow = null, lastTint = '';
+    const pad = () => Math.max(0, Math.min(2, (BIRD_W * Math.min(S.w / FIT_W, S.h / FIT_H) / Math.max(1, scale * L.bw) - 1) / 2));
+    const pos = () => [(S.cx + dx * L.bw) / Math.max(1, S.w), S.cy / Math.max(1, S.h)];
+    function place(nL) {
+      L = nL; const m = Math.round((o.margin == null ? 0.25 : o.margin) * Math.max(L.w, L.h));
+      S = { w: L.w + 2 * m, h: L.h + 2 * m, cx: L.cx + m, cy: L.cy + m };
+      Object.assign(el.style, { left: -m + 'px', top: -m + 'px', width: S.w + 'px', height: S.h + 'px' });
+      Object.assign(copy.style, { width: S.w / k + 'px', height: S.h / k + 'px', filter: 'grayscale(1) brightness(' + lift + ') blur(' + (blurBw * L.bw / k).toFixed(2) + 'px)' });
+      // (the blue's falloff, round the bird: c0 there, e0 at the nearer pair of mid-edges (the top and bottom of a wide window), k0 at the
+      // farthest corner, and on out past them; in David's frame the far mid-edges come out between, at 0.06)
+      const dE = Math.min(Math.max(L.cx, L.w - L.cx), Math.max(L.cy, L.h - L.cy)), dC = Math.hypot(Math.max(L.cx, L.w - L.cx), Math.max(L.cy, L.h - L.cy)), R = Math.hypot(S.w, S.h);
+      const p = Math.max(0.6, Math.log(Math.log(c0 / k0) / Math.log(c0 / e0)) / Math.log(Math.max(1.01, dC / dE))), s = dE / Math.pow(Math.log(c0 / e0), 1 / p);
+      const stops = []; for (let i = 0; i <= 32; i++) { const d = i / 32 * R; stops.push('rgb(var(--sky-a, 33 10 180) / ' + (c0 * Math.exp(-Math.pow(d / s, p))).toFixed(4) + ') ' + (i / 32 * 100).toFixed(2) + '%'); }
+      blue.style.background = 'radial-gradient(' + Math.round(R) + 'px ' + Math.round(R) + 'px at ' + Math.round(S.cx) + 'px ' + Math.round(S.cy) + 'px, ' + stops.join(', ') + ')';
+      if (logo) { logo.setPadding(pad()); logo.setPosition(pos()); }
+    }
+    function tint(g) {   // (g: the glow's [hue, saturation] in the bird's look now)
+      const h = ((g && isFinite(g[0]) ? +g[0] : 240) + hueAdd) % 360, a = hsv(h, 0.94, 0.71).join(' '), b = hsv(h, 1, 1).join(' '), key = a + '/' + b;
+      if (key === lastTint) return; lastTint = key;
+      el.style.setProperty('--sky-a', a); el.style.setProperty('--sky-b', b);
+    }
+    const POINTER = ['pointermove', 'pointerenter', 'pointerdown', 'pointerup', 'pointercancel', 'pointerleave'];
+    return {
+      el,
+      start(nL) {
+        place(nL); tint(null);
+        try { logo = window.ColobriLogo.create(copy, { background: 'transparent', interactive: true, padding: pad(), position: pos(), motion: o.motion == null ? 0.6 : o.motion, startTime: o.startTime || 0, seed: o.seed, fadeIn: 0, ariaLabel: '', maxPixelRatio: 1, respectReducedMotion: o.respectReducedMotion }); }
+        catch (e) { logo = null; }
+        if (logo && logo.supported === false) { try { logo.destroy(); } catch (e) { /* (never started) */ } logo = null; }
+        if (!logo) bloom.remove();   // (the blue alone, then)
+        return true;
+      },
+      place, tint,
+      follow(src) {
+        if (unfollow) unfollow();
+        const pass = e => {
+          if (!logo || !logo.canvas || typeof PointerEvent === 'undefined') return;
+          try { logo.canvas.dispatchEvent(new PointerEvent(e.type, { clientX: e.clientX, clientY: e.clientY, pointerType: e.pointerType, pointerId: e.pointerId, isPrimary: e.isPrimary })); } catch (x) { /* (the bloom just doesn't follow) */ }
+        };
+        POINTER.forEach(t => src.addEventListener(t, pass, { passive: true }));
+        unfollow = () => { POINTER.forEach(t => src.removeEventListener(t, pass)); unfollow = null; };
+      },
       get logo() { return logo; },
       destroy() { if (unfollow) unfollow(); if (logo) { try { logo.destroy(); } catch (e) { /* (let go regardless) */ } logo = null; } el.remove(); },
     };
@@ -224,5 +309,5 @@
     const g = 'radial-gradient(' + Math.round(o.rx) + 'px ' + Math.round(o.ry) + 'px at ' + Math.round(o.cx) + 'px ' + Math.round(o.cy) + 'px, ' + stops.join(', ') + ')';
     el.style.webkitMaskImage = g; el.style.maskImage = g;
   }
-  window.ColobriLight = { sm, edge, glow, at, grow, bezier, dither, ground, live, bellMask };
+  window.ColobriLight = { sm, edge, glow, at, grow, bezier, dither, ground, live, sky, bellMask };
 })();

@@ -100,12 +100,17 @@
     if (c === 'yes') load(); else if (c == null) ask();
   }
   // ------------------------------------------------------------------------------------------------ the downloads
-  // the download for this visitor's system first (Download for Mac, Download for Windows: data-cb-os)
+  // the download for this visitor's system first, as the light pill, and the other system's as words beside it (Download for Mac,
+  // Download for Windows: data-cb-os; the page has Mac's first)
   function order() {
     var plat = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '', win = /win/i.test(plat) || /Windows NT/.test(navigator.userAgent || '');
     if (!win) return;
     var wins = document.querySelectorAll('[data-cb-os="win"]');
-    for (var i = 0; i < wins.length; i++) { var mac = wins[i].parentNode.querySelector('[data-cb-os="mac"]'); if (mac) wins[i].parentNode.insertBefore(wins[i], mac); }
+    for (var i = 0; i < wins.length; i++) {
+      var w = wins[i], mac = w.parentNode.querySelector('[data-cb-os="mac"]'); if (!mac) continue;
+      var wc = w.className, mc = mac.className; w.className = mc; mac.className = wc;   // (the light pill goes with the visitor's system)
+      w.parentNode.insertBefore(w, mac);
+    }
   }
   function ready() { order(); wire(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready); else ready();
