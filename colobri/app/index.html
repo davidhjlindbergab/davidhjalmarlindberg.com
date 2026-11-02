@@ -652,6 +652,7 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
    (genbird.js, ColobriLight.sky; its word, .gen-t, is above it already); and the still for views without WebGL2 is the kit's 2.1
    still (the logo at padding 0, centred), the bird 69% across with its light's middle in the middle, as the 1.1 still was */
 .gen-air { overflow: hidden; }   /* (the sky reaches past the window's edges; the window keeps it) */
+.gen-air .cl-sky { animation: hero-fade .9s cubic-bezier(.25, .1, .25, 1) both; }   /* (it wakes with its bird, once the dock is up) */
 .gen-img { width: 95.1%; transform: translate(-48.3%, -50%); }
 
 /* ---------------- the bird's whole window (David, 2 Nov, 00:40: "remove the entire bottom window where it was so at first we can have a
@@ -6818,9 +6819,12 @@ window.ColobriHuesData = {"original":{"anchors":[[198.0,0.3],[224.0,0.88],[258.0
     placeLight();
     if (logo && !flatOn) { if (HUES()) HUES().follow(logo); startSky(); placeLight(); }
   }
+  // (in the browser app the bird wakes once the dock has rolled up into its place as the frame opens (web-light.css, 0.75 s): its start
+  // takes the main thread for a moment, which would hold the roll up half way)
+  let wait = 0;
   function readState() {
     const nowOn = !btn.disabled || btn.classList.contains('busy'), nowBusy = btn.classList.contains('busy');
-    if (nowOn && !logo && !flatOn) make();
+    if (nowOn && !logo && !flatOn) { if (!V2) make(); else if (!wait) wait = setTimeout(() => { make(); on = busy = false; readState(); }, 900); }   // (then it wakes with its ripple)
     if (logo) {
       if (nowOn && !on) both(l => l.ripple());                                                  // the frame is open: it wakes
       if (nowBusy && !busy) both(l => { l.setSpeed(2); l.setMotion(0.85); });                    // composing looks
