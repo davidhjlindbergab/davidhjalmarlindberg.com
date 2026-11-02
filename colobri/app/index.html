@@ -660,23 +660,23 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
    Until a frame is open there is no dock: the viewer reaches the window's foot, the bird stands in the middle of it, and under its
    light (--hero-floor and --bird-w, from hero.js) its words: "Drop a clip to begin", and quieter, "or choose a file", which opens the
    chooser (on a touch screen, where nothing is dropped: "Open a clip to begin", "choose a file"). They come in once the bird is in
-   focus. When a frame opens the words fade with the bird and the dock rolls up into its place as the viewer settles above it, the
-   Generate bird and the strip riding up on its edge as they come in; on a phone the viewer eases from the whole screen to the frame's
-   height and the dock comes up under it. */
+   focus. When a frame opens the viewer gives way to the dock at once, so the frame is drawn once, at its place; the bird, its sky and
+   its words stay where they were as they fade (hero.js holds them), and the dock rolls up over them from the window's foot (0.75 s, a
+   transform the compositor runs, so the first drawing of the frame cannot hold it up), its Generate window and strip coming up from
+   nothing on it; the Generate bird wakes in it once it is up (genbird.js). On a phone the dock comes up under the frame. */
 @media (min-width: 861px) {
-  .app { transition: grid-template-rows .75s cubic-bezier(.25, .8, .25, 1); }
   .app:not(.has-src) { grid-template-rows: 54px minmax(0, 1fr) 0px; }
-  .dock { overflow: hidden; align-items: flex-start; transition: border-color .75s cubic-bezier(.25, .8, .25, 1); }
-  .dock > .launch, .dock > .shelf { height: calc(var(--dock-h) - 1px); }   /* (their own height as the row grows, so they ride up on its edge) */
   .app:not(.has-src) .dock { border-top-color: transparent; }
-  .app.has-src .dock > .launch, .app.has-src .dock > .shelf { animation: dock-in .65s cubic-bezier(.25, .1, .25, 1) .12s both; }
+  .app.has-src .dock { animation: dock-roll .75s cubic-bezier(.25, .8, .25, 1) both; }
+  .app.has-src .dock > .launch, .app.has-src .dock > .shelf { animation: dock-in .6s cubic-bezier(.25, .1, .25, 1) .15s both; }
 }
 @media (max-width: 860px) {
   .app:not(.has-src) .viewer { height: calc(100vh - var(--bar-h, 96px)); height: calc(100svh - var(--bar-h, 96px)); min-height: 360px; }
   .app:not(.has-src) .dock { display: none; }
-  .viewer { transition: height .75s cubic-bezier(.25, .8, .25, 1); }
-  .app.has-src .dock { animation: dock-up .7s cubic-bezier(.25, .8, .25, 1) .12s both; }
+  .app.has-src .dock { animation: dock-up .7s cubic-bezier(.25, .8, .25, 1) .1s both; }
 }
+.dock { position: relative; z-index: 3; }   /* (over the bird and its words as they fade) */
+@keyframes dock-roll { from { transform: translateY(100%); } to { transform: none; } }
 @keyframes dock-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes dock-up { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 /* the words: the system's light display face, a little under white, the second line half as bright, both sized for the bird */
@@ -701,8 +701,8 @@ kbd { font-family: var(--f-ui); font-size: var(--t-xs); color: var(--ink); backg
 @keyframes es-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @keyframes es-out { from { opacity: 1; } to { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .app, .dock, .viewer { transition: none; }
-  .app.has-src .dock, .app.has-src .dock > .launch, .app.has-src .dock > .shelf { animation: none; }
+  .app.has-src .dock { animation: hero-fade .4s ease both; }
+  .app.has-src .dock > .launch, .app.has-src .dock > .shelf { animation: none; }
   .viewer .es-sky { animation: hero-fade .6s ease both; }
 }
 </style>
@@ -6880,7 +6880,8 @@ window.ColobriHuesData = {"original":{"anchors":[[198.0,0.3],[224.0,0.88],[258.0
    on the bird no longer opens a file (David: people should be able to click, hover and drag over it); dropping a file on it still
    opens it. And since David's note at 00:40 (2 Nov) the browser app gives the bird the whole window before a frame is open (no dock
    under it; "Drop a clip to begin, or choose a file" in the viewer, under the bird's light: --hero-floor, set here); when a frame
-   opens the dock rises into its place and the bird, fading, settles with the viewer above it (web-light.css). */
+   opens the viewer gives way to the dock at once, and the dock rolls up over the bird, its sky and its words, which stay where they
+   are as they fade (leave, below; web-light.css). */
 (function () {
   'use strict';
   const viewer = document.getElementById('viewer'), app = document.getElementById('app'), es = document.getElementById('emptyState');
@@ -7014,8 +7015,7 @@ window.ColobriHuesData = {"original":{"anchors":[[198.0,0.3],[224.0,0.88],[258.0
     if (logo && !flatOn) { if (HUES()) HUES().follow(logo); startLight(); }
   } else flat();
   place();
-  // (and on while it fades as a frame opens: in the browser app the viewer settles as the dock rises, and the bird and its sky with it)
-  if ('ResizeObserver' in window) new ResizeObserver(() => { if (!wrap.isConnected) return; L = layout(); place(); }).observe(viewer);
+  if ('ResizeObserver' in window) new ResizeObserver(() => { if (gone) return; L = layout(); place(); }).observe(viewer);
   if (reduce.addEventListener) reduce.addEventListener('change', () => { const m = drag || busy ? 0.85 : MOTION(); if (logo) logo.setMotion(m); if (light && light.logo) light.logo.setMotion(m); });
 
   // ---- what it answers
@@ -7039,6 +7039,14 @@ window.ColobriHuesData = {"original":{"anchors":[[198.0,0.3],[224.0,0.88],[258.0
   // ---- a frame is open: one more ripple, the screen fades to the frame, and everything here is let go
   function leave() {
     if (gone) return; gone = true; clearTimeout(glowTimer); intro = false;
+    // (the bird, its sky and the browser app's words under it stay just where they are while they fade, even as the viewer gives way
+    // at once to the dock, which rolls up over them (web-light.css): held at the viewer's place and the size they were laid out for, L)
+    {
+      const vr = viewer.getBoundingClientRect(), floor = parseFloat(viewer.style.getPropertyValue('--hero-floor')) || 0;
+      const hold = (e, top, h) => Object.assign(e.style, { position: 'fixed', left: vr.left + 'px', top: top + 'px', width: L.w + 'px', height: h + 'px', right: 'auto', bottom: 'auto' });
+      hold(wrap, vr.top, L.h);
+      if (es && es.classList.contains('es-sky') && !es.hidden && floor) hold(es, vr.top + floor, Math.max(0, L.h - floor));
+    }
     [logo, light && light.logo].forEach(l => { if (l) { l.ripple(); l.setSpeed(1.4); } });
     wrap.classList.add('out');
     setTimeout(() => { if (logo) { if (HUES()) HUES().drop(logo); try { logo.destroy(); } catch (e) { /* (let go regardless) */ } logo = null; } stopLight(); wrap.remove(); glow.width = glow.height = 0; }, reduce.matches ? 0 : 700);
