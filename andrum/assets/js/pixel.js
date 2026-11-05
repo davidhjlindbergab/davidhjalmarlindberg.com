@@ -5,7 +5,7 @@
    and Lead on "Tell me when it's on sale". */
 (function () {
   'use strict';
-  var PIXEL_ID = '4475247569405091';   // the Meta pixel in the David HJ Lindberg AB business portfolio (as in colobri/site.js). Empty: no banner, no pixel.
+  var PIXEL_ID = '4475247569405091';   // the Meta pixel, the dataset named davidhjalmarlindberg.com in the David HJ Lindberg AB business portfolio (as in colobri/site.js). Empty: no banner, no pixel.
   var KEY = 'colobri.cookies';         // 'yes' or 'no': the visitor's choice, kept in this browser (the key the Colobri pages use)
   var PRODUCT = { content_name: 'Andrum', content_type: 'product', value: 59, currency: 'EUR' };
 
