@@ -1,2 +1,2 @@
-c7e7fa0e64e5e7e2a0b58891b8c4bd1a48aaea9b4d18ea65fab97d14846c5250  Colobri-for-Mac-1.6.0.zip
-c7c76f945d8c6274f343d651416d8a730d9eeefefbbbf02bf086b91b77b09461  Colobri-for-Windows-1.6.0.zip
+7145b1a0715a348f788bc53ea8547d79b321eedbded9b058c3a2d6a44a4ffbf6  Colobri-for-Mac-1.6.1.zip
+dca0232ff16134bdfa2c92b50e904aa6778999422728ad54b9b1c67429c58555  Colobri-for-Windows-1.6.1.zip
