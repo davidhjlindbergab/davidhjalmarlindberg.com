@@ -260,6 +260,8 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .foot__logo img { width: 146px; height: auto; }
 .foot p { font-size: 15px; max-width: 46em; }
 .foot .fine { font-size: 13px; }
+.foot__btn { padding: 0; border: 0; background: none; color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 0.2em; text-decoration-color: rgba(243, 245, 249, 0.35); cursor: pointer; }
+.foot__btn:hover { text-decoration-color: currentColor; }
 
 /* the one moment of motion besides the picture: the words arrive once */
 @media (prefers-reduced-motion: no-preference) {
