@@ -20,6 +20,10 @@
      buy                 a click on Buy (and Andrum's in-app Buy button, which opens /andrum/buy/)
      notify              a click on "Tell me when it's on sale"
      mail, out           a click on an e-mail link, or on a link to another site
+     use, exp            in Colobri in the browser (/colobri/app/): a frame or a clip opened, Generate and variations made
+                         (use: bild, klipp, generera, variationer), and each export by kind (exp: lut, capcut, png, jpg,
+                         klipp). The app hands them over through window.colobriStat (its tally()); what it did before this
+                         file ran waits in window.__colobriStats. Nothing about the images is sent.
 
    ?stats=off on any page stops the counting in that browser (a flag in localStorage, set only when
    asked for) and ?stats=on starts it again. ?stats=test sends that page's counts to the sheet's
@@ -165,6 +169,15 @@
       send({ k: 'ev', n: 'out', x: url.hostname.replace(/^www\./, '') });
     }
   }, true);
+
+  // Colobri in the browser counts what is done in it (above): from here on its tally() sends each through window.colobriStat
+  if (/^\/colobri\/app\/$/.test(path)) {
+    var APP = { use: /^(bild|klipp|generera|variationer)$/, exp: /^(lut|capcut|png|jpg|klipp)$/ };
+    var appCount = function (n, x) { if (APP.hasOwnProperty(n) && typeof x === 'string' && APP[n].test(x)) send({ k: 'ev', n: n, x: x }); };
+    var waiting = window.__colobriStats;
+    window.colobriStat = appCount;
+    if (waiting && waiting.length) { for (var i = 0; i < waiting.length; i++) appCount(waiting[i][0], waiting[i][1]); waiting.length = 0; }
+  }
 
   if (document.prerendering) document.addEventListener('prerenderingchange', countView, { once: true });
   else countView();

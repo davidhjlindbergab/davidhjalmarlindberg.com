@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Colobri · Color grading composed for your shot</title>
-<meta name="description" content="Colobri reads your frame and composes ten finished color grades for it in seconds, each named after a hummingbird. Pick one, refine it and put it on your clip in Premiere Pro, DaVinci Resolve, Final Cut Pro or CapCut, or grade right in your browser.">
+<meta name="description" content="Colobri reads your frame and composes ten finished color grades for it in seconds, each named after a hummingbird. Free in your browser: pick one, refine it and export it as a LUT for Premiere Pro, DaVinci Resolve, Final Cut Pro or CapCut, as a still or as the graded clip.">
 <meta name="theme-color" content="#0a0a0a">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/colobri/">
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="Colobri">
 <meta property="og:title" content="Colobri · Color grading composed for your shot">
-<meta property="og:description" content="Ten finished looks for your frame in seconds, each named after a hummingbird. In your browser, and in Premiere Pro, DaVinci Resolve, Final Cut Pro and CapCut.">
+<meta property="og:description" content="Ten finished looks for your frame in seconds, each named after a hummingbird. Free in your browser, with every export.">
 <meta property="og:url" content="https://davidhjalmarlindberg.com/colobri/">
 <meta property="og:image" content="https://davidhjalmarlindberg.com/colobri/images/colobri-og.jpg">
 <meta property="og:image:width" content="1200">
@@ -109,13 +109,9 @@ section { position: relative; }
 .btn:active { transform: scale(0.985); }
 .btn.solid { background: var(--ink); color: #000; }
 .btn.solid:hover { background: #fff; }
-/* (the buttons, David 2 Nov: the one thing to do next is the light pill above, as wide as its words, its sides half its height; the
-   other download is quiet words beside it; a small light pill in the bar; Buy a dark pill with a hairline until checkout opens) */
+/* (the buttons, David 2 Nov: the one thing to do next is the light pill above, as wide as its words, its sides half its height; a small
+   light pill in the bar) */
 .btn.small { min-height: 36px; padding: 0 18px; font-size: 14px; }
-.btn.line { background: transparent; border: 1px solid var(--line-2); padding: 0 calc(max(48px, 1em) / 2 - 1px); }
-.btn.line:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.24); }
-.alt { display: inline-flex; align-items: center; gap: 7px; min-height: 48px; color: var(--ink-2); font-size: 17px; text-decoration: underline; text-decoration-color: rgba(245, 245, 247, 0.28); text-underline-offset: 5px; transition: color .25s var(--ease), text-decoration-color .25s var(--ease); }
-.alt:hover { color: var(--ink); text-decoration-color: rgba(245, 245, 247, 0.6); }
 .btn svg { width: 17px; height: 17px; flex: none; }
 .more { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--link); font-size: 17px; text-decoration: none; }
 .more svg { width: 15px; height: 15px; transition: transform .3s var(--ease); }
@@ -353,7 +349,7 @@ section { position: relative; }
 @media (max-width: 620px) { .feats { grid-template-columns: 1fr; gap: 32px; } }
 
 /* ------------------------------------------------------------------ editors and the details */
-/* (the three plugins in a row, then CapCut and the browser: six columns, three items of two, then two of three) */
+/* (the three editors in a row, then CapCut and the browser: six columns, three items of two, then two of three) */
 .eds { list-style: none; margin: 0 0 clamp(64px, 8vw, 104px); padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
 .eds li { grid-column: span 2; }
 .eds li:nth-child(n+4) { grid-column: span 3; }
@@ -368,21 +364,6 @@ section { position: relative; }
 .spec dt { color: var(--ink); font-weight: 600; font-size: 17px; }
 .spec dd { color: var(--ink-3); font-size: 17px; text-wrap: pretty; }
 @media (max-width: 700px) { .spec { grid-template-columns: 1fr; } .spec dt { padding-bottom: 4px; border-bottom: 0; } .spec dd { padding-top: 0; } }
-
-/* ------------------------------------------------------------------ the licence */
-#pricing { overflow-x: clip; }   /* (the downloads' glow near a phone's edges ends there, never widening the page) */
-.buy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: center; max-width: 1060px; margin: 0 auto; padding: clamp(30px, 5vw, 64px); border-radius: 28px; background: var(--card); }
-.price { margin: 14px 0 0; display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; color: var(--ink-3); font-size: 17px; }
-.price b { font-size: clamp(72px, 8vw, 104px); font-weight: 600; line-height: .95; letter-spacing: -0.016em; color: var(--ink); }
-.incl { list-style: none; margin: 28px 0 0; padding: 0; }
-.incl li { display: flex; gap: 12px; padding: 13px 0; border-top: 1px solid var(--line); color: var(--ink); font-size: 17px; line-height: 1.4; }
-.incl li svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--mark); }
-/* (every button as wide as its words, so the words meet the round ends: David's rule for all pills) */
-.go { display: grid; gap: 14px; justify-items: start; }
-/* (the visitor's own download as the light pill, the other system's as words beside it: site.js swaps them on Windows) */
-.go .dl { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 26px; }
-.go .fine { text-wrap: pretty; }
-@media (max-width: 860px) { .buy { grid-template-columns: 1fr; } }
 
 /* ------------------------------------------------------------------ questions */
 .faq { max-width: 860px; margin: 0 auto; border-top: 1px solid var(--line-2); }
@@ -462,7 +443,6 @@ footer .legal a:hover { color: var(--ink); }
       <a href="#different">Not a preset</a>
       <a href="#how">How it works</a>
       <a href="#editors">Editors</a>
-      <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </nav>
     <a class="btn solid small" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try free</a>
@@ -487,7 +467,7 @@ footer .legal a:hover { color: var(--ink); }
         <a class="btn solid" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
         <a class="more" href="#looks">See it on a frame<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
       </div>
-      <p class="fine">Free for 7 days, then <a href="#pricing">€59 once</a>. No subscription.</p>
+      <p class="fine">Free in your browser, with every export. No account, no card.</p>
     </div>
   </div>
 </section>
@@ -595,9 +575,9 @@ footer .legal a:hover { color: var(--ink); }
       <h2 id="how-title">Three steps.<br> The first two take seconds.</h2>
     </div>
     <ol class="steps rise">
-      <li><span class="n" aria-hidden="true">1</span><div class="lede"><h3>Open a frame.</h3> <p>A still or a clip: camera log, Rec.709, phone footage or AI-generated. Inside Premiere Pro, DaVinci Resolve or Final Cut Pro, Colobri reads the frame under your playhead.</p></div></li>
+      <li><span class="n" aria-hidden="true">1</span><div class="lede"><h3>Open a frame.</h3> <p>A still or a clip: camera log, Rec.709, phone footage or AI-generated. Drop it on Colobri, or choose it on your computer, tablet or phone.</p></div></li>
       <li><span class="n" aria-hidden="true">2</span><div class="lede"><h3>Press Generate.</h3> <p>Ten looks, each from a different family, composed for that exact frame. Press again for ten new ones. No two presses are alike.</p></div></li>
-      <li><span class="n" aria-hidden="true">3</span><div class="lede"><h3>Refine and deliver.</h3> <p>Trim the look the way a colorist would, then export a .cube LUT, a full-resolution still or the graded clip, or put it on the clip in your timeline in one press.</p></div></li>
+      <li><span class="n" aria-hidden="true">3</span><div class="lede"><h3>Refine and deliver.</h3> <p>Trim the look the way a colorist would, then export a .cube LUT for your editor, a full-resolution still or the graded clip.</p></div></li>
     </ol>
     <figure class="shot rise">
       <img src="images/app/colobri-app-1440.webp" srcset="images/app/colobri-app-1440.webp 1440w, images/app/colobri-app-2880.webp 2880w" sizes="(max-width: 1244px) 100vw, 1200px" width="2880" height="1800" alt="The Colobri app with a frame open, a man in a dark suit in a crowded street: the picked look, Coronet 5:6, in the viewer, the other looks in a strip along the bottom, and the scopes, layers and refine controls on the right." loading="lazy" decoding="async">
@@ -696,7 +676,7 @@ footer .legal a:hover { color: var(--ink); }
       <li><b>10</b><span><strong>looks for every frame,</strong> each composed for it, every time you press.</span></li>
       <li><b>65</b><span><strong>points in the LUT</strong> the viewer runs, the same one you export.</span></li>
       <li><b>0</b><span><strong>frames uploaded.</strong> Colobri runs on your device.</span></li>
-      <li><b>7</b><span><strong>days free,</strong> with every feature and no card.</span></li>
+      <li><b>5</b><span><strong>ways to export,</strong> free: LUTs for your editor and for CapCut, PNG and JPEG stills, and the graded clip.</span></li>
     </ul>
     <ul class="feats rise">
       <li><div class="lede"><h3>Composed for this shot.</h3> <p>Every look is built from your frame: its key, its black and white, the color of its neutrals, where the skin is. Nothing is pasted on top of it.</p></div></li>
@@ -713,15 +693,15 @@ footer .legal a:hover { color: var(--ink); }
   <div class="wrap">
     <div class="head split rise">
       <p class="eyebrow">Workflow</p>
-      <h2 id="editors-title">In your editor.<br> In your browser.</h2>
-      <p class="lead"><strong>A panel in Premiere Pro and DaVinci Resolve Studio, an effect in Final Cut Pro, and looks for CapCut.</strong> Colobri reads the frame under your playhead and puts the look on your clip, and your editor renders it, in real time and in the final export.</p>
+      <h2 id="editors-title">In your browser.<br> Into your editor.</h2>
+      <p class="lead"><strong>Colobri runs in your browser, on a Mac, a PC, a tablet or a phone, with nothing to install.</strong> Export the look as a .cube LUT and it goes on your clip in Premiere Pro, DaVinci Resolve and Final Cut Pro, or as a LUT for CapCut.</p>
     </div>
     <ul class="eds rise">
-      <li><span class="kind">Panel</span><h3>Premiere Pro</h3><p>2025 (25.6) or later, on a Mac or a PC. Adds Lumetri Color to the selected clips and copies the look's LUT, ready to pick under Look.</p></li>
-      <li><span class="kind">Workflow integration</span><h3>DaVinci Resolve Studio</h3><p>Version 18 or later, on a Mac or a PC. Puts the look on a node of the clip, its color group or the whole timeline.</p></li>
-      <li><span class="kind">Effect</span><h3>Final Cut Pro</h3><p>10.6 or later, on macOS 13 Ventura or later. The look is stored in the clip, so it travels with the library and renders in every export.</p></li>
-      <li><span class="kind">LUT</span><h3>CapCut</h3><p>On a Mac or a PC. CapCut takes no plugins, so Colobri saves the look as a LUT for it and shows the three steps that put it on your clip.</p></li>
-      <li><span class="kind">No install</span><h3>Your browser</h3><p>On a Mac, a PC, a tablet or a phone. Open a still or a clip and see every look on it right there, free. With your licence, export them there too.</p></li>
+      <li><span class="kind">LUT</span><h3>Premiere Pro</h3><p>In Lumetri Color, under Creative, choose Browse in the Look menu and pick the .cube.</p></li>
+      <li><span class="kind">LUT</span><h3>DaVinci Resolve</h3><p>Put the .cube in Resolve's LUT folder (Project Settings, Color Management, Open LUT Folder), then right-click a node and pick it under LUT.</p></li>
+      <li><span class="kind">LUT</span><h3>Final Cut Pro</h3><p>Add the Custom LUT effect to the clip, then choose the .cube in the inspector.</p></li>
+      <li><span class="kind">LUT</span><h3>CapCut</h3><p>On a Mac or a PC. Export the LUT for CapCut, and Colobri shows the three steps that put it on your clip.</p></li>
+      <li><span class="kind">No install</span><h3>Your browser</h3><p>On a Mac, a PC, a tablet or a phone. Open a still or a clip, see every look on it, and export the one you pick, free.</p></li>
     </ul>
     <dl class="spec rise">
       <dt>Reads</dt><dd>ARRI LogC3 and LogC4, Sony S-Log3, Canon Log 3, Panasonic V-Log, RED Log3G10, Blackmagic Film Gen 5, Apple Log, DaVinci Intermediate, Rec.709 and sRGB, and AI-generated stills and clips.</dd>
@@ -734,34 +714,6 @@ footer .legal a:hover { color: var(--ink); }
   </div>
 </section>
 
-<section class="sec" id="pricing" aria-labelledby="pricing-title">
-  <div class="wrap">
-    <div class="buy rise">
-      <div>
-        <p class="eyebrow">One licence</p>
-        <h2 id="pricing-title" class="sr">Pricing</h2>
-        <p class="price"><b>€59</b>once, no subscription</p>
-        <ul class="incl">
-          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Colobri in your browser, inside Premiere Pro, DaVinci Resolve Studio and Final Cut Pro, and looks for CapCut</li>
-          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Every Colobri 1.x version</li>
-          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>For you, on up to two computers, Mac or PC</li>
-          <li><svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 9.5 3.5 3.5 7.5-8"/></svg>Free for 7 days first, with every feature and no card</li>
-        </ul>
-      </div>
-      <div class="go">
-        <div class="dl" data-cb-dl>
-          <a class="btn solid" href="download/Colobri-for-Mac-1.6.2.zip" download data-cb-os="mac" data-cb-track="StartTrial" data-cb-what="Colobri for Mac">Download for Mac</a>
-          <a class="alt" href="download/Colobri-for-Windows-1.6.2.zip" download data-cb-os="win" data-cb-track="StartTrial" data-cb-what="Colobri for Windows">Download for Windows</a>
-        </div>
-        <a class="btn line" href="mailto:me@davidhjalmarlindberg.com?subject=Buying%20Colobri" data-cb-buy data-cb-track="InitiateCheckout">Buy for €59</a>
-        <p class="fine">Both are the free trial. For Mac: one installer for DaVinci Resolve Studio and Final Cut Pro, signed and notarized by Apple, and Premiere Pro through Creative Cloud. For Windows: Premiere Pro and DaVinci Resolve Studio, each with its installer. Start with Read me first. Rather not install anything? <a href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Open Colobri in your browser</a> to see its looks on your own frames, free; your licence unlocks exporting there too. The 7-day trial is in the download.</p>
-        <p class="fine" data-cb-interim>Checkout opens shortly. Until then, Buy writes to me@davidhjalmarlindberg.com, and you get the link to buy the moment it opens.</p>
-        <p class="fine">The price includes VAT. Checkout is by Lemon Squeezy, our reseller: card, PayPal, Apple Pay or Google Pay. Not for you? Write within 14 days for a full refund. <a href="terms/">Terms</a> · <a href="privacy/">Privacy</a></p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="sec" id="faq" aria-labelledby="faq-title">
   <div class="wrap">
     <div class="head rise">
@@ -769,24 +721,20 @@ footer .legal a:hover { color: var(--ink); }
       <h2 id="faq-title">Good to know.</h2>
     </div>
     <div class="faq rise">
-      <details><summary>How does the free trial work?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
-        <div class="a"><p>For 7 days you get every feature, in every editor and in the web app that comes with the download, with no card. After that Colobri still composes and shows looks, and every look you applied stays on your clips, but exporting and applying looks need a licence. Colobri in your browser on this site shows the looks on your own frames for free, and exports once you add your licence.</p></div></details>
-      <details><summary>How do I get my licence?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
-        <div class="a"><p>Your key arrives by e-mail the moment you buy. Paste it into Colobri once in each editor and browser you use. Colobri checks it online once, then works offline.</p></div></details>
+      <details><summary>Is it really free?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>Yes. Colobri in your browser is free, with every look and every export: LUTs for your editor and for CapCut, full-resolution stills and the graded clip. No account and no card.</p></div></details>
       <details><summary>Does my footage leave my computer?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
-        <div class="a"><p>No. Colobri runs on your device, in your browser or in your editor. Frames are never uploaded, so there is no queue and nothing to wait for.</p></div></details>
+        <div class="a"><p>No. Colobri runs on your device, in your browser. Frames are never uploaded, so there is no queue and nothing to wait for.</p></div></details>
       <details><summary>What footage can I grade?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
         <div class="a"><p>Camera log from ARRI, Sony, Canon, Panasonic, RED, Blackmagic and Apple, DaVinci Intermediate, Rec.709 and sRGB, phone footage, and AI-generated stills and clips. Pick the source and the output once, and the viewer, the scopes and every export follow.</p></div></details>
       <details><summary>Is the look the same in my editor as in Colobri?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
-        <div class="a"><p>Yes. The viewer runs the same 65-point LUT you export, baked from the same code, and the plugins put exactly that look on your clip. No surprises when it lands in Resolve, Premiere Pro, Final Cut Pro or CapCut.</p></div></details>
+        <div class="a"><p>Yes. The viewer runs the same 65-point LUT you export, baked from the same code, so the look lands the same in Resolve, Premiere Pro, Final Cut Pro or CapCut.</p></div></details>
       <details><summary>Does it work with CapCut?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
         <div class="a"><p>Yes, with CapCut on a Mac or a PC. CapCut takes no plugins, so in Colobri choose Export, then LUT for CapCut: Colobri saves the look as a LUT and shows the three steps that put it on your clip, under Adjustment, LUT, Import. CapCut's phone and web apps take only CapCut's own LUTs.</p></div></details>
       <details><summary>What do the names mean?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
         <div class="a"><p>The bird is the look's color, taken from the tint in its shadows (or its highlights, when the shadows are clean): Sylph is teal, Sapphirewing blue, Firecrown ember. Neutral looks are Jacobin when they are punchy and Hermit when they are soft.</p><p>The first number is the key: each step is a third of a stop, 5 is normal. The second is the contrast: each step is about 6.5%, 5 is neutral. When two looks in one set would share a name, a third number tells their saturation apart.</p></div></details>
-      <details><summary>Can I use it on more than one computer?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
-        <div class="a"><p>Yes: one licence is for you, on up to two computers, Mac or PC, in the browser and every editor.</p></div></details>
-      <details><summary>What if it is not for me?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
-        <div class="a"><p>Write within 14 days of buying for a full refund.</p></div></details>
+      <details><summary>Can I use the looks in my work?<svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M9 3v12M3 9h12"/></svg></summary>
+        <div class="a"><p>Yes. What you make with Colobri, the looks, LUTs, stills and clips, is yours to use in any work, commercial work included.</p></div></details>
     </div>
   </div>
 </section>
@@ -797,9 +745,8 @@ footer .legal a:hover { color: var(--ink); }
     <h2 id="end-title" class="rise">Your next frame<br> has ten looks in it.</h2>
     <div class="ctas rise">
       <a class="btn solid" href="app/" data-cb-track="StartTrial" data-cb-what="Colobri in the browser">Try Colobri free</a>
-      <a class="more" href="#pricing">Get the plugins<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
     </div>
-    <p class="fine rise">Free in your browser. Exports and the plugins: 7 days free, then €59 once.</p>
+    <p class="fine rise">Free in your browser, with every export.</p>
   </div>
 </section>
 </main>
