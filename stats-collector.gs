@@ -17,6 +17,9 @@
  *
  * Counts from a page opened with ?stats=test go to the tab "Test" instead.
  *
+ * Colobri in the browser (/colobri/app/, part colobri) also counts what is done in it: the measure "användning" with the key
+ * bild or klipp (a frame or a clip opened), generera or variationer, and "export" with the key lut, capcut, png, jpg or klipp.
+ *
  * After changing this file: paste it into the script, save, then Deploy > Manage deployments >
  * the web app > Edit > Version: New version > Deploy. The /exec address stays the same.
  */
@@ -28,7 +31,7 @@ var DAILY_FOR = 120; // days kept day by day; older days are added up per month
 var DEVICES = { m: 'mobil', t: 'surfplatta', d: 'dator' };
 var BROWSERS = ['Safari', 'Chrome', 'Firefox', 'Edge', 'Opera', 'Samsung Internet', 'Instagram', 'Facebook'];
 var SYSTEMS = ['iOS', 'iPadOS', 'Android', 'macOS', 'Windows', 'Linux', 'ChromeOS'];
-var EVENTS = { dl: 'nedladdning', buy: 'köpklick', notify: 'säg till', mail: 'mejl', out: 'utlänk' };
+var EVENTS = { dl: 'nedladdning', buy: 'köpklick', notify: 'säg till', mail: 'mejl', out: 'utlänk', use: 'användning', exp: 'export' };
 
 function doGet() {
   return ContentService.createTextOutput('Statistik för davidhjalmarlindberg.com tar emot räkningar här.');
