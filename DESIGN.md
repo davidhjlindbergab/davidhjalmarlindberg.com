@@ -36,7 +36,7 @@ Helvetica Neue throughout: `"Helvetica Neue", Helvetica, Arial, sans-serif`. Reg
 | Role | Size | Line height | Letter spacing | Where |
 |---|---|---|---|---|
 | Display | `clamp(64px, 8.35vw, 148px)` | 0.98 | -0.065em | `h1` |
-| Address | the width of the page / 12.4 | 1.1 | -0.055em | the e-mail address in the footer |
+| Address | the width of the page / 12.19 | 1.1 | -0.055em | the e-mail address in the footer |
 | Title | `clamp(36px, 4.6vw, 84px)` | 1.05 | -0.055em | Next project |
 | Lead | `clamp(24px, 2.6vw, 42px)` | 1.25 | -1.1px | a block's first paragraph, figures |
 | Name | 22px, 28px for the two wide projects | 1.2 | -0.65px | project names |
