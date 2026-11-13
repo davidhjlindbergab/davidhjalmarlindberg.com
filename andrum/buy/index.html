@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <!--
   A fixed address for the checkout: Andrum's Buy button, e-mails and links in posts point here, so
-  the checkout can change (test mode to the live store) without a new Andrum. The checkout link is
+  the checkout can change (another store, another link) without a new Andrum. The checkout link is
   also in ../assets/js/store.js: change both together.
 -->
 <link rel="canonical" href="https://davidhjalmarlindberg.com/andrum/">
@@ -20,21 +20,21 @@
 </style>
 <script>
   (function () {
-    var url = "https://davidhjalmarlindberg.lemonsqueezy.com/checkout/buy/a5a37f02-4e39-4237-87ed-7d6af71e3e5b";
+    var url = "https://buy.polar.sh/polar_cl_GzJkmjeg0Qgc7hVDs9MoLwPK0VM4AX0NuDO241KhMyZ";
     var keep = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"], extra = "";
     try {
       var q = new URLSearchParams(window.location.search);
       for (var i = 0; i < keep.length; i++) {
         var v = q.get(keep[i]);
-        if (v) extra += "&" + encodeURIComponent("checkout[custom][" + keep[i] + "]") + "=" + encodeURIComponent(v.slice(0, 120));
+        if (v) extra += "&" + keep[i] + "=" + encodeURIComponent(v.slice(0, 120));
       }
     } catch (e) { /* the plain link is fine */ }
-    window.location.replace(url + "?dark=1" + extra);
+    window.location.replace(url + "?theme=dark" + extra);
   })();
 </script>
-<noscript><meta http-equiv="refresh" content="0; url=https://davidhjalmarlindberg.lemonsqueezy.com/checkout/buy/a5a37f02-4e39-4237-87ed-7d6af71e3e5b"></noscript>
+<noscript><meta http-equiv="refresh" content="0; url=https://buy.polar.sh/polar_cl_GzJkmjeg0Qgc7hVDs9MoLwPK0VM4AX0NuDO241KhMyZ"></noscript>
 </head>
 <body>
-<p>Opening the checkout… If nothing happens, <a href="https://davidhjalmarlindberg.lemonsqueezy.com/checkout/buy/a5a37f02-4e39-4237-87ed-7d6af71e3e5b">continue to the checkout</a>.</p>
+<p>Opening the checkout… If nothing happens, <a href="https://buy.polar.sh/polar_cl_GzJkmjeg0Qgc7hVDs9MoLwPK0VM4AX0NuDO241KhMyZ">continue to the checkout</a>.</p>
 </body>
 </html>

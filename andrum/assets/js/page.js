@@ -390,6 +390,38 @@
         win.classList.replace("btn--ghost", "btn--primary");
       }
     }
+
+    // On a phone or a tablet there is nothing to install: offer to send the page to the computer instead
+    // (the share menu, or a new message in the mail app with the link in it), and let the downloads step back.
+    const ua = navigator.userAgent || "";
+    const handheld = /iPhone|iPod|iPad|Android/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    const send = root.querySelector("[data-an-send]");
+    const link = send && send.querySelector("[data-an-send-link]");
+    if (handheld && link) {
+      send.hidden = false;
+      rows.forEach((row) => { const b = row.querySelector(".btn--primary"); if (b) b.classList.replace("btn--primary", "btn--ghost"); });
+      // The address that is sent: the download on this page. An ad's campaign names travel with it (as they do
+      // with an order, see store.js), so a download or an order on the computer still shows which ad it came from.
+      const page = new URL("https://davidhjalmarlindberg.com/andrum/");
+      try {
+        const q = new URLSearchParams(window.location.search);
+        for (const k of ["utm_source", "utm_campaign", "utm_content", "utm_term"]) {
+          const v = q.get(k);
+          if (v) page.searchParams.set(k, v.slice(0, 120));
+        }
+      } catch (e) { /* the plain address */ }
+      page.searchParams.set("utm_medium", "sent-from-phone");
+      page.hash = "download";
+      const subject = "Andrum: the free 7-day trial", text = "Download Andrum on your Mac or Windows computer:";
+      link.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(text + "\n" + page.href);
+      link.addEventListener("click", (e) => {
+        if (!navigator.share) return;                                          // the mail app
+        e.preventDefault();
+        navigator.share({ title: subject, text: text, url: page.href }).catch((err) => {
+          if (!err || err.name !== "AbortError") window.location.href = link.href;   // sharing isn't allowed here: the mail app
+        });
+      });
+    }
   }
 
   // ------------------------------------------------------------------------------ the clock

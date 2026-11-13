@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lights="down">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Nakãya — David Hjalmar Lindberg</title>
 <meta name="description" content="An AI-born universe of creatures, landscapes and myth.">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/nakaya/">
-<meta name="theme-color" content="#f4f3ef">
+<meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="David Hjalmar Lindberg">
 <meta property="og:title" content="Nakãya — David Hjalmar Lindberg">
@@ -18,7 +18,10 @@
 <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="stylesheet" href="../style.css">
+<script>/* the lights as this page was left (see main.js) */
+(function () { var s = history.state && history.state.lights; if (s === 'up' || s === 'down') document.documentElement.setAttribute('data-lights', s); else if (location.hash === '#work') document.documentElement.setAttribute('data-lights', 'down'); })();</script>
 <script src="/stats.js" defer></script>
+<script src="/main.js" defer></script>
 </head>
 <body class="project-page">
 <header class="masthead wrap">
@@ -43,12 +46,11 @@
     <h1 id="title">Nakãya</h1>
     <div class="intro-note">
       <p>An AI-born universe of creatures, landscapes and myth.</p>
-      <a class="scroll-cue" href="#project" aria-label="Go to the project">↓</a>
     </div>
   </section>
 
   <article class="wrap" id="project" aria-labelledby="title">
-    <div class="section-line"><h2>Worldbuilding &amp; art</h2><span>An original universe · Since 2022</span></div>
+    <div class="section-line"><h2>Worldbuilding &amp; art</h2><span>An original universe</span><span>Since 2022</span></div>
     <div class="image-frame wide hero-frame"><img src="../img/work/nakaya.webp" width="2400" height="1345" alt="A being from Nakãya with a speckled jade crest and great curled, ribbed horns, looking straight ahead." fetchpriority="high" decoding="async"></div>
 
     <section class="block" aria-labelledby="nakaya-about">
@@ -90,9 +92,10 @@
   </article>
 </main>
 
-<footer class="footer wrap" id="contact">
+<footer class="footer wrap" id="contact" data-lights="up">
   <div class="contact-line">
     <p class="eyebrow">For collaborations &amp; conversations</p>
+    <button class="copy" type="button" data-done="Copied" aria-live="polite" hidden>Copy address</button>
     <a class="email" href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>
   </div>
   <div class="colophon">
