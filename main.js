@@ -14,7 +14,7 @@
   if (zones.length) {
     var base = zones[0].getAttribute('data-lights') === 'up' ? 'down' : 'up';
     var theme = document.querySelector('meta[name="theme-color"]');
-    var ground = { up: '#f4f3ef', down: '#000000' };   // the browser's own bars follow the ground
+    var ground = { up: '#f4f3ef', down: '#0c0c0b' };   // the browser's own bars follow the ground
 
     var wanted = function () {
       var vh = window.innerHeight, state = base;

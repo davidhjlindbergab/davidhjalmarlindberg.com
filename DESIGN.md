@@ -8,7 +8,7 @@ This covers the front page, the project pages, Plugins, Privacy and `404.html`, 
 
 **Theme statement:** quiet, luminous, screening room.
 
-**Character:** Words are read on paper and pictures are seen in the dark. A page opens calm and typographic; while the work is on screen the lights go down, the way they do in a cinema or a grading suite; and they come up again for the words at the end. Nothing decorates: one typeface, flat colour, and the pictures carry all the colour there is.
+**Character:** Words are read on paper and pictures are seen in the dark. A page opens calm and typographic; while the work is on screen the lights go down, the way they do in a cinema or a grading suite; and they come up again for the words at the end. Nothing decorates: one typeface, flat paper, a dark that has only a trace of light in it, and the pictures carry the colour.
 
 **References:** the Swiss typographic style (one sans, flush left, flat fields); a cinema's house lights; the neutral dark surround of a colour grading suite; a gallery's wall labels.
 
@@ -18,16 +18,16 @@ Six tokens in two states. `:root` is the paper state; `:root[data-lights="down"]
 
 | Token | Lights up | Lights down | Use |
 |---|---|---|---|
-| `--paper` | `#f4f3ef` | `#000000` | the ground |
+| `--paper` | `#f4f3ef` | `#0c0c0b` | the ground |
 | `--ink` | `#242420` | `#f4f3ef` | headings, names, filled buttons, the focus ring |
 | `--muted` | `#6c6c65` | `#98978f` | captions, labels, small print |
 | `--body-copy` | `#6d6d65` | `#b4b3ab` | paragraphs |
 | `--line` | `#d6d5ce` | `#2b2b28` | hairlines |
-| `--frame` | `#e7e5de` | `#141413` | a picture's place before it has loaded |
+| `--frame` | `#e7e5de` | `#161615` | a picture's place before it has loaded |
 
 - There is no accent colour and there are no status colours: the site has no forms or alerts that would need them.
-- Contrast on the ground: ink 14.0 : 1 and 18.9 : 1, paragraphs 4.7 : 1 and 10.0 : 1, captions 4.8 : 1 and 7.2 : 1 (up and down).
-- The dark ground is true black, so dark pictures have no edge and seem to come out of it.
+- Contrast on the ground: ink 14.0 : 1 and 17.6 : 1, paragraphs 4.7 : 1 and 9.3 : 1, captions 4.8 : 1 and 6.7 : 1 (up and down). On the brightest part of the glow the dark figures are about a fifth lower.
+- The dark ground is nearly black, not black, and it is not flat: two very large, very soft fields of light lie on it, a warm one low on the left (`rgb(96 62 36)`) and a cool one high on the right (`rgb(40 62 104)`), each at no more than 27% strength, under a fine grain that keeps them from banding. They are the room's light, not decoration: keep them this faint, and don't add a third.
 
 ## 3. Typography
 
@@ -73,7 +73,7 @@ Nothing is set smaller than 12px. Headings balance their lines (`text-wrap: bala
 
 ## 6. Depth
 
-None. Colour is flat and nothing casts a shadow (the phones on the Aware page are pictures of objects and keep theirs). The only thing above the page is the Plugins menu (`z-index: 10`).
+None. Nothing casts a shadow (the phones on the Aware page are pictures of objects and keep theirs). The only thing above the page is the Plugins menu (`z-index: 10`).
 
 ## 7. Do and don't
 
@@ -85,7 +85,7 @@ None. Colour is flat and nothing casts a shadow (the phones on the Aware page ar
 - Keep the address in the footer exactly as wide as the page.
 
 **Don't**
-- Add an accent colour, a gradient, a glow or a shadow.
+- Add an accent colour, a shadow, or any gradient or glow besides the two fields of light on the dark ground.
 - Add a second typeface or a bold weight.
 - Join keywords with middle dots, add arrows that only say "scroll", or number things that are not a sequence.
 - Make things slide, bounce or fly in. See Motion.
@@ -118,12 +118,13 @@ What moves is light and focus, never position.
 | Moment | What happens | Timing |
 |---|---|---|
 | A page opens | its headline is pulled into focus (blur to sharp), then its sentence fades in | 1.1s, once |
-| The lights | the ground fades between paper and black; the text turns over in 0.14s as the ground passes mid-grey, so it keeps its contrast | 1.1s down, 0.8s up |
+| The lights | one dissolve: the ground, the words, the lines and the glow fade together, over the same time and on the same curve (`--fade`, `--fade-ease`). Nothing changes on its own or snaps | 1.3s down, 1s up |
+| The dark | its two fields of light drift and turn, too slowly to see | 70s, back and forth |
 | A project is hovered | its picture brightens, takes its full colour and grows 2.5% | 0.55s |
 | From page to page | the pages dissolve, and a project's picture travels from the front page to the top of its page | 0.4s and 0.6s |
 | A link is hovered | a hairline draws under it | 0.25s |
 
-**Reduced motion:** nothing moves or changes size and pages change at once. The lights still fade, because a fade is gentler than a flash.
+**Reduced motion:** nothing moves or changes size, the glow stays still, and pages change at once. The lights still fade, because a fade is gentler than a flash.
 
 ## 11. Voice
 

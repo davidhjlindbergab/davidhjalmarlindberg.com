@@ -3,7 +3,7 @@
    The front page, the project pages, the Plugins page, Privacy and 404.html share this file.
 
    Words are read on paper and pictures are seen in the dark. While the work is on screen the lights go down:
-   the ground turns black and the ink turns to paper. They come up again for the words at the end.
+   the ground turns nearly black, with two faint fields of light on it, and the ink turns to paper. They come up again for the words at the end.
    <html data-lights="down"> is the dark state; main.js sets it from the parts of a page marked data-lights.
    What moves here is light and focus (a fade, a pull into focus, a picture brightening), never a slide or a bounce.
 
@@ -31,33 +31,32 @@
   --radius-lg: clamp(16px, 2.4vw, 42px);
   --ease: cubic-bezier(.25, .8, .25, 1);
 }
-/* the lights are down: black ground, and the paper becomes the ink */
+/* the lights are down: a ground that is nearly black, and the paper becomes the ink */
 :root[data-lights="down"] {
-  --paper: #000;
+  --paper: #0c0c0b;
   --ink: #f4f3ef;
   --muted: #98978f;
   --body-copy: #b4b3ab;
   --line: #2b2b28;
-  --frame: #141413;
+  --frame: #161615;
   color-scheme: dark;
 }
-/* the ground dims over a second, and the words turn over quickly at the moment it passes mid-grey, so they keep their contrast all the way
-   (main.js adds .settled once a page has arrived at its place, so that it never fades, or glides to its #anchor, on arrival) */
+/* the lights change as one slow dissolve: the ground, the words, the lines and the glow all fade together, over the same time and on the same curve,
+   so nothing snaps (main.js adds .settled once a page has arrived at its place, so that it never fades, or glides to its #anchor, on arrival) */
 :root.settled {
   scroll-behavior: smooth;
-  transition: --paper .8s cubic-bezier(.4, 0, .2, 1), --line .8s cubic-bezier(.4, 0, .2, 1), --frame .8s cubic-bezier(.4, 0, .2, 1),
-    --ink .14s linear .22s, --muted .14s linear .22s, --body-copy .14s linear .22s;
+  transition-property: --paper, --ink, --muted, --body-copy, --line, --frame;
+  transition-duration: var(--fade);
+  transition-timing-function: var(--fade-ease);
+  --fade: 1s;
+  --fade-ease: cubic-bezier(.42, 0, .3, 1);
 }
-:root.settled[data-lights="down"] {
-  transition: --paper 1.1s cubic-bezier(.4, 0, .2, 1), --line 1.1s cubic-bezier(.4, 0, .2, 1), --frame 1.1s cubic-bezier(.4, 0, .2, 1),
-    --ink .14s linear .34s, --muted .14s linear .34s, --body-copy .14s linear .34s;
-}
+:root.settled[data-lights="down"] { --fade: 1.3s; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { background: var(--paper); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
   margin: 0;
-  background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
   font-size: 16px;
@@ -65,6 +64,31 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
 }
+/* ---------- the dark is not flat ----------
+   With the lights down, two very large, very soft fields of light lie on the ground, like light spilling from a screen into a dark room:
+   a warm one low on the left and a cool one high on the right. They are faint (the ground stays nearly black) and they drift, slowly.
+   A fine grain over them keeps such dark gradients from showing bands. Both sit behind the page and fade in and out with the lights. */
+body::before, body::after { content: ""; position: fixed; z-index: -1; pointer-events: none; opacity: 0; }
+body::before {
+  inset: -25vmax;
+  background:
+    radial-gradient(ellipse 46% 42% at 30% 66%, rgb(96 62 36 / .27), rgb(96 62 36 / .16) 28%, rgb(96 62 36 / .07) 55%, rgb(96 62 36 / .02) 78%, transparent),
+    radial-gradient(ellipse 44% 40% at 70% 34%, rgb(40 62 104 / .27), rgb(40 62 104 / .16) 28%, rgb(40 62 104 / .07) 55%, rgb(40 62 104 / .02) 78%, transparent);
+  animation: drift 70s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+body::after {
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:root[data-lights="down"] body::before { opacity: 1; animation-play-state: running; }
+:root[data-lights="down"] body::after { opacity: .055; }
+:root.settled body::before, :root.settled body::after { transition: opacity var(--fade) var(--fade-ease); }
+@keyframes drift {
+  from { transform: translate3d(-4%, 2%, 0) rotate(-7deg) scale(1); }
+  to { transform: translate3d(5%, -3%, 0) rotate(9deg) scale(1.12); }
+}
+
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 figure { margin: 0; }
@@ -309,9 +333,11 @@ h3 { position: relative; font-size: 22px; font-weight: 400; line-height: 1.2; le
   *:not(:root) { transition: none !important; }
   .project:hover .image-frame img, .project:focus-visible .image-frame img { transform: none; }
   @view-transition { navigation: none; }
+  body::before { animation: none; }
 }
 
 /* on paper, every page is on paper */
 @media print {
   :root[data-lights="down"] { --paper: #fff; --ink: #242420; --muted: #6c6c65; --body-copy: #6d6d65; --line: #d6d5ce; --frame: #e7e5de; color-scheme: light; }
+  body::before, body::after { display: none; }
 }
