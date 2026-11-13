@@ -348,13 +348,17 @@ a.btn.btn--ghost { height: 58px !important; min-height: 58px !important; box-siz
             <li>14 days to change your mind: your money back, no questions asked</li>
           </ul>
           <div class="buy__actions"><a class="btn btn--primary" href="buy/" data-an-buy>Buy for €59</a></div>
-          <p class="fine">Your licence key arrives by e-mail the moment you pay. <a href="license/">How to add it</a>.</p>
+          <p class="fine">Your licence key appears the moment you pay, and Polar e-mails you a link to it. <a href="license/">How to add it</a>.</p>
         </div>
         <div class="buy__price thanks" data-an-thanks hidden tabindex="-1" aria-labelledby="thanks-title">
           <h3 id="thanks-title">Thank you.</h3>
-          <p>Your licence key is on its way to <strong data-an-thanks-email>your inbox</strong>, in the receipt from Polar.</p>
+          <div class="thanks__key" data-an-key hidden>
+            <span class="thanks__label">Your licence key</span>
+            <div class="thanks__keyrow"><code data-an-key-text></code><button type="button" class="btn btn--ghost" data-an-key-copy data-done="Copied">Copy</button></div>
+          </div>
+          <p data-an-key-wait>Your licence key is on its way. It is also in the e-mail from Polar: click <span class="ui">Access purchase</span> there.</p>
           <ol>
-            <li>Copy the licence key from the receipt.</li>
+            <li>Copy your licence key.</li>
             <li>Open Andrum and click <span class="ui">Trial</span> at the bottom of its window.</li>
             <li>Click <span class="ui">Paste license</span>. Andrum fetches your licence once and works offline from then on.</li>
           </ol>
@@ -422,7 +426,7 @@ a.btn.btn--ghost { height: 58px !important; min-height: 58px !important; box-siz
         </details>
         <details>
           <summary>How do I add my licence?</summary>
-          <p>Right after you pay, Polar e-mails you your receipt and your licence key. Copy the key, open Andrum, click Trial at the bottom of its window, then Paste license. On a computer without internet, <a href="license/#offline">get your licence here</a> and add it as a file.</p>
+          <p>Right after you pay, your licence key appears on this page, and Polar's receipt e-mail links to it (Access purchase). Copy the key, open Andrum, click Trial at the bottom of its window, then Paste license. On a computer without internet, <a href="license/#offline">get your licence here</a> and add it as a file.</p>
         </details>
         <details>
           <summary>Can I use it on more than one computer?</summary>
@@ -438,7 +442,7 @@ a.btn.btn--ghost { height: 58px !important; min-height: 58px !important; box-siz
         </details>
         <details>
           <summary>Who takes the payment?</summary>
-          <p>Polar, which sells Andrum for us as merchant of record. It takes the payment (card, Apple Pay or Google Pay), adds the right VAT or sales tax for your country (the €59 includes it) and e-mails your receipt and your licence key.</p>
+          <p>Polar, which sells Andrum for us as merchant of record. It takes the payment (card, Apple Pay or Google Pay), adds the right VAT or sales tax for your country (the €59 includes it) and e-mails your receipt, with a link to your licence key.</p>
         </details>
         <details>
           <summary>How do I remove Andrum?</summary>
