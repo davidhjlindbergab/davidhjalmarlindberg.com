@@ -13,22 +13,15 @@
   links to) travel with the order as its custom data, so each order shows which campaign it came
   from. Nothing is stored on the visitor's computer for that.
 
-  Measuring ads: put an id into MEASURE and the page asks each visitor once whether it may measure
-  which ads bring people here. Only if they allow it does it load Meta's pixel and/or Google's tag,
-  and report a download (StartTrial), a checkout opened (InitiateCheckout) and a purchase. With
-  MEASURE empty, nothing loads and nobody is asked.
+  Measuring ads is in pixel.js (the Meta pixel, loaded only for visitors who accept it, one question
+  for the whole site). This file tells it when a checkout opens (InitiateCheckout) and when an order
+  is paid (Purchase, with the order's amount); the downloads are counted there.
 */
 (function () {
   "use strict";
 
   var CHECKOUT = "https://davidhjalmarlindberg.lemonsqueezy.com/checkout/buy/a5a37f02-4e39-4237-87ed-7d6af71e3e5b";
   var PRICE = 59, CURRENCY = "EUR";
-  var MEASURE = {
-    metaPixel: "",            // Meta (Facebook and Instagram) pixel id, e.g. "123456789012345"
-    googleTag: "",            // Google tag id: "G-..." (Analytics) or "AW-..." (Google Ads)
-    googleAdsPurchase: "",    // Google Ads conversion for a purchase: "AW-.../..."
-    googleAdsTrial: ""        // Google Ads conversion for a download: "AW-.../..."
-  };
 
   var doc = document;
   var CAMPAIGN = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
@@ -126,99 +119,14 @@
   }
 
   // ---------------------------------------------------------------------------------- measuring ads
-  var CONSENT = "andrum-measure";          // "yes" or "no", once the visitor has chosen
-  var measuring = !!(MEASURE.metaPixel || MEASURE.googleTag);
-  var loaded = false;
-
-  function choice() { try { return window.localStorage.getItem(CONSENT); } catch (e) { return null; } }
-  function remember(v) { try { window.localStorage.setItem(CONSENT, v); } catch (e) { /* asked again next time */ } }
-
-  function loadTags() {
-    if (loaded) return;
-    loaded = true;
-    if (MEASURE.metaPixel) {
-      /* Meta's pixel loader */
-      var f = window.fbq = function () { f.callMethod ? f.callMethod.apply(f, arguments) : f.queue.push(arguments); };
-      if (!window._fbq) window._fbq = f;
-      f.push = f; f.loaded = true; f.version = "2.0"; f.queue = [];
-      var m = doc.createElement("script");
-      m.async = true; m.src = "https://connect.facebook.net/en_US/fbevents.js";
-      doc.head.appendChild(m);
-      window.fbq("init", MEASURE.metaPixel);
-      window.fbq("track", "PageView");
-    }
-    if (MEASURE.googleTag) {
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function () { window.dataLayer.push(arguments); };
-      window.gtag("consent", "default", { ad_storage: "granted", analytics_storage: "granted", ad_user_data: "granted", ad_personalization: "denied" });
-      var g = doc.createElement("script");
-      g.async = true; g.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(MEASURE.googleTag);
-      doc.head.appendChild(g);
-      window.gtag("js", new Date());
-      window.gtag("config", MEASURE.googleTag);
-    }
-  }
-
+  // pixel.js counts for visitors who accepted the Meta pixel, holds a count until a visitor has
+  // answered, and drops it if they declined. Without pixel.js on the page nothing is counted.
   function track(what, o) {
-    if (!loaded) return;
+    var count = window.andrumPixel;
+    if (typeof count !== "function") return;
     o = o || {};
-    var fb = window.fbq, gt = window.gtag;
-    if (what === "trial") {
-      if (fb) fb("track", "StartTrial", { value: 0, currency: CURRENCY });
-      if (gt) {
-        gt("event", "file_download", { file_name: o.file || "", link_text: "Download" });
-        if (MEASURE.googleAdsTrial) gt("event", "conversion", { send_to: MEASURE.googleAdsTrial });
-      }
-    } else if (what === "checkout") {
-      if (fb) fb("track", "InitiateCheckout", { value: PRICE, currency: CURRENCY });
-      if (gt) gt("event", "begin_checkout", { value: PRICE, currency: CURRENCY, items: [{ item_name: "Andrum", price: PRICE }] });
-    } else if (what === "purchase") {
-      if (fb) fb("track", "Purchase", { value: o.value, currency: o.currency }, o.id ? { eventID: o.id } : undefined);
-      if (gt) {
-        gt("event", "purchase", { transaction_id: o.id, value: o.value, currency: o.currency, items: [{ item_name: "Andrum", price: o.value }] });
-        if (MEASURE.googleAdsPurchase) gt("event", "conversion", { send_to: MEASURE.googleAdsPurchase, value: o.value, currency: o.currency, transaction_id: o.id });
-      }
-    }
-  }
-
-  doc.addEventListener("click", function (e) {
-    var a = e.target && e.target.closest ? e.target.closest('a[href*="download/Andrum-"]') : null;
-    if (a) track("trial", { file: (a.getAttribute("href") || "").split("/").pop() });
-  });
-
-  function banner() {
-    var b = doc.querySelector("[data-an-consent]");
-    if (b) return b;
-    b = doc.createElement("section");
-    b.className = "an-consent";
-    b.setAttribute("data-an-consent", "");
-    b.setAttribute("aria-label", "Measuring ads");
-    b.innerHTML =
-      '<p>May we measure which ads bring you here? If you allow it, ' +
-      (MEASURE.metaPixel && MEASURE.googleTag ? "Meta and Google set cookies" : MEASURE.metaPixel ? "Meta sets cookies" : "Google sets cookies") +
-      ' that tell us when an ad led to a download or a purchase. <a href="privacy/#ads">More about this</a></p>' +
-      '<div class="an-consent__btns"><button type="button" class="an-btn an-btn--primary" data-v="yes">Allow</button>' +
-      '<button type="button" class="an-btn an-btn--line" data-v="no">No thanks</button></div>';
-    b.addEventListener("click", function (e) {
-      var v = e.target && e.target.getAttribute && e.target.getAttribute("data-v");
-      if (!v) return;
-      remember(v);
-      b.hidden = true;
-      if (v === "yes") loadTags();
-    });
-    (doc.querySelector(".andrum") || doc.body).appendChild(b);
-    return b;
-  }
-
-  if (measuring) {
-    var c = choice();
-    if (c === "yes") loadTags();
-    else if (c !== "no") banner().hidden = false;
-    var open = doc.querySelector("[data-an-consent-open]");
-    if (open) {
-      open.hidden = false;
-      open.addEventListener("click", function () { banner().hidden = false; });
-    }
+    if (what === "checkout") count("InitiateCheckout", { content_name: "Andrum", content_type: "product", value: PRICE, currency: CURRENCY });
+    else if (what === "purchase") count("Purchase", { content_name: "Andrum", content_type: "product", value: o.value, currency: o.currency }, o.id ? { eventID: o.id } : undefined);
   }
 
   // for checking the page: window.andrumStore.thanks("you@example.com") shows the note after a purchase

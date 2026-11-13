@@ -128,6 +128,7 @@ h3 { position: relative; font-size: 21px; font-weight: 400; line-height: 1.2; le
 .hero-frame { aspect-ratio: 2.18 / 1; }
 .block { border-top: 1px solid var(--line); margin-top: 96px; padding-top: 65px; display: grid; grid-template-columns: 1fr 2fr; gap: 28px; }
 .block-copy { min-width: 0; }
+.block:last-child { padding-bottom: 112px; }   /* (a page that ends on its text, like Privacy, keeps the space a Next link would give) */
 /* buttons, after apple.com: 44px pills with 17px regular text, 17px apart; the first is filled, the rest outlined.
    The words start and end where the round ends meet the straight edge: half the height in from each end (border included). */
 .links { display: flex; flex-wrap: wrap; gap: 12px 17px; margin: 30px 0 0; }
@@ -248,6 +249,7 @@ h3 { position: relative; font-size: 21px; font-weight: 400; line-height: 1.2; le
   .stage img { border-radius: 10px; }
   .listen { grid-template-columns: 1fr; gap: 24px; }
   .next { margin-top: 72px; padding-bottom: 64px; }
+  .block:last-child { padding-bottom: 64px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
