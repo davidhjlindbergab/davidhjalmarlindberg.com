@@ -1,57 +1,30 @@
 /* davidhjalmarlindberg.com
-   Paper ground, one ink, one grey, Helvetica Neue throughout.
+   A dark room, one ink, Helvetica Neue throughout.
    The front page, the project pages, the Plugins page, Privacy and 404.html share this file.
 
-   Words are read on paper and pictures are seen in the dark. While the work is on screen the lights go down:
-   the ground turns nearly black, with two faint fields of light on it, and the ink turns to paper. They come up again for the words at the end.
-   <html data-lights="down"> is the dark state; main.js sets it from the parts of a page marked data-lights.
-   What moves here is light and focus (a fade, a pull into focus, a picture brightening), never a slide or a bounce.
+   Every page is in the dark: a ground that is nearly black, and on it two very large, very soft fields of light,
+   like light spilling from a screen into a dark room. They drift, and their colours change, too slowly to watch.
+   What moves here is light and focus (a pull into focus, a picture brightening, the glow), never a slide or a bounce.
 
    Buttons follow apple.com: 44px pills, 17px regular text, 17px apart. */
 
-/* registered as colours, so that they can fade from one to the other when the lights change */
-@property --paper { syntax: "<color>"; inherits: true; initial-value: #f4f3ef; }
-@property --ink { syntax: "<color>"; inherits: true; initial-value: #242420; }
-@property --muted { syntax: "<color>"; inherits: true; initial-value: #6c6c65; }
-@property --body-copy { syntax: "<color>"; inherits: true; initial-value: #6d6d65; }
-@property --line { syntax: "<color>"; inherits: true; initial-value: #d6d5ce; }
-@property --frame { syntax: "<color>"; inherits: true; initial-value: #e7e5de; }
-
 :root {
-  --ink: #242420;
-  --muted: #6c6c65;
-  --line: #d6d5ce;
-  --frame: #e7e5de;
-  --body-copy: #6d6d65;
-  --paper: #f4f3ef;
-  --gutter: 4.5vw;
-  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  /* corners: the full-width images get the larger radius, so every image reads equally soft */
-  --radius: clamp(14px, 1.5vw, 26px);
-  --radius-lg: clamp(16px, 2.4vw, 42px);
-  --ease: cubic-bezier(.25, .8, .25, 1);
-}
-/* the lights are down: a ground that is nearly black, and the paper becomes the ink */
-:root[data-lights="down"] {
   --paper: #0c0c0b;
   --ink: #f4f3ef;
   --muted: #98978f;
   --body-copy: #b4b3ab;
   --line: #2b2b28;
   --frame: #161615;
+  --gutter: 4.5vw;
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* corners: the full-width images get the larger radius, so every image reads equally soft */
+  --radius: clamp(14px, 1.5vw, 26px);
+  --radius-lg: clamp(16px, 2.4vw, 42px);
+  --ease: cubic-bezier(.25, .8, .25, 1);
   color-scheme: dark;
 }
-/* the lights change as one slow dissolve: the ground, the words, the lines and the glow all fade together, over the same time and on the same curve,
-   so nothing snaps (main.js adds .settled once a page has arrived at its place, so that it never fades, or glides to its #anchor, on arrival) */
-:root.settled {
-  scroll-behavior: smooth;
-  transition-property: --paper, --ink, --muted, --body-copy, --line, --frame;
-  transition-duration: var(--fade);
-  transition-timing-function: var(--fade-ease);
-  --fade: 1s;
-  --fade-ease: cubic-bezier(.42, 0, .3, 1);
-}
-:root.settled[data-lights="down"] { --fade: 1.3s; }
+/* main.js adds .settled once a page has arrived at its place, so that it never glides to its #anchor on arrival */
+:root.settled { scroll-behavior: smooth; }
 
 *, *::before, *::after { box-sizing: border-box; }
 html { background: var(--paper); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -64,29 +37,46 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
 }
-/* ---------- the dark is not flat ----------
-   With the lights down, two very large, very soft fields of light lie on the ground, like light spilling from a screen into a dark room:
-   a warm one low on the left and a cool one high on the right. They are faint (the ground stays nearly black) and they drift, slowly.
-   A fine grain over them keeps such dark gradients from showing bands. Both sit behind the page and fade in and out with the lights. */
-body::before, body::after { content: ""; position: fixed; z-index: -1; pointer-events: none; opacity: 0; }
+
+/* ---------- the glow ----------
+   Two fields of light, one that starts warm (low on the left) and one that starts cool (high on the right).
+   Their colours are registered, so the browser can fade them: each wanders through its own few colours on its own clock
+   (2 and 2.6 minutes, back and forth), so the pair never repeats the same way, while the whole layer drifts and turns over 70 seconds.
+   They stay faint, at no more than 27%, so the ground reads as black. A fine grain over them keeps the dark gradients from banding. */
+@property --glow-a { syntax: "<color>"; inherits: false; initial-value: rgb(96 62 36); }
+@property --glow-b { syntax: "<color>"; inherits: false; initial-value: rgb(40 62 104); }
+body::before, body::after { content: ""; position: fixed; z-index: -1; pointer-events: none; }
 body::before {
   inset: -25vmax;
   background:
-    radial-gradient(ellipse 46% 42% at 30% 66%, rgb(96 62 36 / .27), rgb(96 62 36 / .16) 28%, rgb(96 62 36 / .07) 55%, rgb(96 62 36 / .02) 78%, transparent),
-    radial-gradient(ellipse 44% 40% at 70% 34%, rgb(40 62 104 / .27), rgb(40 62 104 / .16) 28%, rgb(40 62 104 / .07) 55%, rgb(40 62 104 / .02) 78%, transparent);
-  animation: drift 70s ease-in-out infinite alternate;
-  animation-play-state: paused;
+    radial-gradient(ellipse 46% 42% at 30% 66%, color-mix(in oklab, var(--glow-a) 27%, transparent), color-mix(in oklab, var(--glow-a) 16%, transparent) 28%,
+      color-mix(in oklab, var(--glow-a) 7%, transparent) 55%, color-mix(in oklab, var(--glow-a) 2%, transparent) 78%, transparent),
+    radial-gradient(ellipse 44% 40% at 70% 34%, color-mix(in oklab, var(--glow-b) 27%, transparent), color-mix(in oklab, var(--glow-b) 16%, transparent) 28%,
+      color-mix(in oklab, var(--glow-b) 7%, transparent) 55%, color-mix(in oklab, var(--glow-b) 2%, transparent) 78%, transparent);
+  animation: drift 70s ease-in-out infinite alternate, warm 120s ease-in-out infinite alternate, cool 156s ease-in-out infinite alternate;
 }
 body::after {
   inset: 0;
+  opacity: .055;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-:root[data-lights="down"] body::before { opacity: 1; animation-play-state: running; }
-:root[data-lights="down"] body::after { opacity: .055; }
-:root.settled body::before, :root.settled body::after { transition: opacity var(--fade) var(--fade-ease); }
 @keyframes drift {
   from { transform: translate3d(-4%, 2%, 0) rotate(-7deg) scale(1); }
   to { transform: translate3d(5%, -3%, 0) rotate(9deg) scale(1.12); }
+}
+/* amber, rose, plum, violet */
+@keyframes warm {
+  0% { --glow-a: rgb(96 62 36); }
+  35% { --glow-a: rgb(100 44 56); }
+  70% { --glow-a: rgb(84 38 82); }
+  100% { --glow-a: rgb(64 42 100); }
+}
+/* blue, teal, deep green, indigo */
+@keyframes cool {
+  0% { --glow-b: rgb(40 62 104); }
+  35% { --glow-b: rgb(26 76 90); }
+  70% { --glow-b: rgb(30 76 62); }
+  100% { --glow-b: rgb(54 46 110); }
 }
 
 a { color: inherit; text-decoration: none; }
@@ -327,17 +317,17 @@ h3 { position: relative; font-size: 22px; font-weight: 400; line-height: 1.2; le
   .block:last-child { padding-bottom: 64px; }
 }
 
-/* less motion: nothing moves or changes size, and pages change at once. The lights still fade, since a fade is gentler than a flash. */
+/* less motion: nothing moves or changes size, and pages change at once. The glow stays in place; only its colours change. */
 @media (prefers-reduced-motion: reduce) {
   :root.settled { scroll-behavior: auto; }
   *:not(:root) { transition: none !important; }
   .project:hover .image-frame img, .project:focus-visible .image-frame img { transform: none; }
   @view-transition { navigation: none; }
-  body::before { animation: none; }
+  body::before { animation-name: none, warm, cool; }
 }
 
 /* on paper, every page is on paper */
 @media print {
-  :root[data-lights="down"] { --paper: #fff; --ink: #242420; --muted: #6c6c65; --body-copy: #6d6d65; --line: #d6d5ce; --frame: #e7e5de; color-scheme: light; }
+  :root { --paper: #fff; --ink: #242420; --muted: #6c6c65; --body-copy: #6d6d65; --line: #d6d5ce; --frame: #e7e5de; color-scheme: light; }
   body::before, body::after { display: none; }
 }

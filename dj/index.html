@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-lights="down">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -18,8 +18,6 @@
 <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="stylesheet" href="../style.css">
-<script>/* the lights as this page was left (see main.js) */
-(function () { var s = history.state && history.state.lights; if (s === 'up' || s === 'down') document.documentElement.setAttribute('data-lights', s); else if (location.hash === '#work') document.documentElement.setAttribute('data-lights', 'down'); })();</script>
 <script src="/stats.js" defer></script>
 <script src="/main.js" defer></script>
 </head>
@@ -66,7 +64,7 @@
   </article>
 </main>
 
-<footer class="footer wrap" id="contact" data-lights="up">
+<footer class="footer wrap" id="contact">
   <div class="contact-line">
     <p class="eyebrow">For collaborations &amp; conversations</p>
     <button class="copy" type="button" data-done="Copied" aria-live="polite" hidden>Copy address</button>

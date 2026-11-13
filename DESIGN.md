@@ -8,26 +8,26 @@ This covers the front page, the project pages, Plugins, Privacy and `404.html`, 
 
 **Theme statement:** quiet, luminous, screening room.
 
-**Character:** Words are read on paper and pictures are seen in the dark. A page opens calm and typographic; while the work is on screen the lights go down, the way they do in a cinema or a grading suite; and they come up again for the words at the end. Nothing decorates: one typeface, flat paper, a dark that has only a trace of light in it, and the pictures carry the colour.
+**Character:** Every page is a dark room where pictures are shown. The ground is nearly black, and on it lie two very large, very soft fields of light, like light spilling from a screen; they drift and slowly change colour, too slowly to watch. Nothing decorates: one typeface, a dark with only a trace of light in it, and the pictures carry the colour.
 
-**References:** the Swiss typographic style (one sans, flush left, flat fields); a cinema's house lights; the neutral dark surround of a colour grading suite; a gallery's wall labels.
+**References:** the Swiss typographic style (one sans, flush left); a cinema with the house lights down; the neutral dark surround of a colour grading suite; a gallery's wall labels.
 
 ## 2. Colour
 
-Six tokens in two states. `:root` is the paper state; `:root[data-lights="down"]` is the dark one. The names stay the same in both, so every rule written with them works in both.
+Every page is dark (David, 13 Nov 2026: "Remove the white completely and only have the dark gradients"). There is no paper state any more; only print turns the page to white.
 
-| Token | Lights up | Lights down | Use |
-|---|---|---|---|
-| `--paper` | `#f4f3ef` | `#0c0c0b` | the ground |
-| `--ink` | `#242420` | `#f4f3ef` | headings, names, filled buttons, the focus ring |
-| `--muted` | `#6c6c65` | `#98978f` | captions, labels, small print |
-| `--body-copy` | `#6d6d65` | `#b4b3ab` | paragraphs |
-| `--line` | `#d6d5ce` | `#2b2b28` | hairlines |
-| `--frame` | `#e7e5de` | `#161615` | a picture's place before it has loaded |
+| Token | Value | Use |
+|---|---|---|
+| `--paper` | `#0c0c0b` | the ground (the name is kept so that older rules still work) |
+| `--ink` | `#f4f3ef` | headings, names, filled buttons, the focus ring |
+| `--muted` | `#98978f` | captions, labels, small print |
+| `--body-copy` | `#b4b3ab` | paragraphs |
+| `--line` | `#2b2b28` | hairlines |
+| `--frame` | `#161615` | a picture's place before it has loaded |
 
-- There is no accent colour and there are no status colours: the site has no forms or alerts that would need them.
-- Contrast on the ground: ink 14.0 : 1 and 17.6 : 1, paragraphs 4.7 : 1 and 9.3 : 1, captions 4.8 : 1 and 6.7 : 1 (up and down). On the brightest part of the glow the dark figures are about a fifth lower.
-- The dark ground is nearly black, not black, and it is not flat: two very large, very soft fields of light lie on it, a warm one low on the left (`rgb(96 62 36)`) and a cool one high on the right (`rgb(40 62 104)`), each at no more than 27% strength, under a fine grain that keeps them from banding. They are the room's light, not decoration: keep them this faint, and don't add a third.
+- **The glow** (`body::before` in `style.css`): two radial fields, `--glow-a` low on the left and `--glow-b` high on the right, each at no more than 27%. `--glow-a` wanders amber, rose, plum, violet over 2 minutes; `--glow-b` blue, teal, deep green, indigo over 2.6 minutes; both back and forth, so the pair never repeats the same way. The layer drifts and turns over 70 seconds. A fine grain (`body::after`, 5.5%) keeps the dark gradients from banding. Keep it this faint, and don't add a third field.
+- There is no accent colour and there are no status colours.
+- Contrast on the ground: ink 17.6 : 1, paragraphs 9.3 : 1, captions 6.7 : 1; on the brightest part of the glow about a fifth lower.
 
 ## 3. Typography
 
@@ -62,7 +62,6 @@ Nothing is set smaller than 12px. Headings balance their lines (`text-wrap: bala
 | Gallery | `.gallery` | one, two or three pictures in a row |
 | Next | `.next` | the next project's name, large |
 | Footer | `.footer`, `.email`, `.copy` | the address as wide as the page, Copy address, the colophon |
-| Lights | `data-lights` | on a part of a page: `down` dims the page while that part fills the screen, `up` brings the lights back |
 
 ## 5. Layout
 
@@ -78,14 +77,13 @@ None. Nothing casts a shadow (the phones on the Aware page are pictures of objec
 ## 7. Do and don't
 
 **Do**
-- Show pictures with the lights down and long text on paper.
-- Keep a page to one change of light each way.
-- Write every colour with the six tokens, so it works in both states.
+- Keep every page dark; text sits straight on the ground.
+- Write every colour with the six tokens.
 - Let a picture be the cue to scroll: place it so its top shows on the first screen.
 - Keep the address in the footer exactly as wide as the page.
 
 **Don't**
-- Add an accent colour, a shadow, or any gradient or glow besides the two fields of light on the dark ground.
+- Add a light section or a white background, an accent colour, a shadow, or any gradient or glow besides the two fields of light.
 - Add a second typeface or a bold weight.
 - Join keywords with middle dots, add arrows that only say "scroll", or number things that are not a sequence.
 - Make things slide, bounce or fly in. See Motion.
@@ -99,13 +97,13 @@ None. Nothing casts a shadow (the phones on the Aware page are pictures of objec
 | up to 800px | the sentence moves under the headline |
 | up to 650px | one column, 22px gutters, 16px corners, the menu shows Selected work and Plugins |
 
-The lights behave the same at every size. A page always opens in its own light, whatever the size of the screen; the light changes only after the page has been scrolled 120px.
 
 ## 9. For agents
 
 - Read `README.md` first: several sessions and David's own site editor change these pages, so pull `main` before editing.
-- New pages that show work start dark: `<html lang="en" data-lights="down">`, `<meta name="theme-color" content="#000000">`, and `data-lights="up"` on the footer. Pages of words (like Privacy) leave all three out.
-- Every page loads `/main.js` and `/stats.js`, and the pages with lights carry the one-line script after the stylesheet that restores the light a page was left in.
+- New pages need nothing for the dark: it comes with `style.css`. Give them `<meta name="theme-color" content="#0c0c0b">` so the browser's bars match.
+- Every page loads `/main.js` and `/stats.js`.
+- To hide something on a page, take it out of the HTML rather than hiding it with styles and fixing the page's height; a fixed height lets the end of the page run into the footer.
 - The picture at the top of a project page is `.hero-frame` (or `.stage`, or the frame in `.listen`): it is the one a front-page picture travels to.
 - Don't change David's own words (the headline, the taglines, the About text) without being asked.
 
@@ -118,13 +116,12 @@ What moves is light and focus, never position.
 | Moment | What happens | Timing |
 |---|---|---|
 | A page opens | its headline is pulled into focus (blur to sharp), then its sentence fades in | 1.1s, once |
-| The lights | one dissolve: the ground, the words, the lines and the glow fade together, over the same time and on the same curve (`--fade`, `--fade-ease`). Nothing changes on its own or snaps | 1.3s down, 1s up |
-| The dark | its two fields of light drift and turn, too slowly to see | 70s, back and forth |
+| The glow | its two fields drift and turn, and their colours change | 70s; 2 and 2.6 minutes, back and forth |
 | A project is hovered | its picture brightens, takes its full colour and grows 2.5% | 0.55s |
 | From page to page | the pages dissolve, and a project's picture travels from the front page to the top of its page | 0.4s and 0.6s |
 | A link is hovered | a hairline draws under it | 0.25s |
 
-**Reduced motion:** nothing moves or changes size, the glow stays still, and pages change at once. The lights still fade, because a fade is gentler than a flash.
+**Reduced motion:** nothing moves or changes size and pages change at once; the glow stays in place and only its colours change.
 
 ## 11. Voice
 
