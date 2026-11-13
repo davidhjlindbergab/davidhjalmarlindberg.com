@@ -2,8 +2,9 @@
    The pixel loads only after a visitor accepts it. The choice is shared with the Colobri pages (one site, one question):
    a visitor who answered there is not asked again here, and the other way round.
    Events: PageView and ViewContent on the Andrum page, StartTrial on the Mac and Windows downloads and on
-   "Send the link to my computer" (a phone's way to the trial; content_category says which), and Lead on
-   "Tell me when it's on sale". */
+   "Send the link to my computer" (a phone's way to the trial; content_category says which), Lead on
+   "Tell me when it's on sale", and from the store (store.js, through window.andrumPixel)
+   InitiateCheckout when the checkout opens and Purchase when an order is paid. */
 (function () {
   'use strict';
   var PIXEL_ID = '4475247569405091';   // the Meta pixel, the dataset named davidhjalmarlindberg.com in the David HJ Lindberg AB business portfolio (as in colobri/site.js). Empty: no banner, no pixel.
@@ -21,16 +22,21 @@
     !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
     window.fbq('init', PIXEL_ID);
     window.fbq('track', 'PageView');
-    for (var i = 0; i < queue.length; i++) window.fbq('track', queue[i][0], queue[i][1]);
+    for (var i = 0; i < queue.length; i++) send(queue[i][0], queue[i][1], queue[i][2]);
     queue = [];
   }
-  /** count an event: at once if the visitor accepted, held until they choose if they have not, never if they declined */
-  function track(name, params) {
+  function send(name, params, options) {
+    if (options) window.fbq('track', name, params || {}, options); else window.fbq('track', name, params || {});
+  }
+  /** count an event: at once if the visitor accepted, held until they choose if they have not, never if they declined.
+      options: Meta's fourth argument, e.g. { eventID: the order's id } so an order is counted once */
+  function track(name, params, options) {
     if (!PIXEL_ID) return;
     var c = get(KEY);
-    if (c === 'yes') { load(); window.fbq('track', name, params || {}); }
-    else if (c == null) queue.push([name, params || {}]);
+    if (c === 'yes') { load(); send(name, params, options); }
+    else if (c == null) queue.push([name, params || {}, options]);
   }
+  window.andrumPixel = track;   // (the store: assets/js/store.js)
 
   // ------------------------------------------------------------------------------------------------ the banner (in the Andrum page's own look)
   var css = '.anc{position:fixed;z-index:60;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:470px;padding:20px 22px;border-radius:16px;background:#0e0f1b;border:1px solid rgba(255,255,255,0.12);box-shadow:0 24px 60px rgba(0,0,0,0.6);color:#9aa3b4;font:400 14px/1.5 "Andrum Text","Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}'
