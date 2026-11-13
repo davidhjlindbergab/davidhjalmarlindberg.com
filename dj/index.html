@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-lights="down">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>DJ — David Hjalmar Lindberg</title>
 <meta name="description" content="Music &amp; selection. The Borderland 2026 set, on SoundCloud.">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/dj/">
-<meta name="theme-color" content="#f4f3ef">
+<meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="David Hjalmar Lindberg">
 <meta property="og:title" content="DJ — David Hjalmar Lindberg">
@@ -18,7 +18,10 @@
 <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="stylesheet" href="../style.css">
+<script>/* the lights as this page was left (see main.js) */
+(function () { var s = history.state && history.state.lights; if (s === 'up' || s === 'down') document.documentElement.setAttribute('data-lights', s); else if (location.hash === '#work') document.documentElement.setAttribute('data-lights', 'down'); })();</script>
 <script src="/stats.js" defer></script>
+<script src="/main.js" defer></script>
 </head>
 <body class="project-page">
 <header class="masthead wrap">
@@ -43,7 +46,6 @@
     <h1 id="title">DJ</h1>
     <div class="intro-note">
       <p>Music &amp; selection. The Borderland 2026 set, on SoundCloud.</p>
-      <a class="scroll-cue" href="#project" aria-label="Go to the project">↓</a>
     </div>
   </section>
 
@@ -55,7 +57,7 @@
       <div class="listen-copy">
         <p class="lead">Borderland 2026</p>
         <p class="small-copy">Press play to listen to the set here, or open it on SoundCloud.</p>
-        <iframe class="player" title="Borderland 2026 on SoundCloud" loading="lazy" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/davidhjalmarlindberg/borderland2026&amp;color=%23242420&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false"></iframe>
+        <iframe class="player" title="Borderland 2026 on SoundCloud" loading="lazy" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/davidhjalmarlindberg/borderland2026&amp;color=%23f4f3ef&amp;visual=true&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false"></iframe>
         <p class="links"><a href="https://soundcloud.com/davidhjalmarlindberg/borderland2026" target="_blank" rel="noopener">Listen on SoundCloud</a></p>
       </div>
     </div>
@@ -64,9 +66,10 @@
   </article>
 </main>
 
-<footer class="footer wrap" id="contact">
+<footer class="footer wrap" id="contact" data-lights="up">
   <div class="contact-line">
     <p class="eyebrow">For collaborations &amp; conversations</p>
+    <button class="copy" type="button" data-done="Copied" aria-live="polite" hidden>Copy address</button>
     <a class="email" href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>
   </div>
   <div class="colophon">

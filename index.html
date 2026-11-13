@@ -23,10 +23,13 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preload" as="image" href="img/work/nakaya.webp">
 <link rel="stylesheet" href="style.css">
+<script>/* the lights as this page was left (see main.js) */
+(function () { var s = history.state && history.state.lights; if (s === 'up' || s === 'down') document.documentElement.setAttribute('data-lights', s); else if (location.hash === '#work') document.documentElement.setAttribute('data-lights', 'down'); })();</script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"David Hjalmar Lindberg","url":"https://davidhjalmarlindberg.com/","email":"mailto:me@davidhjalmarlindberg.com","jobTitle":"Creative director","address":{"@type":"PostalAddress","addressLocality":"Stockholm","addressCountry":"SE"}}
 </script>
 <script src="/stats.js" defer></script>
+<script src="/main.js" defer></script>
 </head>
 <body>
 <header class="masthead wrap">
@@ -51,12 +54,11 @@
     <h1 id="intro-title">Film, art, music<br> &amp; new worlds.</h1>
     <div class="intro-note">
       <p>Creative director, filmmaker<br> and artist exploring the space<br> between imagination and feeling.</p>
-      <a class="scroll-cue" href="#work" aria-label="Go to selected work">↓</a>
     </div>
   </section>
 
-  <section class="work wrap" id="work" aria-labelledby="work-title">
-    <div class="section-line"><h2 id="work-title">Selected work</h2><span>Film · Art · Sound · Experiences</span></div>
+  <section class="work wrap" id="work" aria-labelledby="work-title" data-lights="down">
+    <div class="section-line"><h2 id="work-title">Selected work</h2></div>
 
     <a class="project featured" href="nakaya/">
       <div class="image-frame wide"><img src="img/work/nakaya.webp" width="2400" height="1345" alt="A being from Nakãya with a speckled jade crest and great curled, ribbed horns, looking straight ahead." fetchpriority="high" decoding="async"></div>
@@ -159,6 +161,7 @@
 <footer class="footer wrap" id="contact">
   <div class="contact-line">
     <p class="eyebrow">For collaborations &amp; conversations</p>
+    <button class="copy" type="button" data-done="Copied" aria-live="polite" hidden>Copy address</button>
     <a class="email" href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>
   </div>
   <div class="colophon">
