@@ -58,9 +58,11 @@
     var id = "";
     try { id = new URLSearchParams(window.location.search).get("bought") || ""; } catch (e) { return; }
     if (!/^[A-Za-z0-9_-]{6,80}$/.test(id)) return;
-    try {   // the address without ?bought, so a reload or a shared link doesn't count it again
+    try {   // the address without ?bought (so a reload or a shared link doesn't count it again) and
+            // without the customer_session_token Polar adds (it opens the buyer's portal: nobody else's business)
       var u = new URL(window.location.href);
       u.searchParams.delete("bought");
+      u.searchParams.delete("customer_session_token");
       window.history.replaceState(null, "", u.pathname + u.search + (u.hash || "#buy"));
     } catch (e) { /* fine as it is */ }
     var seen = false, mark = "andrum-bought-" + id;
