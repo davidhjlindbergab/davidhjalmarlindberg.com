@@ -1,8 +1,9 @@
 /* Andrum on davidhjalmarlindberg.com: the cookie choice and the Meta pixel, the same pixel as the Colobri pages.
    The pixel loads only after a visitor accepts it. The choice is shared with the Colobri pages (one site, one question):
    a visitor who answered there is not asked again here, and the other way round.
-   Events: PageView and ViewContent on the Andrum page, StartTrial on the Mac and Windows downloads,
-   and Lead on "Tell me when it's on sale". */
+   Events: PageView and ViewContent on the Andrum page, StartTrial on the Mac and Windows downloads and on
+   "Send the link to my computer" (a phone's way to the trial; content_category says which), and Lead on
+   "Tell me when it's on sale". */
 (function () {
   'use strict';
   var PIXEL_ID = '4475247569405091';   // the Meta pixel, the dataset named davidhjalmarlindberg.com in the David HJ Lindberg AB business portfolio (as in colobri/site.js). Empty: no banner, no pixel.
@@ -80,6 +81,7 @@
       if (!a) return;
       var href = a.getAttribute('href') || '';
       if (/download\/[^/]+\.(dmg|exe)$/i.test(href)) track('StartTrial', { content_name: 'Andrum', content_category: /\.exe$/i.test(href) ? 'Windows' : 'Mac' });
+      else if (a.hasAttribute('data-an-send-link')) track('StartTrial', { content_name: 'Andrum', content_category: 'Link to a computer' });
       else if (/^mailto:/i.test(href) && /sale/i.test(decodeURIComponent(href))) track('Lead', { content_name: 'Andrum' });
     });
     track('ViewContent', PRODUCT);
