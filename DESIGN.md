@@ -25,7 +25,9 @@ Every page is dark (David, 13 Nov 2026: "Remove the white completely and only ha
 | `--line` | `#2b2b28` | hairlines |
 | `--frame` | `#161615` | a picture's place before it has loaded |
 
-- **The glow** (`body::before` in `style.css`): two radial fields, `--glow-a` low on the left and `--glow-b` high on the right, each at no more than 27%. `--glow-a` wanders amber, rose, plum, violet over 2 minutes; `--glow-b` blue, teal, deep green, indigo over 2.6 minutes; both back and forth, so the pair never repeats the same way. The layer drifts and turns over 70 seconds. A fine grain (`body::after`, 5.5%) keeps the dark gradients from banding. Keep it this faint, and don't add a third field.
+- **The glow** (`body::before` in `style.css`): two radial fields, `--glow-a` low on the left and `--glow-b` high on the right, each at no more than 27%. `--glow-a` wanders amber, rose, plum, violet over 2 minutes; `--glow-b` blue, teal, deep green, indigo over 2 minutes 40; both back and forth, so the pair never repeats the same way. The layer drifts and turns over 80 seconds. A fine grain (`body::after`, 5.5%) keeps the dark gradients from banding. Keep it this faint, and don't add a third field.
+  - The page grows a little darker as you scroll down from the header: the glow fades to 55% over the first screen (`deepen`, a scroll-driven animation).
+  - It keeps time with the clock: a one-line script in each page's `<head>` sets `--t` (seconds since midnight, UTC) and the animations begin that far in. The light is the same on every page and does not start over between pages.
 - There is no accent colour and there are no status colours.
 - Contrast on the ground: ink 17.6 : 1, paragraphs 9.3 : 1, captions 6.7 : 1; on the brightest part of the glow about a fifth lower.
 
@@ -35,8 +37,10 @@ Helvetica Neue throughout: `"Helvetica Neue", Helvetica, Arial, sans-serif`. Reg
 
 | Role | Size | Line height | Letter spacing | Where |
 |---|---|---|---|---|
-| Display | `clamp(64px, 8.35vw, 148px)` | 0.98 | -0.065em | `h1` |
+| Statement | the width of the page / 5.19 (about 300px on a laptop) | 0.9 | -0.065em | the front page's headline, exactly as wide as the page |
+| Display | `clamp(64px, 8.35vw, 148px)` | 0.98 | -0.065em | `h1` on the other pages |
 | Address | the width of the page / 12.19 | 1.1 | -0.055em | the e-mail address in the footer |
+| Fields | `clamp(24px, 2.6vw, 42px)`, in `--muted` | 1.25 | -1.1px | the line under the front page's headline |
 | Title | `clamp(36px, 4.6vw, 84px)` | 1.05 | -0.055em | Next project |
 | Lead | `clamp(24px, 2.6vw, 42px)` | 1.25 | -1.1px | a block's first paragraph, figures |
 | Name | 22px, 28px for the two wide projects | 1.2 | -0.65px | project names |
@@ -53,7 +57,8 @@ Nothing is set smaller than 12px. Headings balance their lines (`text-wrap: bala
 | Component | Class | What it is |
 |---|---|---|
 | Masthead | `.masthead` | wordmark, menu, place. Plugins rolls Andrum and Colobri down under it |
-| Intro | `.intro` | the page's headline and one sentence beside it |
+| Opening | `.intro-home`, `.fit`, `.intro-fields` | the front page: one sentence as wide as the page; under it the fields the work is made in, and one sentence about who is speaking |
+| Intro | `.intro` | the other pages: the headline and one sentence beside it |
 | Slate line | `.section-line` | a hairline and two or three short facts across the page (kind, name, years) |
 | Project | `.project`, `.caption` | a picture in a frame, its name, one line and its kind |
 | Block | `.block` | a label on the left and text on the right, under a hairline |
@@ -80,7 +85,7 @@ None. Nothing casts a shadow (the phones on the Aware page are pictures of objec
 - Keep every page dark; text sits straight on the ground.
 - Write every colour with the six tokens.
 - Let a picture be the cue to scroll: place it so its top shows on the first screen.
-- Keep the address in the footer exactly as wide as the page.
+- Keep the front page's headline and the address in the footer exactly as wide as the page (`main.js` measures the words, so they fit in any font and after any edit; keep the headline to one short line).
 
 **Don't**
 - Add a light section or a white background, an accent colour, a shadow, or any gradient or glow besides the two fields of light.
@@ -105,7 +110,7 @@ None. Nothing casts a shadow (the phones on the Aware page are pictures of objec
 - Every page loads `/main.js` and `/stats.js`.
 - To hide something on a page, take it out of the HTML rather than hiding it with styles and fixing the page's height; a fixed height lets the end of the page run into the footer.
 - The picture at the top of a project page is `.hero-frame` (or `.stage`, or the frame in `.listen`): it is the one a front-page picture travels to.
-- Don't change David's own words (the headline, the taglines, the About text) without being asked.
+- Don't change David's own words (the headline, the taglines, the About text) without being asked. He chose "A movie in the making" and "Music" himself.
 
 **Not decided:** the Andrum and Colobri product pages keep their own design languages.
 
@@ -115,14 +120,21 @@ What moves is light and focus, never position.
 
 | Moment | What happens | Timing |
 |---|---|---|
-| A page opens | its headline is pulled into focus (blur to sharp), then its sentence fades in | 1.1s, once |
-| The glow | its two fields drift and turn, and their colours change | 70s; 2 and 2.6 minutes, back and forth |
-| A project is hovered | its picture brightens, takes its full colour and grows 2.5% | 0.55s |
+| A page opens | its headline is pulled into focus (blur to sharp), then the lines under or beside it fade in | 1.1s, once |
+| The glow | its two fields drift and turn, and their colours change, in time with the clock; it fades to 55% as you scroll down the first screen | 80s; 2 minutes and 2 minutes 40, back and forth |
+| A project is hovered | the light comes first and the picture follows: it brightens and takes its full colour, then grows 3%, starting gently and slowing to a stop, like a slow push-in. Each picture is on its own layer from the start (`will-change`), so nothing is redrawn when the growth begins or ends | 0.6s for the light, 1s for the growth |
 | From page to page | the pages dissolve, and a project's picture travels from the front page to the top of its page | 0.4s and 0.6s |
-| A link is hovered | a hairline draws under it | 0.25s |
+| A link is hovered | a hairline draws under it (a full line scaled from the left, so it costs no layout) | 0.25s |
 
 **Reduced motion:** nothing moves or changes size and pages change at once; the glow stays in place and only its colours change.
 
 ## 11. Voice
 
-Short, plain and a little cinematic; British spelling (the Colobri product keeps its own "color"). Sentence case everywhere. A caption is a name, one line and a kind. A button says what it does or where it goes ("Watch The Days", "Copy address", "nakaya.world"). The page says what happened and what to do next ("This page has moved, or it never existed." "Go to the front page").
+- **First person, everywhere.** The site is David speaking: "I build worlds.", "I'm the creative director of DINOS", "I was part of creating Norrsken". Never "David did".
+- **Short, plain and a little cinematic.** British spelling (the Colobri product keeps its own "color"). Sentence case everywhere.
+- **The front page says it once.** The headline is the claim ("I build worlds."), the line under it is what the worlds are made in ("Film, art, music, software"), the sentence beside that is who is speaking. Below, "light, sound and code" names the same things as materials.
+- **A project page says three different things in its three places:** the note at the top says what the project is, the large line says the most interesting thing about it, the small text says what David did. No sentence is said twice on a page.
+- **A caption** is a name, one line and a kind. A line that only repeats the name is not a line ("Norrsken / Norrsken Foundation").
+- **A button** says what it does or where it goes ("Watch The Days", "Copy address", "Invite me to speak", "nakaya.world").
+- **A page that fails** says what happened and what to do next, and may smile once ("This world doesn't exist." "The page has moved, or it was never built." "Go to the front page").
+- **Facts on the Plugins page** are copied from the product pages (Andrum: free for 7 days; 14 days is its money-back time). Check them there when they change.

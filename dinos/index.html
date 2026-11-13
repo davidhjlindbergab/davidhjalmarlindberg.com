@@ -18,6 +18,8 @@
 <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="stylesheet" href="../style.css">
+<script>/* the glow keeps time with the clock, so it is the same on every page (see style.css) */
+document.documentElement.style.setProperty('--t', Date.now() / 1000 % 86400);</script>
 <script src="/stats.js" defer></script>
 <script src="/main.js" defer></script>
 </head>
@@ -43,7 +45,7 @@
   <section class="intro wrap" aria-labelledby="title">
     <h1 id="title">DINOS</h1>
     <div class="intro-note">
-      <p>Visuals, original music and sound design for a new immersive prehistoric experience in Stockholm.</p>
+      <p>A new immersive prehistoric experience in Stockholm.</p>
     </div>
   </section>
 
@@ -54,8 +56,7 @@
     <section class="block" aria-labelledby="dinos-about">
       <h3 class="eyebrow" id="dinos-about">About the project</h3>
       <div class="block-copy">
-        <p class="lead">A new immersive prehistoric experience in Stockholm.</p>
-        <p class="small-copy">David is the creative director of DINOS, responsible for its visuals, original music and sound design.</p>
+        <p class="lead">I’m the creative director of DINOS, responsible for its visuals, original music and sound design.</p>
       </div>
     </section>
     <div class="gallery">
@@ -78,8 +79,7 @@
   </div>
   <div class="colophon">
     <span>© 2026 David Hjalmar Lindberg<br>David HJ Lindberg AB · org.nr 559291-3353 · <a href="../privacy/">Privacy</a></span>
-    <span>Independent by nature.</span>
-    <span>Stockholm · Working worldwide</span>
+    <span>Based in Stockholm, working worldwide</span>
   </div>
 </footer>
 </body>

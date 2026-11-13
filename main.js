@@ -1,8 +1,41 @@
-/* davidhjalmarlindberg.com: the picture that travels to its page, and Copy address.
+/* davidhjalmarlindberg.com: the lines set as wide as the page, the picture that travels to its page, and Copy address.
    Every page that uses style.css loads this file with <script src="/main.js" defer></script>. */
 (function () {
   'use strict';
   var root = document.documentElement;
+
+  /* ---------- lines set as wide as the page ----------
+     The front page's headline (class "fit") and every page's address are set exactly as wide as the page: their size is the page's width
+     divided by the width of their letters. style.css holds that measure for Helvetica Neue. Here the words are measured in the font
+     the visitor really has, and as they now read (the headline can be changed in the site editor), and the measure is passed to
+     style.css in --fit (the width of the letters, in em) and --fit-left (where the first letter's ink begins, in em). */
+  var fits = document.querySelectorAll('.fit, .email');
+  var measure = function () {
+    var ctx;
+    try { ctx = document.createElement('canvas').getContext('2d'); } catch (e) {}
+    if (!ctx || !('letterSpacing' in ctx)) return;   // (older browsers keep the measure in style.css)
+    [].forEach.call(fits, function (el) {
+      var cs = getComputedStyle(el), size = parseFloat(cs.fontSize);
+      if (!size) return;
+      ctx.font = cs.fontStyle + ' ' + cs.fontWeight + ' 200px ' + cs.fontFamily;
+      ctx.letterSpacing = ((parseFloat(cs.letterSpacing) || 0) / size * 200) + 'px';
+      var left = Infinity, right = -Infinity;
+      (el.innerText || el.textContent || '').split('\n').forEach(function (line) {
+        line = line.replace(/\s+/g, ' ').trim();
+        if (!line) return;
+        var box = ctx.measureText(line);
+        left = Math.min(left, -box.actualBoundingBoxLeft);
+        right = Math.max(right, box.actualBoundingBoxRight);
+      });
+      if (!(right - left > 20)) return;
+      el.style.setProperty('--fit', ((right - left) / 200 * 1.0006).toFixed(4));   // (a hair wider than measured, so rounding never pushes it past the edge)
+      el.style.setProperty('--fit-left', (left / 200).toFixed(4));
+    });
+  };
+  if (fits.length) {
+    measure();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  }
 
   /* ---------- settled ----------
      Once a page has arrived at its place, <html> gets the class "settled": from then on links within the page glide.

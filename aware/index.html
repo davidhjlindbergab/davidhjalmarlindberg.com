@@ -18,6 +18,8 @@
 <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="stylesheet" href="../style.css">
+<script>/* the glow keeps time with the clock, so it is the same on every page (see style.css) */
+document.documentElement.style.setProperty('--t', Date.now() / 1000 % 86400);</script>
 <script src="/stats.js" defer></script>
 <script src="/main.js" defer></script>
 </head>
@@ -55,7 +57,7 @@
       <h3 class="eyebrow" id="aware-about">About the project</h3>
       <div class="block-copy">
         <p class="lead">29k is a Swedish non-profit that makes science-based psychological tools free for everyone, through its app Aware.</p>
-        <p class="small-copy">David was part of creating 29k and Aware, and helped shape the identity.</p>
+        <p class="small-copy">I was part of creating 29k and Aware, and helped shape their identity.</p>
         <p class="links"><a href="https://29k.org/" target="_blank" rel="noopener">29k.org</a><a href="https://apps.apple.com/us/app/aware-mindfulness-wellbeing/id1631342681" target="_blank" rel="noopener">Aware on the App Store</a></p>
       </div>
     </section>
@@ -76,8 +78,7 @@
   </div>
   <div class="colophon">
     <span>© 2026 David Hjalmar Lindberg<br>David HJ Lindberg AB · org.nr 559291-3353 · <a href="../privacy/">Privacy</a></span>
-    <span>Independent by nature.</span>
-    <span>Stockholm · Working worldwide</span>
+    <span>Based in Stockholm, working worldwide</span>
   </div>
 </footer>
 </body>

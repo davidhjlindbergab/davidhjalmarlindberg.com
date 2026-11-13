@@ -9,6 +9,8 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="stylesheet" href="/style.css">
+<script>/* the glow keeps time with the clock, so it is the same on every page (see style.css) */
+document.documentElement.style.setProperty('--t', Date.now() / 1000 % 86400);</script>
 <script>
 /* the color grading app's old address goes to its page today, at the same place within it (the buy link to the pricing) */
 (function () {
@@ -44,8 +46,8 @@
 </header>
 
 <main class="lost wrap">
-  <h1>Nothing here.</h1>
-  <p>This page has moved, or it never existed.</p>
+  <h1>This world doesn’t exist.</h1>
+  <p>The page has moved, or it was never built.</p>
   <p class="links"><a href="/">Go to the front page</a></p>
 </main>
 
@@ -57,8 +59,7 @@
   </div>
   <div class="colophon">
     <span>© 2026 David Hjalmar Lindberg<br>David HJ Lindberg AB · org.nr 559291-3353 · <a href="/privacy/">Privacy</a></span>
-    <span>Independent by nature.</span>
-    <span>Stockholm · Working worldwide</span>
+    <span>Based in Stockholm, working worldwide</span>
   </div>
 </footer>
 </body>

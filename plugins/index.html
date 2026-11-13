@@ -18,6 +18,8 @@
 <link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="stylesheet" href="../style.css">
+<script>/* the glow keeps time with the clock, so it is the same on every page (see style.css) */
+document.documentElement.style.setProperty('--t', Date.now() / 1000 % 86400);</script>
 <script src="/stats.js" defer></script>
 <script src="/main.js" defer></script>
 </head>
@@ -74,7 +76,7 @@
       <div class="block-copy">
         <p class="lead">Make room for the voice.</p>
         <p class="small-copy">Andrum turns the music down only where it covers the voice, and only while the voice is there. The mix stays full and the words come through.</p>
-        <p class="small-copy">For Mac and Windows, with 14 days free.</p>
+        <p class="small-copy">For Mac and Windows, free for 7 days.</p>
         <p class="links"><a href="../andrum/">See Andrum</a></p>
       </div>
     </section>
@@ -101,8 +103,7 @@
   </div>
   <div class="colophon">
     <span>© 2026 David Hjalmar Lindberg<br>David HJ Lindberg AB · org.nr 559291-3353 · <a href="../privacy/">Privacy</a></span>
-    <span>Independent by nature.</span>
-    <span>Stockholm · Working worldwide</span>
+    <span>Based in Stockholm, working worldwide</span>
   </div>
 </footer>
 </body>
