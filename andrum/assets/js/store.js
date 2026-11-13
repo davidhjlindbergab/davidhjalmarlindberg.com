@@ -3,8 +3,8 @@
 
   Every Buy button goes to Polar's checkout (Polar sells Andrum for us as merchant of record).
   Without JavaScript the buttons go to buy/, which forwards there too. After paying, Polar sends
-  the buyer back here with ?bought=<the checkout's id>, and the price panel says where the licence
-  key went and how to add it.
+  the buyer back here with ?bought=<the checkout's id> (and a customer session), and the price panel
+  shows the buyer's licence key and how to add it.
 
   CHECKOUT is the Andrum product's checkout link (Polar: Products, Checkout Links, "Website (Buy
   button)"; its success URL is https://davidhjalmarlindberg.com/andrum/?bought={CHECKOUT_ID}#buy).
@@ -55,8 +55,12 @@
 
   // back from the checkout, paid: ?bought=<checkout id>
   (function () {
-    var id = "";
-    try { id = new URLSearchParams(window.location.search).get("bought") || ""; } catch (e) { return; }
+    var id = "", session = "";
+    try {
+      var q = new URLSearchParams(window.location.search);
+      id = q.get("bought") || "";
+      session = q.get("customer_session_token") || "";
+    } catch (e) { return; }
     if (!/^[A-Za-z0-9_-]{6,80}$/.test(id)) return;
     try {   // the address without ?bought (so a reload or a shared link doesn't count it again) and
             // without the customer_session_token Polar adds (it opens the buyer's portal: nobody else's business)
@@ -71,10 +75,44 @@
     function done() {
       if (!seen) track("purchase", { id: id, value: PRICE, currency: CURRENCY });
       showThanks("");
+      if (/^polar_cst_[A-Za-z0-9_-]{10,}$/.test(session)) showKey(session);
     }
     if (doc.readyState === "complete") done();
     else doc.addEventListener("DOMContentLoaded", done);
   })();
+
+  // The buyer's licence key, shown on the page. Polar's receipt e-mail only links to it, so the key is
+  // fetched here with the customer session Polar hands back (it can read this buyer's own keys and
+  // nothing else; it stays in this page's memory). Polar grants the key a moment after the payment,
+  // so it is asked a few times.
+  var BENEFIT = "b58d6d29-3837-4055-93a5-edf64e787b80";      // Polar: the "Andrum licence key" benefit
+  function showKey(session) {
+    var box = doc.querySelector("[data-an-key]"), text = doc.querySelector("[data-an-key-text]");
+    var wait = doc.querySelector("[data-an-key-wait]"), copy = doc.querySelector("[data-an-key-copy]");
+    if (!box || !text || !window.fetch) return;
+    var tries = 0;
+    function ask() {
+      tries++;
+      fetch("https://api.polar.sh/v1/customer-portal/license-keys/?limit=10&benefit_id=" + BENEFIT, {
+        headers: { Authorization: "Bearer " + session, Accept: "application/json" }
+      }).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+        var keys = ((j && j.items) || []).filter(function (k) { return k.status === "granted" && k.key; });
+        keys.sort(function (a, b) { return String(b.created_at).localeCompare(String(a.created_at)); });
+        if (!keys.length) { if (tries < 8) window.setTimeout(ask, 1500 * tries); return; }
+        text.textContent = keys[0].key;
+        box.hidden = false;
+        if (wait) wait.innerHTML = 'Polar also e-mails you a link to it: <span class="ui">Access purchase</span> in your receipt.';
+      }).catch(function () { if (tries < 8) window.setTimeout(ask, 1500 * tries); });
+    }
+    ask();
+    if (copy) copy.addEventListener("click", function () {
+      var key = text.textContent, label = copy.textContent;
+      function shown() { copy.textContent = copy.getAttribute("data-done") || "Copied"; window.setTimeout(function () { copy.textContent = label; }, 1800); }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(key).then(shown, select);
+      else select();
+      function select() { var r = doc.createRange(); r.selectNodeContents(text); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+    });
+  }
 
   function showThanks(email) {
     var main = doc.querySelector("[data-an-price]");

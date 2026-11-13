@@ -60,6 +60,8 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .btn--primary { background: var(--frost); color: #06070d; }
 .btn--primary:hover { background: #ffffff; }
 .btn--ghost { color: var(--frost); box-shadow: inset 0 0 0 1px rgba(243, 245, 249, 0.22); }
+button.btn { border: 0; background-color: transparent; font: inherit; cursor: pointer; }
+button.btn--primary { background-color: var(--frost); }
 .btn--ghost:hover { box-shadow: inset 0 0 0 1px rgba(243, 245, 249, 0.6); }
 .btn svg { width: 17px; height: 17px; flex: none; }
 
@@ -286,6 +288,12 @@ h3 { font: 500 18px/1.35 var(--text); color: var(--frost); letter-spacing: -0.00
 .thanks li { position: relative; padding-left: 40px; min-height: 28px; font-size: 16px; list-style: none; }
 .thanks li::before { counter-increment: step; content: counter(step); position: absolute; left: 0; top: -1px; width: 28px; height: 28px;
                      border-radius: 50%; background: var(--frost); color: #06070d; font: 500 13px/28px var(--text); text-align: center; }
+.thanks__key { display: grid; gap: 8px; width: 100%; }
+.thanks__label { font: 500 13px/1.4 var(--text); letter-spacing: 0.04em; text-transform: uppercase; color: var(--mist); }
+.thanks__keyrow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; width: 100%; }
+.thanks__keyrow code { flex: 1 1 260px; min-width: 0; padding: 14px 16px; border-radius: 12px; background: rgba(255, 255, 255, 0.04);
+                       box-shadow: inset 0 0 0 1px var(--line); color: var(--frost); font: 500 15px/1.4 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+                       letter-spacing: 0.02em; overflow-wrap: anywhere; user-select: all; }
 .ui { color: var(--frost); font-weight: 500; }
 .foot__links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 .foot__links a, .foot__links button { color: var(--mist); font: 400 14px/1.4 var(--text); text-decoration: none; background: none; border: 0; padding: 0; cursor: pointer; }
