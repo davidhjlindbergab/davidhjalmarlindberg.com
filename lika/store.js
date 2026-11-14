@@ -4,10 +4,13 @@
      checkout  Lika's checkout link on Polar (Products, Checkout Links, "Lika website (Buy button)"; after paying it sends
                the buyer to /lika/thanks/?bought={CHECKOUT_ID}, which shows the key)
      download  the signed and notarized app (a release asset on GitHub: it is larger than GitHub Pages takes)
-     version   the version that link holds */
+     version   the version that link holds
+     windows   Lika for Windows (64-bit), a release asset too, and its version */
 window.LIKA_STORE = {
   live: true,
   checkout: 'https://buy.polar.sh/polar_cl_emSqP3wXtn8uIz5IY74yfoEV77vMXrLmcOFWR3PPPR9',
   download: 'https://github.com/davidhjlindbergab/davidhjalmarlindberg.com/releases/download/lika-1.0.0/Lika-1.0.0.zip',
-  version: '1.0.0'
+  version: '1.0.0',
+  windows: 'https://github.com/davidhjlindbergab/davidhjalmarlindberg.com/releases/download/lika-1.0.1/Lika-1.0.1-windows-x64.zip',
+  windowsVersion: '1.0.1'
 };
