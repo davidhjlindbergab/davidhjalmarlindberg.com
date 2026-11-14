@@ -103,10 +103,34 @@ figure { margin: 0; }
 figcaption, .cap { max-width: 660px; margin: 16px auto 0; font-size: 14px; line-height: 1.43; color: var(--ink-3); text-align: center; text-wrap: pretty; }
 .tag { position: absolute; left: 14px; top: 14px; padding: 5px 8px 4px; border-radius: 5px; background: rgba(5, 8, 11, 0.66); color: var(--ink); font: 500 11px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 
-/* the cut: one film, first as the shots arrived, then as Lika matched them */
+/* The cut. One film file carries every shot twice, frame for frame: the upper picture as the clip arrived, the lower one as
+   Lika rendered it. Left alone (no script, or the script gave up) the film shows as it is, both pictures and the browser's
+   controls. Once the script has it (.live) the stage is one picture high and a canvas over the film draws what is asked
+   for: the two side by side with a line between them, or one of them whole. */
 .film { padding: clamp(40px, 6vw, 72px) 0 clamp(80px, 11vw, 150px); }
-.film .stage { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #0c1116; box-shadow: 0 0 0 1px var(--line), 0 50px 120px -40px #000; }
-.film video { width: 100%; height: 100%; object-fit: cover; }
+.film .stage { position: relative; max-width: 760px; margin: 0 auto; border-radius: 14px; overflow: hidden; background: #0c1116; box-shadow: 0 0 0 1px var(--line), 0 50px 120px -40px #000; }
+.film video { width: 100%; }
+.film canvas, .film .tag, .film .knob, .film .play, .film figure:not(.live) .tools, .film .live .plain, .film figure:not(.live) .lively { display: none; }
+.by-finger { display: none; }
+@media (hover: none) and (pointer: coarse) { .by-finger { display: inline; } .by-mouse { display: none; } }
+.film .live .stage { max-width: none; aspect-ratio: 16 / 9; cursor: pointer; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
+.film .live video { position: absolute; left: 0; top: 0; }
+.film .live canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
+.film .live .tag { display: block; pointer-events: none; transition: opacity .2s; }
+.film .tag.end { left: auto; right: 14px; }
+.film .stage[data-show="final"] .tag:not(.end), .film .stage[data-show="original"] .tag.end { opacity: 0; }
+/* the line between the two pictures, with its grip: drag it, or move it with the arrow keys */
+.film .live .stage[data-show="split"] .knob { display: block; position: absolute; top: 0; bottom: 0; left: var(--at, 50%); width: 44px; margin-left: -22px; cursor: ew-resize; touch-action: none; }
+.film .knob::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; margin-left: -.5px; background: rgba(255, 255, 255, 0.92); box-shadow: 0 0 6px rgba(0, 0, 0, 0.35); }
+.film .knob svg { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: rgba(5, 8, 11, 0.5); box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.92); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.film .knob:focus-visible { outline: none; }
+.film .knob:focus-visible svg { box-shadow: inset 0 0 0 1.5px #fff, 0 0 0 3px rgba(255, 255, 255, 0.5); }
+/* the film plays by itself while it is in view; this stops and starts it */
+.film .live .play { display: grid; place-items: center; position: absolute; left: 12px; bottom: 12px; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: rgba(5, 8, 11, 0.6); color: var(--ink); cursor: pointer; opacity: .62; transition: opacity .2s; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.film .play:hover, .film .play:focus-visible, .film .stage.paused .play { opacity: 1; }
+.film .play svg { width: 12px; height: 12px; }
+.film .play .go, .film .stage.paused .play .stop { display: none; }
+.film .stage.paused .play .go { display: block; }
 
 /* sections */
 .sec { padding: 0 0 clamp(88px, 12vw, 168px); }
@@ -241,15 +265,18 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
   .faq summary { font-size: 17px; }
   .faq .a { padding-right: 0; }
   .tag { left: 9px; top: 9px; }
+  .film .tag.end { right: 9px; }
+  .film .live .play { left: 8px; bottom: 8px; }
+  .film .knob svg { width: 28px; height: 28px; margin: -14px 0 0 -14px; }
   footer .wrap { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .hero .glow { animation: none; }
   .js .rise, .js .rise.soft { opacity: 1; filter: none; transition: none; }
-  .win .shot .b, .strip div + div::before { transition: none; }
+  .win .shot .b, .strip div + div::before, .film .live .tag, .film .live .play { transition: none; }
 }
-@media print { .bar, .tools, .hero .glow { display: none; } body { background: #fff; color: #000; } }
+@media print { .bar, .tools, .hero .glow, .film .knob, .film .play { display: none !important; } body { background: #fff; color: #000; } }
 </style>
 <script>document.documentElement.classList.add('js');</script>
 <script src="/stats.js" defer></script>
@@ -290,22 +317,27 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 
   <section class="film" aria-labelledby="film-title">
     <div class="wrap">
-      <h2 class="sr" id="film-title">One cut, as it arrived and as Lika matched it</h2>
+      <h2 class="sr" id="film-title">One cut, as it arrived and as Lika rendered it</h2>
       <figure class="rise" id="film">
-        <div class="stage">
-          <video id="reel" muted loop playsinline controls preload="none" poster="images/film-poster.webp" width="1600" height="900" data-half="14" aria-label="Fourteen generated shots cut together, a second each: homes, a kitchen and streets in warm light, then a city in ruin in cold light. In the first half the shots play as they were generated, each with its own blacks, whites and tint. In the second half the same cut plays again as Lika matched it.">
-            <source src="images/lika-film-900.mp4" type="video/mp4" media="(min-width: 700px)">
-            <source src="images/lika-film-540.mp4" type="video/mp4">
+        <div class="stage" id="stage" data-show="split">
+          <video id="reel" muted loop playsinline controls preload="none" poster="images/lika-split-poster.webp" width="1536" height="1744" data-gap="16" aria-label="Fourteen generated shots cut together, a second each: homes, a kitchen and streets in warm light, then a city in ruin in cold light. The film carries every shot twice, frame for frame: as it was generated, with its own blacks, whites and tint, and as Lika rendered it, matched to the others and finished.">
+            <source src="images/lika-split-864.mp4" type="video/mp4" media="(min-width: 700px)">
+            <source src="images/lika-split-576.mp4" type="video/mp4">
           </video>
-          <span class="tag" id="reelTag" aria-hidden="true">Original</span>
+          <canvas id="reelView" width="1536" height="864" aria-hidden="true"></canvas>
+          <span class="tag" aria-hidden="true">Original</span>
+          <span class="tag end" aria-hidden="true">Final</span>
+          <span class="knob" id="reelKnob" role="slider" tabindex="0" aria-orientation="horizontal" aria-label="Where the picture splits between Original and Final" aria-valuemin="4" aria-valuemax="96" aria-valuenow="50"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M12.6 10.8 8.8 15l3.8 4.2M17.4 10.8l3.8 4.2-3.8 4.2" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <button class="play" id="reelPlay" type="button" aria-label="Play the film"><svg class="stop" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.2 1.2h2.6v9.6H2.2zM7.2 1.2h2.6v9.6H7.2z" fill="currentColor"/></svg><svg class="go" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.6 1v10l8.4-5z" fill="currentColor"/></svg></button>
         </div>
         <div class="tools">
-          <div class="seg" role="group" aria-label="The cut as it arrived, or as Lika matched it" data-for="reel">
-            <button type="button" data-show="original" aria-pressed="true">Original</button>
+          <div class="seg" role="group" aria-label="The film split between the two, or one of them whole" data-for="reel">
+            <button type="button" data-show="split" aria-pressed="true">Split</button>
+            <button type="button" data-show="original" aria-pressed="false">Original</button>
             <button type="button" data-show="final" aria-pressed="false">Final</button>
           </div>
         </div>
-        <figcaption>Fourteen generated clips, a second of each. The cut plays as they arrived, then as Lika matched them.</figcaption>
+        <figcaption>Fourteen generated clips, a second of each. <span class="lively">Left of the line they play as they arrived, right of it as Lika rendered them:</span><span class="plain">Above they play as they arrived, below as Lika rendered them:</span> matched, steadied, cleaned, debanded and sharpened, with a fine grain. <span class="lively"><span class="by-mouse">Click</span><span class="by-finger">Tap</span> the picture to see one of them whole.</span></figcaption>
       </figure>
     </div>
   </section>
@@ -329,7 +361,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
             <button type="button" data-show="final" aria-pressed="false">Final</button>
           </div>
         </div>
-        <figcaption>Lika with the same fourteen clips. The parade under them has a column for every clip: red, green and blue, zoomed in on the shadows.</figcaption>
+        <figcaption>Lika with the same fourteen clips, at the settings that rendered the film above. The parade under them has a column for every clip: red, green and blue, zoomed in on the shadows.</figcaption>
       </figure>
 
       <figure class="spread rise">
@@ -338,9 +370,9 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
           <thead><tr><th scope="col"><span class="sr">Measure</span></th><th scope="col">Before</th><th scope="col">Matched</th></tr></thead>
           <tbody>
             <tr><th scope="row">Black level</th><td><span class="v"><i style="--n:22.9"></i><b>1.65</b></span></td><td class="now"><span class="v"><i style="--n:0.0"></i><b>0.00</b></span></td></tr>
-            <tr><th scope="row">Black colour</th><td><span class="v"><i style="--n:17.5"></i><b>1.26</b></span></td><td class="now"><span class="v"><i style="--n:1.8"></i><b>0.13</b></span></td></tr>
-            <tr><th scope="row">White level</th><td><span class="v"><i style="--n:100.0"></i><b>7.22</b></span></td><td class="now"><span class="v"><i style="--n:51.9"></i><b>3.75</b></span></td></tr>
-            <tr><th scope="row">Midtone tint</th><td><span class="v"><i style="--n:77.6"></i><b>5.60</b></span></td><td class="now"><span class="v"><i style="--n:32.5"></i><b>2.35</b></span></td></tr>
+            <tr><th scope="row">Black colour</th><td><span class="v"><i style="--n:17.4"></i><b>1.25</b></span></td><td class="now"><span class="v"><i style="--n:0.0"></i><b>0.00</b></span></td></tr>
+            <tr><th scope="row">White level</th><td><span class="v"><i style="--n:100.0"></i><b>7.20</b></span></td><td class="now"><span class="v"><i style="--n:52.4"></i><b>3.77</b></span></td></tr>
+            <tr><th scope="row">Midtone tint</th><td><span class="v"><i style="--n:77.9"></i><b>5.61</b></span></td><td class="now"><span class="v"><i style="--n:31.9"></i><b>2.30</b></span></td></tr>
           </tbody>
         </table>
       </figure>
@@ -548,31 +580,78 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 
   function press(seg, show) { [].forEach.call(seg.querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.show === show)); }); }
 
-  // The cut. One film file: its first half is the cut as the shots arrived, its second half the same cut matched. The
-  // switch jumps to the same moment in the other half, so the two can be compared frame against frame.
-  var reel = document.getElementById('reel'), reelSeg = document.querySelector('.seg[data-for="reel"]'), tag = document.getElementById('reelTag'), shown = '';
-  function half() { return isFinite(reel.duration) && reel.duration > 0 ? reel.duration / 2 : +reel.dataset.half; }
-  function now() { return reel.currentTime >= half() - 0.02 ? 'final' : 'original'; }
-  function paint() { var s = now(); if (s === shown) return; shown = s; press(reelSeg, s); tag.textContent = s === 'final' ? 'Final' : 'Original'; }
-  function watch() { paint(); if (reel.requestVideoFrameCallback) reel.requestVideoFrameCallback(watch); }
-  if (reel.requestVideoFrameCallback) reel.requestVideoFrameCallback(watch); else reel.addEventListener('timeupdate', paint);
-  reel.addEventListener('seeked', paint);
-  reelSeg.addEventListener('click', function (e) {
-    var b = e.target.closest('button'); if (!b) return;
-    var h = half(), t = reel.currentTime % h;
-    reel.currentTime = Math.min(b.dataset.show === 'final' ? h + t : t, 2 * h - 0.05);
-    shown = ''; press(reelSeg, b.dataset.show); tag.textContent = b.dataset.show === 'final' ? 'Final' : 'Original';
-    if (!still && reel.paused) { var p = reel.play(); if (p && p.catch) p.catch(function () {}); }
-  });
-  // the film comes with the browser's own controls, for where this script does not run; here it plays by itself while it is in view
-  if (still) reel.preload = 'metadata';
-  else if ('IntersectionObserver' in window) {
-    reel.controls = false;
-    // it plays only while it is in view
-    new IntersectionObserver(function (list) {
-      if (list[0].isIntersecting) { var p = reel.play(); if (p && p.catch) p.catch(function () {}); } else reel.pause();
-    }, { threshold: 0.15 }).observe(reel);
-  }
+  // The cut. One film file carries every shot twice, frame for frame: the upper picture is the clip as it arrived, the
+  // lower one Lika's Final, with a gutter of data-gap rows between them. A canvas over the film draws what is asked for
+  // out of the frame the film is on: the two side by side with a line between them (how it starts), or one of them whole.
+  // Both always come from the same frame, so they cannot drift apart. Before the film has a frame, its poster (the first
+  // frame, laid out the same way) stands in.
+  (function () {
+    var fig = document.getElementById('film'), stage = document.getElementById('stage'), reel = document.getElementById('reel'), view = document.getElementById('reelView'),
+        knob = document.getElementById('reelKnob'), play = document.getElementById('reelPlay'), seg = document.querySelector('.seg[data-for="reel"]');
+    var ctx = view.getContext && view.getContext('2d'); if (!ctx) return;
+    var gap = +reel.dataset.gap, first = new Image(), mode = 'split', at = 0.5, wants = !still, inView = false, fresh = true, last = 0, raf = 0, grab = null;
+    var counts = 'requestVideoFrameCallback' in reel;
+
+    // if drawing ever fails, hand the film back as it is: both pictures, and the browser's controls
+    function plain() { fig.classList.remove('live'); reel.controls = true; paint = function () {}; }
+    function from() { return reel.readyState >= 2 && reel.videoWidth ? reel : first.complete && first.naturalWidth ? first : null; }
+    var paint = function () {
+      var s = from(); if (!s) return;
+      var w = s === reel ? reel.videoWidth : first.naturalWidth, h = ((s === reel ? reel.videoHeight : first.naturalHeight) - gap) / 2;
+      try {
+        if (view.width !== w || view.height !== h) { view.width = w; view.height = h; }
+        var x = mode === 'original' ? w : mode === 'final' ? 0 : Math.round(at * w);
+        if (x > 0) ctx.drawImage(s, 0, 0, x, h, 0, 0, x, h);                      // the original, left of the line
+        if (x < w) ctx.drawImage(s, x, h + gap, w - x, h, x, 0, w - x, h);        // the Final, right of it
+      } catch (e) { plain(); }
+    };
+    // Paint when the film shows a new frame. Where the browser does not say so, or stops saying so, paint on every screen frame.
+    function frame() { last = performance.now(); paint(); reel.requestVideoFrameCallback(frame); }
+    function loop() {
+      raf = 0;
+      if (fresh || !counts || performance.now() - last > 120) { fresh = false; paint(); }
+      if (!reel.paused && !reel.ended) raf = requestAnimationFrame(loop);
+    }
+    function run() { fresh = true; if (!raf) raf = requestAnimationFrame(loop); }
+    if (counts) reel.requestVideoFrameCallback(frame);
+    ['play', 'playing', 'pause', 'seeked', 'loadeddata'].forEach(function (n) { reel.addEventListener(n, run); });
+
+    function show(m) { mode = m; stage.dataset.show = m; press(seg, m); paint(); }
+    function move(v) {
+      at = Math.max(0.04, Math.min(0.96, v));
+      stage.style.setProperty('--at', (at * 100).toFixed(2) + '%'); knob.setAttribute('aria-valuenow', String(Math.round(at * 100))); paint();
+    }
+    seg.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) show(b.dataset.show); });
+    // a click on the picture: from the split, the side that was clicked, whole; after that, the other one
+    stage.addEventListener('click', function (e) {
+      if (!fig.classList.contains('live') || e.target.closest('.knob, .play')) return;
+      var r = stage.getBoundingClientRect();
+      show(mode === 'split' ? ((e.clientX - r.left) / r.width < at ? 'original' : 'final') : mode === 'original' ? 'final' : 'original');
+      if (reel.paused) sync();      // where the browser would not let the film start by itself, a touch lets it
+    });
+    // the line: dragged, or moved with the keys
+    knob.addEventListener('pointerdown', function (e) { if (e.button) return; grab = e.pointerId; try { knob.setPointerCapture(grab); } catch (x) {} e.preventDefault(); });
+    knob.addEventListener('pointermove', function (e) { if (e.pointerId !== grab) return; var r = stage.getBoundingClientRect(); move((e.clientX - r.left) / r.width); });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(function (n) { knob.addEventListener(n, function () { grab = null; }); });
+    knob.addEventListener('keydown', function (e) {
+      var d = { ArrowLeft: -0.02, ArrowDown: -0.02, ArrowRight: 0.02, ArrowUp: 0.02, PageDown: -0.1, PageUp: 0.1, Home: -1, End: 1 }[e.key];
+      if (d) { e.preventDefault(); move(at + d); }
+    });
+
+    // it plays by itself while it is in view, unless it was stopped by hand; with Reduce motion it waits to be started
+    function sync() { if (wants && inView) { var p = reel.play(); if (p && p.catch) p.catch(function () {}); } else reel.pause(); }
+    reel.addEventListener('play', function () { stage.classList.remove('paused'); play.setAttribute('aria-label', 'Pause the film'); });
+    reel.addEventListener('pause', function () { stage.classList.add('paused'); play.setAttribute('aria-label', 'Play the film'); });
+    play.addEventListener('click', function () { wants = reel.paused; inView = true; sync(); });
+
+    reel.controls = false; stage.classList.add('paused'); fig.classList.add('live');
+    first.onload = function () { paint(); }; first.src = reel.getAttribute('poster');
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (list) { inView = list[0].isIntersecting; sync(); }, { threshold: 0.15 }).observe(stage);
+    else { inView = true; sync(); }
+    // a phone stops the film when the browser is put away; take it up again on the way back
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) sync(); });
+    addEventListener('pageshow', function (e) { if (e.persisted) sync(); });
+  })();
 
   // the window: two photographs of it, one over the other. It turns to Final by itself the first time it is seen.
   var win = document.getElementById('win'), winSeg = document.querySelector('.seg[data-for="win"]'), touched = false;
