@@ -327,7 +327,8 @@ h3 { position: relative; font-size: 22px; font-weight: 400; line-height: 1.2; le
   .featured .caption p { grid-area: 2 / 1; font-size: 13px; }
   .project-grid { grid-template-columns: 1fr; row-gap: 52px; }
   .caption { grid-template-columns: minmax(0, 1fr) auto; }
-  .discipline { grid-area: 1 / 2; margin: 0; text-align: right; max-width: 136px; line-height: 1.4; }
+  /* (a kind that wraps to two lines spans both rows, so it never pushes the line under the name down) */
+  .discipline { grid-area: 1 / 2 / 3 / 3; align-self: start; padding-top: 4px; margin: 0; text-align: right; max-width: 136px; line-height: 1.4; }
   .featured .caption { grid-template-columns: minmax(0, 1fr) auto; }
   .featured .discipline { grid-area: 1 / 2; text-align: right; margin: 0; max-width: 136px; }
   .landscape { aspect-ratio: 16 / 10; }
