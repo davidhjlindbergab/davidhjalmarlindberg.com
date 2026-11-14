@@ -1,11 +1,12 @@
 /*
   The Andrum page: the demo at the top, and a phone's way to the trial.
 
-  The demo is 16 seconds of a test song (the singer from Andrum's ads over a thick, loud track), going
-  round, three ways: the music untouched, the whole track turned down until the voice is as clear as Andrum
-  makes it, and Andrum. The three recordings (../audio) share one gain, and the picture is drawn from
-  Andrum's own measurements of the song (../data/demo-data.js): the music and the voice in 60 bands
-  30 times a second, and the cut Andrum made.
+  The demo is a song of David's (37 seconds: it fades in, and the voice ends alone), going round, three
+  ways: the music untouched, the whole track turned down until the voice is as clear as Andrum makes it,
+  and Andrum at David's settings. The three recordings (../audio) share one gain, and the picture is drawn
+  from Andrum's own measurements of the song (../data/demo-data.js): the music and the voice in 60 bands
+  30 times a second, and the cut Andrum made. The data also says how long the song is, when the first
+  Listen moves from one way to the next, and where the picture starts.
 
   Buying is store.js. The cookie choice and the Meta pixel are pixel.js.
 */
@@ -73,7 +74,7 @@
     { way: "ducked", says: "Then the whole track turned down " + D.duckDb + "\u00a0dB. The voice comes through, and the song is gone." },
     { way: "andrum", says: "Now Andrum. The voice is just as clear, and the song is still there. Switch between the three yourself." }
   ];
-  var TOUR_STEP = 4;                           // seconds on each of the first two: one sung line
+  var TOUR_AT = D.tour || [4, 8];              // when the first Listen moves on, in seconds: a sung line on each of the first two
   var ROOM = { ducked: "Where the music was", andrum: "The room Andrum makes" };
 
   var way = "andrum", wDuck = 0, wAndrum = 1, shownClear = CLEAR.andrum;
@@ -151,7 +152,7 @@
     });
   }
 
-  // Three sources started on the same sample and looped over the same 16 seconds; a way is a gain.
+  // Three sources started on the same sample and going round the same song; a way is a gain.
   function startWeb() {
     if (!AC || !win.fetch || !win.Promise) return Promise.reject(new Error("no web audio"));
     if (!sound.ctx) {
@@ -269,7 +270,8 @@
 
   function tourOn() {
     if (!tour) return;
-    var step = Math.min(TOUR.length - 1, Math.floor((win.performance.now() - tour.since) / 1000 / TOUR_STEP));
+    var gone = (win.performance.now() - tour.since) / 1000, step = 0;
+    while (step < TOUR.length - 1 && gone >= TOUR_AT[step]) step++;
     if (step !== tour.step) { tour.step = step; setWay(TOUR[step].way, TOUR[step].says); }
     if (step === TOUR.length - 1) tour = null;
   }
@@ -287,7 +289,7 @@
   var fLo = 40, fHi = 16000, b0 = 0, count = 0;
   var xs, yMusic, yAfter, yVoice;
   var across, mask, voiceInk, roomInk, labelFont = "12px sans-serif";
-  var seen = true, idle = 0.9, raf = 0, last = 0, skip = false;
+  var seen = true, idle = D.rest === undefined ? 0.9 : D.rest, raf = 0, last = 0, skip = false;
 
   function size() {
     var r = canvas.getBoundingClientRect();
