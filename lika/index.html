@@ -1,0 +1,579 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lika · Every clip, the same film</title>
+<meta name="description" content="Lika matches a set of AI-generated clips to each other and finishes them for the cut: steady, clean and sharp, with film grain, in ProRes or whatever your edit wants. A Mac app, €129 once.">
+<!-- Not listed yet: the page is not in the menu, the Plugins page or the sitemap, and search engines are asked to leave it out. Remove this line when Lika is announced. -->
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#05080b">
+<link rel="canonical" href="https://davidhjalmarlindberg.com/lika/">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="Lika">
+<meta property="og:title" content="Lika · Every clip, the same film">
+<meta property="og:description" content="Lika matches a set of AI-generated clips to each other and finishes them for the cut. A Mac app, €129 once.">
+<meta property="og:url" content="https://davidhjalmarlindberg.com/lika/">
+<meta property="og:image" content="https://davidhjalmarlindberg.com/lika/images/lika-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Lika mark, an equals sign made of two frames of film in coloured light, with the name Lika beside it.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="images/lika-mark-small.svg" type="image/svg+xml">
+<link rel="icon" href="images/lika-icon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="images/lika-touch-180.png">
+<style>
+/* text as on the Colobri page: SF Pro on Apple devices (the system font), Inter elsewhere, scaled to SF Pro's width */
+@font-face { font-family: "Inter Web"; src: url("../fonts/inter-var-latin.woff") format("woff"); font-weight: 100 900; font-style: normal; font-display: swap; size-adjust: 98%; }
+
+/* Lika's page. The ground is the logo's own blue-black, and the logo's light is the only colour: it is in the mark, in the small
+   equals sign before each label (the upper bar orange to blue, the lower one blue to orange, as in the mark) and in what a
+   diagram points at. Everything else is neutral, as in the app, where the only colour is the footage. What moves is light and
+   focus, never position. */
+:root {
+  color-scheme: dark;
+  --bg: #05080b;
+  --card: #0c1116;
+  --well: #151b21;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-2: rgba(255, 255, 255, 0.17);
+  --ink: #f4f3ef;
+  --ink-2: #a8abb1;
+  --ink-3: #7f848c;
+  --light: linear-gradient(90deg, #f18157 0%, #e57e9a 34%, #997fe3 60%, #1383e1 82%, #0181e9 100%);
+  --light-2: linear-gradient(90deg, #5a8cf8 0%, #22cffd 26%, #a186e4 52%, #f6566a 78%, #f9a765 100%);
+  --f: -apple-system, BlinkMacSystemFont, "Inter Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --gl: max(22px, env(safe-area-inset-left, 0px));
+  --gr: max(22px, env(safe-area-inset-right, 0px));
+  --wide: 1200px;
+  --r: 18px;
+  --ease: cubic-bezier(.22, .7, .2, 1);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(52px + env(safe-area-inset-top, 0px)); -webkit-text-size-adjust: 100%; background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.47059 var(--f); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: clip; letter-spacing: 0.0035em; }
+img, video { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+::selection { background: rgba(153, 127, 227, 0.36); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: calc(var(--wide) + var(--gl) + var(--gr)); margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
+
+/* the bar */
+.bar { position: sticky; top: 0; z-index: 20; padding-top: env(safe-area-inset-top, 0px); background: rgba(5, 8, 11, 0.72); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid transparent; transition: border-color .3s; }
+.bar.on { border-bottom-color: var(--line); }
+.bar .wrap { display: flex; align-items: center; gap: 28px; height: 52px; }
+.bar .home { display: flex; align-items: center; margin-right: auto; }
+.bar .home img { width: auto; height: 22px; }
+.bar nav { display: flex; gap: 26px; font-size: 13px; color: var(--ink-2); }
+.bar nav a { text-decoration: none; transition: color .2s; }
+.bar nav a:hover { color: var(--ink); }
+
+/* pills: as wide as their words, the side padding half the height */
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 22px; border-radius: 22px; border: 1px solid transparent; font: 400 17px/1 var(--f); letter-spacing: 0; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background .25s, border-color .25s, color .25s; }
+.btn.solid { background: var(--ink); color: #05080b; }
+.btn.solid:hover { background: #fff; }
+.btn.small { height: 30px; padding: 0 15px; border-radius: 15px; font-size: 13px; }
+.btn.line { border-color: var(--line-2); color: var(--ink); }
+.btn.line:hover { border-color: var(--ink-2); }
+.more { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-2); padding-bottom: 1px; transition: border-color .25s; }
+.more:hover { border-bottom-color: var(--ink); }
+.fine { margin: 18px 0 0; font-size: 14px; line-height: 1.43; color: var(--ink-3); }
+.fine a { color: var(--ink-2); }
+
+/* the opening */
+.hero { position: relative; padding: clamp(52px, 8vw, 104px) 0 0; text-align: center; }
+.hero .glow { position: absolute; left: 50%; top: clamp(8px, 2vw, 30px); width: clamp(300px, 40vw, 520px); margin-left: calc(clamp(300px, 40vw, 520px) / -2); filter: blur(64px) saturate(1.25); opacity: .5; pointer-events: none; animation: breathe 11s ease-in-out infinite alternate; }
+@keyframes breathe { from { opacity: .36; } to { opacity: .58; } }
+.hero .mark { position: relative; width: clamp(170px, 19vw, 264px); margin: 0 auto clamp(30px, 4vw, 48px); }
+.hero h1 { position: relative; margin: 0; font-size: clamp(44px, 8.4vw, 96px); line-height: 1.03; font-weight: 600; letter-spacing: -0.035em; text-wrap: balance; }
+.hero .lead { position: relative; max-width: 620px; margin: clamp(18px, 2.4vw, 26px) auto 0; font-size: clamp(19px, 1.9vw, 24px); line-height: 1.36; color: var(--ink-2); text-wrap: balance; }
+.ctas { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 17px 26px; margin-top: clamp(26px, 3vw, 36px); }
+.hero .fine { position: relative; }
+
+/* Original | Final, as in the app */
+.seg { display: inline-flex; padding: 3px; border-radius: 12px; background: var(--well); box-shadow: inset 0 0 0 1px var(--line); }
+.seg button { appearance: none; height: 34px; padding: 0 18px; border: 0; border-radius: 9px; background: none; color: var(--ink-2); font: 500 15px/1 var(--f); cursor: pointer; transition: background .25s, color .25s; }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-pressed="true"] { background: #2e353d; color: var(--ink); }
+.tools { display: flex; justify-content: center; margin-top: 20px; }
+html:not(.js) .tools { display: none; }
+figure { margin: 0; }
+figcaption, .cap { max-width: 660px; margin: 16px auto 0; font-size: 14px; line-height: 1.43; color: var(--ink-3); text-align: center; text-wrap: pretty; }
+.tag { position: absolute; left: 14px; top: 14px; padding: 5px 8px 4px; border-radius: 5px; background: rgba(5, 8, 11, 0.66); color: var(--ink); font: 500 11px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+
+/* the cut: one film, first as the shots arrived, then as Lika matched them */
+.film { padding: clamp(40px, 6vw, 72px) 0 clamp(80px, 11vw, 150px); }
+.film .stage { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #0c1116; box-shadow: 0 0 0 1px var(--line), 0 50px 120px -40px #000; }
+.film video { width: 100%; height: 100%; object-fit: cover; }
+
+/* sections */
+.sec { padding: 0 0 clamp(88px, 12vw, 168px); }
+.head { max-width: 860px; margin: 0 auto clamp(36px, 5vw, 60px); text-align: center; }
+.eyebrow { display: inline-flex; align-items: center; gap: 9px; margin: 0 0 14px; font-size: 14px; line-height: 1.3; font-weight: 600; color: var(--ink-2); }
+.eyebrow::before { content: ""; width: 15px; height: 9px; border-radius: 1px; background: var(--light) top / 100% 3px no-repeat, var(--light-2) bottom / 100% 3px no-repeat; }
+h2 { margin: 0; font-size: clamp(32px, 4.8vw, 56px); line-height: 1.07; font-weight: 600; letter-spacing: -0.028em; text-wrap: balance; }
+.head .lead { max-width: 700px; margin: 20px auto 0; font-size: clamp(19px, 1.7vw, 21px); line-height: 1.38; color: var(--ink-2); text-wrap: pretty; }
+.lead strong { color: var(--ink); font-weight: 600; }
+h3 { margin: 0; font-size: 21px; line-height: 1.19; font-weight: 600; letter-spacing: -0.01em; }
+
+/* the app's window */
+.win .shot { position: relative; aspect-ratio: 1280 / 800; border-radius: clamp(6px, 1.1vw, 13px); overflow: hidden; background: #171717; box-shadow: 0 0 0 1px var(--line-2), 0 50px 120px -40px #000; }
+.win .shot img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.win .shot .b { opacity: 0; transition: opacity .6s var(--ease); }
+.win[data-show="final"] .shot .b { opacity: 1; }
+
+/* three ways to match */
+.modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: clamp(40px, 6vw, 72px); }
+.mode { padding: 22px 26px 28px; border-radius: var(--r); background: var(--card); }
+.mode svg { display: block; width: 100%; height: auto; margin-bottom: 16px; }
+.mode p { margin: 6px 0 0; font-size: 16px; line-height: 1.44; color: var(--ink-2); }
+
+/* how far apart the set sat, before and after */
+.spread { max-width: 760px; margin: clamp(40px, 6vw, 72px) auto 0; }
+.spread table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.spread caption { padding-bottom: 14px; text-align: left; font-size: 14px; color: var(--ink-3); }
+.spread th { font-weight: 400; text-align: left; }
+.spread thead th { padding: 0 0 8px; font-size: 13px; color: var(--ink-3); }
+.spread tbody th { width: 30%; padding: 11px 16px 11px 0; color: var(--ink); white-space: nowrap; }
+.spread tbody tr { border-top: 1px solid var(--line); }
+.spread td { width: 35%; padding: 11px 28px 11px 0; }
+.spread td:last-child { padding-right: 0; }
+.spread .v { display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: center; gap: 12px; }
+.spread .v i { width: calc(var(--n) * 1%); height: 6px; min-width: 2px; border-radius: 0 3px 3px 0; background: #5f646c; }
+.spread td.now .v i { background: var(--ink); }
+.spread .v b { order: -1; font: 400 14px/1 var(--mono); color: var(--ink-2); text-align: right; }
+.spread td.now .v b { color: var(--ink); }
+
+/* short facts in columns */
+.list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px 44px; margin: 0; }
+.list dt { margin-bottom: 6px; font-size: 19px; line-height: 1.26; font-weight: 600; letter-spacing: -0.006em; }
+.list dd { margin: 0; font-size: 16px; line-height: 1.47; color: var(--ink-2); }
+.list.four { grid-template-columns: repeat(4, 1fr); margin-top: clamp(44px, 6vw, 76px); }
+
+/* six kinds of grain */
+.grains { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin: clamp(44px, 6vw, 76px) 0 0; padding: 0; list-style: none; }
+.grains img { width: 100%; border-radius: 10px; background: #1a1a1c; }
+.grains span { display: block; margin-top: 10px; font-size: 14px; color: var(--ink-2); text-align: center; }
+
+/* one file, cut into its shots */
+.strip { display: grid; grid-template-columns: repeat(6, 1fr); border-radius: clamp(4px, .8vw, 10px); overflow: hidden; }
+.strip div { position: relative; }
+.strip img { width: 100%; }
+.strip div + div::before { content: ""; position: absolute; z-index: 1; left: -1px; top: 0; bottom: 0; width: 2px; background: var(--ink); box-shadow: 0 0 14px 2px rgba(241, 129, 87, 0.8); opacity: 0; transition: opacity .9s var(--ease) calc(var(--i) * .16s + .4s); }
+.strip.in div + div::before, html:not(.js) .strip div + div::before { opacity: 1; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 34px 44px; max-width: 980px; margin: clamp(40px, 6vw, 64px) auto 0; }
+.pair p { margin: 0; font-size: 17px; line-height: 1.47; color: var(--ink-2); }
+.pair p strong { color: var(--ink); font-weight: 600; }
+
+/* formats */
+.formats { display: grid; grid-template-columns: max-content 1fr; gap: 0 clamp(20px, 4vw, 56px); max-width: 860px; margin: 0 auto; }
+.formats div { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; padding: 15px 0; border-top: 1px solid var(--line); }
+.formats div:last-child { border-bottom: 1px solid var(--line); }
+.formats dt { font-weight: 600; }
+.formats dd { margin: 0; color: var(--ink-2); }
+
+/* the price */
+.buy { max-width: 620px; margin: 0 auto; padding: clamp(30px, 5vw, 48px) clamp(24px, 5vw, 52px) clamp(30px, 5vw, 46px); border-radius: 24px; background: var(--card); text-align: center; }
+.price { margin: 0; font-size: clamp(64px, 9vw, 88px); line-height: 1; font-weight: 600; letter-spacing: -0.04em; }
+.price-note { margin: 12px 0 0; font-size: 19px; color: var(--ink-2); }
+.facts { display: inline-block; margin: 26px 0 0; padding: 0; list-style: none; text-align: left; }
+.facts li { position: relative; padding: 5px 0 5px 26px; color: var(--ink-2); }
+.facts li::before { content: ""; position: absolute; left: 2px; top: 13px; width: 12px; height: 7px; border-radius: 1px; background: var(--light) top / 100% 2.4px no-repeat, var(--light-2) bottom / 100% 2.4px no-repeat; }
+.buy .ctas { margin-top: 28px; }
+.buy .fine { max-width: 430px; margin-left: auto; margin-right: auto; text-wrap: balance; }
+
+/* questions */
+.faq { max-width: 860px; margin: 0 auto; }
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-child { border-bottom: 1px solid var(--line); }
+.faq summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-size: 19px; line-height: 1.3; font-weight: 600; letter-spacing: -0.006em; list-style: none; cursor: pointer; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary svg { flex: 0 0 auto; width: 15px; height: 15px; color: var(--ink-3); transition: transform .3s var(--ease); }
+.faq details[open] summary svg { transform: rotate(45deg); }
+.faq .a { padding: 0 44px 22px 0; color: var(--ink-2); }
+.faq .a p { margin: 0 0 10px; }
+
+/* the end */
+.end { text-align: center; }
+.end .mark { width: 132px; margin: 0 auto 34px; }
+footer { padding: 34px 0 calc(34px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); font-size: 13px; line-height: 1.5; color: var(--ink-3); }
+footer .wrap { display: grid; grid-template-columns: 1fr auto; gap: 22px 40px; align-items: start; }
+footer img { width: auto; height: 22px; margin-bottom: 14px; }
+footer p { margin: 0; max-width: 420px; }
+footer ul { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; padding: 0; list-style: none; }
+footer a { color: var(--ink-2); text-decoration: none; }
+footer a:hover { color: var(--ink); }
+footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+
+/* things come into focus as they are reached, once */
+.js .rise { opacity: 0; transition: opacity .9s var(--ease), filter .9s var(--ease); }
+.js .rise.soft { filter: blur(7px); }
+.js .rise.in { opacity: 1; filter: none; }
+
+@media (max-width: 899px) {
+  .bar nav { display: none; }
+  .modes { grid-template-columns: 1fr; }
+  .mode { display: grid; grid-template-columns: 200px 1fr; gap: 0 24px; align-items: center; padding: 20px 24px; }
+  .mode svg { grid-row: 1 / 3; margin: 0; }
+  .mode h3 { align-self: end; }
+  .mode p { align-self: start; }
+  .list, .list.four { grid-template-columns: 1fr 1fr; }
+  .grains { grid-template-columns: repeat(3, 1fr); gap: 10px 8px; }
+  .pair { grid-template-columns: 1fr; }
+}
+@media (max-width: 599px) {
+  .list, .list.four { grid-template-columns: 1fr; gap: 26px; }
+  .mode { display: block; padding: 18px 20px 22px; }
+  .mode svg { max-width: 250px; margin: 0 auto 12px; }
+  .win .shot { aspect-ratio: 944 / 800; }
+  .win .shot img { object-fit: cover; object-position: 0 0; }
+  .spread td { padding-right: 12px; }
+  .spread .v { grid-template-columns: 34px minmax(0, 1fr); gap: 8px; }
+  .spread table { font-size: 15px; }
+  .spread tbody th { width: 32%; padding-right: 8px; white-space: normal; }
+  .spread td { width: 34%; }
+  .formats { grid-template-columns: 1fr; }
+  .formats div { display: block; padding: 13px 0; }
+  .faq summary { font-size: 17px; }
+  .faq .a { padding-right: 0; }
+  .tag { left: 9px; top: 9px; }
+  footer .wrap { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hero .glow { animation: none; }
+  .js .rise, .js .rise.soft { opacity: 1; filter: none; transition: none; }
+  .win .shot .b, .strip div + div::before { transition: none; }
+}
+@media print { .bar, .tools, .hero .glow { display: none; } body { background: #fff; color: #000; } }
+</style>
+<script>document.documentElement.classList.add('js');</script>
+<script src="/stats.js" defer></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <linearGradient id="light" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="240" y2="0"><stop offset="0" stop-color="#f18157"/><stop offset=".34" stop-color="#e57e9a"/><stop offset=".6" stop-color="#997fe3"/><stop offset=".82" stop-color="#1383e1"/><stop offset="1" stop-color="#0181e9"/></linearGradient>
+</defs></svg>
+
+<header class="bar" id="bar">
+  <div class="wrap">
+    <a class="home" href="#top" aria-label="Lika, back to the top"><img src="images/lika-logo-small.svg" width="62" height="22" alt=""></a>
+    <nav aria-label="Sections">
+      <a href="#match">Match</a>
+      <a href="#finish">Finish</a>
+      <a href="#cuts">Cuts</a>
+      <a href="#formats">Formats</a>
+      <a href="#faq">Questions</a>
+    </nav>
+    <a class="btn line small" href="#price">Price</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <img class="glow" src="images/lika-mark-320.webp" width="320" height="272" alt="" aria-hidden="true">
+    <div class="wrap">
+      <img class="mark" src="images/lika-mark-640.webp" srcset="images/lika-mark-320.webp 320w, images/lika-mark-640.webp 640w" sizes="(max-width: 899px) 170px, 264px" width="640" height="544" alt="Lika">
+      <h1 id="hero-title" class="rise soft">Every clip.<br> The same film.</h1>
+      <p class="lead rise">Lika matches a set of AI-generated clips to each other, then finishes them for the cut. On your Mac.</p>
+      <div class="ctas rise">
+        <a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Lika%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Lika%20is%20on%20sale.">Tell me when it's on sale</a>
+        <a class="more" href="#match">See how it works</a>
+      </div>
+      <p class="fine rise">Not on sale yet. €129 once, no subscription.</p>
+    </div>
+  </section>
+
+  <section class="film" aria-labelledby="film-title">
+    <div class="wrap">
+      <h2 class="sr" id="film-title">One cut, as it arrived and as Lika matched it</h2>
+      <figure class="rise" id="film">
+        <div class="stage">
+          <video id="reel" muted loop playsinline autoplay preload="auto" poster="images/film-poster.webp" width="1920" height="1080" aria-label="Six shots of three white spheres on pale sand in low sun, cut together. In the first half every shot has its own colour and level: one milky and green, one magenta and hard, one dark, one bright, one washed out, one crushed. In the second half the same cut plays again, matched, and the shots sit together as one scene.">
+            <source src="images/lika-film.mp4" type="video/mp4">
+          </video>
+          <span class="tag" id="reelTag" aria-hidden="true">Original</span>
+        </div>
+        <div class="tools">
+          <div class="seg" role="group" aria-label="The cut as it arrived, or as Lika matched it" data-for="reel">
+            <button type="button" data-show="original" aria-pressed="true">Original</button>
+            <button type="button" data-show="final" aria-pressed="false">Final</button>
+          </div>
+        </div>
+        <figcaption>Six test shots drawn in code: one scene, and a different drift on every shot, the way generations come back. The cut plays as the shots arrived, then as Lika matched them.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" id="match" aria-labelledby="match-title">
+    <div class="wrap">
+      <div class="head rise">
+        <p class="eyebrow">Match</p>
+        <h2 id="match-title">It measures every clip.<br> Then it moves them to one place.</h2>
+        <p class="lead"><strong>Generated clips rarely agree.</strong> One sits on milky blacks, the next runs magenta, a third tops out early. Lika reads each clip's black level and its colour, where the highlights end, the tint of the midtones and the saturation, and gives every clip one correction that brings the set together.</p>
+      </div>
+
+      <figure class="win rise" id="win" data-show="original">
+        <div class="shot">
+          <img class="a" src="images/app-original-1280.webp" srcset="images/app-original-1280.webp 1280w, images/app-original-2560.webp 2560w" sizes="(max-width: 1244px) 100vw, 1200px" width="2560" height="1600" loading="lazy" decoding="async" alt="Lika's window with the six test shots as tiles, as they arrived: each a different colour and level. Under them a parade scope with one column per clip, the black levels at six different heights.">
+          <img class="b" src="images/app-final-1280.webp" srcset="images/app-final-1280.webp 1280w, images/app-final-2560.webp 2560w" sizes="(max-width: 1244px) 100vw, 1200px" width="2560" height="1600" loading="lazy" decoding="async" alt="The same window showing the matched shots: the six tiles now share one look, and in the parade the black levels line up.">
+        </div>
+        <div class="tools">
+          <div class="seg" role="group" aria-label="The window showing the shots as they arrived, or matched" data-for="win">
+            <button type="button" data-show="original" aria-pressed="true">Original</button>
+            <button type="button" data-show="final" aria-pressed="false">Final</button>
+          </div>
+        </div>
+        <figcaption>Lika with the same six shots. The parade under them has a column for every clip: red, green and blue, zoomed in on the shadows.</figcaption>
+      </figure>
+
+      <figure class="spread rise">
+        <table>
+          <caption>How far apart the six shots sat, in points of full scale, from Lika's own panel.</caption>
+          <thead><tr><th scope="col"><span class="sr">Measure</span></th><th scope="col">Before</th><th scope="col">Matched</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Black level</th><td><span class="v"><i style="--n:90.5"></i><b>5.14</b></span></td><td class="now"><span class="v"><i style="--n:0.0"></i><b>0.00</b></span></td></tr>
+            <tr><th scope="row">Black colour</th><td><span class="v"><i style="--n:33.1"></i><b>1.88</b></span></td><td class="now"><span class="v"><i style="--n:1.6"></i><b>0.09</b></span></td></tr>
+            <tr><th scope="row">White level</th><td><span class="v"><i style="--n:94.9"></i><b>5.39</b></span></td><td class="now"><span class="v"><i style="--n:0.0"></i><b>0.00</b></span></td></tr>
+            <tr><th scope="row">Midtone tint</th><td><span class="v"><i style="--n:100.0"></i><b>5.68</b></span></td><td class="now"><span class="v"><i style="--n:23.6"></i><b>1.34</b></span></td></tr>
+          </tbody>
+        </table>
+      </figure>
+
+      <div class="modes">
+        <div class="mode rise">
+          <svg viewBox="0 0 240 100" role="img" aria-label="Six points joined to the point in their middle"><g stroke="#f4f3ef" stroke-opacity=".2"><path d="M38 30 128 51M78 76 128 51M110 20 128 51M150 64 128 51M190 34 128 51M204 82 128 51"/></g><g fill="#6c6d75"><circle cx="38" cy="30" r="3.5"/><circle cx="78" cy="76" r="3.5"/><circle cx="110" cy="20" r="3.5"/><circle cx="150" cy="64" r="3.5"/><circle cx="190" cy="34" r="3.5"/><circle cx="204" cy="82" r="3.5"/></g><circle cx="128" cy="51" r="6" fill="#0c1116" stroke="url(#light)" stroke-width="2.5"/></svg>
+          <h3>Group</h3>
+          <p>Every clip moves to the middle of the set. A clip that sits far from the rest doesn't drag the middle with it.</p>
+        </div>
+        <div class="mode rise">
+          <svg viewBox="0 0 240 100" role="img" aria-label="Five points joined to the sixth"><g stroke="#f4f3ef" stroke-opacity=".2"><path d="M38 30 190 34M78 76 190 34M110 20 190 34M150 64 190 34M204 82 190 34"/></g><g fill="#6c6d75"><circle cx="38" cy="30" r="3.5"/><circle cx="78" cy="76" r="3.5"/><circle cx="110" cy="20" r="3.5"/><circle cx="150" cy="64" r="3.5"/><circle cx="204" cy="82" r="3.5"/></g><circle cx="190" cy="34" r="7" fill="url(#light)"/></svg>
+          <h3>Hero</h3>
+          <p>Every clip moves to one clip you pick: the shot that already looks the way the film should.</p>
+        </div>
+        <div class="mode rise">
+          <svg viewBox="0 0 240 100" role="img" aria-label="Six points joined to a point on a straight line"><path d="M92 6V94" stroke="#f4f3ef" stroke-opacity=".34" stroke-dasharray="2 4"/><g stroke="#f4f3ef" stroke-opacity=".2"><path d="M38 30 92 51M78 76 92 51M110 20 92 51M150 64 92 51M190 34 92 51M204 82 92 51"/></g><g fill="#6c6d75"><circle cx="38" cy="30" r="3.5"/><circle cx="78" cy="76" r="3.5"/><circle cx="110" cy="20" r="3.5"/><circle cx="150" cy="64" r="3.5"/><circle cx="190" cy="34" r="3.5"/><circle cx="204" cy="82" r="3.5"/></g><circle cx="92" cy="51" r="6" fill="#0c1116" stroke="url(#light)" stroke-width="2.5"/></svg>
+          <h3>Neutral</h3>
+          <p>The set's own levels, with the colour taken out of the blacks and the midtone tint pulled to neutral.</p>
+        </div>
+      </div>
+
+      <dl class="list four">
+        <div class="rise"><dt>Five strengths</dt><dd>Blacks, Whites, Balance, Warmth and Saturation, each from 0 to 100. Warmth starts at 0, because warmth is usually the scene and not the grade.</dd></div>
+        <div class="rise"><dt>Clip by clip</dt><dd>Keep a clip out of the vote, give it less of the match, or trim its exposure, contrast, tint and black level by hand.</dd></div>
+        <div class="rise"><dt>Read off the neutrals</dt><dd>The tint is measured on walls, ground and cloth, not on the red dress, so a colourful subject doesn't pull the balance.</dd></div>
+        <div class="rise"><dt>Plain numbers</dt><dd>Every match is one ASC CDL: slope, offset, power and saturation. Copy it, or save the whole set.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec" id="finish" aria-labelledby="finish-title">
+    <div class="wrap">
+      <div class="head rise">
+        <p class="eyebrow">Finish</p>
+        <h2 id="finish-title">Then it takes<br> the generated look off.</h2>
+        <p class="lead"><strong>A level that breathes, bands in the sky, grit in the shadows, a surface that is too clean.</strong> Lika's finishing chain takes them in that order, in 32&#8209;bit float on the graphics card, from the clip's own bits to the format you render.</p>
+      </div>
+      <dl class="list">
+        <div class="rise"><dt>Hold</dt><dd>Keeps level and colour steady. It takes out the pulse an encoder leaves every few frames, the small jump in brightness you see in hair or on a dark wall, and still follows real changes in the light.</dd></div>
+        <div class="rise"><dt>Clean-up</dt><dd>Takes out noise and grit, measured against the clip's own noise. Frames are lined up on the motion and averaged where they agree, so lines, lashes and highlights stay as they are.</dd></div>
+        <div class="rise"><dt>Deband</dt><dd>Rebuilds smooth ramps in skies and shadows, inside a hard limit on how far any pixel may move.</dd></div>
+        <div class="rise"><dt>Upscale</dt><dd>1.5×, 2× or UHD, with ringing held back. Chroma is rebuilt to full resolution first, with its edges taken from the luma.</dd></div>
+        <div class="rise"><dt>Sharpen</dt><dd>Contrast-adaptive, after the upscale: it lifts edges and leaves flat areas alone.</dd></div>
+        <div class="rise"><dt>Grain</dt><dd>Six kinds, made last and at the size you render, so nothing after it can soften it. Any clip can have a finish and a grain of its own.</dd></div>
+      </dl>
+      <figure class="rise">
+        <ul class="grains">
+          <li><img src="images/grain-fine.webp" width="400" height="400" loading="lazy" decoding="async" alt="A detail of a shot with Fine grain: tight, even, barely coloured."><span>Fine</span></li>
+          <li><img src="images/grain-s35.webp" width="400" height="400" loading="lazy" decoding="async" alt="The same detail with 35 mm grain: visible and a little clumped."><span>35 mm</span></li>
+          <li><img src="images/grain-s16.webp" width="400" height="400" loading="lazy" decoding="async" alt="The same detail with 16 mm grain: larger, clumpier, more colour in it."><span>16 mm</span></li>
+          <li><img src="images/grain-s8.webp" width="400" height="400" loading="lazy" decoding="async" alt="The same detail with 8 mm grain: coarse, heavy and colourful."><span>8 mm</span></li>
+          <li><img src="images/grain-mono.webp" width="400" height="400" loading="lazy" decoding="async" alt="The same detail with Mono grain: silver grain with no colour in it."><span>Mono</span></li>
+          <li><img src="images/grain-sensor.webp" width="400" height="400" loading="lazy" decoding="async" alt="The same detail with Sensor grain: very fine camera noise, strongest in the shadows."><span>Sensor</span></li>
+        </ul>
+        <figcaption>One detail of the second shot, rendered by Lika with each kind of grain at its own settings.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" id="cuts" aria-labelledby="cuts-title">
+    <div class="wrap">
+      <div class="head rise">
+        <p class="eyebrow">Cuts and timelines</p>
+        <h2 id="cuts-title">A file with six shots<br> is six clips.</h2>
+      </div>
+      <figure class="rise">
+        <div class="strip" id="strip">
+          <div style="--i:0"><img src="images/shot-1.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:0"><img src="images/shot-2.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:1"><img src="images/shot-3.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:2"><img src="images/shot-4.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:3"><img src="images/shot-5.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:4"><img src="images/shot-6.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
+        </div>
+        <figcaption>The six shots joined into one file. Find cuts put the five cuts where they are.</figcaption>
+      </figure>
+      <div class="pair">
+        <p class="rise"><strong>Find cuts splits a file into its shots,</strong> and each shot gets its own match. It is built to tell a cut from a flash, a whip pan or a fade. Render a file for each shot, or the whole clip back in one piece.</p>
+        <p class="rise"><strong>Or bring the sequence.</strong> XML from Premiere Pro or DaVinci Resolve, FCPXML from Final Cut Pro, an EDL or OTIO: Lika takes the stretches the timeline uses and leaves the rest of each file alone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="formats" aria-labelledby="formats-title">
+    <div class="wrap">
+      <div class="head rise">
+        <p class="eyebrow">Out</p>
+        <h2 id="formats-title">Rendered for the edit.<br> Or not rendered at all.</h2>
+        <p class="lead"><strong>Write new files in the format your edit wants,</strong> with the sound carried over. Or leave the files alone and take the match with you: a LUT and a CDL for every clip, for Resolve, Premiere Pro or Final Cut Pro.</p>
+      </div>
+      <dl class="formats rise">
+        <div><dt>ProRes</dt><dd>422 Proxy, LT, 422 and HQ, 4444 and 4444 XQ</dd></div>
+        <div><dt>DNxHR</dt><dd>SQ, HQ, HQX and 444</dd></div>
+        <div><dt>HEVC</dt><dd>10-bit, 4:2:0 or 4:2:2, in software or on the Mac's own chip</dd></div>
+        <div><dt>H.264</dt><dd>8-bit, for review and delivery</dd></div>
+        <div><dt>Lossless</dt><dd>FFV1 at 10 or 16 bits, and uncompressed 10-bit</dd></div>
+        <div><dt>CineForm</dt><dd>10-bit 4:2:2</dd></div>
+        <div><dt>Image sequences</dt><dd>DPX at 10 bits, TIFF and PNG at 16</dd></div>
+        <div><dt>Looks</dt><dd>A .cube LUT and a .cdl for every clip, with a .ccc collection</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec" id="price" aria-labelledby="price-title">
+    <div class="wrap">
+      <div class="head rise">
+        <p class="eyebrow">Price</p>
+        <h2 id="price-title">Buy it once.</h2>
+      </div>
+      <div class="buy rise">
+        <p class="price">€129</p>
+        <p class="price-note">One licence, no subscription. VAT included.</p>
+        <ul class="facts">
+          <li>Everything on this page</li>
+          <li>For one person, on up to two Macs</li>
+          <li>Every 1.x update included</li>
+          <li>For any work, commercial work included</li>
+          <li>14 days to change your mind</li>
+        </ul>
+        <div class="ctas"><a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Lika%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Lika%20is%20on%20sale.">Tell me when it's on sale</a></div>
+        <p class="fine">Lika isn't on sale yet. The button opens your mail app, and I'll write to you the day it is.<br> For a Mac with Apple silicon, on macOS 13 or later.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="head rise">
+        <p class="eyebrow">Questions</p>
+        <h2 id="faq-title">Before you ask.</h2>
+      </div>
+      <div class="faq rise">
+        <details><summary>Do my clips leave my Mac?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>No. Lika reads, matches and renders on your Mac. Nothing is uploaded, so there is no queue and nothing to wait for but your own machine.</p></div></details>
+        <details><summary>Does it change my files?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>No. Lika writes new files into a folder you choose and never touches the ones you gave it.</p></div></details>
+        <details><summary>Is it only for AI-generated clips?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>It is made for them, but it matches any Rec. 709 clips that should look like one film: stock footage, phone clips, renders.</p></div></details>
+        <details><summary>What can I open in it?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>MP4 and MOV files in H.264, HEVC, ProRes or DNxHR, at 8, 10 or 12 bits. Drop a folder and Lika takes every clip in it.</p></div></details>
+        <details><summary>Can I keep grading in Resolve afterwards?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>Yes, two ways. Render ProRes 4444 or a 16-bit sequence and grade on top of it. Or save the looks and put each clip's CDL or LUT on the original file, which keeps every bit of the source.</p></div></details>
+        <details><summary>Which Macs does it run on?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>Macs with Apple silicon, on macOS 13 or later.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec end" aria-labelledby="end-title">
+    <div class="wrap">
+      <img class="mark rise" src="images/lika-mark-320.webp" width="320" height="272" alt="" loading="lazy">
+      <h2 id="end-title" class="rise soft">Make them alike.</h2>
+      <div class="ctas rise"><a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Lika%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Lika%20is%20on%20sale.">Tell me when it's on sale</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <img src="images/lika-logo-small.svg" width="62" height="22" alt="Lika" loading="lazy">
+      <p>Lika is Swedish for alike. The pictures on this page are test shots drawn in code, matched and rendered by Lika.</p>
+    </div>
+    <ul>
+      <li><a href="../privacy/">Privacy</a></li>
+      <li><a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a></li>
+    </ul>
+    <div class="legal">
+      <span>© 2026 David HJ Lindberg AB</span>
+      <a href="../">David Hjalmar Lindberg</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // the bar gets its line once the page has moved
+  var bar = document.getElementById('bar');
+  var onScroll = function () { bar.classList.toggle('on', window.scrollY > 8); };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  // things come into focus as they are reached
+  var rise = [].slice.call(document.querySelectorAll('.rise')), strip = document.getElementById('strip');
+  if (!('IntersectionObserver' in window)) { rise.forEach(function (el) { el.classList.add('in'); }); strip.classList.add('in'); }
+  else {
+    var seen = new IntersectionObserver(function (list) {
+      list.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    rise.forEach(function (el) { seen.observe(el); });
+    var cut = new IntersectionObserver(function (list) { if (list[0].isIntersecting) { strip.classList.add('in'); cut.disconnect(); } }, { threshold: 0.6 });
+    cut.observe(strip);
+  }
+
+  function press(seg, show) { [].forEach.call(seg.querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.show === show)); }); }
+
+  // The cut. One film file: its first half is the cut as the shots arrived, its second half the same cut matched. The
+  // switch jumps to the same moment in the other half, so the two can be compared frame against frame.
+  var reel = document.getElementById('reel'), reelSeg = document.querySelector('.seg[data-for="reel"]'), tag = document.getElementById('reelTag'), shown = '';
+  function half() { return isFinite(reel.duration) && reel.duration > 0 ? reel.duration / 2 : 9; }
+  function now() { return reel.currentTime >= half() - 0.02 ? 'final' : 'original'; }
+  function paint() { var s = now(); if (s === shown) return; shown = s; press(reelSeg, s); tag.textContent = s === 'final' ? 'Final' : 'Original'; }
+  function watch() { paint(); if (reel.requestVideoFrameCallback) reel.requestVideoFrameCallback(watch); }
+  if (reel.requestVideoFrameCallback) reel.requestVideoFrameCallback(watch); else reel.addEventListener('timeupdate', paint);
+  reel.addEventListener('seeked', paint);
+  reelSeg.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var h = half(), t = reel.currentTime % h;
+    reel.currentTime = Math.min(b.dataset.show === 'final' ? h + t : t, reel.duration - 0.05 || h + t);
+    shown = ''; press(reelSeg, b.dataset.show); tag.textContent = b.dataset.show === 'final' ? 'Final' : 'Original';
+    if (!still && reel.paused) { var p = reel.play(); if (p && p.catch) p.catch(function () {}); }
+  });
+  if (still) { reel.removeAttribute('autoplay'); reel.pause(); reel.controls = true; }
+  else if ('IntersectionObserver' in window) {
+    // it plays only while it is in view
+    new IntersectionObserver(function (list) {
+      if (list[0].isIntersecting) { var p = reel.play(); if (p && p.catch) p.catch(function () {}); } else reel.pause();
+    }, { threshold: 0.15 }).observe(reel);
+  }
+
+  // the window: two photographs of it, one over the other. It turns to Final by itself the first time it is seen.
+  var win = document.getElementById('win'), winSeg = document.querySelector('.seg[data-for="win"]'), touched = false;
+  function show(s) { win.dataset.show = s; press(winSeg, s); }
+  winSeg.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) { touched = true; show(b.dataset.show); } });
+  if (still || !('IntersectionObserver' in window)) show('final');
+  else {
+    var first = new IntersectionObserver(function (list) {
+      if (!list[0].isIntersecting) return;
+      first.disconnect(); setTimeout(function () { if (!touched) show('final'); }, 1400);
+    }, { threshold: 0.55 });
+    first.observe(win.querySelector('.shot'));
+  }
+})();
+</script>
+</body>
+</html>

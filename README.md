@@ -1,6 +1,6 @@
 # davidhjalmarlindberg.com
 
-The website of David Hjalmar Lindberg: the front page, a page for each project, and product pages for Andrum (`/andrum/`) and Colobri (`/colobri/`).
+The website of David Hjalmar Lindberg: the front page, a page for each project, and product pages for Andrum (`/andrum/`), Colobri (`/colobri/`) and Lika (`/lika/`, not listed yet).
 
 Plain HTML, CSS and JavaScript with no build step. Served by GitHub Pages from the root of `main`; `CNAME` holds the custom domain.
 
@@ -43,6 +43,16 @@ Plain HTML, CSS and JavaScript with no build step. Served by GitHub Pages from t
 - **The browser app** (`colobri/app/index.html`): the site build of the Colobri app (`dist/web/colobri-site.html` in the Colobri build). Since 5 Nov 2026 it has no trial (one kept in a browser's storage starts again in a private window): anyone can open frames and see, refine and save looks, but exporting needs a licence from the start; Export and Add licence in the bar open the licence (buy, or add a key: David, "when people buy a license they can just load it in on the website version. But before buying the trial is not possible on the website"). The 7-day trial with exports is in the downloads: the plugins and the download's web app (Colobri web app.html).
 
 - **Meta domain verification**: the `facebook-domain-verification` meta tag in the front page's head (`index.html`) must stay.
+
+## Lika: the page
+
+- **The page** (`lika/index.html`): plain HTML with its styles and its one script inside, no build step, like Colobri's. Lika is a Mac app that matches a set of AI-generated clips to each other and finishes them. The ground is the logo's own blue-black `#05080b`, the text `#f4f3ef`, and the logo's light is the only colour (`--light`, orange through pink and violet to blue, and `--light-2`, the same turned round): in the mark, in the small equals sign before each label and in what a diagram points at. The type is Colobri's (the system font, Inter elsewhere). It loads `/stats.js` and nothing else from outside: no Meta pixel, no cookies.
+- **Not listed yet** (14 Nov 2026): the page is live at `/lika/` but has `<meta name="robots" content="noindex">` and is not in the menu, on the Plugins page, on the front page or in `sitemap.xml`. To announce it: remove the robots line, add Lika to the Plugins menu in every page's header and to `plugins/index.html` (copy its facts from this page), and add it to the sitemap.
+- **Price**: €129, one licence, VAT included. The terms under it (one person, two Macs, every 1.x update, any work, 14 days) are Andrum's, to be confirmed. There is no checkout yet: every button is "Tell me when it's on sale", an e-mail link whose subject has "sale" in it, which `stats.js` counts as `notify`.
+- **The pictures** (`lika/images/`): none of them is footage. They are six test shots drawn in code (three white spheres on pale sand in low sun, each shot given its own drift in level and colour) and what Lika made of them. `lika-film.mp4` is the cut as the shots arrived and then the same cut matched, in one file; the page's Original and Final switch jumps to the same moment in the other half. `app-original-*.webp` and `app-final-*.webp` are two photographs of the app's window with those clips, `shot-1.webp` to `shot-6.webp` the strip, `grain-*.webp` one detail with each kind of grain. All of it is made in the Lika build (`brand/demo/shots.py`, `capture.js`, `assets.py`). Replace them with real footage when there is some David wants to show.
+- **The numbers** in the table (how far apart the shots sat) are read from the app's own panel in that run. Change them if the pictures are made again.
+- **The logo** (`lika-mark.svg`, `lika-logo.svg`, `lika-mark-small.svg`, `lika-logo-small.svg`): an equals sign of two frames, each with a window, the upper lit from its left and the lower from its right, each with one corner dying off into the dark. Drawn after David's picture of 14 Nov 2026 by `brand/logo.py` in the Lika build. The page's large mark (`lika-mark-320.webp`, `lika-mark-640.webp`) has the grain on it; under about 40 px the mark is two plain bars (`lika-mark-small.svg`, the favicon, and `lika-logo-small.svg` in the header and footer).
+- **Motion**: what moves is light and focus. The headline and each section come into focus once as they are reached (opacity and blur, never position), the light behind the mark breathes, the film plays only while it is in view, and the window turns from Original to Final by itself the first time it is seen. With Reduce motion on, nothing moves: the film waits with its controls and the window shows Final.
 
 ## The site editor (`/edit/`)
 
