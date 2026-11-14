@@ -1,34 +1,36 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Andrum: make room for the voice</title>
-<meta name="description" content="Andrum turns the music down only where it covers the voice, and only while the voice is there. One dial for how clear the voice should be, 61 bands, zero latency. For Mac and Windows, free for 7 days.">
+<meta name="description" content="Andrum turns the music down only where it covers the voice, and only as much as it takes. The words come through and the music keeps its energy. For Mac and Windows, free for 7 days.">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/andrum/">
-<meta name="theme-color" content="#04060a">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="Andrum">
 <meta property="og:title" content="Andrum: make room for the voice">
-<meta property="og:description" content="Turns the music down only where it covers the voice, and only while the voice is there. For Mac and Windows.">
+<meta property="og:description" content="Turns the music down only where it covers the voice, and only as much as it takes. For Mac and Windows.">
 <meta property="og:url" content="https://davidhjalmarlindberg.com/andrum/">
 <meta property="og:image" content="https://davidhjalmarlindberg.com/andrum/assets/img/andrum-og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Andrum's logo and the words Make room for the voice, over Andrum's picture of a song: the music lit like an aurora and the voice as a fine line of light.">
+<meta property="og:image:alt" content="Andrum's logo and the words Make room for the voice, over Andrum's picture of a song.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/img/andrum-icon-32.png" sizes="32x32" type="image/png">
 <link rel="icon" href="assets/img/andrum-icon-64.png" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="assets/img/andrum-icon-180.png">
 <link rel="preload" href="assets/fonts/InterDisplay-Light.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="assets/fonts/Inter-Regular.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="assets/css/andrum.css">
+<link rel="stylesheet" href="assets/css/product.css">
+<script>document.documentElement.className = "js";</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Andrum",
-  "description": "A plug-in that turns the music down only where it covers the voice, and only while the voice is there.",
+  "description": "A plug-in that turns the music down only where it covers the voice, and only as much as it takes.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "macOS 11 or later, Windows 10 or later",
   "softwareVersion": "1.9.0",
@@ -40,414 +42,278 @@
     "price": "59.00",
     "priceCurrency": "EUR",
     "availability": "https://schema.org/InStock",
-    "url": "https://davidhjalmarlindberg.com/andrum/#buy",
-    "hasMerchantReturnPolicy": {
-      "@type": "MerchantReturnPolicy",
-      "applicableCountry": "SE",
-      "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-      "merchantReturnDays": 14,
-      "returnFees": "https://schema.org/FreeReturn",
-      "url": "https://davidhjalmarlindberg.com/andrum/terms/#refunds"
-    }
+    "url": "https://davidhjalmarlindberg.com/andrum/#buy"
   },
-  "publisher": { "@type": "Organization", "name": "David HJ Lindberg AB" }
+  "author": { "@type": "Person", "name": "David Hjalmar Lindberg", "url": "https://davidhjalmarlindberg.com/" }
 }
 </script>
-<style id="site-editor">
-/* Style changes from the site editor (/edit/). Remove this block to undo all of them. */
-a.btn.btn--primary { height: 58px !important; min-height: 58px !important; box-sizing: border-box !important; padding-left: 29px !important; padding-right: 29px !important; }
-[data-se="vmj9p"] { height: 58px !important; min-height: 58px !important; box-sizing: border-box !important; padding-left: 29px !important; padding-right: 29px !important; text-align: center !important; }
-a.btn.btn--ghost { height: 58px !important; min-height: 58px !important; box-sizing: border-box !important; padding-left: 29px !important; padding-right: 29px !important; }
-</style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to the page</a>
 
-<header class="bar">
-  <div class="wrap bar__in">
-    <a href="../"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>David Hjalmar Lindberg</a>
-    <nav class="bar__links" aria-label="Andrum">
-      <a class="bar__how" href="#how">How it works</a>
-      <a href="#download">Try it free</a>
+<header class="top">
+  <div class="top__in">
+    <div class="top__brand">
+      <a class="top__logo" href="#top" aria-label="Andrum, to the top of the page"><img src="assets/img/andrum-logo@2x.png" srcset="assets/img/andrum-logo@2x.png 2x, assets/img/andrum-logo@3x.png 3x" width="146" height="40" alt=""></a>
+      <a class="top__by" href="../">by David Hjalmar Lindberg</a>
+    </div>
+    <nav class="top__nav" aria-label="On this page">
+      <a class="top__link" href="#video">For picture</a>
+      <a class="top__link" href="#mix">For music</a>
+      <a class="top__link" href="#measured">Measured</a>
+      <a class="top__link" href="#buy">€59</a>
+      <a class="btn btn--small" href="#download">Try it free</a>
     </nav>
   </div>
 </header>
 
-<main class="andrum" id="top" data-andrum-assets="assets/">
+<main id="main">
 
-  <!-- ===================================================================== the hero -->
-  <section class="hero" aria-labelledby="title">
-    <div class="wrap hero__text">
-      <p class="hero__logo"><img src="assets/img/andrum-logo@2x.png" srcset="assets/img/andrum-logo@2x.png 2x, assets/img/andrum-logo@3x.png 3x" width="184" height="50" alt="Andrum"></p>
-      <h1 id="title">Make room for the voice.</h1>
-      <p class="hero__lead">Andrum turns the music down only where it covers the voice, and only while the voice is there. The mix stays full, and every word comes through.</p>
-      <div class="hero__actions">
-        <a class="btn btn--primary" href="#download" data-se="vmj9p">Download the free trial</a>
-        <a class="btn btn--ghost" href="buy/" data-an-buy>Buy for €59</a>
-        <p class="hero__note">Every feature free for 7 days, for Mac and Windows.</p>
+  <!-- ─────────────────────────────────────────── the stage -->
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <h1 class="hero__title" id="hero-title">Make room<br>for the voice.</h1>
+    <div class="hero__side">
+      <p class="hero__lede">Andrum turns the music down only where it covers the voice, and only as much as it takes. The words come through. The music keeps its energy.</p>
+      <div class="hero__go">
+        <div class="actions">
+          <a class="btn btn--solid" href="#download">Download the free trial</a>
+          <a class="btn btn--line" href="buy/" data-an-buy>Buy for €59</a>
+        </div>
+        <p class="fine">Every feature free for 7 days. Mac and Windows.</p>
       </div>
     </div>
 
-    <figure class="picture" data-picture>
-      <picture>
-        <source media="(max-width: 639px)" srcset="assets/img/hero-780.webp" width="780" height="846">
-        <img class="picture__poster" src="assets/img/hero-1440.webp" srcset="assets/img/hero-1440.webp 1440w, assets/img/hero-2880.webp 2880w" sizes="100vw" width="2880" height="974" alt="Andrum's picture of a song, drawn from what the plug-in measured: the music lit like an aurora, blue in the lows to pink in the highs, and the voice running through it as a fine line of light. Where the voice needs room, the music's light grows brighter as Andrum turns it down.">
-      </picture>
-      <canvas aria-hidden="true"></canvas>
-      <button class="picture__motion" type="button" data-motion hidden>
-        <svg class="i-pause" viewBox="0 0 16 16" aria-hidden="true"><rect fill="currentColor" x="4" y="3.5" width="2.6" height="9" rx="0.9"/><rect fill="currentColor" x="9.4" y="3.5" width="2.6" height="9" rx="0.9"/></svg>
-        <svg class="i-play" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M5.2 3.7v8.6c0 .6.7 1 1.2.7l6.8-4.3c.5-.3.5-1 0-1.3L6.4 3c-.5-.3-1.2 0-1.2.7z"/></svg>
-      </button>
-    </figure>
-
-    <div class="wrap player" data-player>
-      <button class="play" type="button" data-play aria-label="Listen to the demo">
-        <span class="play__dot">
-          <svg class="i-play" viewBox="0 0 20 20" aria-hidden="true"><path fill="currentColor" d="M6.5 4.3v11.4c0 .8.9 1.3 1.6.9l9-5.7c.6-.4.6-1.3 0-1.7l-9-5.7c-.7-.5-1.6 0-1.6.8z"/></svg>
-          <svg class="i-pause" viewBox="0 0 20 20" aria-hidden="true"><rect fill="currentColor" x="5" y="4" width="3.6" height="12" rx="1.2"/><rect fill="currentColor" x="11.4" y="4" width="3.6" height="12" rx="1.2"/></svg>
-          <svg class="i-load" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="30 14"/></svg>
-        </span>
-        <span data-play-label>Listen</span>
-      </button>
-      <div class="ab" role="radiogroup" aria-label="Andrum on the music">
-        <button type="button" role="radio" aria-checked="true" data-ab="with">With Andrum</button>
-        <button type="button" role="radio" aria-checked="false" tabindex="-1" data-ab="without">Without</button>
+    <div class="stage" data-stage data-way="andrum">
+      <div class="stage__view" data-view>
+        <canvas class="stage__picture" data-picture aria-hidden="true"></canvas>
+        <ul class="stage__key" aria-hidden="true">
+          <li class="k-music">The music</li>
+          <li class="k-voice">The voice</li>
+          <li class="k-room" data-key-room>The room Andrum makes</li>
+        </ul>
       </div>
-      <dl class="readouts">
-        <div><dt>Deepest cut</dt><dd data-deepest>−17.9<small>dB</small></dd></div>
-        <div><dt>Voice clarity</dt><dd data-clarity>82<small>%</small></dd></div>
-      </dl>
-      <p class="player__note" data-player-note hidden>The demo didn’t load. Check your connection and press Listen again.</p>
+      <div class="stage__controls">
+        <div class="deck">
+          <button type="button" class="play" data-play>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path class="i-play" d="M7.5 5.2v13.6L18.5 12z"/><path class="i-pause" d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg>
+            <span data-play-label>Listen</span>
+          </button>
+          <div class="ways" role="group" aria-label="What is done to the music">
+            <button type="button" data-way="untouched" aria-pressed="false">Untouched</button>
+            <button type="button" data-way="ducked" aria-pressed="false">Turned down</button>
+            <button type="button" data-way="andrum" aria-pressed="true">Andrum</button>
+          </div>
+          <dl class="read">
+            <div><dt>Voice</dt><dd><span data-clarity>81</span>&nbsp;% clear</dd></div>
+            <div><dt>Music</dt><dd data-music>1.4&nbsp;dB quieter</dd></div>
+          </dl>
+        </div>
+        <p class="stage__note" data-note role="status">A voice over a full track, three ways. Press Listen.</p>
+      </div>
     </div>
   </section>
 
-  <!-- ===================================================================== the window -->
-  <section class="section" aria-labelledby="window">
+  <!-- ─────────────────────────────────────────── the argument -->
+  <section class="band argue" aria-labelledby="argue-title">
     <div class="wrap">
-      <div class="section__head">
-        <h2 id="window">See what it does, as it does it.</h2>
-        <p class="lede">The music glows like an aurora, from blue in the lows to pink in the air, and the voice runs through it as a fine line of light. Where Andrum turns the music down, the room it makes lights up. Hover over anything in the window and it tells you what it does.</p>
+      <h2 id="argue-title">The same clarity, for 1.4&nbsp;dB instead of 10.</h2>
+      <div class="cols">
+        <div class="prose">
+          <p class="lede">You know the two options. Leave the music where it is and lose the words. Or pull the whole track down until the voice comes through, and lose the song.</p>
+          <p>In the song above, Andrum’s own meter reads the voice as 47&nbsp;% clear while it sings. To get it to 81&nbsp;% with the fader, the whole track has to come down 10&nbsp;dB.</p>
+          <p>Andrum gets to the same 81&nbsp;% by turning down only the parts of the music that cover the voice, and only while it sings. The music ends up 1.4&nbsp;dB quieter.</p>
+        </div>
+        <div>
+          <table class="ways-table">
+            <thead><tr><th scope="col"><span class="vh">What is done to the music</span></th><th scope="col">The voice</th><th scope="col">The music</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Untouched</th><td>47&nbsp;% clear</td><td>as it was</td></tr>
+              <tr><th scope="row">Turned down</th><td>81&nbsp;% clear</td><td>10&nbsp;dB quieter</td></tr>
+              <tr class="is-andrum"><th scope="row">Andrum</th><td>81&nbsp;% clear</td><td>1.4&nbsp;dB quieter</td></tr>
+            </tbody>
+          </table>
+          <p class="fine">The song at the top of the page, run through Andrum 1.9. Clarity is Andrum’s own meter, averaged while the voice sings. The music’s level is its loudness (LUFS).</p>
+        </div>
       </div>
-      <figure class="window">
-        <img src="assets/img/window-2240.webp" srcset="assets/img/window-1120.webp 1120w, assets/img/window-1680.webp 1680w, assets/img/window-2240.webp 2240w, assets/img/window-3360.webp 3360w" sizes="(max-width: 1279px) calc(100vw - 2 * var(--gutter)), 1200px" width="3360" height="2160" loading="lazy" decoding="async" alt="Andrum's window on a vocal over a pad. The deepest cut reads 15.5 dB. The music glows from blue to pink with the voice's line running through it, between limits at 140 Hz and 9 kHz. Below it, Key Clarity reads 79 % with Andrum and 63 % without, beside the Clarity dial at 92 %, Max cut at 18 dB, Mix at 100 % and Output at 0 dB.">
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────── the dial -->
+  <section class="band dial" aria-labelledby="dial-title">
+    <div class="wrap">
+      <h2 id="dial-title">Ask for clarity, not decibels.</h2>
+      <div class="prose prose--two">
+        <p class="lede">There is one dial. Turn it to how clear the voice should be, and Andrum makes the smallest cut that gets it there.</p>
+        <p>Two bars show how clear the voice is with Andrum and without it, so you see what you get for what you give up. There are no thresholds, ratios or bands to set. And when the voice already comes through, the music is left alone.</p>
+      </div>
+      <figure class="shot shot--low">
+        <img src="assets/img/p-dial-1120.webp" srcset="assets/img/p-dial-1120.webp 1120w, assets/img/p-dial-2240.webp 2240w" sizes="(min-width: 1240px) 1160px, 100vw" width="2240" height="510" loading="lazy" alt="The lower half of Andrum's window: Key Clarity reads 73 % with Andrum and 67 % without, beside the Clarity dial at 80 % and the Max cut, Mix and Output knobs.">
       </figure>
     </div>
   </section>
 
-  <!-- ===================================================================== the dial -->
-  <section class="section" aria-labelledby="dial">
-    <div class="wrap split">
-      <div class="split__text">
-        <h2 id="dial">Ask for clarity, not decibels.</h2>
-        <p>Turn the dial to how clear the voice should be. Andrum makes the smallest cut that gets it there, and shows you how clear the voice is with it and without it.</p>
-        <p>When the voice already comes through, the music is left alone. At 100 %, Andrum makes the voice as clear as your Max cut allows.</p>
-      </div>
-      <figure>
-        <img class="shot" src="assets/img/deck-1340.webp" srcset="assets/img/deck-670.webp 670w, assets/img/deck-1340.webp 1340w, assets/img/deck-2010.webp 2010w" sizes="(max-width: 1023px) calc(100vw - 2 * var(--gutter)), 680px" width="2010" height="639" loading="lazy" decoding="async" alt="Key Clarity in Andrum's window: the voice is 79 % clear with Andrum and 63 % without it, beside the Clarity dial, set to 92 %.">
-      </figure>
-    </div>
-  </section>
-
-  <!-- ===================================================================== the limits -->
-  <section class="section" aria-labelledby="limits">
+  <!-- ─────────────────────────────────────────── picture -->
+  <section class="band video" id="video" aria-labelledby="video-title">
     <div class="wrap">
-      <div class="section__head">
-        <h2 id="limits">Choose where it works, and how softly it stops.</h2>
-        <p class="lede">Two limits keep Andrum to the part of the spectrum you pick. Past each one it doesn’t stop dead: it fades out over as much as three octaves, in the shape you give it, so there’s no hard line where its work ends.</p>
-      </div>
-      <figure class="window">
-        <picture>
-          <source media="(max-width: 767px)" srcset="assets/img/limits-phone-600.webp 600w, assets/img/limits-phone-1200.webp 1200w, assets/img/limits-phone-1800.webp 1800w" sizes="(max-width: 639px) calc(100vw - 40px), calc(100vw - 64px)" width="600" height="560">
-          <source media="(max-width: 1023px)" srcset="assets/img/limits-tablet-900.webp 900w, assets/img/limits-tablet-1800.webp 1800w, assets/img/limits-tablet-2700.webp 2700w" sizes="calc(100vw - 64px)" width="900" height="456">
-          <img src="assets/img/limits-2400.webp" srcset="assets/img/limits-1200.webp 1200w, assets/img/limits-2400.webp 2400w, assets/img/limits-3600.webp 3600w" sizes="(max-width: 1023px) calc(100vw - 64px), (max-width: 1279px) calc(100vw - 80px), 1200px" width="1200" height="496" loading="lazy" decoding="async" alt="Andrum’s window with both of its limits open, over a voice and a pad. The low limit, at 160 Hz, fades out over 2 octaves with 25 % softness; the high limit, at 6 kHz, over 1 octave with 60 % softness. Each fade is a curve that rises from a diamond on the horizon, where the fade ends, to the top of its limit, with a dot on it for its softness. Past the limits the music dims.">
-        </picture>
-      </figure>
-      <div class="fades">
-        <div>
-          <div class="fades__pic">
-            <img src="assets/img/limits-fade.svg" width="584" height="136" loading="lazy" decoding="async" alt="">
-            <div class="fades__caps fades__caps--fade" aria-hidden="true"><span>3 oct</span><span>2 oct</span><span>1 oct</span><span>No fade</span></div>
-          </div>
-          <div class="fades__text">
-            <h3>Fade</h3>
-            <p>How far past each limit Andrum fades out, from a hard edge to three octaves. In the window, drag the diamond.</p>
-          </div>
-        </div>
-        <div>
-          <div class="fades__pic">
-            <img src="assets/img/limits-soft.svg" width="584" height="136" loading="lazy" decoding="async" alt="">
-            <div class="fades__caps fades__caps--soft" aria-hidden="true"><span>0 %</span><span>25 %</span><span>100 %</span></div>
-          </div>
-          <div class="fades__text">
-            <h3>Softness</h3>
-            <p>The shape of the fade, from a straight ramp at 0 % to long, soft shoulders at 100 %. In the window, drag the dot.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================================== how it compares -->
-  <section class="section" id="how" aria-labelledby="how-title">
-    <div class="wrap">
-      <div class="section__head">
-        <h2 id="how-title">Where other tools cut, and where Andrum does.</h2>
-        <p class="lede">Every tool here can turn the music down for a voice. The difference is where. Andrum works out where the music hides the voice, comparing the two in 61 bands every five milliseconds, the way your ear does, and turns down only there.</p>
-      </div>
-
-      <div class="ways">
-        <figure class="way">
-          <div class="way__pic"><picture><source media="(max-width: 767px)" srcset="assets/img/compare-compressor-phone.svg" width="580" height="350"><img src="assets/img/compare-compressor.svg" width="580" height="310" loading="lazy" decoding="async" alt="A sidechain compressor: the whole spectrum turned down 9 dB, from the bass to the air. In this example 67% of its cut is where it helps, it reaches 100% of the places where the music hides the voice, and it cuts 9.0 dB where the voice is already clear."></picture></div>
-          <figcaption><h3>Sidechain compressor</h3><p>Turns the whole track down whenever the voice is there, the bass and the air too. A third of its cut does nothing for the voice.</p></figcaption>
-        </figure>
-        <figure class="way">
-          <div class="way__pic"><picture><source media="(max-width: 767px)" srcset="assets/img/compare-dynamic-eq-phone.svg" width="580" height="350"><img src="assets/img/compare-dynamic-eq.svg" width="580" height="310" loading="lazy" decoding="async" alt="A dynamic EQ: one band round 2.5 kHz turned down, the one set by hand. In this example 98% of its cut is where it helps, but it reaches only 43% of the places where the music hides the voice; where the voice is already clear it cuts 0.4 dB."></picture></div>
-          <figcaption><h3>Dynamic EQ</h3><p>Turns down the bands you set by hand. Here they land well, but miss more than half of the places where the voice is hidden.</p></figcaption>
-        </figure>
-        <figure class="way">
-          <div class="way__pic"><picture><source media="(max-width: 767px)" srcset="assets/img/compare-ducker-phone.svg" width="580" height="350"><img src="assets/img/compare-ducker.svg" width="580" height="310" loading="lazy" decoding="async" alt="A spectral ducker: a deep cut round 1 kHz, where the voice is loudest and already comes through. In this example 58% of its cut is where it helps, it reaches 62% of the places where the music hides the voice, and it cuts 15.4 dB where the voice is already clear."></picture></div>
-          <figcaption><h3>Spectral ducker</h3><p>Cuts deepest where the voice is loudest, often right where it already comes through: 15 dB off music that wasn’t in the way.</p></figcaption>
-        </figure>
-        <figure class="way way--andrum">
-          <div class="way__pic"><picture><source media="(max-width: 767px)" srcset="assets/img/compare-andrum-phone-640.webp 640w, assets/img/compare-andrum-phone-1280.webp 1280w, assets/img/compare-andrum-phone-2320.webp 2320w" sizes="calc(100vw - 40px)" width="580" height="350"><img src="assets/img/compare-andrum-1280.webp" srcset="assets/img/compare-andrum-640.webp 640w, assets/img/compare-andrum-1280.webp 1280w, assets/img/compare-andrum-2320.webp 2320w" sizes="584px" width="580" height="310" loading="lazy" decoding="async" alt="Andrum: small cuts only under the voice’s harmonics in the low mids and in the presence round 3 kHz, where the music hides the voice; round 1 kHz, where the voice already comes through, and in the bass and the air, the music is untouched. In this example 99% of its cut is where it helps, it reaches 86% of the places where the music hides the voice, and it cuts 0.2 dB where the voice is already clear."></picture></div>
-          <figcaption><h3>Andrum</h3><p>Turns down only where the music hides the voice, and only as far as it takes. Where the voice comes through, it leaves the music alone.</p></figcaption>
-        </figure>
-      </div>
-      <p class="fine ways__note">One moment of a voice over a pad and guitars, the same for all four: the music and the voice (the fine line) above, and below them how far each tool turns the music down, band by band. The numbers come from this moment: the share of each tool’s cut that lands where the music hides the voice, the share of those places it turns down by 3 dB or more, and how far it turns the music down where the voice already comes through. This shows how each kind of tool works, not a measurement of any one product.</p>
-
-      <div class="versus" role="table" aria-label="Other tools and Andrum">
-        <div class="versus__row versus__row--head" role="row">
-          <span role="columnheader"><span class="visually-hidden">Question</span></span>
-          <span role="columnheader">Other tools</span>
-          <span role="columnheader">Andrum</span>
-        </div>
-        <div class="versus__row" role="row">
-          <span role="rowheader">What you set</span>
-          <span role="cell" data-label="Other tools">Thresholds, ratios, frequencies and depths, band by band</span>
-          <span role="cell" data-label="Andrum">How clear the voice should be</span>
-        </div>
-        <div class="versus__row" role="row">
-          <span role="rowheader">When the voice already comes through</span>
-          <span role="cell" data-label="Other tools">They cut anyway</span>
-          <span role="cell" data-label="Andrum">It leaves the music alone</span>
-        </div>
-        <div class="versus__row" role="row">
-          <span role="rowheader">Esses, breaths and reverb tails</span>
-          <span role="cell" data-label="Other tools">Set off a cut, so the music flutters</span>
-          <span role="cell" data-label="Andrum">Can be left out of what it listens to</span>
-        </div>
-        <div class="versus__row" role="row">
-          <span role="rowheader">In a video editor</span>
-          <span role="cell" data-label="Other tools">Need a sidechain the editor can’t send</span>
-          <span role="cell" data-label="Andrum">Two Andrums link up, with no routing</span>
-        </div>
-        <div class="versus__row" role="row">
-          <span role="rowheader">What you see</span>
-          <span role="cell" data-label="Other tools">How much is cut</span>
-          <span role="cell" data-label="Andrum">How much is cut, and how clear the voice is with it and without it</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================================== the details -->
-  <section class="section" id="details" aria-labelledby="details-title">
-    <div class="wrap">
-      <div class="section__head">
-        <h2 id="details-title">Measured, not claimed.</h2>
-        <p class="lede">Every number here comes from Andrum’s own test suite, run on 1.9.0, the version you download.</p>
-      </div>
-      <dl class="specs">
-        <div>
-          <dt>Only what it takes</dt>
-          <dd class="specs__v">2.7<small>dB</small></dd>
-          <dd>With the voice 6 dB over the music and the dial at 80 %, Andrum cuts 2.7 dB on average, and the voice is 88 % clear. Its engine run as a plain spectral ducker cuts 11.7 dB.</dd>
-        </div>
-        <div>
-          <dt>Left alone</dt>
-          <dd class="specs__v">0.0<small>dB</small></dd>
-          <dd>With the voice 12 dB over the music, it’s already 91 % clear, and Andrum leaves the music alone: 0.01 dB on average. Where the music is 30 dB over the voice, out of reach, it cuts nothing.</dd>
-        </div>
-        <div>
-          <dt>Clean Key</dt>
-          <dd class="specs__v">2.4<small>dB</small></dd>
-          <dd>What’s left of a 12 dB cut at 6.4 kHz while the singer says “s”. The vowels keep all 12, and a reverb tail keeps 0.8.</dd>
-        </div>
-        <div>
-          <dt>Auto sensitivity</dt>
-          <dd class="specs__v">12.0 / 12.0<small>dB</small></dd>
-          <dd>The same room for a voice at −12 and at −42 dBFS, with no threshold to set. A fixed threshold gives 12.0 and 2.8.</dd>
-        </div>
-        <div>
-          <dt>Latency</dt>
-          <dd class="specs__v">0<small>samples</small></dd>
-          <dd>Nothing for your DAW or editor to make up for. Up to 30 ms of lookahead when you want it, for a kick through a bass.</dd>
-        </div>
-        <div>
-          <dt>Resolution</dt>
-          <dd class="specs__v">61<small>bands</small></dd>
-          <dd>A sixth of an octave apart, from 20 Hz to 20.5 kHz, worked out again every 5 ms.</dd>
-        </div>
-        <div>
-          <dt>Precision</dt>
-          <dd class="specs__v">0.64<small>dB</small></dd>
-          <dd>The most a cut strays from the one Andrum means to make, anywhere in the spectrum, from 44.1 to 192 kHz.</dd>
-        </div>
-        <div>
-          <dt>Transparency</dt>
-          <dd class="specs__v">Bit-exact</dd>
-          <dd>With no voice to make room for, the music comes out exactly as it went in, with lookahead or without.</dd>
-        </div>
-        <div>
-          <dt>Load</dt>
-          <dd class="specs__v">5.5<small>%</small></dd>
-          <dd>Of one core on our test machine, at 48 kHz in stereo with everything on. When its inputs fall silent, Andrum rests.</dd>
-        </div>
-      </dl>
-      <p class="fine specs__note">In the tests the voice is a sung voice and the music is pink noise, with Max cut at 12 dB.</p>
-    </div>
-  </section>
-
-  <!-- ===================================================================== uses -->
-  <section class="section" aria-labelledby="uses">
-    <div class="wrap">
-      <h2 id="uses">For songs and for picture.</h2>
-      <div class="uses">
-        <div class="uses__text">
-          <div>
-            <h3>In your DAW</h3>
-            <p>Vocals over pads and walls of guitars. Rap over a dense beat. A kick through the bass, a lead over chords. Reverb that steps back under the words and blooms in the gaps.</p>
-            <p class="fine">Logic Pro, Ableton Live, FL Studio, Cubase, Studio One, Bitwig Studio, Reaper and GarageBand.</p>
-          </div>
-          <div>
-            <h3>In your video editor</h3>
-            <p>Dialogue over a music bed, without drawing a single volume curve. Video editors can’t send a sidechain to a plug-in, so two Andrums link up instead: one on the dialogue, one on the music.</p>
-            <p class="fine">Premiere Pro, DaVinci Resolve and Final Cut Pro.</p>
-          </div>
-        </div>
-        <figure>
-          <img class="shot" src="assets/img/link-1088.webp" srcset="assets/img/link-544.webp 544w, assets/img/link-816.webp 816w, assets/img/link-1088.webp 1088w" sizes="(max-width: 1023px) calc(100vw - 2 * var(--gutter)), 600px" width="1088" height="440" loading="lazy" decoding="async" alt="Andrum in a video editor, asking which track it is on, with two buttons: This is the dialogue, and This is the music.">
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================================== price and download -->
-  <section class="section" id="buy" aria-labelledby="buy-title">
-    <div class="wrap">
-      <h2 id="buy-title">Try it free. Buy it once.</h2>
-      <div class="buy">
-        <div class="buy__price" data-an-price>
-          <p class="price">€59</p>
-          <p class="price__note">One licence, no subscription. VAT included.</p>
-          <ul class="facts">
-            <li>Every feature, as an Audio Unit, a VST3 and a standalone app</li>
-            <li>For one person, on up to two computers</li>
-            <li>Every 1.x update included</li>
-            <li>For any work, commercial and broadcast included</li>
-            <li>No iLok and no account: Andrum goes online once to fetch your licence, then works offline</li>
-            <li>14 days to change your mind: your money back, no questions asked</li>
-          </ul>
-          <div class="buy__actions"><a class="btn btn--primary" href="buy/" data-an-buy>Buy for €59</a></div>
-          <p class="fine">Your licence key appears the moment you pay, and Polar e-mails you a link to it. <a href="license/">How to add it</a>.</p>
-        </div>
-        <div class="buy__price thanks" data-an-thanks hidden tabindex="-1" aria-labelledby="thanks-title">
-          <h3 id="thanks-title">Thank you.</h3>
-          <div class="thanks__key" data-an-key hidden>
-            <span class="thanks__label">Your licence key</span>
-            <div class="thanks__keyrow"><code data-an-key-text></code><button type="button" class="btn btn--ghost" data-an-key-copy data-done="Copied">Copy</button></div>
-          </div>
-          <p data-an-key-wait>Your licence key is on its way. It is also in the e-mail from Polar: click <span class="ui">Access purchase</span> there.</p>
-          <ol>
-            <li>Copy your licence key.</li>
-            <li>Open Andrum and click <span class="ui">Trial</span> at the bottom of its window.</li>
-            <li>Click <span class="ui">Paste license</span>. Andrum fetches your licence once and works offline from then on.</li>
+      <h2 id="video-title">Your editor can’t send a sidechain. Andrum doesn’t need one.</h2>
+      <div class="cols">
+        <div class="prose">
+          <p>Premiere Pro, DaVinci Resolve and Final Cut Pro can’t send a sidechain to a plug-in, so the tools that need one have nothing to listen to. Two Andrums link up instead, with no routing:</p>
+          <ol class="steps">
+            <li>Put Andrum on the dialogue and click <span class="ui">This is the dialogue</span>.</li>
+            <li>Put Andrum on the music and click <span class="ui">This is the music</span>.</li>
           </ol>
-          <div class="buy__actions"><a class="btn btn--primary" href="#download">Download Andrum</a><a class="btn btn--ghost" href="license/">How to add your licence</a></div>
+          <p>The music now makes room wherever someone speaks, without a single volume curve. Its Andrum starts out set for speech, and the dialogue’s Andrum shows how many Andrums are making room for it, so you can see the link is complete.</p>
+          <p>The export starts the way playback sounded.</p>
         </div>
-        <div class="buy__get" id="download">
-          <h3>Download the free trial</h3>
-          <p>Every feature, free for 7 days. After that, Andrum lets the sound through untouched and keeps every setting, so your sessions still open.</p>
+        <figure class="shot">
+          <img src="assets/img/p-which-track-600.webp" srcset="assets/img/p-which-track-600.webp 600w, assets/img/p-which-track-1200.webp 1200w" sizes="(min-width: 860px) 540px, 100vw" width="1200" height="450" loading="lazy" alt="In Premiere Pro, Andrum asks Which track is this, with two buttons: This is the dialogue, and This is the music.">
+          <figcaption>What a new Andrum asks in a video editor.</figcaption>
+        </figure>
+      </div>
+      <div class="pair">
+        <figure class="shot">
+          <img src="assets/img/p-window-dialogue-1120.webp" srcset="assets/img/p-window-dialogue-1120.webp 1120w, assets/img/p-window-dialogue-2240.webp 2240w" sizes="(min-width: 1240px) 566px, (min-width: 860px) 46vw, 100vw" width="2240" height="1440" loading="lazy" alt="Andrum on the dialogue track: Link A, sending to 1, and a note that says Sending to Link A, not changing this track, 1 Andrum makes room.">
+          <figcaption>On the dialogue: it sends, changes nothing on its own track, and says that one Andrum is making room.</figcaption>
+        </figure>
+        <figure class="shot">
+          <img src="assets/img/p-window-music-1120.webp" srcset="assets/img/p-window-music-1120.webp 1120w, assets/img/p-window-music-2240.webp 2240w" sizes="(min-width: 1240px) 566px, (min-width: 860px) 46vw, 100vw" width="2240" height="1440" loading="lazy" alt="Andrum on the music track, linked: the preset Dialogue over music, Link A with one source, and the dialogue 75 % clear with Andrum against 38 % without.">
+          <figcaption>On the music: the dialogue is 75&nbsp;% clear with Andrum, 38&nbsp;% without.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────── music -->
+  <section class="band mix" id="mix" aria-labelledby="mix-title">
+    <div class="wrap">
+      <h2 id="mix-title">In a mix, it stays out of the way.</h2>
+      <p class="lede">A vocal over pads and a wall of guitars. Rap over a dense beat. A kick through the bass. Reverb that steps back under the words and blooms in the gaps.</p>
+      <dl class="facts">
+        <div><dt>Only what it takes</dt><dd>A spectral ducker cuts deepest where the voice is loudest. Andrum cuts where the music hides the voice, and stops when the voice is clear.</dd></div>
+        <div><dt>No latency</dt><dd>Zero samples, so your app has nothing to make up for. Up to 30&nbsp;ms of lookahead when you want it.</dd></div>
+        <div><dt>No threshold</dt><dd>Andrum follows the level of the voice by itself. A voice at −12&nbsp;dBFS and one at −42 get the same room.</dd></div>
+        <div><dt>Breaths don’t count</dt><dd>Esses, breaths and reverb tails can be left out of what Andrum listens to, so the music doesn’t flutter around them.</dd></div>
+        <div><dt>Soft edges</dt><dd>Two limits keep Andrum to the part of the spectrum you pick. Past each one it fades out over as much as three octaves.</dd></div>
+        <div><dt>The width stays</dt><dd>Linked, Left and Right, or Mid and Side: let the centre make room while the sides stay wide.</dd></div>
+      </dl>
+      <figure class="shot shot--window">
+        <img src="assets/img/p-window-vocal-1120.webp" srcset="assets/img/p-window-vocal-1120.webp 1120w, assets/img/p-window-vocal-2240.webp 2240w" sizes="(min-width: 1240px) 1160px, 100vw" width="2240" height="1440" loading="lazy" alt="Andrum's window with the preset Vocal over pad: the music lit from blue to pink, the voice as a fine line through it, the room Andrum makes lit above the music, and the Clarity dial at 80 %.">
+        <figcaption>Andrum’s window. Hover over anything in it and it tells you what it does, and switch Listen to Change to hear only what Andrum takes away.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────── measured -->
+  <section class="band measured" id="measured" aria-labelledby="measured-title">
+    <div class="wrap">
+      <h2 id="measured-title">Measured, not claimed.</h2>
+      <p class="lede">Every number here is printed by Andrum’s own test suite, run on 1.9.0, the version you download.</p>
+      <ul class="sheet">
+        <li><h3>Only what it takes</h3><p class="n">2.7&nbsp;dB</p><p>With the voice 6&nbsp;dB over the music and the dial at 80&nbsp;%, Andrum cuts 2.7&nbsp;dB on average and the voice is 88&nbsp;% clear. Its engine run as a plain spectral ducker cuts 11.7&nbsp;dB.</p></li>
+        <li><h3>Left alone</h3><p class="n">0.0&nbsp;dB</p><p>With the voice 12&nbsp;dB over the music it is already 91&nbsp;% clear, and Andrum cuts 0.01&nbsp;dB on average. Where the music is 30&nbsp;dB over the voice, out of reach, it cuts nothing.</p></li>
+        <li><h3>Esses</h3><p class="n">2.4&nbsp;dB</p><p>What is left of a 12&nbsp;dB cut at 6.4&nbsp;kHz while the singer says “s”. The vowels keep all 12, and a reverb tail keeps 0.8.</p></li>
+        <li><h3>Any level</h3><p class="n">12.0 / 12.0&nbsp;dB</p><p>The same room for a voice at −12 and at −42&nbsp;dBFS. A fixed threshold gives 12.0 and 2.8.</p></li>
+        <li><h3>Latency</h3><p class="n">0 samples</p><p>Nothing for your DAW or editor to make up for. Up to 30&nbsp;ms of lookahead when you want it, for a kick through a bass.</p></li>
+        <li><h3>Resolution</h3><p class="n">61 bands</p><p>A sixth of an octave apart, from 20&nbsp;Hz to 20.5&nbsp;kHz, worked out again every 5&nbsp;ms.</p></li>
+        <li><h3>Precision</h3><p class="n">0.64&nbsp;dB</p><p>The most a cut strays from the one Andrum means to make, anywhere in the spectrum, from 44.1 to 192&nbsp;kHz.</p></li>
+        <li><h3>Transparency</h3><p class="n">Bit-exact</p><p>With no voice to make room for, the music comes out exactly as it went in, with lookahead or without.</p></li>
+        <li><h3>Load</h3><p class="n">5.5&nbsp;%</p><p>Of one core on our test machine, at 48&nbsp;kHz in stereo with everything on. When its inputs fall silent, Andrum rests.</p></li>
+      </ul>
+      <p class="fine">In the tests the voice is a sung voice and the music is pink noise, with Max cut at 12&nbsp;dB. The song at the top of the page is measured separately, on that song.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────── where it runs -->
+  <section class="band runs" aria-labelledby="runs-title">
+    <div class="wrap">
+      <h2 id="runs-title">Where it runs.</h2>
+      <dl class="rows">
+        <div><dt>For music</dt><dd>Logic Pro, Ableton Live, FL Studio, Cubase, Studio One, Bitwig Studio, Reaper and GarageBand.</dd></div>
+        <div><dt>For picture</dt><dd>Premiere Pro, DaVinci Resolve and Final Cut Pro.</dd></div>
+        <div><dt>It comes as</dt><dd>An Audio Unit and a VST3 on a Mac, a VST3 on Windows, and a standalone app on both.</dd></div>
+        <div><dt>Not yet</dt><dd>Pro Tools. It only loads AAX plug-ins, and Andrum isn’t one yet.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────── get it -->
+  <section class="band get" aria-labelledby="get-title">
+    <div class="wrap">
+      <h2 id="get-title">Try it free. Buy it once.</h2>
+      <div class="cols cols--even">
+
+        <div class="get__try" id="download">
+          <h3>The free trial</h3>
+          <p>Every feature for 7 days. After that Andrum lets the sound through untouched and keeps every setting, so your sessions still open.</p>
           <div class="send" data-an-send hidden>
             <p><strong>On a phone or a tablet?</strong> Andrum runs on a Mac or a Windows computer. Send yourself the link and download it there.</p>
-            <a class="btn btn--primary" href="mailto:?subject=Andrum%3A%20the%20free%207-day%20trial&amp;body=Download%20Andrum%20on%20your%20Mac%20or%20Windows%20computer%3A%0Ahttps%3A%2F%2Fdavidhjalmarlindberg.com%2Fandrum%2F%3Futm_medium%3Dsent-from-phone%23download" data-an-send-link>
-              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3m0 0L6.5 6.5M10 3l3.5 3.5M4 11v4.5A1.5 1.5 0 0 0 5.5 17h9a1.5 1.5 0 0 0 1.5-1.5V11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Send the link to my computer</a>
+            <a class="btn btn--solid" href="mailto:?subject=Andrum%3A%20the%20free%207-day%20trial&amp;body=Download%20Andrum%20on%20your%20Mac%20or%20Windows%20computer%3A%0Ahttps%3A%2F%2Fdavidhjalmarlindberg.com%2Fandrum%2F%3Futm_medium%3Dsent-from-phone%23download" data-an-send-link>Send the link to my computer</a>
             <span class="fine">It opens your share menu or your mail app. We don’t see your address.</span>
           </div>
-          <div class="get">
-            <div class="get__row">
-              <a class="btn btn--primary" href="download/Andrum-1.9.0-macOS.dmg" download>
-                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download for Mac</a>
-              <span class="fine">macOS 11 or later, Apple silicon and Intel. Disk image, 23 MB.</span>
-            </div>
-            <div class="get__row">
-              <a class="btn btn--ghost" href="download/Andrum-1.9.0-Windows-Setup.exe" download>
-                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v10m0 0-4-4m4 4 4-4M4 16h12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Download for Windows</a>
-              <span class="fine">Windows 10 and 11, 64-bit. Installer, 9 MB.</span>
-            </div>
-          </div>
-          <div class="note">
-            <p><strong>Installing.</strong> On a Mac, open the disk image and double-click Install Andrum. It’s signed and notarized by Apple, so it opens straight away.</p>
+          <ul class="downloads" data-downloads>
+            <li><a class="btn btn--solid" href="download/Andrum-1.9.0-macOS.dmg" download>Download for Mac</a><span class="fine">macOS 11 or later, Apple silicon and Intel. Disk image, 23&nbsp;MB.</span></li>
+            <li><a class="btn btn--solid" href="download/Andrum-1.9.0-Windows-Setup.exe" download>Download for Windows</a><span class="fine">Windows 10 and 11, 64-bit. Installer, 9&nbsp;MB.</span></li>
+          </ul>
+          <details class="more">
+            <summary>Installing</summary>
+            <p>On a Mac, open the disk image and double-click Install Andrum. It’s signed and notarized by Apple, so it opens straight away.</p>
             <p>The Windows installer isn’t signed by Microsoft yet, so the first time, Windows may say it protected your PC: click More info, then Run anyway.</p>
-            <p>Then rescan plug-ins in your app if it doesn’t find Andrum by itself. Bought it? <a href="license/">Add your licence</a>. Version 1.9.0. File checksums: <a href="download/SHA256.txt">SHA-256</a>.</p>
+            <p>Then rescan plug-ins in your app if it doesn’t find Andrum by itself. Version 1.9.0. File checksums: <a href="download/SHA256.txt">SHA-256</a>.</p>
+          </details>
+        </div>
+
+        <div class="get__buy" id="buy">
+          <div data-an-price>
+            <h3>The licence</h3>
+            <p class="price">€59 <span>once, VAT included</span></p>
+            <ul class="included">
+              <li>Every feature, as an Audio Unit, a VST3 and a standalone app</li>
+              <li>For one person, on up to two computers</li>
+              <li>Every 1.x update included</li>
+              <li>For any work, commercial and broadcast included</li>
+              <li>No subscription, no iLok and no account: Andrum goes online once to fetch your licence, then works offline</li>
+              <li>14 days to change your mind: your money back, no questions asked</li>
+            </ul>
+            <p><a class="btn btn--solid" href="buy/" data-an-buy>Buy for €59</a></p>
+            <p class="fine">Your licence key appears the moment you pay, and Polar e-mails you a link to it. <a href="license/">How to add it</a>.</p>
+          </div>
+          <div class="thanks" data-an-thanks hidden tabindex="-1" aria-labelledby="thanks-title">
+            <h3 id="thanks-title">Thank you.</h3>
+            <div class="thanks__key" data-an-key hidden>
+              <span class="thanks__label">Your licence key</span>
+              <div class="thanks__row"><code data-an-key-text></code><button type="button" class="btn btn--line btn--small" data-an-key-copy data-done="Copied">Copy</button></div>
+            </div>
+            <p data-an-key-wait>Your licence key is on its way. It is also in the e-mail from Polar: click <span class="ui">Access purchase</span> there.</p>
+            <ol class="steps">
+              <li>Copy your licence key.</li>
+              <li>Open Andrum and click <span class="ui">Trial</span> at the bottom of its window.</li>
+              <li>Click <span class="ui">Paste license</span>. Andrum fetches your licence once and works offline from then on.</li>
+            </ol>
+            <p class="actions"><a class="btn btn--solid" href="#download">Download Andrum</a><a class="btn btn--line" href="license/">How to add your licence</a></p>
           </div>
         </div>
+
       </div>
     </div>
   </section>
 
-  <!-- ===================================================================== questions -->
-  <section class="section" aria-labelledby="questions">
-    <div class="wrap faq">
-      <h2 id="questions">Questions.</h2>
-      <div class="faq__list">
-        <details>
-          <summary>What does the clarity percentage mean?</summary>
-          <p>How much of the voice a listener can make out over the music, as Andrum’s model of the ear measures it: 0 % is fully masked, 100 % fully clear. You choose the clarity you want on the dial, and Andrum shows what it reached, with its cut and without it.</p>
-        </details>
-        <details>
-          <summary>Does Andrum change the voice?</summary>
-          <p>No. Andrum only changes the track it’s on. The voice it listens to passes through untouched.</p>
-        </details>
-        <details>
-          <summary>Which apps does it work in?</summary>
-          <p>Logic Pro, Ableton Live, FL Studio, Cubase, Studio One, Bitwig Studio, Reaper and GarageBand, and the video editors Premiere Pro, DaVinci Resolve and Final Cut Pro. On a Mac, Andrum comes as an Audio Unit and a VST3; on Windows, as a VST3. Both come with a standalone app, and Andrum shows up in your plug-in list under David HJ Lindberg.</p>
-        </details>
-        <details>
-          <summary>Does it work in Pro Tools?</summary>
-          <p>Not yet. Pro Tools only loads AAX plug-ins, and Andrum isn’t available as AAX yet.</p>
-        </details>
-        <details>
-          <summary>Is it only for vocals?</summary>
-          <p>No. Anything can make room for anything: a kick through a bass, a snare through synths, a lead over chords, reverb and delay that step back under a vocal. There are 18 presets to start from.</p>
-        </details>
-        <details>
-          <summary>What happens when the trial ends?</summary>
-          <p>Andrum lets the sound through untouched until you add a licence. Nothing in your sessions breaks, and once you add a licence it works exactly as before.</p>
-        </details>
-        <details>
-          <summary>How do I add my licence?</summary>
-          <p>Right after you pay, your licence key appears on this page, and Polar's receipt e-mail links to it (Access purchase). Copy the key, open Andrum, click Trial at the bottom of its window, then Paste license. On a computer without internet, <a href="license/#offline">get your licence here</a> and add it as a file.</p>
-        </details>
-        <details>
-          <summary>Can I use it on more than one computer?</summary>
-          <p>Yes. One licence covers one person on up to two computers, Mac or Windows: paste the same key on each. When you get a new computer, remove the licence from the old one in Andrum and add it on the new one.</p>
-        </details>
-        <details>
-          <summary>Does it need the internet or an iLok?</summary>
-          <p>No iLok and no account. Andrum goes online once, when you paste your licence key, to fetch your licence. After that it never connects to the internet, and your licence keeps working offline.</p>
-        </details>
-        <details>
-          <summary>Can I get a refund?</summary>
-          <p>Yes. If Andrum isn’t right for you, write to <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a> within 14 days of buying and you get your money back in full, no questions asked. <a href="terms/#refunds">More about refunds</a>.</p>
-        </details>
-        <details>
-          <summary>Who takes the payment?</summary>
-          <p>Polar, which sells Andrum for us as merchant of record. It takes the payment (card, Apple Pay or Google Pay), adds the right VAT or sales tax for your country (the €59 includes it) and e-mails your receipt, with a link to your licence key.</p>
-        </details>
-        <details>
-          <summary>How do I remove Andrum?</summary>
-          <p>On a Mac, open the Andrum disk image and double-click Uninstall Andrum. On Windows, open Settings, then Apps, choose Andrum and click Uninstall.</p>
-        </details>
+  <!-- ─────────────────────────────────────────── questions -->
+  <section class="band asked" aria-labelledby="asked-title">
+    <div class="wrap">
+      <h2 id="asked-title">Questions.</h2>
+      <div class="asked__list">
+        <details><summary>What does the clarity percentage mean?</summary><p>How much of the voice a listener can make out over the music, as Andrum’s model of the ear measures it: 0&nbsp;% is fully masked, 100&nbsp;% fully clear. You choose the clarity you want on the dial, and Andrum shows what it reached, with its cut and without it.</p></details>
+        <details><summary>Does Andrum change the voice?</summary><p>No. Andrum only changes the track it’s on. The voice it listens to passes through untouched.</p></details>
+        <details><summary>Is it only for vocals?</summary><p>No. Anything can make room for anything: a kick through a bass, a snare through synths, a lead over chords, reverb and delay that step back under a vocal. There are 18 presets to start from, and you can make any setting the one new Andrums start with.</p></details>
+        <details><summary>Does it work in Pro Tools?</summary><p>Not yet. Pro Tools only loads AAX plug-ins, and Andrum isn’t available as AAX yet.</p></details>
+        <details><summary>What happens when the trial ends?</summary><p>Andrum lets the sound through untouched until you add a licence. Nothing in your sessions breaks, and once you add a licence it works exactly as before.</p></details>
+        <details><summary>How do I add my licence?</summary><p>Right after you pay, your licence key appears on this page, and Polar’s receipt e-mail links to it (Access purchase). Copy the key, open Andrum, click Trial at the bottom of its window, then Paste license. On a computer without internet, <a href="license/">get your licence here</a> and add it as a file.</p></details>
+        <details><summary>Can I use it on more than one computer?</summary><p>Yes. One licence covers one person on up to two computers, Mac or Windows: paste the same key on each. When you get a new computer, remove the licence from the old one in Andrum and add it on the new one.</p></details>
+        <details><summary>Does it need the internet or an iLok?</summary><p>No iLok and no account. Andrum goes online once, when you paste your licence key, to fetch your licence. After that it never connects to the internet, and your licence keeps working offline.</p></details>
+        <details><summary>Can I get a refund?</summary><p>Yes. If Andrum isn’t right for you, write to <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a> within 14 days of buying and you get your money back in full, no questions asked. <a href="terms/#refunds">More about refunds</a>.</p></details>
+        <details><summary>Who takes the payment?</summary><p>Polar, which sells Andrum for us as merchant of record. It takes the payment (card, Apple Pay or Google Pay), adds the right VAT or sales tax for your country (the €59 includes it) and e-mails your receipt, with a link to your licence key.</p></details>
+        <details><summary>How do I remove Andrum?</summary><p>On a Mac, open the Andrum disk image and double-click Uninstall Andrum. On Windows, open Settings, then Apps, choose Andrum and click Uninstall.</p></details>
       </div>
     </div>
   </section>
@@ -455,22 +321,39 @@ a.btn.btn--ghost { height: 58px !important; min-height: 58px !important; box-siz
 </main>
 
 <footer class="foot">
-  <div class="wrap foot__in">
-    <p class="foot__logo"><img src="assets/img/andrum-logo@2x.png" srcset="assets/img/andrum-logo@2x.png 2x, assets/img/andrum-logo@3x.png 3x" width="146" height="40" alt="Andrum" loading="lazy"></p>
-    <p>Andrum is made in Sweden by <a href="../">David Hjalmar Lindberg</a>. Questions before you buy? Write to <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>.</p>
+  <div class="wrap">
+    <p class="foot__name">Andrum is Swedish for room to breathe.</p>
+    <p class="foot__by">Made in Sweden by <a href="../">David Hjalmar Lindberg</a>. Questions before you buy? Write to <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>.</p>
     <nav class="foot__links" aria-label="Licence, help and press">
       <a href="license/">Add your licence</a>
       <a href="terms/">Licence and terms</a>
       <a href="terms/#refunds">Refunds</a>
       <a href="privacy/">Privacy</a>
-      <a href="press/Andrum-press-kit.zip" download>Press kit (zip, 11 MB)</a>
+      <a href="press/Andrum-press-kit.zip" download>Press kit (zip, 11&nbsp;MB)</a>
       <button type="button" data-an-cookies hidden>Cookie settings</button>
     </nav>
     <p class="fine">© 2026 David Hjalmar Lindberg. David HJ Lindberg AB, org.nr 559291-3353. Orders are processed by Polar, our reseller and merchant of record.<br>Audio Unit is a trademark of Apple Inc. VST is a registered trademark of Steinberg Media Technologies GmbH. Other product names are trademarks of their owners.</p>
   </div>
 </footer>
 
-<script src="assets/js/page.js" defer></script>
+<!-- the three ways again, docked once the demo has been started and the picture is out of sight -->
+<div class="dock" data-dock hidden>
+  <button type="button" class="play play--round" data-play aria-label="Pause">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path class="i-play" d="M8 5.2v13.6L19 12z"/><path class="i-pause" d="M7 5h3.6v14H7zM13.4 5H17v14h-3.6z"/></svg>
+  </button>
+  <div class="ways ways--small" role="group" aria-label="What is done to the music">
+    <button type="button" data-way="untouched" aria-pressed="false">Untouched</button>
+    <button type="button" data-way="ducked" aria-pressed="false">Turned down</button>
+    <button type="button" data-way="andrum" aria-pressed="true">Andrum</button>
+  </div>
+  <p class="dock__read"><span data-clarity>81</span>&nbsp;% clear</p>
+  <button type="button" class="dock__close" data-dock-close aria-label="Stop and close">
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+</div>
+
+<script src="assets/data/demo-data.js" defer></script>
+<script src="assets/js/product.js" defer></script>
 <script src="assets/js/store.js" defer></script>
 <script src="assets/js/pixel.js" defer></script>
 <script src="/stats.js" defer></script>

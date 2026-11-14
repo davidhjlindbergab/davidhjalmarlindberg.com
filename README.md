@@ -25,12 +25,21 @@ Plain HTML, CSS and JavaScript with no build step. Served by GitHub Pages from t
   - The dashboard is a Claude artifact, made from the Dashboard type, that reads the sheet through David's Google Drive connector.
   - `?stats=off` on any page stops the counting in that browser, `?stats=on` starts it again, and `?stats=test` sends that page's counts to the sheet's Test tab.
   - New pages need `<script src="/stats.js" defer></script>` in their head (and, if they use `style.css`, `<script src="/main.js" defer></script>` and the one-line clock script for the glow, copied from any other page).
-- **Meta pixel on Andrum** (`andrum/assets/js/pixel.js`): the same pixel as Colobri (4475247569405091, the dataset named davidhjalmarlindberg.com in Events Manager), asked for with the same cookie question and the same saved answer (`colobri.cookies`), so a visitor answers once for the whole site. It sends PageView, ViewContent, StartTrial (Mac and Windows downloads) and Lead (Tell me when it's on sale). Cookie settings is in the page's footer.
+- **Meta pixel on Andrum** (`andrum/assets/js/pixel.js`): the same pixel as Colobri (4475247569405091, the dataset named davidhjalmarlindberg.com in Events Manager), asked for with the same cookie question and the same saved answer (`colobri.cookies`), so a visitor answers once for the whole site. It sends PageView, ViewContent, StartTrial (the Mac and Windows downloads, and "Send the link to my computer" on a phone) and, from the store, InitiateCheckout and Purchase. Cookie settings is in the page's footer.
 - **Privacy** (`privacy/index.html`): what the site counts, the Meta pixel and cookies, hosting. The footers link to it.
 - **Colobri's type**: SF Pro through the system font, with Inter (`fonts/inter-var-latin.woff`, SIL Open Font Licence in `fonts/OFL.txt`) on other devices.
 - **Images**: front-page images in `img/work/`, each project's gallery in `img/<project>/`.
 - **The Music page** (`dj/`, named Music since David renamed its tile on the front page) plays the Borderland 2026 set through SoundCloud's own player, in its artwork view (`visual=true`), which suits the dark page.
 - **Voice**: the site speaks in the first person on every page. `DESIGN.md`, part 11, has the rules for its texts.
+
+## Andrum: the page
+
+- **The page** (`andrum/index.html`, with `andrum/assets/css/product.css` and `andrum/assets/js/product.js`; new on 14 Nov 2026): plain HTML with no build step. Black, white type and the light of Andrum's own picture. The type is Inter, as before (`andrum/assets/fonts/`): Inter Display Light for headings and figures, Inter Regular and Medium for the rest. The licence, terms and privacy pages keep `andrum/assets/css/andrum.css`.
+- **The demo at the top**: 16 seconds of the song from the Meta ads, going round, three ways: Untouched, Turned down (the whole track 10 dB down) and Andrum. The first Listen plays the three in turn, 4 seconds each (one sung line); once it has been started, a small player follows down the page until it is closed. The three recordings (`andrum/assets/audio/listen-*.mp3`) share one gain and have no limiter, and the picture is drawn from Andrum's own measurements of the song (`andrum/assets/data/demo-data.js`).
+- **The figures beside it** (47 %, 81 %, 81 %, 10 dB, 1.4 dB) are measured on that song with Andrum 1.9.0, clarity by Andrum's own meter while the voice sings. A new song or a new engine changes them: they are in `demo-data.js` (the readouts and the notes read them there) and written out in the section "The same clarity, for 1.4 dB instead of 10."
+- **Buttons**: the site's pills at 58px, the height David set on this page in the site editor (the old page carried it in a `site-editor` block; it is now in `product.css`). The small ones are 44px.
+- **Store, pixel and statistics** are the same files and hooks as before: `andrum/assets/js/store.js` (`data-an-buy`, `data-an-price`, `data-an-thanks`, `data-an-key`, `#buy`; Polar's checkout returns to `/andrum/?bought=…#buy`), `andrum/assets/js/pixel.js` (`data-an-cookies`, the downloads, `data-an-send-link`) and `/stats.js`. The licence, terms and privacy pages link to `/andrum/#download`.
+- **The old page's files** are still in `andrum/assets/` and no page uses them: `js/aurora.js`, `js/page.js`, `data/spectrum.js`, `data/demo-audio.js`, `audio/demo-with.mp3`, `audio/demo-without.mp3` and the images `compare-*`, `deck-*`, `hero-*`, `limits-*`, `link-*` and `window-*`.
 
 ## Colobri: the page, selling and tracking
 
