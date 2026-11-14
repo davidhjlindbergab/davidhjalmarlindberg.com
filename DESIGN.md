@@ -8,9 +8,9 @@ This covers the front page, the project pages, Plugins, Privacy and `404.html`, 
 
 **Theme statement:** quiet, luminous, screening room.
 
-**Character:** Every page is a dark room where pictures are shown. The ground is nearly black, and on it lie two very large, very soft fields of light, like light spilling from a screen; they drift and slowly change colour, too slowly to watch. Nothing decorates: one typeface, a dark with only a trace of light in it, and the pictures carry the colour.
+**Character:** Every page is a dark room where pictures are shown. The ground is nearly black, and on it lie two very large, very soft fields of light, like light spilling from a screen; they drift and slowly change colour, too slowly to watch. Nothing decorates: one typeface in two weights, a dark with only a trace of light in it, and the pictures carry the colour.
 
-**References:** the Swiss typographic style (one sans, flush left); a cinema with the house lights down; the neutral dark surround of a colour grading suite; a gallery's wall labels.
+**References:** apple.com (its type, its bar, its buttons); a cinema with the house lights down; the neutral dark surround of a colour grading suite; a gallery's wall labels.
 
 ## 2. Colour
 
@@ -19,36 +19,41 @@ Every page is dark (David, 13 Nov 2026: "Remove the white completely and only ha
 | Token | Value | Use |
 |---|---|---|
 | `--paper` | `#0c0c0b` | the ground (the name is kept so that older rules still work) |
-| `--ink` | `#f4f3ef` | headings, names, filled buttons, the focus ring |
-| `--muted` | `#98978f` | captions, labels, small print |
-| `--body-copy` | `#b4b3ab` | paragraphs |
-| `--line` | `#2b2b28` | hairlines |
-| `--frame` | `#161615` | a picture's place before it has loaded |
+| `--ink` | `#f5f5f7` | headings, names, filled buttons, the focus ring |
+| `--muted` | `#86868b` | captions, labels, small print |
+| `--body-copy` | `#a1a1a6` | paragraphs |
+| `--line` | `#333336` | hairlines |
+| `--frame` | `#161617` | a picture's place before it has loaded |
 
 - **The glow** (`body::before` in `style.css`): two radial fields, `--glow-a` low on the left and `--glow-b` high on the right, each at no more than 27%. `--glow-a` wanders amber, rose, plum, violet over 2 minutes; `--glow-b` blue, teal, deep green, indigo over 2 minutes 40; both back and forth, so the pair never repeats the same way. The layer drifts and turns over 80 seconds. A fine grain (`body::after`, 5.5%) keeps the dark gradients from banding. Keep it this faint, and don't add a third field.
   - The page grows a little darker as you scroll down from the header: the glow fades to 55% over the first screen (`deepen`, a scroll-driven animation).
   - It keeps time with the clock: a one-line script in each page's `<head>` sets `--t` (seconds since midnight, UTC) and the animations begin that far in. The light is the same on every page and does not start over between pages.
 - There is no accent colour and there are no status colours.
-- Contrast on the ground: ink 17.6 : 1, paragraphs 9.3 : 1, captions 6.7 : 1; on the brightest part of the glow about a fifth lower.
+- The greys are apple.com's (`#f5f5f7`, `#a1a1a6`, `#86868b`). Contrast on the ground: ink 17.9 : 1, paragraphs 7.6 : 1, captions 5.4 : 1; on the brightest part of the glow about a fifth lower.
 
 ## 3. Typography
 
-Helvetica Neue throughout: `"Helvetica Neue", Helvetica, Arial, sans-serif`. Regular (400) everywhere; only the wordmark is 500.
+apple.com's typography (David, 14 Nov 2026: study apple.com/se's typefaces, sizes, weights, spacing and design and apply it to every page). Measured on apple.com/se that day.
 
-| Role | Size | Line height | Letter spacing | Where |
-|---|---|---|---|---|
-| Statement | the width of the page / 5.19 (about 300px on a laptop) | 0.9 | -0.065em | the front page's headline, exactly as wide as the page |
-| Display | `clamp(64px, 8.35vw, 148px)` | 0.98 | -0.065em | `h1` on the other pages |
-| Address | the width of the page / 12.19 | 1.1 | -0.055em | the e-mail address in the footer |
-| Fields | `clamp(24px, 2.6vw, 42px)`, in `--muted` | 1.25 | -1.1px | the line under the front page's headline |
-| Title | `clamp(36px, 4.6vw, 84px)` | 1.05 | -0.055em | Next project |
-| Lead | `clamp(24px, 2.6vw, 42px)` | 1.25 | -1.1px | a block's first paragraph, figures |
-| Name | 22px, 28px for the two wide projects | 1.2 | -0.65px | project names |
-| Note | `clamp(14px, 1.15vw, 18px)` | 1.6 | -0.25px | the sentence beside a headline |
-| Button | 17px | 1.18 | -0.01em | pills |
-| Body | 16px, at most 540px wide | 1.7 | 0 | paragraphs |
-| Small | 13px | 1.5 | 0 | captions, the menu |
-| Label | 12px | 1.6 | 0 to 0.03em | slate lines, section labels, the colophon |
+**Typeface:** SF Pro on Apple devices, which is their system font (`-apple-system, BlinkMacSystemFont`); Inter (`fonts/inter-var-latin.woff`, as on the Colobri and Lika pages) everywhere else; then Helvetica Neue. SF Pro itself may not be served as a web font. **Weights:** headlines, names and labels that head something are 600; text is 400. Nothing else.
+
+**Apple's scale** (size / line height / letter spacing): 96 / 1.05 / -0.015em · 80 / 1.05 / -0.015em · 56 / 1.0714 / -0.005em · 48 / 1.0834 / -0.003em · 40 / 1.1 / 0 · 28 / 1.1429 / 0.007em · 24 / 1.1667 / 0.009em · 21 / 1.19 / 0.011em (1.381 for running text) · 19 / 1.4211 / 0.012em · 17 / 1.47059 / -0.022em · 14 / 1.42859 / -0.016em · 12 / 1.33337 / -0.01em.
+
+| Role | Size | Weight | Where |
+|---|---|---|---|
+| Statement | the width of the page / the width of its letters (about 210px on a laptop), -0.025em | 600 | the front page's headline, exactly as wide as the page |
+| Display | `clamp(56px, 6.7vw, 96px)`; 48px on phones | 600 | `h1` on the other pages |
+| Address | the width of the page / the width of its letters, -0.02em | 600 | the e-mail address in the footer |
+| Fields | `clamp(24px, 2.6vw, 40px)`, in `--muted` | 600 | the line under the front page's headline |
+| Title | `clamp(40px, 4.6vw, 80px)` | 600 | Next project |
+| Lead | `clamp(28px, 3.3vw, 48px)`; 28px on phones | 600 | a block's first paragraph, figures |
+| Name | 28px, 40px for the two wide projects, 24px on phones | 600 | project names |
+| Wordmark | 21px (19px on tablets, 17px on phones) | 600 | the masthead |
+| Note | `clamp(17px, 1.35vw, 21px)`, 1.381; 19px on phones | 400 | the sentence beside a headline |
+| Button | 17px | 400 | pills |
+| Body | 17px / 1.47059 / -0.022em, at most 600px wide | 400 | paragraphs, a project's line |
+| Small | 14px | 400 (labels 600) | captions, figure labels, block labels, the Plugins list |
+| Label | 12px | 400 (section names 600) | the menu, slate lines, kinds, the colophon |
 
 Nothing is set smaller than 12px. Headings balance their lines (`text-wrap: balance`).
 
@@ -56,7 +61,7 @@ Nothing is set smaller than 12px. Headings balance their lines (`text-wrap: bala
 
 | Component | Class | What it is |
 |---|---|---|
-| Masthead | `.masthead` | wordmark, menu, place. Plugins rolls Andrum and Colobri down under it |
+| Masthead | `.masthead` | after apple.com's bar: 52px high (48px on phones), it stays at the top of the window and the page shows through it, blurred. Wordmark, menu, place. Plugins rolls Andrum, Lika and Colobri down under it, on a panel of the same glass |
 | Opening | `.intro-home`, `.fit`, `.intro-fields` | the front page: one sentence as wide as the page; under it the fields the work is made in, and one sentence about who is speaking |
 | Intro | `.intro` | the other pages: the headline and one sentence beside it |
 | Slate line | `.section-line` | a hairline and two or three short facts across the page (kind, name, years) |
@@ -71,13 +76,13 @@ Nothing is set smaller than 12px. Headings balance their lines (`text-wrap: bala
 ## 5. Layout
 
 - **Width:** `.wrap`, with gutters of 4.5vw (22px on phones) and a maximum of 1600px.
-- **Grid:** two equal columns 28px apart for pictures; text blocks are one third label, two thirds text. Everything is flush left.
+- **Grid:** two equal columns 20px apart for pictures; text blocks are one third label, two thirds text. Everything is flush left.
 - **Corners:** `--radius` on tiles and `--radius-lg` on full-width pictures (both 16px on phones).
-- **Rhythm:** 84px between rows of projects, 96px above a block, 128px above the last part of a page.
+- **Rhythm:** 80px between rows of projects, 100px above a block, 140px above the last part of a page.
 
 ## 6. Depth
 
-None. Nothing casts a shadow (the phones on the Aware page are pictures of objects and keep theirs). The only thing above the page is the Plugins menu (`z-index: 10`).
+None. Nothing casts a shadow (the phones on the Aware page are pictures of objects and keep theirs). The only things above the page are the masthead, a sheet of blurred glass (`z-index: 20`), and the Plugins menu in it.
 
 ## 7. Do and don't
 
@@ -89,7 +94,7 @@ None. Nothing casts a shadow (the phones on the Aware page are pictures of objec
 
 **Don't**
 - Add a light section or a white background, an accent colour, a shadow, or any gradient or glow besides the two fields of light.
-- Add a second typeface or a bold weight.
+- Add a second typeface, or any weight besides 400 and 600.
 - Join keywords with middle dots, add arrows that only say "scroll", or number things that are not a sequence.
 - Make things slide, bounce or fly in. See Motion.
 - Set text smaller than 12px.
