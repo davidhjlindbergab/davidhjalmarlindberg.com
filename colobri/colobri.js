@@ -55,7 +55,7 @@
     var bg = $('.hero-bg', hero) || hero;   // (the first screen, where the bird and its light are; the words may run on below it)
     function layout() {
       var h = bg.getBoundingClientRect(), m = mark.getBoundingClientRect(), bw = m.width / 1.03;
-      return { w: h.width, h: h.height, bw: bw, cx: m.left - h.left + m.width / 2, cy: m.top - h.top + LIGHT_UP * bw };
+      return { w: h.width, h: h.height, bw: bw, cx: m.left - h.left + m.width / 2, cy: m.top - h.top + LIGHT_UP * bw, my: m.top - h.top + m.height / 2 };
     }
     function padFor() { return Math.max(0, Math.min(2, (BIRD_W * Math.min(L.w / FIT_W, L.h / FIT_H) / Math.max(1, L.bw * gs) - 1) / 2)); }
     function posFor() { return [(L.cx + DX * L.bw) / Math.max(1, L.w), L.cy / Math.max(1, L.h)]; }
@@ -128,21 +128,48 @@
       if (glow) CL.at(glow, L.cx, L.cy);
       clearTimeout(glowTimer); glowTimer = setTimeout(paintGlow, glowOn ? 140 : 0);
     }
-    L = layout();
-    if (window.ColobriLogo && window.ColobriLogo.isSupported()) {
+    // Since 14 Nov 2026 (David: "replace that background animation of the bird with this new one") the opening is the app's own: the
+    // field of light in which the bird forms and dissolves (colobri-field.js, the app's lightField unchanged), filling the first screen.
+    // The bird is as large as in the app's opening (its span) and level with .hero-mark, so the words stay beneath it. The pointer
+    // gathers the bird out of the light and a press blooms. It rests while the opening is scrolled away; for someone who asks for less
+    // motion it stands formed and still, as in the app, and still answers a touch. Without WebGL2: the still bird, as before.
+    var field = null, fieldCanvas = null;
+    function fieldGone() {
+      if (field) { try { field.stop(); } catch (e) { /* (already stopped) */ } }
+      field = null; if (fieldCanvas) { fieldCanvas.remove(); fieldCanvas = null; }
+      hero.classList.remove('field'); if (glow) glow.hidden = false; toFlat();
+    }
+    function startField() {
+      var F = window.ColobriField;
+      if (!air || !F || !F.isSupported()) return false;
+      fieldCanvas = document.createElement('canvas'); fieldCanvas.className = 'hero-field';
+      air.insertBefore(fieldCanvas, air.firstChild);
       try {
-        logo = window.ColobriLogo.create(box, { background: 'transparent', interactive: true, padding: padFor(), position: posFor(), motion: 0.6, ariaLabel: '', startTime: START, fadeIn: 0,
-          seed: SEED, onReady: opened, onError: toFlat });
-      } catch (e) { toFlat(); }
-      if (logo && !flat) startLight();
-    } else toFlat();
-    if (!light) stillGlow();
+        field = F.create(fieldCanvas, {
+          at: function () { return [0, L ? (L.h / 2 - L.my) / Math.max(1, L.h) : 0.1]; },
+          span: function (a) { var t = Math.max(0, Math.min(1, (a - 0.6) / 0.6)); return 2040 + (2900 - 2040) * t; },
+          onReady: opened, onFail: fieldGone
+        });
+      } catch (e) { field = null; }
+      if (!field || field.dead) { if (fieldCanvas) fieldCanvas.remove(); fieldCanvas = null; field = null; return false; }
+      hero.classList.add('field');
+      if (glow) glow.hidden = true;
+      if (reduce.matches) field.seek(12 + Math.random() * 40, true);
+      field.start();
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (es) {
+        if (!field) return; if (es[es.length - 1].isIntersecting) field.start(); else field.stop();
+      }).observe(bg);
+      return true;
+    }
+    L = layout();
+    if (!startField()) toFlat();
+    if (!light && !field) stillGlow();
     // (if the bird has not woken in 2.5 s, the page does not wait for it)
     setTimeout(function () { if (!ready) opened(); }, 2500);
     place();
     if ('ResizeObserver' in window) new ResizeObserver(function () { place(); }).observe(hero);
     else window.addEventListener('resize', place);
-    window.__cbHero = { logo: function () { return logo; }, layout: function () { return L; }, flat: function () { return flat; }, glow: function () { return glowOn ? glow.width + 'x' + glow.height : ''; },
+    window.__cbHero = { field: function () { return field; }, logo: function () { return logo; }, layout: function () { return L; }, flat: function () { return flat; }, glow: function () { return glowOn ? glow.width + 'x' + glow.height : ''; },
       light: function () { return SKY && light ? 'sky' : light && light.logo ? 'live' : glowOn ? 'still' : ''; }, lightLogo: function () { return light && light.logo; },
       lightOnly: function (on) { [logo && logo.canvas, still].forEach(function (el) { if (el) el.style.opacity = on ? '0' : ''; }); },
       stillLight: function () { stopLight(); stillGlow(); },

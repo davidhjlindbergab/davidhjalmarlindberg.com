@@ -147,6 +147,11 @@ section { position: relative; }
 .hero-logo { position: absolute; inset: 0; -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; }
 .hero-still { position: absolute; max-width: none; }
 .hero-dither { position: absolute; inset: 0; pointer-events: none; background: var(--dither, none) 0 0 / var(--dither-size, 128px) repeat; }
+/* since 14 Nov 2026 the opening is the app's field of light (colobri-field.js): it fills the first screen, the bird level with
+   .hero-mark; it fades up as it forms, and a shade under the words keeps them clear of its light, as in the app's opening */
+.hero-field { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; opacity: 0; transition: opacity 1.6s ease; }
+.hero-field.ready { opacity: 1; }
+.hero.field .hero-bg::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 52%; background: linear-gradient(to bottom, rgba(10, 10, 10, 0), rgba(10, 10, 10, 0.76)); pointer-events: none; }
 /* the opening (David, round 19: no zoom; short and clean): when the bird is ready it comes into focus where it stays, from clear and
    soft to sharp in 0.9 s on an ease out (its opacity full by half way; the blur about 3% of the bird's width, --focus-blur from
    colobri.js), and its light rises round it a moment behind, done by 1.4 s; nothing grows or moves (the still without WebGL2 the same);
@@ -429,7 +434,8 @@ footer .legal a:hover { color: var(--ink); }
 <script src="colobri-hues.js?v=1.0.0" defer></script>
 <script src="colobri-light.js?v=1.6.0" defer></script>
 <script src="colobri-ring.js?v=1.1.0" defer></script>
-<script src="colobri.js?v=1.6.0" defer></script>
+<script src="colobri-field.js?v=1.0.0" defer></script>
+<script src="colobri.js?v=1.7.0" defer></script>
 <script src="/stats.js" defer></script>
 </head>
 <body data-cb-page="colobri">
