@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Licence agreement · Lika</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#05080b">
+<link rel="icon" href="../images/lika-mark-small.svg" type="image/svg+xml">
+<link rel="icon" href="../images/lika-icon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="../images/lika-touch-180.png">
+<style>
+@font-face { font-family: "Inter Web"; src: url("../../fonts/inter-var-latin.woff") format("woff"); font-weight: 100 900; font-style: normal; font-display: swap; size-adjust: 98%; }
+/* Lika's store pages: the product page's ground, type and pills, a single column of text */
+:root {
+  color-scheme: dark;
+  --bg: #05080b; --card: #0c1116; --line: rgba(255, 255, 255, 0.09); --line-2: rgba(255, 255, 255, 0.17);
+  --ink: #f4f3ef; --ink-2: #a8abb1; --ink-3: #7f848c;
+  --light: linear-gradient(90deg, #f18157 0%, #e57e9a 34%, #997fe3 60%, #1383e1 82%, #0181e9 100%);
+  --f: -apple-system, BlinkMacSystemFont, "Inter Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --gl: max(22px, env(safe-area-inset-left, 0px)); --gr: max(22px, env(safe-area-inset-right, 0px));
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.52 var(--f); -webkit-font-smoothing: antialiased; letter-spacing: 0.0035em; }
+a { color: inherit; }
+::selection { background: rgba(153, 127, 227, 0.36); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: calc(720px + var(--gl) + var(--gr)); margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
+.bar { padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 52px; max-width: calc(1200px + var(--gl) + var(--gr)); }
+.bar img { display: block; height: 22px; width: auto; }
+.bar a.back { font-size: 13px; color: var(--ink-2); text-decoration: none; }
+.bar a.back:hover { color: var(--ink); }
+main { padding: clamp(48px, 8vw, 96px) 0 clamp(64px, 9vw, 120px); }
+.eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
+.eyebrow::before { content: ""; width: 18px; height: 11px; background: linear-gradient(var(--bg), var(--bg)) 0 4px / 100% 3px no-repeat, var(--light); border-radius: 2px; }
+h1 { margin: 0 0 18px; font-size: clamp(36px, 6vw, 56px); line-height: 1.06; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
+h2 { margin: 40px 0 10px; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
+p, li { color: var(--ink-2); text-wrap: pretty; }
+p { margin: 0 0 14px; }
+.lead { font-size: clamp(19px, 2vw, 22px); line-height: 1.4; color: var(--ink-2); }
+.lead b, p b { color: var(--ink); font-weight: 600; }
+.updated { font-size: 14px; color: var(--ink-3); }
+.short { padding: 18px 20px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink); }
+.steps { list-style: none; margin: 28px 0 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+.steps li { position: relative; padding: 18px 20px 18px 66px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); counter-increment: s; }
+.steps li::before { content: counter(s, decimal-leading-zero); position: absolute; left: 20px; top: 19px; font: 500 14px/1.6 var(--mono); color: var(--ink-3); }
+.steps h3 { margin: 0 0 4px; font-size: 17px; font-weight: 600; color: var(--ink); }
+.steps p { margin: 0; font-size: 15px; }
+code { font: 500 14px/1 var(--mono); color: var(--ink); }
+.ctas { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: center; margin: 30px 0 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 22px; border-radius: 22px; border: 1px solid transparent; font: 400 17px/1 var(--f); text-decoration: none; white-space: nowrap; cursor: pointer; transition: background .2s, border-color .2s; }
+.btn.solid { background: var(--ink); color: #05080b; }
+.btn.solid:hover { background: #fff; }
+.btn.line { border-color: var(--line-2); color: var(--ink); }
+.btn.line:hover { border-color: var(--ink-2); }
+.fine { margin-top: 22px; font-size: 14px; color: var(--ink-3); }
+.fine a, p a { color: var(--ink); }
+[hidden] { display: none !important; }
+footer { padding: 30px 0 calc(30px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-3); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 22px; max-width: calc(1200px + var(--gl) + var(--gr)); }
+footer nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+footer a { color: var(--ink-2); text-decoration: none; }
+footer a:hover { color: var(--ink); }
+</style>
+<script src="../store.js"></script>
+<script src="/stats.js" defer></script>
+</head>
+<body>
+<header class="bar"><div class="wrap"><a href="../" aria-label="Lika"><img src="../images/lika-logo-small.svg" width="62" height="22" alt="Lika"></a><a class="back" href="../">Back to Lika</a></div></header>
+<main><div class="wrap">
+<p class="eyebrow">Licence agreement</p>
+<h1>Lika licence agreement</h1>
+<p class="updated">Last updated 14 November 2026</p>
+<p class="short">The short version: buy Lika once and use it for as long as you like, on two Macs, with every 1.x update. What you make with it is yours. If it is not for you, you get your money back within 14 days.</p>
+<h2>Who we are</h2>
+<p>Lika is made by David HJ Lindberg AB, a company in Sweden (&quot;we&quot;). You can reach us at <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>. Lemon Squeezy sells Lika for us as the merchant of record: it takes the payment, charges the VAT or sales tax where you live, and sends the receipt with your licence key.</p>
+<h2>The trial</h2>
+<p>Lika works in full, exports included, for 7 days from the first time you open it on a Mac. After that you can still add, match, finish and look at your clips; rendering files, saving looks and copying CDLs need a licence.</p>
+<h2>What a licence gives you</h2>
+<p>One licence is for one person. You may use Lika on up to two Macs of your own at a time, for your own work and for work you do for others, commercial work included. A licence covers every update to Lika 1.x. A future Lika 2 may be sold separately.</p>
+<p>A company buys one licence for each person who uses Lika.</p>
+<h2>Your licence key</h2>
+<p>You add the key once on each Mac. Lika checks it with Lemon Squeezy over the internet then, and now and then afterwards when the internet is there; in between it works offline. To move Lika to another Mac, remove the key on the old one (Lika, Licence…, Remove from this computer) and add it on the new one. A key that is refunded or misused stops working.</p>
+<p>Lika versions before 1.0 are early releases: a licence bought now covers them and every 1.x version.</p>
+<h2>What you may not do</h2>
+<p>You may not copy, sell, rent or share Lika or your key, or get around the trial or the licence check, or decompile or modify Lika, except where the law allows you to.</p>
+<h2>Your clips</h2>
+<p>Lika works on your clips on your own Mac. They are never uploaded to us or to anyone else. What Lika sends over the internet is described in the privacy policy at <a href="../privacy/">davidhjalmarlindberg.com/lika/privacy/</a>.</p>
+<h2>What you make</h2>
+<p>The renders, LUTs, CDLs and anything else you make with Lika are yours, to use in any work.</p>
+<h2>Refunds</h2>
+<p>If Lika is not for you, write to <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a> within 14 days of buying and you get a full refund. Your key stops working when it is refunded. This does not limit your right of withdrawal as a consumer.</p>
+<h2>Other software in Lika</h2>
+<p>Lika is built with Electron and runs FFmpeg as separate programs. Their licences are in the app, in Contents/Resources/app/licences. FFmpeg is under the GNU General Public License version 3, and nothing in this agreement limits your rights under it.</p>
+<h2>Warranty and liability</h2>
+<p>We make Lika with care and fix the faults we learn about, but we cannot promise that it is free of errors or right for every job, so check your renders before you deliver them. Unless the law says otherwise, we are not liable for loss that comes from using Lika, such as lost profit or lost work, and our liability is never more than what you paid for Lika. Nothing in this agreement limits your rights as a consumer, or a liability that the law does not allow us to limit.</p>
+<h2>Other names</h2>
+<p>Premiere Pro is a trademark of Adobe. DaVinci Resolve is a trademark of Blackmagic Design. Final Cut Pro and macOS are trademarks of Apple. Lika is not made, endorsed or supported by any of them.</p>
+<h2>Changes and law</h2>
+<p>We may update this agreement for new versions of Lika; the version you agreed to when you bought stays in force for what you bought. Swedish law applies; if you are a consumer living elsewhere, you also keep the protection the law of your own country gives you.</p>
+</div></main>
+<footer><div class="wrap"><span>© 2026 David HJ Lindberg AB</span><nav><a href="../terms/">Licence agreement</a><a href="../privacy/">Privacy</a><a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a></nav></div></footer>
+
+</body>
+</html>
