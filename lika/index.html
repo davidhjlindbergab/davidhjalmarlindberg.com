@@ -119,7 +119,7 @@ h2 { margin: 0; font-size: clamp(32px, 4.8vw, 56px); line-height: 1.07; font-wei
 h3 { margin: 0; font-size: 21px; line-height: 1.19; font-weight: 600; letter-spacing: -0.01em; }
 
 /* the app's window */
-.win .shot { position: relative; aspect-ratio: 1280 / 800; border-radius: clamp(6px, 1.1vw, 13px); overflow: hidden; background: #171717; box-shadow: 0 0 0 1px var(--line-2), 0 50px 120px -40px #000; }
+.win .shot { position: relative; aspect-ratio: 1480 / 1130; border-radius: clamp(6px, 1.1vw, 13px); overflow: hidden; background: #171717; box-shadow: 0 0 0 1px var(--line-2), 0 50px 120px -40px #000; }
 .win .shot img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .win .shot .b { opacity: 0; transition: opacity .6s var(--ease); }
 .win[data-show="final"] .shot .b { opacity: 1; }
@@ -158,10 +158,10 @@ h3 { margin: 0; font-size: 21px; line-height: 1.19; font-weight: 600; letter-spa
 .grains span { display: block; margin-top: 10px; font-size: 14px; color: var(--ink-2); text-align: center; }
 
 /* one file, cut into its shots */
-.strip { display: grid; grid-template-columns: repeat(6, 1fr); border-radius: clamp(4px, .8vw, 10px); overflow: hidden; }
+.strip { display: grid; grid-template-columns: repeat(14, 1fr); border-radius: clamp(4px, .8vw, 10px); overflow: hidden; }
 .strip div { position: relative; }
 .strip img { width: 100%; }
-.strip div + div::before { content: ""; position: absolute; z-index: 1; left: -1px; top: 0; bottom: 0; width: 2px; background: var(--ink); box-shadow: 0 0 14px 2px rgba(241, 129, 87, 0.8); opacity: 0; transition: opacity .9s var(--ease) calc(var(--i) * .16s + .4s); }
+.strip div + div::before { content: ""; position: absolute; z-index: 1; left: -1px; top: 0; bottom: 0; width: 2px; background: var(--ink); box-shadow: 0 0 14px 2px rgba(241, 129, 87, 0.8); opacity: 0; transition: opacity .9s var(--ease) calc(var(--i) * .07s + .4s); }
 .strip.in div + div::before, html:not(.js) .strip div + div::before { opacity: 1; }
 .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 34px 44px; max-width: 980px; margin: clamp(40px, 6vw, 64px) auto 0; }
 .pair p { margin: 0; font-size: 17px; line-height: 1.47; color: var(--ink-2); }
@@ -227,7 +227,9 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
   .list, .list.four { grid-template-columns: 1fr; gap: 26px; }
   .mode { display: block; padding: 18px 20px 22px; }
   .mode svg { max-width: 250px; margin: 0 auto 12px; }
-  .win .shot { aspect-ratio: 944 / 800; }
+  .win .shot { aspect-ratio: 1136 / 1130; }
+  .strip { grid-template-columns: repeat(7, 1fr); }
+  .strip div:nth-child(8)::before { display: none; }
   .win .shot img { object-fit: cover; object-position: 0 0; }
   .spread td { padding-right: 12px; }
   .spread .v { grid-template-columns: 34px minmax(0, 1fr); gap: 8px; }
@@ -291,8 +293,9 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
       <h2 class="sr" id="film-title">One cut, as it arrived and as Lika matched it</h2>
       <figure class="rise" id="film">
         <div class="stage">
-          <video id="reel" muted loop playsinline autoplay preload="auto" poster="images/film-poster.webp" width="1920" height="1080" aria-label="Six shots of three white spheres on pale sand in low sun, cut together. In the first half every shot has its own colour and level: one milky and green, one magenta and hard, one dark, one bright, one washed out, one crushed. In the second half the same cut plays again, matched, and the shots sit together as one scene.">
-            <source src="images/lika-film.mp4" type="video/mp4">
+          <video id="reel" muted loop playsinline controls preload="none" poster="images/film-poster.webp" width="1600" height="900" data-half="14" aria-label="Fourteen generated shots cut together, a second each: homes, a kitchen and streets in warm light, then a city in ruin in cold light. In the first half the shots play as they were generated, each with its own blacks, whites and tint. In the second half the same cut plays again as Lika matched it.">
+            <source src="images/lika-film-900.mp4" type="video/mp4" media="(min-width: 700px)">
+            <source src="images/lika-film-540.mp4" type="video/mp4">
           </video>
           <span class="tag" id="reelTag" aria-hidden="true">Original</span>
         </div>
@@ -302,7 +305,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
             <button type="button" data-show="final" aria-pressed="false">Final</button>
           </div>
         </div>
-        <figcaption>Six test shots drawn in code: one scene, and a different drift on every shot, the way generations come back. The cut plays as the shots arrived, then as Lika matched them.</figcaption>
+        <figcaption>Fourteen generated clips, a second of each. The cut plays as they arrived, then as Lika matched them.</figcaption>
       </figure>
     </div>
   </section>
@@ -317,8 +320,8 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 
       <figure class="win rise" id="win" data-show="original">
         <div class="shot">
-          <img class="a" src="images/app-original-1280.webp" srcset="images/app-original-1280.webp 1280w, images/app-original-2560.webp 2560w" sizes="(max-width: 1244px) 100vw, 1200px" width="2560" height="1600" loading="lazy" decoding="async" alt="Lika's window with the six test shots as tiles, as they arrived: each a different colour and level. Under them a parade scope with one column per clip, the black levels at six different heights.">
-          <img class="b" src="images/app-final-1280.webp" srcset="images/app-final-1280.webp 1280w, images/app-final-2560.webp 2560w" sizes="(max-width: 1244px) 100vw, 1200px" width="2560" height="1600" loading="lazy" decoding="async" alt="The same window showing the matched shots: the six tiles now share one look, and in the parade the black levels line up.">
+          <img class="a" src="images/app-original-1480.webp" srcset="images/app-original-1480.webp 1480w, images/app-original-2960.webp 2960w" sizes="(max-width: 599px) 130vw, (max-width: 1244px) 100vw, 1200px" width="2960" height="2260" loading="lazy" decoding="async" alt="Lika's window with the fourteen clips as tiles, as they arrived. Under them a parade scope with one column per clip: the black levels sit at different heights.">
+          <img class="b" src="images/app-final-1480.webp" srcset="images/app-final-1480.webp 1480w, images/app-final-2960.webp 2960w" sizes="(max-width: 599px) 130vw, (max-width: 1244px) 100vw, 1200px" width="2960" height="2260" loading="lazy" decoding="async" alt="The same window showing the matched clips: in the parade the black levels of all fourteen line up.">
         </div>
         <div class="tools">
           <div class="seg" role="group" aria-label="The window showing the shots as they arrived, or matched" data-for="win">
@@ -326,18 +329,18 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
             <button type="button" data-show="final" aria-pressed="false">Final</button>
           </div>
         </div>
-        <figcaption>Lika with the same six shots. The parade under them has a column for every clip: red, green and blue, zoomed in on the shadows.</figcaption>
+        <figcaption>Lika with the same fourteen clips. The parade under them has a column for every clip: red, green and blue, zoomed in on the shadows.</figcaption>
       </figure>
 
       <figure class="spread rise">
         <table>
-          <caption>How far apart the six shots sat, in points of full scale, from Lika's own panel.</caption>
+          <caption>How far apart the fourteen clips sat, in points of full scale, from Lika's own panel.</caption>
           <thead><tr><th scope="col"><span class="sr">Measure</span></th><th scope="col">Before</th><th scope="col">Matched</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Black level</th><td><span class="v"><i style="--n:90.5"></i><b>5.14</b></span></td><td class="now"><span class="v"><i style="--n:0.0"></i><b>0.00</b></span></td></tr>
-            <tr><th scope="row">Black colour</th><td><span class="v"><i style="--n:33.1"></i><b>1.88</b></span></td><td class="now"><span class="v"><i style="--n:1.6"></i><b>0.09</b></span></td></tr>
-            <tr><th scope="row">White level</th><td><span class="v"><i style="--n:94.9"></i><b>5.39</b></span></td><td class="now"><span class="v"><i style="--n:0.0"></i><b>0.00</b></span></td></tr>
-            <tr><th scope="row">Midtone tint</th><td><span class="v"><i style="--n:100.0"></i><b>5.68</b></span></td><td class="now"><span class="v"><i style="--n:23.6"></i><b>1.34</b></span></td></tr>
+            <tr><th scope="row">Black level</th><td><span class="v"><i style="--n:22.9"></i><b>1.65</b></span></td><td class="now"><span class="v"><i style="--n:0.0"></i><b>0.00</b></span></td></tr>
+            <tr><th scope="row">Black colour</th><td><span class="v"><i style="--n:17.5"></i><b>1.26</b></span></td><td class="now"><span class="v"><i style="--n:1.8"></i><b>0.13</b></span></td></tr>
+            <tr><th scope="row">White level</th><td><span class="v"><i style="--n:100.0"></i><b>7.22</b></span></td><td class="now"><span class="v"><i style="--n:51.9"></i><b>3.75</b></span></td></tr>
+            <tr><th scope="row">Midtone tint</th><td><span class="v"><i style="--n:77.6"></i><b>5.60</b></span></td><td class="now"><span class="v"><i style="--n:32.5"></i><b>2.35</b></span></td></tr>
           </tbody>
         </table>
       </figure>
@@ -393,7 +396,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
           <li><img src="images/grain-mono.webp" width="400" height="400" loading="lazy" decoding="async" alt="The same detail with Mono grain: silver grain with no colour in it."><span>Mono</span></li>
           <li><img src="images/grain-sensor.webp" width="400" height="400" loading="lazy" decoding="async" alt="The same detail with Sensor grain: very fine camera noise, strongest in the shadows."><span>Sensor</span></li>
         </ul>
-        <figcaption>One detail of the second shot, rendered by Lika with each kind of grain at its own settings.</figcaption>
+        <figcaption>One detail of the seventh shot, rendered by Lika with each kind of grain at its own settings.</figcaption>
       </figure>
     </div>
   </section>
@@ -402,18 +405,26 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
     <div class="wrap">
       <div class="head rise">
         <p class="eyebrow">Cuts and timelines</p>
-        <h2 id="cuts-title">A file with six shots<br> is six clips.</h2>
+        <h2 id="cuts-title">A file with fourteen shots<br> is fourteen clips.</h2>
       </div>
       <figure class="rise">
         <div class="strip" id="strip">
-          <div style="--i:0"><img src="images/shot-1.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
-          <div style="--i:0"><img src="images/shot-2.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
-          <div style="--i:1"><img src="images/shot-3.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
-          <div style="--i:2"><img src="images/shot-4.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
-          <div style="--i:3"><img src="images/shot-5.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
-          <div style="--i:4"><img src="images/shot-6.webp" width="480" height="270" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:0"><img src="images/shot-01.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:0"><img src="images/shot-02.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:1"><img src="images/shot-03.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:2"><img src="images/shot-04.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:3"><img src="images/shot-05.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:4"><img src="images/shot-06.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:5"><img src="images/shot-07.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:6"><img src="images/shot-08.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:7"><img src="images/shot-09.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:8"><img src="images/shot-10.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:9"><img src="images/shot-11.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:10"><img src="images/shot-12.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:11"><img src="images/shot-13.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
+          <div style="--i:12"><img src="images/shot-14.webp" width="240" height="135" loading="lazy" decoding="async" alt=""></div>
         </div>
-        <figcaption>The six shots joined into one file. Find cuts put the five cuts where they are.</figcaption>
+        <figcaption>The fourteen shots joined into one file. Find cuts put the thirteen cuts where they are.</figcaption>
       </figure>
       <div class="pair">
         <p class="rise"><strong>Find cuts splits a file into its shots,</strong> and each shot gets its own match. It is built to tell a cut from a flash, a whip pan or a fade. Render a file for each shot, or the whole clip back in one piece.</p>
@@ -500,7 +511,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
   <div class="wrap">
     <div>
       <img src="images/lika-logo-small.svg" width="62" height="22" alt="Lika" loading="lazy">
-      <p>Lika is Swedish for alike. The pictures on this page are test shots drawn in code, matched and rendered by Lika.</p>
+      <p>Lika is Swedish for alike. The clips on this page are AI-generated; Lika matched and rendered them.</p>
     </div>
     <ul>
       <li><a href="../privacy/">Privacy</a></li>
@@ -540,7 +551,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
   // The cut. One film file: its first half is the cut as the shots arrived, its second half the same cut matched. The
   // switch jumps to the same moment in the other half, so the two can be compared frame against frame.
   var reel = document.getElementById('reel'), reelSeg = document.querySelector('.seg[data-for="reel"]'), tag = document.getElementById('reelTag'), shown = '';
-  function half() { return isFinite(reel.duration) && reel.duration > 0 ? reel.duration / 2 : 9; }
+  function half() { return isFinite(reel.duration) && reel.duration > 0 ? reel.duration / 2 : +reel.dataset.half; }
   function now() { return reel.currentTime >= half() - 0.02 ? 'final' : 'original'; }
   function paint() { var s = now(); if (s === shown) return; shown = s; press(reelSeg, s); tag.textContent = s === 'final' ? 'Final' : 'Original'; }
   function watch() { paint(); if (reel.requestVideoFrameCallback) reel.requestVideoFrameCallback(watch); }
@@ -549,12 +560,14 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
   reelSeg.addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
     var h = half(), t = reel.currentTime % h;
-    reel.currentTime = Math.min(b.dataset.show === 'final' ? h + t : t, reel.duration - 0.05 || h + t);
+    reel.currentTime = Math.min(b.dataset.show === 'final' ? h + t : t, 2 * h - 0.05);
     shown = ''; press(reelSeg, b.dataset.show); tag.textContent = b.dataset.show === 'final' ? 'Final' : 'Original';
     if (!still && reel.paused) { var p = reel.play(); if (p && p.catch) p.catch(function () {}); }
   });
-  if (still) { reel.removeAttribute('autoplay'); reel.pause(); reel.controls = true; }
+  // the film comes with the browser's own controls, for where this script does not run; here it plays by itself while it is in view
+  if (still) reel.preload = 'metadata';
   else if ('IntersectionObserver' in window) {
+    reel.controls = false;
     // it plays only while it is in view
     new IntersectionObserver(function (list) {
       if (list[0].isIntersecting) { var p = reel.play(); if (p && p.catch) p.catch(function () {}); } else reel.pause();
