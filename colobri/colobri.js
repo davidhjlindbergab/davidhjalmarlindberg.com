@@ -137,7 +137,7 @@
     function fieldGone() {
       if (field) { try { field.stop(); } catch (e) { /* (already stopped) */ } }
       field = null; if (fieldCanvas) { fieldCanvas.remove(); fieldCanvas = null; }
-      hero.classList.remove('field'); if (glow) glow.hidden = false; toFlat();
+      hero.classList.remove('field'); if (glow) glow.style.display = ''; toFlat();
     }
     function startField() {
       var F = window.ColobriField;
@@ -153,7 +153,7 @@
       } catch (e) { field = null; }
       if (!field || field.dead) { if (fieldCanvas) fieldCanvas.remove(); fieldCanvas = null; field = null; return false; }
       hero.classList.add('field');
-      if (glow) glow.hidden = true;
+      if (glow) glow.style.display = 'none';
       if (reduce.matches) field.seek(12 + Math.random() * 40, true);
       field.start();
       if ('IntersectionObserver' in window) new IntersectionObserver(function (es) {
