@@ -35,7 +35,7 @@ a { color: inherit; }
 .bar a.back:hover { color: var(--ink); }
 main { padding: clamp(48px, 8vw, 96px) 0 clamp(64px, 9vw, 120px); }
 .eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
-.eyebrow::before { content: ""; width: 18px; height: 11px; background: linear-gradient(var(--bg), var(--bg)) 0 4px / 100% 3px no-repeat, var(--light); border-radius: 2px; }
+.eyebrow::before { content: ""; width: 16px; height: 15px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 15'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23ff63ee'/%3E%3Cstop offset='.48' stop-color='%232b1250'/%3E%3Cstop offset='1' stop-color='%230a8cff'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23ff5a1e'/%3E%3Cstop offset='.4' stop-color='%23ff4fcf'/%3E%3Cstop offset='.7' stop-color='%236f55ff'/%3E%3Cstop offset='1' stop-color='%231f8dff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.5' y='.5' width='10' height='9.6' rx='2.4' fill='url%28%23a%29'/%3E%3Crect x='5.5' y='4.9' width='10' height='9.6' rx='2.4' fill='url%28%23b%29' fill-opacity='.9'/%3E%3C/svg%3E") center / contain no-repeat; }
 h1 { margin: 0 0 18px; font-size: clamp(36px, 6vw, 56px); line-height: 1.06; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
 h2 { margin: 40px 0 10px; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
 p, li { color: var(--ink-2); text-wrap: pretty; }
@@ -56,6 +56,11 @@ code { font: 500 14px/1 var(--mono); color: var(--ink); }
 .btn.solid:hover { background: #fff; }
 .btn.line { border-color: var(--line-2); color: var(--ink); }
 .btn.line:hover { border-color: var(--ink-2); }
+.key { margin: 26px 0 8px; padding: 18px 20px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line-2); }
+.key-label { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.key-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.key code { font-size: 15px; line-height: 1.4; word-break: break-all; user-select: all; }
+.btn.small { height: 32px; padding: 0 16px; border-radius: 16px; font-size: 14px; }
 .fine { margin-top: 22px; font-size: 14px; color: var(--ink-3); }
 .fine a, p a { color: var(--ink); }
 [hidden] { display: none !important; }
@@ -69,21 +74,21 @@ footer a:hover { color: var(--ink); }
 <script src="/stats.js" defer></script>
 </head>
 <body>
-<header class="bar"><div class="wrap"><a href="../" aria-label="Lika"><img src="../images/lika-logo-small.svg" width="62" height="22" alt="Lika"></a><a class="back" href="../">Back to Lika</a></div></header>
+<header class="bar"><div class="wrap"><a href="../" aria-label="Lika"><img src="../images/lika-logo-small.svg" width="59" height="22" alt="Lika"></a><a class="back" href="../">Back to Lika</a></div></header>
 <main><div class="wrap">
 <p class="eyebrow">Licence agreement</p>
 <h1>Lika licence agreement</h1>
 <p class="updated">Last updated 14 November 2026</p>
 <p class="short">The short version: buy Lika once and use it for as long as you like, on two Macs, with every 1.x update. What you make with it is yours. If it is not for you, you get your money back within 14 days.</p>
 <h2>Who we are</h2>
-<p>Lika is made by David HJ Lindberg AB, a company in Sweden (&quot;we&quot;). You can reach us at <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>. Lemon Squeezy sells Lika for us as the merchant of record: it takes the payment, charges the VAT or sales tax where you live, and sends the receipt with your licence key.</p>
+<p>Lika is made by David HJ Lindberg AB, a company in Sweden (&quot;we&quot;). You can reach us at <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>. Polar (Polar Software, Inc.) sells Lika for us as the merchant of record: it takes the payment, charges the VAT or sales tax where you live, sends the receipt and gives you your licence key.</p>
 <h2>The trial</h2>
 <p>Lika works in full, exports included, for 7 days from the first time you open it on a Mac. After that you can still add, match, finish and look at your clips; rendering files, saving looks and copying CDLs need a licence.</p>
 <h2>What a licence gives you</h2>
 <p>One licence is for one person. You may use Lika on up to two Macs of your own at a time, for your own work and for work you do for others, commercial work included. A licence covers every update to Lika 1.x. A future Lika 2 may be sold separately.</p>
 <p>A company buys one licence for each person who uses Lika.</p>
 <h2>Your licence key</h2>
-<p>You add the key once on each Mac. Lika checks it with Lemon Squeezy over the internet then, and now and then afterwards when the internet is there; in between it works offline. To move Lika to another Mac, remove the key on the old one (Lika, Licence…, Remove from this computer) and add it on the new one. A key that is refunded or misused stops working.</p>
+<p>You add the key once on each Mac. Lika checks it with Polar over the internet then, and now and then afterwards when the internet is there; in between it works offline. To move Lika to another Mac, remove the key on the old one (Lika, Licence…, Remove from this computer), or free that Mac in Polar&#x27;s customer portal, and add the key on the new one. A key that is refunded or misused stops working.</p>
 <p>Lika versions before 1.0 are early releases: a licence bought now covers them and every 1.x version.</p>
 <h2>What you may not do</h2>
 <p>You may not copy, sell, rent or share Lika or your key, or get around the trial or the licence check, or decompile or modify Lika, except where the law allows you to.</p>

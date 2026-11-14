@@ -35,7 +35,7 @@ a { color: inherit; }
 .bar a.back:hover { color: var(--ink); }
 main { padding: clamp(48px, 8vw, 96px) 0 clamp(64px, 9vw, 120px); }
 .eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
-.eyebrow::before { content: ""; width: 18px; height: 11px; background: linear-gradient(var(--bg), var(--bg)) 0 4px / 100% 3px no-repeat, var(--light); border-radius: 2px; }
+.eyebrow::before { content: ""; width: 16px; height: 15px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 15'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23ff63ee'/%3E%3Cstop offset='.48' stop-color='%232b1250'/%3E%3Cstop offset='1' stop-color='%230a8cff'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23ff5a1e'/%3E%3Cstop offset='.4' stop-color='%23ff4fcf'/%3E%3Cstop offset='.7' stop-color='%236f55ff'/%3E%3Cstop offset='1' stop-color='%231f8dff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.5' y='.5' width='10' height='9.6' rx='2.4' fill='url%28%23a%29'/%3E%3Crect x='5.5' y='4.9' width='10' height='9.6' rx='2.4' fill='url%28%23b%29' fill-opacity='.9'/%3E%3C/svg%3E") center / contain no-repeat; }
 h1 { margin: 0 0 18px; font-size: clamp(36px, 6vw, 56px); line-height: 1.06; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
 h2 { margin: 40px 0 10px; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
 p, li { color: var(--ink-2); text-wrap: pretty; }
@@ -56,6 +56,11 @@ code { font: 500 14px/1 var(--mono); color: var(--ink); }
 .btn.solid:hover { background: #fff; }
 .btn.line { border-color: var(--line-2); color: var(--ink); }
 .btn.line:hover { border-color: var(--ink-2); }
+.key { margin: 26px 0 8px; padding: 18px 20px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line-2); }
+.key-label { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.key-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.key code { font-size: 15px; line-height: 1.4; word-break: break-all; user-select: all; }
+.btn.small { height: 32px; padding: 0 16px; border-radius: 16px; font-size: 14px; }
 .fine { margin-top: 22px; font-size: 14px; color: var(--ink-3); }
 .fine a, p a { color: var(--ink); }
 [hidden] { display: none !important; }
@@ -69,7 +74,7 @@ footer a:hover { color: var(--ink); }
 <script src="/stats.js" defer></script>
 </head>
 <body>
-<header class="bar"><div class="wrap"><a href="../" aria-label="Lika"><img src="../images/lika-logo-small.svg" width="62" height="22" alt="Lika"></a><a class="back" href="../">Back to Lika</a></div></header>
+<header class="bar"><div class="wrap"><a href="../" aria-label="Lika"><img src="../images/lika-logo-small.svg" width="59" height="22" alt="Lika"></a><a class="back" href="../">Back to Lika</a></div></header>
 <main><div class="wrap">
 <p class="eyebrow">Privacy</p>
 <h1>Privacy</h1>
@@ -81,14 +86,14 @@ footer a:hover { color: var(--ink); }
 <p>Your clips, the renders, looks and settings stay on your Mac. Lika does not count what you do in it and sends nothing about your work anywhere.</p>
 <p>Lika keeps its settings, its trial dates and your licence in its own folders on your Mac.</p>
 <h2>The licence check</h2>
-<p>When you add a licence key, and now and then afterwards when the internet is there, Lika sends the key to Lemon Squeezy, which sells Lika for us, to ask whether it is a key for Lika and still good. With it goes a label for your Mac made from a scrambled form of its hardware number (like “Lika on a Mac, 3f9a2c”), so that a key can count the Macs it is used on. Your Mac's name and your files are not sent. Lemon Squeezy answers with the name and e-mail address of the buyer, which Lika shows to you in its Licence sheet and keeps on your Mac.</p>
+<p>When you add a licence key, and now and then afterwards when the internet is there, Lika sends the key to Polar, which sells Lika for us, to ask whether it is a key for Lika and still good. With it goes a label for your Mac made from a scrambled form of its hardware number (like “Lika on a Mac, 3f9a2c”), so that a key can count the Macs it is used on. Your Mac's name and your files are not sent. Polar answers with the name and e-mail address of the buyer, which Lika shows to you in its Licence sheet and keeps on your Mac.</p>
 <h2>Buying</h2>
-<p>Lemon Squeezy (Lemon Squeezy LLC, a Stripe company) is the merchant of record: it takes the payment, charges the tax, sends the receipt and the licence key, and handles refunds. It receives what you enter at checkout under its own privacy policy, and shares your name, e-mail address, country and order with us so that we can support you and answer for the licence.</p>
+<p>Polar (Polar Software, Inc.) is the merchant of record: it takes the payment, charges the tax, sends the receipt, gives you the licence key and handles refunds. It receives what you enter at checkout under its own privacy policy, and shares your name, e-mail address, country and order with us so that we can support you and answer for the licence. Right after paying, this site's thank-you page asks Polar for your key with the one-time session Polar hands it, to show the key to you; it is not stored anywhere.</p>
 <h2>These pages</h2>
 <p>The site is hosted by GitHub Pages. GitHub receives your IP address and browser details when you load a page, to deliver it and keep the service secure. The download of the app comes from GitHub too.</p>
 <p>The site sets no cookies. It counts its own page views, downloads and clicks on Buy as daily totals, without cookies and without anything that identifies you. More on the <a href="../../privacy/">site's privacy page</a>.</p>
 <h2>Where data goes</h2>
-<p>GitHub, Google (which adds up the site's counts) and Lemon Squeezy may process data in the United States. Those transfers rely on the safeguards the GDPR requires, such as the EU–US Data Privacy Framework or the European Commission's standard contractual clauses.</p>
+<p>GitHub, Google (which adds up the site's counts) and Polar may process data in the United States. Those transfers rely on the safeguards the GDPR requires, such as the EU–US Data Privacy Framework or the European Commission's standard contractual clauses.</p>
 <h2>E-mail</h2>
 <p>If you write to us, we use your message and address to answer you, and keep the conversation for as long as it helps us support you.</p>
 <h2>Your rights</h2>
