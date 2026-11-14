@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Download · Lika</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#05080b">
+<link rel="icon" href="../images/lika-mark-small.svg" type="image/svg+xml">
+<link rel="icon" href="../images/lika-icon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="../images/lika-touch-180.png">
+<style>
+@font-face { font-family: "Inter Web"; src: url("../../fonts/inter-var-latin.woff") format("woff"); font-weight: 100 900; font-style: normal; font-display: swap; size-adjust: 98%; }
+/* Lika's store pages: the product page's ground, type and pills, a single column of text */
+:root {
+  color-scheme: dark;
+  --bg: #05080b; --card: #0c1116; --line: rgba(255, 255, 255, 0.09); --line-2: rgba(255, 255, 255, 0.17);
+  --ink: #f4f3ef; --ink-2: #a8abb1; --ink-3: #7f848c;
+  --light: linear-gradient(90deg, #f18157 0%, #e57e9a 34%, #997fe3 60%, #1383e1 82%, #0181e9 100%);
+  --f: -apple-system, BlinkMacSystemFont, "Inter Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --gl: max(22px, env(safe-area-inset-left, 0px)); --gr: max(22px, env(safe-area-inset-right, 0px));
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.52 var(--f); -webkit-font-smoothing: antialiased; letter-spacing: 0.0035em; }
+a { color: inherit; }
+::selection { background: rgba(153, 127, 227, 0.36); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: calc(720px + var(--gl) + var(--gr)); margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
+.bar { padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 52px; max-width: calc(1200px + var(--gl) + var(--gr)); }
+.bar img { display: block; height: 22px; width: auto; }
+.bar a.back { font-size: 13px; color: var(--ink-2); text-decoration: none; }
+.bar a.back:hover { color: var(--ink); }
+main { padding: clamp(48px, 8vw, 96px) 0 clamp(64px, 9vw, 120px); }
+.eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
+.eyebrow::before { content: ""; width: 18px; height: 11px; background: linear-gradient(var(--bg), var(--bg)) 0 4px / 100% 3px no-repeat, var(--light); border-radius: 2px; }
+h1 { margin: 0 0 18px; font-size: clamp(36px, 6vw, 56px); line-height: 1.06; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
+h2 { margin: 40px 0 10px; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
+p, li { color: var(--ink-2); text-wrap: pretty; }
+p { margin: 0 0 14px; }
+.lead { font-size: clamp(19px, 2vw, 22px); line-height: 1.4; color: var(--ink-2); }
+.lead b, p b { color: var(--ink); font-weight: 600; }
+.updated { font-size: 14px; color: var(--ink-3); }
+.short { padding: 18px 20px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); color: var(--ink); }
+.steps { list-style: none; margin: 28px 0 0; padding: 0; counter-reset: s; display: grid; gap: 14px; }
+.steps li { position: relative; padding: 18px 20px 18px 66px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); counter-increment: s; }
+.steps li::before { content: counter(s, decimal-leading-zero); position: absolute; left: 20px; top: 19px; font: 500 14px/1.6 var(--mono); color: var(--ink-3); }
+.steps h3 { margin: 0 0 4px; font-size: 17px; font-weight: 600; color: var(--ink); }
+.steps p { margin: 0; font-size: 15px; }
+code { font: 500 14px/1 var(--mono); color: var(--ink); }
+.ctas { display: flex; flex-wrap: wrap; gap: 14px 18px; align-items: center; margin: 30px 0 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 22px; border-radius: 22px; border: 1px solid transparent; font: 400 17px/1 var(--f); text-decoration: none; white-space: nowrap; cursor: pointer; transition: background .2s, border-color .2s; }
+.btn.solid { background: var(--ink); color: #05080b; }
+.btn.solid:hover { background: #fff; }
+.btn.line { border-color: var(--line-2); color: var(--ink); }
+.btn.line:hover { border-color: var(--ink-2); }
+.fine { margin-top: 22px; font-size: 14px; color: var(--ink-3); }
+.fine a, p a { color: var(--ink); }
+[hidden] { display: none !important; }
+footer { padding: 30px 0 calc(30px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-3); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 22px; max-width: calc(1200px + var(--gl) + var(--gr)); }
+footer nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
+footer a { color: var(--ink-2); text-decoration: none; }
+footer a:hover { color: var(--ink); }
+</style>
+<script src="../store.js"></script>
+<script src="/stats.js" defer></script>
+</head>
+<body>
+<header class="bar"><div class="wrap"><a href="../" aria-label="Lika"><img src="../images/lika-logo-small.svg" width="62" height="22" alt="Lika"></a><a class="back" href="../">Back to Lika</a></div></header>
+<main><div class="wrap">
+<p class="eyebrow">Download</p>
+<div id="wait" hidden><h1>Your download is starting…</h1><p class="lead">Unzip it and move Lika to your Applications folder. It runs for 7 days with everything, exports included; after that, add a licence to keep exporting.</p>
+<div class="ctas"><a class="btn solid" href="../buy/" data-lk-buy>Buy Lika · €129</a><a class="btn line" href="../">Back to Lika</a></div>
+<p class="fine">For a Mac with Apple silicon, on macOS 13 or later. Signed and notarized by Apple.</p></div>
+<div id="soon"><h1>The download is not up yet.</h1>
+<p class="lead">Lika is being signed and checked by Apple. It will be here soon.</p>
+<div class="ctas"><a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Lika%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Lika%20is%20on%20sale.">Tell me when it's ready</a><a class="btn line" href="../">Back to Lika</a></div></div>
+</div></main>
+<footer><div class="wrap"><span>© 2026 David HJ Lindberg AB</span><nav><a href="../terms/">Licence agreement</a><a href="../privacy/">Privacy</a><a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a></nav></div></footer>
+<script>
+(function () {
+  var s = window.LIKA_STORE || {}, to = s.download;
+  if (to && s.live) { document.getElementById('wait').hidden = false; document.getElementById('soon').hidden = true; location.replace(to); }
+})();
+</script>
+</body>
+</html>

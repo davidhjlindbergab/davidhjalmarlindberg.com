@@ -279,6 +279,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 @media print { .bar, .tools, .hero .glow, .film .knob, .film .play { display: none !important; } body { background: #fff; color: #000; } }
 </style>
 <script>document.documentElement.classList.add('js');</script>
+<script src="store.js"></script>
 <script src="/stats.js" defer></script>
 </head>
 <body>
@@ -311,7 +312,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
         <a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Lika%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Lika%20is%20on%20sale.">Tell me when it's on sale</a>
         <a class="more" href="#match">See how it works</a>
       </div>
-      <p class="fine rise">Not on sale yet. €129 once, no subscription.</p>
+      <p class="fine rise" data-lk-live="€129 once, no subscription. Try it free for 7 days.">Not on sale yet. €129 once, no subscription.</p>
     </div>
   </section>
 
@@ -502,7 +503,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
           <li>14 days to change your mind</li>
         </ul>
         <div class="ctas"><a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Lika%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Lika%20is%20on%20sale.">Tell me when it's on sale</a></div>
-        <p class="fine">Lika isn't on sale yet. The button opens your mail app, and I'll write to you the day it is.<br> For a Mac with Apple silicon, on macOS 13 or later.</p>
+        <p class="fine" data-lk-live="Try it free for 7 days first: everything works, exports included. Paid by card, Apple Pay or PayPal through Lemon Squeezy, which e-mails your licence key.&lt;br&gt; For a Mac with Apple silicon, on macOS 13 or later. &lt;a href=&quot;terms/&quot;&gt;Licence agreement&lt;/a&gt;">Lika isn't on sale yet. The button opens your mail app, and I'll write to you the day it is.<br> For a Mac with Apple silicon, on macOS 13 or later.</p>
       </div>
     </div>
   </section>
@@ -524,6 +525,8 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
           <div class="a"><p>MP4 and MOV files in H.264, HEVC, ProRes or DNxHR, at 8, 10 or 12 bits. Drop a folder and Lika takes every clip in it.</p></div></details>
         <details><summary>Can I keep grading in Resolve afterwards?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
           <div class="a"><p>Yes, two ways. Render ProRes 4444 or a 16-bit sequence and grade on top of it. Or save the looks and put each clip's CDL or LUT on the original file, which keeps every bit of the source.</p></div></details>
+        <details data-lk-only hidden><summary>Can I try it first?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>Yes. Download it and everything works for 7 days, exports included. After that Lika still matches and shows your clips, and exporting needs a licence. Add the key from your receipt in the same app; nothing to reinstall.</p></div></details>
         <details><summary>Which Macs does it run on?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
           <div class="a"><p>Macs with Apple silicon, on macOS 13 or later.</p></div></details>
       </div>
@@ -546,7 +549,8 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
       <p>Lika is Swedish for alike. The clips on this page are AI-generated; Lika matched and rendered them.</p>
     </div>
     <ul>
-      <li><a href="../privacy/">Privacy</a></li>
+      <li><a href="terms/">Licence agreement</a></li>
+      <li><a href="privacy/">Privacy</a></li>
       <li><a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a></li>
     </ul>
     <div class="legal">
@@ -558,6 +562,20 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 
 <script>
 (function () {
+  // The store (store.js). Until it is live the buttons ask to be told when Lika is on sale; once it is, each becomes Buy,
+  // the price section and the end get a Download the free trial beside it, and the lines under them say what the trial is.
+  var store = window.LIKA_STORE || {};
+  if (store.live && store.checkout && store.download) {
+    [].forEach.call(document.querySelectorAll('a.btn.solid[href^="mailto:"]'), function (a, i) {
+      a.href = store.checkout; a.textContent = 'Buy Lika · €129'; a.setAttribute('data-lk-buy', '');
+      if (i === 0) return;
+      var d = document.createElement('a'); d.className = 'btn line'; d.href = 'download/'; d.setAttribute('data-lk-download', ''); d.textContent = 'Download the free trial';
+      a.parentNode.appendChild(d);
+    });
+    [].forEach.call(document.querySelectorAll('[data-lk-live]'), function (el) { el.innerHTML = el.getAttribute('data-lk-live'); });
+    [].forEach.call(document.querySelectorAll('[data-lk-only]'), function (el) { el.hidden = false; });
+  }
+
   'use strict';
   var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
