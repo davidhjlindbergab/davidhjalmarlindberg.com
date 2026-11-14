@@ -39,7 +39,6 @@ Plain HTML, CSS and JavaScript with no build step. Served by GitHub Pages from t
 - **The figures beside it** (47 %, 81 %, 81 %, 10 dB, 1.4 dB) are measured on that song with Andrum 1.9.0, clarity by Andrum's own meter while the voice sings. A new song or a new engine changes them: they are in `demo-data.js` (the readouts and the notes read them there) and written out in the section "The same clarity, for 1.4 dB instead of 10."
 - **Buttons**: the site's pills at 58px, the height David set on this page in the site editor (the old page carried it in a `site-editor` block; it is now in `product.css`). The small ones are 44px.
 - **Store, pixel and statistics** are the same files and hooks as before: `andrum/assets/js/store.js` (`data-an-buy`, `data-an-price`, `data-an-thanks`, `data-an-key`, `#buy`; Polar's checkout returns to `/andrum/?bought=…#buy`), `andrum/assets/js/pixel.js` (`data-an-cookies`, the downloads, `data-an-send-link`) and `/stats.js`. The licence, terms and privacy pages link to `/andrum/#download`.
-- **The old page's files** are still in `andrum/assets/` and no page uses them: `js/aurora.js`, `js/page.js`, `data/spectrum.js`, `data/demo-audio.js`, `audio/demo-with.mp3`, `audio/demo-without.mp3` and the images `compare-*`, `deck-*`, `hero-*`, `limits-*`, `link-*` and `window-*`.
 
 ## Colobri: the page, selling and tracking
 
