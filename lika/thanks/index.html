@@ -35,7 +35,7 @@ a { color: inherit; }
 .bar a.back:hover { color: var(--ink); }
 main { padding: clamp(48px, 8vw, 96px) 0 clamp(64px, 9vw, 120px); }
 .eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
-.eyebrow::before { content: ""; width: 18px; height: 11px; background: linear-gradient(var(--bg), var(--bg)) 0 4px / 100% 3px no-repeat, var(--light); border-radius: 2px; }
+.eyebrow::before { content: ""; width: 16px; height: 15px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 15'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23ff63ee'/%3E%3Cstop offset='.48' stop-color='%232b1250'/%3E%3Cstop offset='1' stop-color='%230a8cff'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23ff5a1e'/%3E%3Cstop offset='.4' stop-color='%23ff4fcf'/%3E%3Cstop offset='.7' stop-color='%236f55ff'/%3E%3Cstop offset='1' stop-color='%231f8dff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='.5' y='.5' width='10' height='9.6' rx='2.4' fill='url%28%23a%29'/%3E%3Crect x='5.5' y='4.9' width='10' height='9.6' rx='2.4' fill='url%28%23b%29' fill-opacity='.9'/%3E%3C/svg%3E") center / contain no-repeat; }
 h1 { margin: 0 0 18px; font-size: clamp(36px, 6vw, 56px); line-height: 1.06; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
 h2 { margin: 40px 0 10px; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; }
 p, li { color: var(--ink-2); text-wrap: pretty; }
@@ -56,6 +56,11 @@ code { font: 500 14px/1 var(--mono); color: var(--ink); }
 .btn.solid:hover { background: #fff; }
 .btn.line { border-color: var(--line-2); color: var(--ink); }
 .btn.line:hover { border-color: var(--ink-2); }
+.key { margin: 26px 0 8px; padding: 18px 20px; border-radius: 14px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line-2); }
+.key-label { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.key-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.key code { font-size: 15px; line-height: 1.4; word-break: break-all; user-select: all; }
+.btn.small { height: 32px; padding: 0 16px; border-radius: 16px; font-size: 14px; }
 .fine { margin-top: 22px; font-size: 14px; color: var(--ink-3); }
 .fine a, p a { color: var(--ink); }
 [hidden] { display: none !important; }
@@ -69,24 +74,58 @@ footer a:hover { color: var(--ink); }
 <script src="/stats.js" defer></script>
 </head>
 <body>
-<header class="bar"><div class="wrap"><a href="../" aria-label="Lika"><img src="../images/lika-logo-small.svg" width="62" height="22" alt="Lika"></a><a class="back" href="../">Back to Lika</a></div></header>
+<header class="bar"><div class="wrap"><a href="../" aria-label="Lika"><img src="../images/lika-logo-small.svg" width="59" height="22" alt="Lika"></a><a class="back" href="../">Back to Lika</a></div></header>
 <main><div class="wrap">
 <p class="eyebrow">Order complete</p>
 <h1>Thank you for buying Lika.</h1>
-<p class="lead">Your licence key is in the receipt Lemon Squeezy just e-mailed you. One key unlocks Lika on up to <b>two Macs</b>.</p>
+<p class="lead">One key unlocks Lika on up to <b>two Macs</b>, with every 1.x update.</p>
+<div class="key" id="key" hidden><p class="key-label">Your licence key</p><div class="key-row"><code id="keyText"></code><button type="button" class="btn line small" id="keyCopy">Copy</button></div></div>
+<p id="keyWait">Your licence key is on its way. It is also in the e-mail from Polar: click <b>Access purchase</b> there.</p>
 <ol class="steps">
-  <li><h3>Find your key</h3><p>Open the receipt for Lika. The key is one line of letters and numbers in five groups, like <code>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</code>.</p></li>
   <li><h3>Download Lika, if you haven't</h3><p>One zip for a Mac with Apple silicon, on macOS 13 or later, signed and notarized by Apple. Unzip it and move Lika to your Applications folder.</p></li>
-  <li><h3>Add the key</h3><p>In Lika, click <b>Trial</b> in the bar at the top (or choose <b>Lika › Licence…</b> in the menu), paste the key and click <b>Add licence</b>. Lika checks the key with Lemon Squeezy once, then works offline.</p></li>
+  <li><h3>Add the key</h3><p>In Lika, click <b>Trial</b> in the bar at the top (or choose <b>Lika › Licence…</b> in the menu), paste the key and click <b>Add licence</b>. Lika checks the key with Polar once, then works offline.</p></li>
 </ol>
 <div class="ctas"><a class="btn solid" href="../download/" data-lk-download>Download Lika for Mac</a></div>
-<p class="fine">No e-mail after a few minutes? Look in your spam folder, or sign in at <a href="https://app.lemonsqueezy.com/my-orders">app.lemonsqueezy.com/my-orders</a> with the e-mail you bought with to see your order and your key.</p>
+<p class="fine">The key is also in Polar's customer portal: the receipt e-mail links to it (<b>Access purchase</b>). No e-mail after a few minutes? Look in your spam folder.</p>
 <h2>Moving to another Mac</h2>
-<p>On the old Mac, open Lika, choose <b>Lika › Licence…</b> and <b>Remove from this computer</b>. Then add the key on the new one.</p>
+<p>On the old Mac, open Lika, choose <b>Lika › Licence…</b> and <b>Remove from this computer</b>, or free that Mac in Polar's customer portal. Then add the key on the new one.</p>
 <h2>Any question</h2>
 <p>Write to <a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a>. If Lika is not for you, you can have a full refund within 14 days.</p>
 </div></main>
 <footer><div class="wrap"><span>© 2026 David HJ Lindberg AB</span><nav><a href="../terms/">Licence agreement</a><a href="../privacy/">Privacy</a><a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a></nav></div></footer>
-
+<script>
+/* Back from Polar's checkout: ?bought=<checkout id>&customer_session_token=<a one-time session for this buyer>. The
+   session can read this buyer's own keys and nothing else; it stays in this page's memory, and both are taken out of
+   the address at once (a reload or a shared link then shows nothing). Polar grants the key a moment after the payment,
+   so it is asked a few times. */
+(function () {
+  var BENEFIT = 'b4244109-a5a1-4c77-8a97-dd24846c9d80';   // Polar: the "Lika licence key" benefit
+  var q, session = '';
+  try { q = new URLSearchParams(location.search); session = q.get('customer_session_token') || ''; } catch (e) { return; }
+  try { var u = new URL(location.href); u.searchParams.delete('bought'); u.searchParams.delete('customer_session_token'); history.replaceState(null, '', u.pathname + u.search); } catch (e) { /* fine */ }
+  var box = document.getElementById('key'), text = document.getElementById('keyText'), wait = document.getElementById('keyWait'), copy = document.getElementById('keyCopy');
+  if (!/^polar_cst_[A-Za-z0-9_-]{10,}$/.test(session) || !window.fetch) return;
+  var tries = 0;
+  (function ask() {
+    tries++;
+    fetch('https://api.polar.sh/v1/customer-portal/license-keys/?limit=10&benefit_id=' + BENEFIT, { headers: { Authorization: 'Bearer ' + session, Accept: 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var keys = ((j && j.items) || []).filter(function (k) { return k.status === 'granted' && k.key; });
+        keys.sort(function (a, b) { return String(b.created_at).localeCompare(String(a.created_at)); });
+        if (!keys.length) { if (tries < 8) setTimeout(ask, 1500 * tries); return; }
+        text.textContent = keys[0].key; box.hidden = false;
+        wait.innerHTML = 'Polar also e-mails you a link to it: <b>Access purchase</b> in your receipt.';
+      })
+      .catch(function () { if (tries < 8) setTimeout(ask, 1500 * tries); });
+  })();
+  copy.addEventListener('click', function () {
+    var label = copy.textContent;
+    function shown() { copy.textContent = 'Copied'; setTimeout(function () { copy.textContent = label; }, 1800); }
+    function select() { var r = document.createRange(); r.selectNodeContents(text); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text.textContent).then(shown, select); else select();
+  });
+})();
+</script>
 </body>
 </html>

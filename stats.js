@@ -162,7 +162,7 @@
       send({ k: 'ev', n: 'dl', x: 'Lika', z: zone() });
     } else if (/\/download\/[^/]+\.(dmg|exe|zip|pkg|msi)$/i.test(url.pathname)) {
       send({ k: 'ev', n: 'dl', x: decodeURIComponent(url.pathname.split('/').pop()), z: zone() });
-    } else if (a.hasAttribute('data-cb-buy') || a.hasAttribute('data-an-buy') || a.hasAttribute('data-lk-buy') || a.getAttribute('data-cb-track') === 'InitiateCheckout' || /(^|\.)lemonsqueezy\.com$/.test(url.hostname)) {
+    } else if (a.hasAttribute('data-cb-buy') || a.hasAttribute('data-an-buy') || a.hasAttribute('data-lk-buy') || a.getAttribute('data-cb-track') === 'InitiateCheckout' || /(^|\.)lemonsqueezy\.com$/.test(url.hostname) || url.hostname === 'buy.polar.sh') {
       send({ k: 'ev', n: 'buy' });
     } else if (url.protocol === 'mailto:') {
       if (/sale/i.test(decodeURIComponent(url.search))) send({ k: 'ev', n: 'notify' });
