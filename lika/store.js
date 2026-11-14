@@ -6,8 +6,8 @@
      download  the signed and notarized app (a release asset on GitHub: it is larger than GitHub Pages takes)
      version   the version that link holds */
 window.LIKA_STORE = {
-  live: false,
+  live: true,
   checkout: 'https://buy.polar.sh/polar_cl_emSqP3wXtn8uIz5IY74yfoEV77vMXrLmcOFWR3PPPR9',
-  download: '',
+  download: 'https://github.com/davidhjlindbergab/davidhjalmarlindberg.com/releases/download/lika-0.6.0/Lika-0.6.0.zip',
   version: '0.6.0'
 };
