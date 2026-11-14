@@ -1,14 +1,15 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "date": "2026-11-14",
   "notes": [
-    "Select several clips and remove them; Cmd Z brings them back.",
-    "Lika remembers the set you had open and offers it at the next start.",
-    "Shoulder: lets Whites go the rest of the way and rolls the highlights off instead of clipping them.",
-    "Mids: matches how bright the middle of each clip is.",
-    "Time left while rendering, and a question before quitting in the middle of a render.",
-    "Update files are signed, and Lika tells you when a newer version is out."
+    "Lika now runs on Windows too.",
+    "A timeline can come in a part at a time: Lika shows its clips and asks which, picked by hand or by the timeline's markers, tracks and labels.",
+    "From inside DaVinci Resolve and Premiere Pro: scripts and a panel hand a timeline to Lika, and the match or the finished clips go back (in Lika: Editors, at the bottom of the side panel).",
+    "A CapCut project can be added as it is.",
+    "A new set starts on Neutral, with Shoulder 100, Mids 30, Warmth 20 and Saturation 100, a finer Fine grain and ProRes 422 HQ.",
+    "The parade starts on the full range and has a Highlights range.",
+    "New type and controls throughout."
   ],
-  "update": "https://github.com/davidhjlindbergab/davidhjalmarlindberg.com/releases/download/lika-1.0.0/Lika-1.0.0.likaupdate",
+  "update": "https://github.com/davidhjlindbergab/davidhjalmarlindberg.com/releases/download/lika-1.0.1/Lika-1.0.1.likaupdate",
   "minShell": "1.0.0"
 }
