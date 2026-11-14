@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "date": "2026-11-14",
+  "notes": [
+    "Select several clips and remove them; Cmd Z brings them back.",
+    "Lika remembers the set you had open and offers it at the next start.",
+    "Shoulder: lets Whites go the rest of the way and rolls the highlights off instead of clipping them.",
+    "Mids: matches how bright the middle of each clip is.",
+    "Time left while rendering, and a question before quitting in the middle of a render.",
+    "Update files are signed, and Lika tells you when a newer version is out."
+  ],
+  "update": "https://github.com/davidhjlindbergab/davidhjalmarlindberg.com/releases/download/lika-1.0.0/Lika-1.0.0.likaupdate",
+  "minShell": "1.0.0"
+}

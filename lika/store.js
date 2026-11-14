@@ -8,6 +8,6 @@
 window.LIKA_STORE = {
   live: true,
   checkout: 'https://buy.polar.sh/polar_cl_emSqP3wXtn8uIz5IY74yfoEV77vMXrLmcOFWR3PPPR9',
-  download: 'https://github.com/davidhjlindbergab/davidhjalmarlindberg.com/releases/download/lika-0.6.0/Lika-0.6.0.zip',
-  version: '0.6.0'
+  download: 'https://github.com/davidhjlindbergab/davidhjalmarlindberg.com/releases/download/lika-1.0.0/Lika-1.0.0.zip',
+  version: '1.0.0'
 };
