@@ -83,9 +83,21 @@ a { color: inherit; }
 .fine a { color: var(--ink-2); }
 
 /* the opening */
-.hero { position: relative; padding: clamp(52px, 8vw, 104px) 0 0; text-align: center; }
-.hero .glow { position: absolute; left: 50%; top: clamp(8px, 2vw, 30px); width: clamp(300px, 40vw, 520px); margin-left: calc(clamp(300px, 40vw, 520px) / -2); filter: blur(64px) saturate(1.25); opacity: .5; pointer-events: none; animation: breathe 11s ease-in-out infinite alternate; }
-@keyframes breathe { from { opacity: .36; } to { opacity: .58; } }
+.hero { position: relative; padding: clamp(52px, 8vw, 104px) 0 0; text-align: center; overflow-x: clip; }
+/* The light behind the mark: four soft pools in the logo's colours (magenta, orange, violet, blue), each drifting on its
+   own slow loop, so the light keeps changing and never repeats the same way twice in a minute. They are gradients, not
+   blurred pictures: smooth on every browser, nothing to load. A fine grain over them keeps the dark from banding. */
+.hero .aura { position: absolute; left: 50%; top: calc(clamp(52px, 8vw, 104px) + clamp(85px, 9.5vw, 132px)); width: min(980px, 150vw); aspect-ratio: 1; transform: translate(-50%, -50%); pointer-events: none; -webkit-mask: radial-gradient(closest-side, #000 35%, transparent 100%); mask: radial-gradient(closest-side, #000 35%, transparent 100%); }
+.hero .aura i { position: absolute; inset: 0; border-radius: 50%; mix-blend-mode: screen; will-change: transform; }
+.hero .aura i:nth-child(1) { background: radial-gradient(closest-side, rgba(255, 64, 214, .44), rgba(255, 64, 214, 0) 100%); scale: .62; translate: -12% 4%; animation: drift1 23s ease-in-out infinite alternate; }
+.hero .aura i:nth-child(2) { background: radial-gradient(closest-side, rgba(255, 112, 46, .34), rgba(255, 112, 46, 0) 100%); scale: .48; translate: -6% 16%; animation: drift2 29s ease-in-out infinite alternate; }
+.hero .aura i:nth-child(3) { background: radial-gradient(closest-side, rgba(24, 120, 255, .46), rgba(24, 120, 255, 0) 100%); scale: .6; translate: 14% -6%; animation: drift3 31s ease-in-out infinite alternate; }
+.hero .aura i:nth-child(4) { background: radial-gradient(closest-side, rgba(128, 82, 255, .36), rgba(128, 82, 255, 0) 100%); scale: .7; translate: 4% 2%; animation: drift4 37s ease-in-out infinite alternate; }
+.hero .aura::after { content: ""; position: absolute; inset: 0; opacity: .06; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); }
+@keyframes drift1 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(9%, -7%) scale(1.12); } 100% { transform: translate(-6%, 8%) scale(.92); } }
+@keyframes drift2 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-10%, -12%) scale(1.25); } 100% { transform: translate(12%, 4%) scale(.85); } }
+@keyframes drift3 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-12%, 9%) scale(.9); } 100% { transform: translate(6%, -10%) scale(1.15); } }
+@keyframes drift4 { 0% { transform: rotate(0deg) translate(6%, 0) scale(1); } 50% { transform: rotate(180deg) translate(6%, 0) scale(1.1); } 100% { transform: rotate(360deg) translate(6%, 0) scale(.95); } }
 .hero .mark { position: relative; width: clamp(170px, 19vw, 264px); margin: 0 auto clamp(30px, 4vw, 48px); }
 .hero h1 { position: relative; margin: 0; font-size: clamp(44px, 8.4vw, 96px); line-height: 1.03; font-weight: 600; letter-spacing: -0.035em; text-wrap: balance; }
 .hero .lead { position: relative; max-width: 620px; margin: clamp(18px, 2.4vw, 26px) auto 0; font-size: clamp(19px, 1.9vw, 24px); line-height: 1.36; color: var(--ink-2); text-wrap: balance; }
@@ -272,11 +284,11 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .hero .glow { animation: none; }
+  .hero .aura i:nth-child(n) { animation: none; }
   .js .rise, .js .rise.soft { opacity: 1; filter: none; transition: none; }
   .win .shot .b, .strip div + div::before, .film .live .tag, .film .live .play { transition: none; }
 }
-@media print { .bar, .tools, .hero .glow, .film .knob, .film .play { display: none !important; } body { background: #fff; color: #000; } }
+@media print { .bar, .tools, .hero .aura, .film .knob, .film .play { display: none !important; } body { background: #fff; color: #000; } }
 </style>
 <script>document.documentElement.classList.add('js');</script>
 <script src="store.js"></script>
@@ -303,9 +315,9 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 
 <main>
   <section class="hero" id="top" aria-labelledby="hero-title">
-    <img class="glow" src="images/lika-mark-320.webp" width="320" height="302" alt="" aria-hidden="true">
+    <div class="aura" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <div class="wrap">
-      <img class="mark" src="images/lika-mark-640.webp" srcset="images/lika-mark-320.webp 320w, images/lika-mark-640.webp 640w" sizes="(max-width: 899px) 170px, 264px" width="640" height="605" alt="Lika">
+      <img class="mark" src="images/lika-mark-640.webp" srcset="images/lika-mark-320.webp 320w, images/lika-mark-640.webp 640w" sizes="(max-width: 899px) 170px, 264px" width="640" height="593" alt="Lika">
       <h1 id="hero-title" class="rise soft">Every clip.<br> The same film.</h1>
       <p class="lead rise">Lika matches a set of AI-generated clips to each other, then finishes them for the cut. On your Mac.</p>
       <div class="ctas rise">
@@ -535,7 +547,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 
   <section class="sec end" aria-labelledby="end-title">
     <div class="wrap">
-      <img class="mark rise" src="images/lika-mark-320.webp" width="320" height="302" alt="" loading="lazy">
+      <img class="mark rise" src="images/lika-mark-320.webp" width="320" height="296" alt="" loading="lazy">
       <h2 id="end-title" class="rise soft">Make them alike.</h2>
       <div class="ctas rise"><a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Lika%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Lika%20is%20on%20sale.">Tell me when it's on sale</a></div>
     </div>
