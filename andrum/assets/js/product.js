@@ -14,6 +14,11 @@
   var doc = document, win = window;
   var reduce = !!(win.matchMedia && win.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
+  // A visitor who arrives at a part of the page is there at once; from then on, moves on the page glide (product.css).
+  win.addEventListener("load", function () {
+    win.setTimeout(function () { doc.documentElement.classList.add("is-settled"); }, 400);
+  });
+
   phone();
 
   var D = win.ANDRUM_DEMO;

@@ -42,9 +42,11 @@ html {
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-behavior: smooth;
   scroll-padding-top: calc(var(--head) + 20px);
 }
+/* Moves made on the page glide. Arriving at a part of it (#buy after paying, #download from the licence pages)
+   does not: product.js adds the class once the page has settled. */
+@media (prefers-reduced-motion: no-preference) { html.is-settled { scroll-behavior: smooth; } }
 body {
   margin: 0;
   background: var(--night);
@@ -374,7 +376,6 @@ details > p + p { margin-top: -8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   .btn, .play, .ways button { transition: none; }
   .dock, .play[aria-busy="true"] svg { animation: none; }
 }
