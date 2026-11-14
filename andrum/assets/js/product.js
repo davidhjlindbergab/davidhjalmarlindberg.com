@@ -1,10 +1,11 @@
 /*
   The Andrum page: the demo at the top, and a phone's way to the trial.
 
-  The demo is 16 seconds of the song from Andrum's ads, going round, three ways: the music untouched, the
-  whole track turned down until the voice is as clear as Andrum makes it, and Andrum. The three recordings
-  (../audio) share one gain, and the picture is drawn from Andrum's own measurements of the song
-  (../data/demo-data.js): the music and the voice in 60 bands 30 times a second, and the cut Andrum made.
+  The demo is 16 seconds of a test song (the singer from Andrum's ads over a thick, loud track), going
+  round, three ways: the music untouched, the whole track turned down until the voice is as clear as Andrum
+  makes it, and Andrum. The three recordings (../audio) share one gain, and the picture is drawn from
+  Andrum's own measurements of the song (../data/demo-data.js): the music and the voice in 60 bands
+  30 times a second, and the cut Andrum made.
 
   Buying is store.js. The cookie choice and the Meta pixel are pixel.js.
 */
@@ -282,7 +283,7 @@
 
   // ------------------------------------------------------------------------------ the picture
   var W = 0, H = 0, ratio = 1;
-  var TOP_DB = -13, FLOOR_DB = -58;            // of the tilted levels
+  var TOP_DB = D.view ? D.view.top : -13, FLOOR_DB = D.view ? D.view.floor : -58;   // of the tilted levels: the data says what its song needs
   var fLo = 40, fHi = 16000, b0 = 0, count = 0;
   var xs, yMusic, yAfter, yVoice;
   var across, mask, voiceInk, roomInk, labelFont = "12px sans-serif";
@@ -309,7 +310,7 @@
     across.addColorStop(0.8, "#d273f0"); across.addColorStop(1, "#ff9ad5");
     mask = g.createLinearGradient(0, 0, 0, H);
     mask.addColorStop(0, "rgba(0,0,0,1)"); mask.addColorStop(0.42, "rgba(0,0,0,0.9)"); mask.addColorStop(0.8, "rgba(0,0,0,0.28)"); mask.addColorStop(1, "rgba(0,0,0,0)");
-    voiceInk = g.createLinearGradient(0, yOf(-34), 0, H);
+    voiceInk = g.createLinearGradient(0, yOf(FLOOR_DB + 0.53 * (TOP_DB - FLOOR_DB)), 0, H);   // the voice fades out towards the floor
     voiceInk.addColorStop(0, "rgba(255,255,255,1)"); voiceInk.addColorStop(0.75, "rgba(255,255,255,0.3)"); voiceInk.addColorStop(1, "rgba(255,255,255,0)");
     roomInk = g.createLinearGradient(0, 0, W, 0);
     labelFont = (W < 560 ? "11px " : "12px ") + (win.getComputedStyle(doc.body).fontFamily || "sans-serif");
