@@ -166,6 +166,7 @@
       send({ k: 'ev', n: 'buy' });
     } else if (url.protocol === 'mailto:') {
       if (/sale/i.test(decodeURIComponent(url.search))) send({ k: 'ev', n: 'notify' });
+      else if (a.hasAttribute('data-gate-mailto')) send({ k: 'ev', n: 'mail' });   // to the visitor's own address (/download-gate.js), which is not counted
       else send({ k: 'ev', n: 'mail', x: decodeURIComponent(url.pathname) });
     } else if (/^https?:$/.test(url.protocol) && url.hostname !== location.hostname) {
       send({ k: 'ev', n: 'out', x: url.hostname.replace(/^www\./, '') });
