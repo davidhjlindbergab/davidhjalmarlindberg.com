@@ -17,6 +17,16 @@
  *
  * Counts from a page opened with ?stats=test go to the tab "Test" instead.
  *
+ * E-mail addresses before a download (/download-gate.js) come to the same web app, one at a time, and are
+ * written as they arrive to the tab "E-post": one row per download with the time (Stockholm), the address, the
+ * product, the file, whether the visitor asked for news (ja/nej), where they came from (utm_source or the site
+ * that sent them), utm_campaign and the page. Nothing there is ever added up or removed by the script. From a page
+ * opened with ?stats=test they go to "E-post test".
+ *
+ * Each address comes as a message the collector before 17 Nov 2026 also understood (k: 'ev', n: 'dl', the address
+ * as x, test: 1): that version filed it as a download in the tab Test. The first address after this version is
+ * deployed moves those rows from Test to E-post, once (moveEarlyLeads_).
+ *
  * Colobri in the browser (/colobri/app/, part colobri) also counts what is done in it: the measure "användning" with the key
  * bild or klipp (a frame or a clip opened), generera or variationer, and "export" with the key lut, capcut, png, jpg or klipp.
  *
@@ -32,6 +42,9 @@ var DEVICES = { m: 'mobil', t: 'surfplatta', d: 'dator' };
 var BROWSERS = ['Safari', 'Chrome', 'Firefox', 'Edge', 'Opera', 'Samsung Internet', 'Instagram', 'Facebook'];
 var SYSTEMS = ['iOS', 'iPadOS', 'Android', 'macOS', 'Windows', 'Linux', 'ChromeOS'];
 var EVENTS = { dl: 'nedladdning', buy: 'köpklick', notify: 'säg till', mail: 'mejl', out: 'utlänk', use: 'användning', exp: 'export' };
+var LEAD_HEADER = ['Tid', 'E-post', 'Produkt', 'Fil', 'Nyheter', 'Källa', 'Kampanj', 'Sida'];
+var PRODUCTS = ['Andrum', 'Lika', 'Colobri'];
+var ADDRESS = /^[^\s@<>()",;:\\]+@[^\s@<>()",;:\\]+\.[^\s@<>()",;:\\.]{2,}$/;
 
 function doGet() {
   return ContentService.createTextOutput('Statistik för davidhjalmarlindberg.com tar emot räkningar här.');
@@ -42,8 +55,13 @@ function doPost(e) {
     var body = e && e.postData && e.postData.contents;
     if (body && body.length < 4000) {
       var hit = JSON.parse(body);
-      var rows = rowsFor_(hit, day_(new Date()));
-      if (rows.length) store_(rows, hit.test === 1);
+      if (hit && hit.lead === 1) {
+        var lead = leadRow_(hit, new Date());
+        if (lead) storeLead_(lead, hit.lt === 1);
+      } else {
+        var rows = rowsFor_(hit, day_(new Date()));
+        if (rows.length) store_(rows, hit.test === 1);
+      }
     }
   } catch (err) {
     console.warn(String(err));
@@ -109,6 +127,71 @@ function store_(rows, test) {
   } finally {
     lock.releaseLock();
   }
+}
+
+/** One row for the tab "E-post", or null when something in it is not what the download form sends. */
+function leadRow_(hit, now) {
+  if (hit.v !== 1 || hit.hp) return null;
+  var email = typeof hit.e === 'string' ? hit.e.trim() : '';
+  if (email.length > 254 || !ADDRESS.test(email)) return null;
+  if (PRODUCTS.indexOf(hit.pr) < 0) return null;
+  return [
+    Utilities.formatDate(now, TZ, 'yyyy-MM-dd HH:mm'),
+    email,
+    hit.pr,
+    clean_(hit.f, /^[\w\-. ()]+$/, 80),
+    hit.nw === 1 ? 'ja' : 'nej',
+    clean_(hit.s, /^[a-z0-9][a-z0-9 ._\-()\/]*$/i, 60).toLowerCase(),
+    clean_(hit.c, /^[\w\-. +%]+$/, 60),
+    path_(hit.p)
+  ];
+}
+
+function storeLead_(row, test) {
+  var lock = LockService.getScriptLock();
+  if (!lock.tryLock(25000)) return;
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet(), name = test ? 'E-post test' : 'E-post';
+    var sheet = ss.getSheetByName(name);
+    if (!sheet) {
+      sheet = ss.insertSheet(name, ss.getNumSheets());   // last, so Data stays first for the dashboard
+      sheet.getRange(1, 1, 1, LEAD_HEADER.length).setValues([LEAD_HEADER]).setFontWeight('bold');
+      sheet.setFrozenRows(1);
+      sheet.setColumnWidth(1, 130).setColumnWidth(2, 260).setColumnWidth(4, 220);
+      sheet.getRange('A1').setNote('Fylls i av skriptet i Tillägg > Apps Script: en rad per nedladdning från davidhjalmarlindberg.com, ' +
+        'med adressen besökaren skrev in före nedladdningen. Nyheter = ja om de bad om nyheter.');
+    }
+    if (!test) moveEarlyLeads_(ss, sheet);
+    sheet.appendRow(asLeadText_(row));
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+// a leading apostrophe keeps every cell as text, so nothing typed in the form can become a formula
+function asLeadText_(row) {
+  return row.map(function (v) { return "'" + v; });
+}
+
+/** The addresses the collector before 17 Nov 2026 filed in Test (nedladdning, the address as key, "(news)" after
+ *  it when the box was ticked; andrum for Andrum's page, sajten for Lika's download page) move to E-post, once. */
+function moveEarlyLeads_(ss, sheet) {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty('earlyLeadsMoved')) return;
+  props.setProperty('earlyLeadsMoved', day_(new Date()));
+  var test = ss.getSheetByName('Test');
+  if (!test || test.getLastRow() < 2) return;
+  var values = test.getRange(2, 1, test.getLastRow() - 1, HEADER.length).getValues();
+  var moved = [];
+  function text(v) { return String(v).replace(/^'/, ''); }
+  values.forEach(function (r, i) {
+    var m = /^(.+?)(\(news\))?$/.exec(text(r[3]));
+    if (text(r[2]) !== 'nedladdning' || !m || !ADDRESS.test(m[1])) return;
+    var day = r[0] instanceof Date ? day_(r[0]) : text(r[0]);
+    sheet.appendRow(asLeadText_([day, m[1], text(r[1]) === 'andrum' ? 'Andrum' : 'Lika', '', m[2] ? 'ja' : 'nej', '', '', '']));
+    moved.push(i + 2);
+  });
+  for (var j = moved.length - 1; j >= 0; j--) test.deleteRow(moved[j]);
 }
 
 function tab_(ss, name) {

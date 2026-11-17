@@ -248,12 +248,12 @@
           <p>Every feature for 7 days. After that Andrum lets the sound through untouched and keeps every setting, so your sessions still open.</p>
           <div class="send" data-an-send hidden>
             <p><strong>On a phone or a tablet?</strong> Andrum runs on a Mac or a Windows computer. Send yourself the link and download it there.</p>
-            <a class="btn btn--solid" href="mailto:?subject=Andrum%3A%20the%20free%207-day%20trial&amp;body=Download%20Andrum%20on%20your%20Mac%20or%20Windows%20computer%3A%0Ahttps%3A%2F%2Fdavidhjalmarlindberg.com%2Fandrum%2F%3Futm_medium%3Dsent-from-phone%23download" data-an-send-link>Send the link to my computer</a>
-            <span class="fine">It opens your share menu or your mail app. We don’t see your address.</span>
+            <a class="btn btn--solid" href="mailto:?subject=Andrum%3A%20the%20free%207-day%20trial&amp;body=Download%20Andrum%20on%20your%20Mac%20or%20Windows%20computer%3A%0Ahttps%3A%2F%2Fdavidhjalmarlindberg.com%2Fandrum%2F%3Futm_medium%3Dsent-from-phone%23download" data-an-send-link data-gate="Andrum" data-gate-mailto data-gate-file="Link to a computer" data-gate-title="Send Andrum to your computer" data-gate-text="Leave your e-mail address, then send yourself the link.">Send the link to my computer</a>
+            <span class="fine">It opens your share menu or your mail app.</span>
           </div>
           <ul class="downloads" data-downloads>
-            <li><a class="btn btn--solid" href="download/Andrum-1.9.0-macOS.dmg" download>Download for Mac</a><span class="fine">macOS 11 or later, Apple silicon and Intel. Disk image, 23&nbsp;MB.</span></li>
-            <li><a class="btn btn--solid" href="download/Andrum-1.9.0-Windows-Setup.exe" download>Download for Windows</a><span class="fine">Windows 10 and 11, 64-bit. Installer, 9&nbsp;MB.</span></li>
+            <li><a class="btn btn--solid" href="download/Andrum-1.9.0-macOS.dmg" download data-gate="Andrum">Download for Mac</a><span class="fine">macOS 11 or later, Apple silicon and Intel. Disk image, 23&nbsp;MB.</span></li>
+            <li><a class="btn btn--solid" href="download/Andrum-1.9.0-Windows-Setup.exe" download data-gate="Andrum">Download for Windows</a><span class="fine">Windows 10 and 11, 64-bit. Installer, 9&nbsp;MB.</span></li>
           </ul>
           <details class="more">
             <summary>Installing</summary>
@@ -356,6 +356,7 @@
 <script src="assets/js/product.js" defer></script>
 <script src="assets/js/store.js" defer></script>
 <script src="assets/js/pixel.js" defer></script>
+<script src="/download-gate.js" defer></script>
 <script src="/stats.js" defer></script>
 </body>
 </html>

@@ -29,6 +29,18 @@
   --text: "Andrum Text", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --display: "Andrum Display", "Inter Display", "Andrum Text", "Inter", system-ui, -apple-system, sans-serif;
 
+  /* the e-mail before a download (/download-gate.js): Andrum's heading type, ground and lilac */
+  --dg-title-font: var(--display);
+  --dg-title-weight: 300;
+  --dg-title-size: 28px;
+  --dg-panel: rgba(10, 10, 14, 0.96);
+  --dg-ink: var(--ink);
+  --dg-mist: var(--mist);
+  --dg-dim: var(--dim);
+  --dg-line: var(--line-strong);
+  --dg-hover: var(--lilac);
+  --dg-focus: var(--lilac);
+
   --gutter: clamp(20px, 5vw, 64px);
   --max: 1160px;
   --head: 72px;
