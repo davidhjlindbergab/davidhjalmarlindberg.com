@@ -67,13 +67,18 @@
     } catch (e) { return ''; }
   }
 
+  /* One message that both versions of the collector understand. The one from before 17 Nov 2026 knows nothing of
+     addresses: it reads k, n, x, p and test, and files the address as a download (nedladdning) in its tab Test,
+     with "(news)" after it when the box was ticked. The new one (stats-collector.gs) sees lead: 1, writes the
+     whole row to the tab E-post, and moves what the old one filed there once. */
   function send(product, file, email, news) {
-    var q = new URLSearchParams(location.search);
+    var q = new URLSearchParams(location.search), test = q.get('stats') === 'test';
     var lead = {
-      v: 1, k: 'lead', e: email, pr: product, f: file || '', nw: news ? 1 : 0,
+      v: 1, k: 'ev', n: test ? 'out' : 'dl', x: email + (news ? '(news)' : ''), test: 1,
+      lead: 1, e: email, pr: product, f: file || '', nw: news ? 1 : 0,
       p: location.pathname.replace(/\/index\.html$/, '/'), s: source(q), c: q.get('utm_campaign') || ''
     };
-    if (q.get('stats') === 'test') lead.test = 1;
+    if (test) lead.lt = 1;
     if (location.protocol !== 'https:' || location.hostname !== HOST) {   // (previews and copies elsewhere send nothing)
       if (window.console) console.info('[download-gate] would send', lead);
       return;

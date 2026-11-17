@@ -23,6 +23,10 @@
  * that sent them), utm_campaign and the page. Nothing there is ever added up or removed by the script. From a page
  * opened with ?stats=test they go to "E-post test".
  *
+ * Each address comes as a message the collector before 17 Nov 2026 also understood (k: 'ev', n: 'dl', the address
+ * as x, test: 1): that version filed it as a download in the tab Test. The first address after this version is
+ * deployed moves those rows from Test to E-post, once (moveEarlyLeads_).
+ *
  * Colobri in the browser (/colobri/app/, part colobri) also counts what is done in it: the measure "användning" with the key
  * bild or klipp (a frame or a clip opened), generera or variationer, and "export" with the key lut, capcut, png, jpg or klipp.
  *
@@ -51,9 +55,9 @@ function doPost(e) {
     var body = e && e.postData && e.postData.contents;
     if (body && body.length < 4000) {
       var hit = JSON.parse(body);
-      if (hit && hit.k === 'lead') {
+      if (hit && hit.lead === 1) {
         var lead = leadRow_(hit, new Date());
-        if (lead) storeLead_(lead, hit.test === 1);
+        if (lead) storeLead_(lead, hit.lt === 1);
       } else {
         var rows = rowsFor_(hit, day_(new Date()));
         if (rows.length) store_(rows, hit.test === 1);
@@ -157,11 +161,37 @@ function storeLead_(row, test) {
       sheet.getRange('A1').setNote('Fylls i av skriptet i Tillägg > Apps Script: en rad per nedladdning från davidhjalmarlindberg.com, ' +
         'med adressen besökaren skrev in före nedladdningen. Nyheter = ja om de bad om nyheter.');
     }
-    // a leading apostrophe keeps every cell as text, so nothing typed in the form can become a formula
-    sheet.appendRow(row.map(function (v) { return "'" + v; }));
+    if (!test) moveEarlyLeads_(ss, sheet);
+    sheet.appendRow(asLeadText_(row));
   } finally {
     lock.releaseLock();
   }
+}
+
+// a leading apostrophe keeps every cell as text, so nothing typed in the form can become a formula
+function asLeadText_(row) {
+  return row.map(function (v) { return "'" + v; });
+}
+
+/** The addresses the collector before 17 Nov 2026 filed in Test (nedladdning, the address as key, "(news)" after
+ *  it when the box was ticked; andrum for Andrum's page, sajten for Lika's download page) move to E-post, once. */
+function moveEarlyLeads_(ss, sheet) {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty('earlyLeadsMoved')) return;
+  props.setProperty('earlyLeadsMoved', day_(new Date()));
+  var test = ss.getSheetByName('Test');
+  if (!test || test.getLastRow() < 2) return;
+  var values = test.getRange(2, 1, test.getLastRow() - 1, HEADER.length).getValues();
+  var moved = [];
+  function text(v) { return String(v).replace(/^'/, ''); }
+  values.forEach(function (r, i) {
+    var m = /^(.+?)(\(news\))?$/.exec(text(r[3]));
+    if (text(r[2]) !== 'nedladdning' || !m || !ADDRESS.test(m[1])) return;
+    var day = r[0] instanceof Date ? day_(r[0]) : text(r[0]);
+    sheet.appendRow(asLeadText_([day, m[1], text(r[1]) === 'andrum' ? 'Andrum' : 'Lika', '', m[2] ? 'ja' : 'nej', '', '', '']));
+    moved.push(i + 2);
+  });
+  for (var j = moved.length - 1; j >= 0; j--) test.deleteRow(moved[j]);
 }
 
 function tab_(ss, name) {
