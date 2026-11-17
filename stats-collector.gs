@@ -19,7 +19,7 @@
  *
  * E-mail addresses before a download (/download-gate.js) come to the same web app, one at a time, and are
  * written as they arrive to the tab "E-post": one row per download with the time (Stockholm), the address, the
- * product, the file, whether the visitor asked for news (ja/nej), where they came from (utm_source or the site
+ * product, the file, where they came from (utm_source or the site
  * that sent them), utm_campaign and the page. Nothing there is ever added up or removed by the script. From a page
  * opened with ?stats=test they go to "E-post test".
  *
@@ -42,7 +42,7 @@ var DEVICES = { m: 'mobil', t: 'surfplatta', d: 'dator' };
 var BROWSERS = ['Safari', 'Chrome', 'Firefox', 'Edge', 'Opera', 'Samsung Internet', 'Instagram', 'Facebook'];
 var SYSTEMS = ['iOS', 'iPadOS', 'Android', 'macOS', 'Windows', 'Linux', 'ChromeOS'];
 var EVENTS = { dl: 'nedladdning', buy: 'köpklick', notify: 'säg till', mail: 'mejl', out: 'utlänk', use: 'användning', exp: 'export' };
-var LEAD_HEADER = ['Tid', 'E-post', 'Produkt', 'Fil', 'Nyheter', 'Källa', 'Kampanj', 'Sida'];
+var LEAD_HEADER = ['Tid', 'E-post', 'Produkt', 'Fil', 'Källa', 'Kampanj', 'Sida'];
 var PRODUCTS = ['Andrum', 'Lika', 'Colobri'];
 var ADDRESS = /^[^\s@<>()",;:\\]+@[^\s@<>()",;:\\]+\.[^\s@<>()",;:\\.]{2,}$/;
 
@@ -140,7 +140,6 @@ function leadRow_(hit, now) {
     email,
     hit.pr,
     clean_(hit.f, /^[\w\-. ()]+$/, 80),
-    hit.nw === 1 ? 'ja' : 'nej',
     clean_(hit.s, /^[a-z0-9][a-z0-9 ._\-()\/]*$/i, 60).toLowerCase(),
     clean_(hit.c, /^[\w\-. +%]+$/, 60),
     path_(hit.p)
@@ -159,7 +158,7 @@ function storeLead_(row, test) {
       sheet.setFrozenRows(1);
       sheet.setColumnWidth(1, 130).setColumnWidth(2, 260).setColumnWidth(4, 220);
       sheet.getRange('A1').setNote('Fylls i av skriptet i Tillägg > Apps Script: en rad per nedladdning från davidhjalmarlindberg.com, ' +
-        'med adressen besökaren skrev in före nedladdningen. Nyheter = ja om de bad om nyheter.');
+        'med adressen besökaren skrev in före nedladdningen.');
     }
     if (!test) moveEarlyLeads_(ss, sheet);
     sheet.appendRow(asLeadText_(row));
@@ -173,8 +172,8 @@ function asLeadText_(row) {
   return row.map(function (v) { return "'" + v; });
 }
 
-/** The addresses the collector before 17 Nov 2026 filed in Test (nedladdning, the address as key, "(news)" after
- *  it when the box was ticked; andrum for Andrum's page, sajten for Lika's download page) move to E-post, once. */
+/** The addresses the collector before 17 Nov 2026 filed in Test (nedladdning, the address as key, with "(news)"
+ *  after it from the first hour, when the form had a box for news; andrum for Andrum's page, sajten for Lika's download page) move to E-post, once. */
 function moveEarlyLeads_(ss, sheet) {
   var props = PropertiesService.getScriptProperties();
   if (props.getProperty('earlyLeadsMoved')) return;
@@ -188,7 +187,7 @@ function moveEarlyLeads_(ss, sheet) {
     var m = /^(.+?)(\(news\))?$/.exec(text(r[3]));
     if (text(r[2]) !== 'nedladdning' || !m || !ADDRESS.test(m[1])) return;
     var day = r[0] instanceof Date ? day_(r[0]) : text(r[0]);
-    sheet.appendRow(asLeadText_([day, m[1], text(r[1]) === 'andrum' ? 'Andrum' : 'Lika', '', m[2] ? 'ja' : 'nej', '', '', '']));
+    sheet.appendRow(asLeadText_([day, m[1], text(r[1]) === 'andrum' ? 'Andrum' : 'Lika', '', '', '', '']));
     moved.push(i + 2);
   });
   for (var j = moved.length - 1; j >= 0; j--) test.deleteRow(moved[j]);

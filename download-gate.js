@@ -6,7 +6,7 @@
 
    The address goes to the site's collector, the same Google Apps Script web app as /stats.js. stats-collector.gs
    writes one row per download to the tab "E-post" in the Google Sheet "Statistik för davidhjalmarlindberg.com":
-   time, address, product, file, whether the visitor asked for news, where they came from and the page.
+   time, address, product, file, where they came from and the page.
 
    The browser remembers the address (localStorage), so a visitor is asked once: their next download goes straight
    through and is written down with the same address. Buyers are never asked: back from the checkout (?bought=),
@@ -38,8 +38,8 @@
       return v && valid(v.e) ? v : null;
     } catch (e) { return null; }
   }
-  function remember(email, news) {
-    try { localStorage.setItem(KEY, JSON.stringify({ e: email, n: news ? 1 : 0 })); } catch (e) {}
+  function remember(email) {
+    try { localStorage.setItem(KEY, JSON.stringify({ e: email })); } catch (e) {}
   }
 
   function storedKey(prefix) {
@@ -68,14 +68,14 @@
   }
 
   /* One message that both versions of the collector understand. The one from before 17 Nov 2026 knows nothing of
-     addresses: it reads k, n, x, p and test, and files the address as a download (nedladdning) in its tab Test,
-     with "(news)" after it when the box was ticked. The new one (stats-collector.gs) sees lead: 1, writes the
+     addresses: it reads k, n, x, p and test, and files the address as a download (nedladdning) in its tab Test.
+     The new one (stats-collector.gs) sees lead: 1, writes the
      whole row to the tab E-post, and moves what the old one filed there once. */
-  function send(product, file, email, news) {
+  function send(product, file, email) {
     var q = new URLSearchParams(location.search), test = q.get('stats') === 'test';
     var lead = {
-      v: 1, k: 'ev', n: test ? 'out' : 'dl', x: email + (news ? '(news)' : ''), test: 1,
-      lead: 1, e: email, pr: product, f: file || '', nw: news ? 1 : 0,
+      v: 1, k: 'ev', n: test ? 'out' : 'dl', x: email, test: 1,
+      lead: 1, e: email, pr: product, f: file || '',
       p: location.pathname.replace(/\/index\.html$/, '/'), s: source(q), c: q.get('utm_campaign') || ''
     };
     if (test) lead.lt = 1;
@@ -105,9 +105,7 @@
     '.dg__input:focus{outline:none;box-shadow:inset 0 0 0 1.5px var(--dg-focus,#f5f5f7)}',
     '.dg__input[aria-invalid="true"]{box-shadow:inset 0 0 0 1.5px var(--dg-error,#ff9b8f)}',
     '.dg__error{margin:8px 0 0;font-size:14px;line-height:1.4;color:var(--dg-error,#ff9b8f)}',
-    '.dg__check{display:flex;gap:12px;align-items:flex-start;margin:18px 0 24px;font-size:15px;line-height:1.4;color:var(--dg-mist,rgba(245,245,247,.72));cursor:pointer}',
-    '.dg__check input{flex:none;width:18px;height:18px;margin:1px 0 0;accent-color:var(--dg-ink,#f5f5f7);cursor:pointer}',
-    '.dg__go{display:inline-flex;align-items:center;justify-content:center;height:44px;margin:0;padding:0 22px;border:0;border-radius:22px;background:var(--dg-ink,#f5f5f7);color:var(--dg-on-ink,#000);font-family:inherit;font-size:17px;font-weight:400;line-height:1;white-space:nowrap;cursor:pointer;transition:background .2s}',
+    '.dg__go{display:inline-flex;align-items:center;justify-content:center;height:44px;margin:22px 0 0;padding:0 22px;border:0;border-radius:22px;background:var(--dg-ink,#f5f5f7);color:var(--dg-on-ink,#000);font-family:inherit;font-size:17px;font-weight:400;line-height:1;white-space:nowrap;cursor:pointer;transition:background .2s}',
     '.dg__go:hover{background:var(--dg-hover,#fff)}',
     '.dg__go:focus-visible,.dg__close:focus-visible,.dg__fine a:focus-visible{outline:2px solid var(--dg-focus,#f5f5f7);outline-offset:3px}',
     '.dg__fine{margin:18px 0 0;font-size:13px;line-height:1.45;color:var(--dg-dim,rgba(245,245,247,.5))}',
@@ -137,7 +135,7 @@
   }
 
   var uid = 0;
-  // the form: heading (in the dialog), a line, the address, news or not, the button, the small print
+  // the form: heading (in the dialog), a line, the address, the button, the small print
   function form(o, inline, done) {
     var id = 'dg-' + (++uid);
     var f = el('form', 'dg__form' + (inline ? ' dg__form--inline' : ''));
@@ -165,12 +163,6 @@
     error.id = id + '-error'; error.hidden = true; error.setAttribute('role', 'alert');
     input.setAttribute('aria-describedby', error.id);
 
-    var check = el('label', 'dg__check');
-    var news = el('input');
-    news.type = 'checkbox'; news.name = 'news';
-    check.appendChild(news);
-    check.appendChild(el('span', '', 'Tell me about new versions and new tools, now and then.'));
-
     var hp = el('div', 'dg__hp');   // left empty by people; filled in by robots, whose addresses are not sent
     hp.setAttribute('aria-hidden', 'true');
     var trap = el('input');
@@ -180,13 +172,13 @@
     var go = el('button', 'dg__go', o.button || 'Download');
     go.type = 'submit';
 
-    var fine = el('p', 'dg__fine', 'I use it to follow up on your trial and never share it. News only if you tick the box. ');
+    var fine = el('p', 'dg__fine', 'I use it to follow up on your trial and to send news about my tools now and then. Unsubscribe any time; I never share it. ');
     var a = el('a', '', 'Privacy');
     a.href = '/privacy/#downloads';
     a.target = '_blank';
     fine.appendChild(a);
 
-    [label, input, error, check, hp, go, fine].forEach(function (n) { f.appendChild(n); });
+    [label, input, error, hp, go, fine].forEach(function (n) { f.appendChild(n); });
 
     input.addEventListener('input', function () {
       if (input.getAttribute('aria-invalid') === 'true' && valid(input.value.trim())) { input.removeAttribute('aria-invalid'); error.hidden = true; }
@@ -200,7 +192,7 @@
         input.focus();
         return;
       }
-      if (!trap.value) { remember(email, news.checked); send(o.product, o.file, email, news.checked); }
+      if (!trap.value) { remember(email); send(o.product, o.file, email); }
       done(email);   // in the same click as the button, so a download, a share menu or a mail app may open
     });
     return { form: f, input: input, close: close };
@@ -233,7 +225,7 @@
   function run(o, done) {
     if (bought(o.product)) return done(null);
     var known = remembered();
-    if (known) { send(o.product, o.file, known.e, known.n === 1); return done(known.e); }
+    if (known) { send(o.product, o.file, known.e); return done(known.e); }
     if (o.mount) {
       style();
       var parts = form(o, true, done);
@@ -273,7 +265,7 @@
     };
     if (bought(o.product)) return;
     var known = remembered();
-    if (known) { send(o.product, o.file, known.e, known.n === 1); address(a, known.e); return; }
+    if (known) { send(o.product, o.file, known.e); address(a, known.e); return; }
     if (!supported()) return;
     // held back before the page's own listeners (statistics, pixel, share menu) see it; they see the click that follows
     e.preventDefault();
