@@ -15,7 +15,7 @@
 :root {
   color-scheme: dark;
   --bg: #000000; --card: #080b0e; --line: #1c242b; --line-2: #2a343c;
-  --ink: #eef3f6; --ink-2: #b3bdc5; --ink-3: #8e9aa4; --sky: #79dcf7;
+  --ink: #eef3f6; --ink-2: #b3bdc5; --ink-3: #8e9aa4; --sky: #78c7ff;
   --f: -apple-system, BlinkMacSystemFont, "Inter Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --gl: max(22px, env(safe-area-inset-left, 0px)); --gr: max(22px, env(safe-area-inset-right, 0px));
   --dg-ink: var(--ink); --dg-on-ink: #000; --dg-hover: var(--sky); --dg-mist: var(--ink-2); --dg-dim: var(--ink-3); --dg-line: var(--line-2); --dg-focus: var(--sky);
@@ -24,7 +24,7 @@
 html { background: var(--bg); -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.52 var(--f); -webkit-font-smoothing: antialiased; letter-spacing: 0.0035em; }
 a { color: inherit; }
-::selection { background: rgba(121, 220, 247, 0.3); }
+::selection { background: rgba(120, 199, 255, 0.3); }
 :focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; border-radius: 6px; }
 .wrap { width: 100%; max-width: calc(720px + var(--gl) + var(--gr)); margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
 .bar { padding-top: env(safe-area-inset-top, 0px); border-bottom: 1px solid var(--line); }
@@ -35,7 +35,7 @@ a { color: inherit; }
 .bar a.back:hover { color: var(--ink); }
 main { padding: clamp(48px, 8vw, 96px) 0 clamp(64px, 9vw, 120px); }
 .eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 14px; font-weight: 600; color: var(--ink-2); }
-.eyebrow::before { content: ""; width: 22px; height: 12px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-8.6 -4.6 17.2 9.2'%3E%3Cpath fill='%2379dcf7' fill-rule='evenodd' d='M-8 0A10 10 0 0 1 8 0A10 10 0 0 1 -8 0ZM6.7082 0A9 9 0 0 0 3.1874 -2.4167A4 4 0 0 1 3.1874 2.4167A9 9 0 0 0 6.7082 0ZM-6.7082 0A9 9 0 0 1 -3.1874 -2.4167A4 4 0 0 0 -3.1874 2.4167A9 9 0 0 1 -6.7082 0ZM-3 0A3 3 0 0 1 3 0A3 3 0 0 1 -3 0Z'/%3E%3C/svg%3E") center / contain no-repeat; }
+.eyebrow::before { content: ""; width: 22px; height: 12px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-8.6 -4.6 17.2 9.2'%3E%3Cpath fill='%2378c7ff' fill-rule='evenodd' d='M-8 0A10 10 0 0 1 8 0A10 10 0 0 1 -8 0ZM6.7082 0A9 9 0 0 0 3.1874 -2.4167A4 4 0 0 1 3.1874 2.4167A9 9 0 0 0 6.7082 0ZM-6.7082 0A9 9 0 0 1 -3.1874 -2.4167A4 4 0 0 0 -3.1874 2.4167A9 9 0 0 1 -6.7082 0ZM-3 0A3 3 0 0 1 3 0A3 3 0 0 1 -3 0Z'/%3E%3C/svg%3E") center / contain no-repeat; }
 h1 { margin: 0 0 18px; font-size: clamp(36px, 6vw, 56px); line-height: 1.06; font-weight: 600; letter-spacing: -0.03em; text-wrap: balance; }
 p { margin: 0 0 14px; color: var(--ink-2); text-wrap: pretty; }
 .lead { font-size: clamp(19px, 2vw, 22px); line-height: 1.4; }
@@ -60,7 +60,7 @@ footer a:hover { color: var(--ink); }
 <script src="/stats.js" defer></script>
 </head>
 <body>
-<header class="bar"><div class="wrap"><a href="../" aria-label="Blick"><svg class="logo" viewBox="0 -720 3478 790" width="88" height="20" aria-hidden="true"><path fill="#79dcf7" fill-rule="evenodd" transform="translate(600 -240) scale(75)" d="M-8 0A10 10 0 0 1 8 0A10 10 0 0 1 -8 0ZM6.7082 0A9 9 0 0 0 3.1874 -2.4167A4 4 0 0 1 3.1874 2.4167A9 9 0 0 0 6.7082 0ZM-6.7082 0A9 9 0 0 1 -3.1874 -2.4167A4 4 0 0 0 -3.1874 2.4167A9 9 0 0 1 -6.7082 0ZM-3 0A3 3 0 0 1 3 0A3 3 0 0 1 -3 0Z"/><path fill="currentColor" transform="translate(1439 0)" d="M318 10Q263 10 220 -13.5Q177 -37 152.5 -78Q128 -119 128 -171L128 -309Q128 -361 153 -402Q178 -443 221 -466.5Q264 -490 318 -490Q383 -490 435.5 -456.5Q488 -423 518.5 -366.5Q549 -310 549 -239Q549 -169 518.5 -112.5Q488 -56 435.5 -23Q383 10 318 10ZM61 0L61 -720L171 -720L171 -362L152 -246L171 -129L171 0L61 0ZM300 -94Q340 -94 370.5 -112.5Q401 -131 418.5 -164Q436 -197 436 -240Q436 -283 418.5 -316Q401 -349 370.5 -367.5Q340 -386 300 -386Q260 -386 229 -367.5Q198 -349 181 -316Q164 -283 164 -240Q164 -197 181 -164Q198 -131 229 -112.5Q260 -94 300 -94ZM641 0L641 -720L751 -720L751 0L641 0ZM874 0L874 -480L984 -480L984 0L874 0ZM1328 10Q1257 10 1199.5 -23Q1142 -56 1109 -113Q1076 -170 1076 -240Q1076 -311 1109 -367.5Q1142 -424 1199.5 -457Q1257 -490 1328 -490Q1384 -490 1432.5 -468.5Q1481 -447 1515 -407L1443 -334Q1422 -359 1392.5 -371.5Q1363 -384 1328 -384Q1287 -384 1255.5 -365.5Q1224 -347 1206.5 -315Q1189 -283 1189 -240Q1189 -198 1206.5 -165.5Q1224 -133 1255.5 -114.5Q1287 -96 1328 -96Q1363 -96 1392.5 -108.5Q1422 -121 1443 -146L1515 -73Q1481 -33 1432.5 -11.5Q1384 10 1328 10ZM1899 0L1696 -245L1898 -480L2029 -480L1797 -216L1802 -279L2039 0L1899 0ZM1594 0L1594 -720L1704 -720L1704 0L1594 0ZM863.5 -634a65.5 65.5 0 1 0 131 0a65.5 65.5 0 1 0 -131 0Z"/></svg></a><a class="back" href="../">Back to Blick</a></div></header>
+<header class="bar"><div class="wrap"><a href="../" aria-label="Blick"><svg class="logo" viewBox="0 -720 3778 730" width="104" height="20" aria-hidden="true"><path fill="#79dcf7" fill-rule="evenodd" transform="translate(720 -360) scale(90)" d="M-8 0A10 10 0 0 1 8 0A10 10 0 0 1 -8 0ZM6.7082 0A9 9 0 0 0 3.1874 -2.4167A4 4 0 0 1 3.1874 2.4167A9 9 0 0 0 6.7082 0ZM-6.7082 0A9 9 0 0 1 -3.1874 -2.4167A4 4 0 0 0 -3.1874 2.4167A9 9 0 0 1 -6.7082 0ZM-3 0A3 3 0 0 1 3 0A3 3 0 0 1 -3 0Z"/><path fill="currentColor" transform="translate(1739 0)" d="M318 10Q263 10 220 -13.5Q177 -37 152.5 -78Q128 -119 128 -171L128 -309Q128 -361 153 -402Q178 -443 221 -466.5Q264 -490 318 -490Q383 -490 435.5 -456.5Q488 -423 518.5 -366.5Q549 -310 549 -239Q549 -169 518.5 -112.5Q488 -56 435.5 -23Q383 10 318 10ZM61 0L61 -720L171 -720L171 -362L152 -246L171 -129L171 0L61 0ZM300 -94Q340 -94 370.5 -112.5Q401 -131 418.5 -164Q436 -197 436 -240Q436 -283 418.5 -316Q401 -349 370.5 -367.5Q340 -386 300 -386Q260 -386 229 -367.5Q198 -349 181 -316Q164 -283 164 -240Q164 -197 181 -164Q198 -131 229 -112.5Q260 -94 300 -94ZM641 0L641 -720L751 -720L751 0L641 0ZM874 0L874 -480L984 -480L984 0L874 0ZM1328 10Q1257 10 1199.5 -23Q1142 -56 1109 -113Q1076 -170 1076 -240Q1076 -311 1109 -367.5Q1142 -424 1199.5 -457Q1257 -490 1328 -490Q1384 -490 1432.5 -468.5Q1481 -447 1515 -407L1443 -334Q1422 -359 1392.5 -371.5Q1363 -384 1328 -384Q1287 -384 1255.5 -365.5Q1224 -347 1206.5 -315Q1189 -283 1189 -240Q1189 -198 1206.5 -165.5Q1224 -133 1255.5 -114.5Q1287 -96 1328 -96Q1363 -96 1392.5 -108.5Q1422 -121 1443 -146L1515 -73Q1481 -33 1432.5 -11.5Q1384 10 1328 10ZM1899 0L1696 -245L1898 -480L2029 -480L1797 -216L1802 -279L2039 0L1899 0ZM1594 0L1594 -720L1704 -720L1704 0L1594 0ZM863.5 -634a65.5 65.5 0 1 0 131 0a65.5 65.5 0 1 0 -131 0Z"/></svg></a><a class="back" href="../">Back to Blick</a></div></header>
 <main><div class="wrap">
 <p class="eyebrow">Download</p>
 <div id="ask" hidden><h1>Download Blick</h1><p class="lead">Leave your e-mail address and the download starts straight away. Blick runs for 7 days with everything, exports included.</p><div id="ask-form"></div></div>
