@@ -4,14 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Blick · AI color grading</title>
-<meta name="description" content="Blick matches a set of AI-generated clips to each other, makes looks for them from what is in the picture, and renders the film. On your own Mac.">
-<meta name="robots" content="noindex">
+<meta name="description" content="Blick reads a clip and writes the grade it needs: tone, color and film, set for that picture. Then it matches every clip in the cut. AI color grading for the Mac.">
 <meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/blick/">
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="Blick">
 <meta property="og:title" content="Blick · AI color grading">
-<meta property="og:description" content="Blick matches a set of AI-generated clips to each other, makes looks for them from what is in the picture, and renders the film. On your own Mac.">
+<meta property="og:description" content="Blick reads a clip and writes the grade it needs: tone, color and film, set for that picture. Then it matches every clip in the cut. AI color grading for the Mac.">
 <meta property="og:url" content="https://davidhjalmarlindberg.com/blick/">
 <meta property="og:image" content="https://davidhjalmarlindberg.com/blick/images/blick-og.jpg">
 <meta property="og:image:width" content="1200">
@@ -179,6 +178,14 @@ h3 { margin: 0; font-size: 21px; line-height: 1.19; font-weight: 600; letter-spa
 .buy { max-width: 620px; margin: 0 auto; padding: clamp(30px, 5vw, 48px) clamp(24px, 5vw, 52px) clamp(30px, 5vw, 46px); border-radius: 24px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); text-align: center; }
 .price { margin: 0; font-size: clamp(64px, 9vw, 88px); line-height: 1; font-weight: 600; letter-spacing: -0.04em; }
 .price-note { margin: 12px 0 0; font-size: 19px; color: var(--ink-2); }
+.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.plan { padding: 26px 16px 26px; border-radius: 18px; box-shadow: inset 0 0 0 1px var(--line-2); }
+.plan-name { margin: 0 0 12px; font-size: 14px; line-height: 1.3; font-weight: 600; color: var(--ink-2); }
+.plan .price { font-size: clamp(46px, 7vw, 64px); }
+.plan .price-note { margin-top: 8px; font-size: 17px; }
+.plan-cta { margin-top: 20px; }
+.plan-cta:empty { display: none; }
+@media (max-width: 479px) { .plans { grid-template-columns: 1fr; } }
 .facts { display: inline-block; margin: 26px 0 0; padding: 0; list-style: none; text-align: left; }
 .facts li { position: relative; padding: 5px 0 5px 34px; color: var(--ink-2); }
 .facts li::before { content: ""; position: absolute; left: 0; top: 12px; width: 22px; height: 12px; background: var(--mark) center / contain no-repeat; }
@@ -258,8 +265,8 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
   <div class="wrap">
     <a class="home" href="#top" aria-label="Blick, back to the top"><svg class="logo" viewBox="0 -720 3778 730" width="104" height="20" aria-hidden="true"><use href="#blick-eye" fill="#78c7ff" transform="translate(720 -360) scale(90)"/><use href="#blick-word" fill="currentColor" transform="translate(1739 0)"/></svg></a>
     <nav aria-label="Sections">
-      <a href="#prepare">Prepare</a>
       <a href="#grade">Grade</a>
+      <a href="#prepare">Prepare</a>
       <a href="#export">Export</a>
       <a href="#faq">Questions</a>
     </nav>
@@ -276,12 +283,12 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
     <div class="wrap">
       <p class="tag-line rise">AI color grading</p>
       <h1 id="hero-title" class="rise soft">It sees the clip.<br> Then it grades it.</h1>
-      <p class="lead rise">Blick matches a set of AI-generated clips to each other, makes looks for them from what is in the picture, and renders the film. On your own Mac.</p>
+      <p class="lead rise">Press Generate, and Blick writes a finished grade for the clip in front of it: tone, color and film, set for that picture. Then it carries the whole cut with it.</p>
       <div class="ctas rise">
         <a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Blick%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Blick%20is%20on%20sale.">Tell me when it's on sale</a>
         <a class="more" href="#film">See what it does</a>
       </div>
-      <p class="fine rise" data-bk-live="{price} once, no subscription. Try it free for 7 days.">Not on sale yet. For a Mac with Apple silicon.</p>
+      <p class="fine rise" data-bk-live="Free for 7 days. Then €49 a month or €495 a year.">€49 a month or €495 a year. On sale soon.</p>
     </div>
   </section>
 
@@ -307,7 +314,53 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
             <button type="button" data-show="final" aria-pressed="false">Graded</button>
           </div>
         </div>
-        <figcaption>Five generated clips, forty frames of each. <span class="lively">Left of the line they play as they arrived, right of it as Blick rendered them:</span><span class="plain">Above they play as they arrived, below as Blick rendered them:</span> matched to each other, then graded with Hillstar 6:9, a look Generate made on the first clip and Blick fitted to each of the others. <span class="lively"><span class="by-mouse">Click</span><span class="by-finger">Tap</span> the picture to see one of them whole.</span></figcaption>
+        <figcaption>Five generated clips, forty frames of each. <span class="lively">Left of the line they play as they arrived, right of it as Blick rendered them:</span><span class="plain">Above they play as they arrived, below as Blick rendered them:</span> matched to each other, then graded with Luster 5:7, the grade Generate wrote for the first clip, fitted by Blick to each of the others. <span class="lively"><span class="by-mouse">Click</span><span class="by-finger">Tap</span> the picture to see one of them whole.</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec" id="grade" aria-labelledby="grade-title">
+    <div class="wrap">
+      <div class="head rise">
+        <p class="eyebrow">Grade</p>
+        <h2 id="grade-title">Generate writes<br> the grade.</h2>
+        <p class="lead"><strong>Not presets.</strong> Generate reads the whole clip, seven frames across it, and writes the grade that clip needs: where its blacks and whites sit, its color, how film would take it. The first press gives the grade that suits the clip best. Press again for another, made for the same picture.</p>
+      </div>
+
+      <figure class="looks rise" id="looks">
+        <div class="frames">
+          <img data-look="0" src="images/look-0.webp" width="1280" height="720" loading="lazy" decoding="async" alt="A couple on a hillside in low sun, as Prepare left the frame, with no look.">
+          <img data-look="1" src="images/look-1.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Luster 5:7, the grade Generate wrote first." class="on">
+          <img data-look="2" src="images/look-2.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Gleam 6:3, the look the second press made.">
+          <img data-look="3" src="images/look-3.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Glisten 6:9, the look the third press made.">
+          <img data-look="4" src="images/look-4.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Luster 6:6, the look the fourth press made.">
+        </div>
+        <div class="tools">
+          <div class="seg many" role="group" aria-label="The frame with no look, or in one of the looks" data-for="looks">
+            <button type="button" data-show="0" aria-pressed="false">No look</button>
+            <button type="button" data-show="1" aria-pressed="true">Luster 5:7</button>
+            <button type="button" data-show="2" aria-pressed="false">Gleam 6:3</button>
+            <button type="button" data-show="3" aria-pressed="false">Glisten 6:9</button>
+            <button type="button" data-show="4" aria-pressed="false">Luster 6:6</button>
+          </div>
+        </div>
+        <figcaption>One frame of the first clip as Prepare left it, then in the grade Generate wrote first and in the looks of three more presses. A look is named by a word for its color and two numbers: how bright it sits and how much contrast it has.</figcaption>
+      </figure>
+
+      <dl class="list">
+        <div class="rise"><dt>Checked on the picture</dt><dd>Each look is solved on the clip itself, then eased if it would clip a highlight, crush a black or move the skin away from where it was.</dd></div>
+        <div class="rise"><dt>All clips, or one</dt><dd>A look applies to the whole cut. Any clip can wear one of its own, with its own sliders, and go back to the cut's look without losing it.</dd></div>
+        <div class="rise"><dt>Every slider is yours</dt><dd>Tone with its curves, Color, Hues, Film and Finish, each in a window of its own. What Generate set is where you start, not where you have to stay.</dd></div>
+        <div class="rise"><dt>Grain and Vignette</dt><dd>Two windows of their own, off until you switch them on: grain by size, roughness, softness and tone, judged in a loupe at full size, and a vignette you place, turn and tint on a small picture of the frame.</dd></div>
+        <div class="rise"><dt>A library, and your own</dt><dd>Beside the looks Generate makes, the same row holds a library to choose from, and every grade you save, ready in every project.</dd></div>
+        <div class="rise"><dt>Scopes</dt><dd>Blick Scope, waveform, RGB parade, vectorscope, histogram and a CIE diagram, as many at once as you like. Zoom into any of them, and push the color from Blick Scope itself.</dd></div>
+      </dl>
+
+      <figure class="win after rise">
+        <div class="shot">
+          <img src="images/app-grade-1440.webp" srcset="images/app-grade-1440.webp 1440w, images/app-grade-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Grade: the first clip large with the look Luster 5:7, under it the clips of the cut, the looks Generate made and the scopes, and beside it the look&#x27;s name and its sliders.">
+        </div>
+        <figcaption>Grade, with Luster 5:7 on the first clip. Under the picture are the clips of the cut, the looks Generate made and the scopes; beside it the look's name and the first of its windows.</figcaption>
       </figure>
     </div>
   </section>
@@ -316,7 +369,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
     <div class="wrap">
       <div class="head rise">
         <p class="eyebrow">Prepare</p>
-        <h2 id="prepare-title">First it makes them<br> one film.</h2>
+        <h2 id="prepare-title">And it makes the cut<br> one film.</h2>
         <p class="lead"><strong>Generated clips rarely agree.</strong> One sits on milky blacks, the next runs magenta, a third tops out early. Prepare measures every clip and gives each one correction that brings the set together. Its Finish then takes the generated look off the clips that need it: it steadies the level, cleans, debands and sharpens.</p>
       </div>
 
@@ -331,61 +384,15 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
             <button type="button" data-show="b" aria-pressed="false">Prepared</button>
           </div>
         </div>
-        <figcaption>Blick in Prepare with the same five clips, as they arrived and matched on Neutral, at the app's own settings. Under them is the Plume, with a plume for every clip.</figcaption>
+        <figcaption>Blick in Prepare with the same five clips, as they arrived and matched on Neutral, at the app's own settings. Under them is Blick Scope, with a plume for every clip.</figcaption>
       </figure>
 
       <dl class="list four">
         <div class="rise"><dt>Three ways to match</dt><dd>Group moves every clip to the middle of the set. Hero moves them to one clip you pick. Neutral keeps the set's own levels and takes the color out of the blacks.</dd></div>
         <div class="rise"><dt>A finish for the cut</dt><dd>Hold keeps level and color steady, Clean-up takes out noise and grit, Deband rebuilds smooth ramps, Upscale goes up to UHD, Sharpen lifts the edges.</dd></div>
         <div class="rise"><dt>Cuts and timelines</dt><dd>Find cuts splits a file into its shots, and each shot gets its own match. Or bring the sequence from Premiere Pro, DaVinci Resolve or Final Cut Pro.</dd></div>
-        <div class="rise"><dt>The Plume</dt><dd>One scope for color and light, in the picture's own colors: every clip a plume, dark at the foot and light at the top. Clips that match have the same shape at the same height.</dd></div>
+        <div class="rise"><dt>Blick Scope</dt><dd>One scope for color and light, in the picture's own colors: every clip a plume, dark at the foot and light at the top. Clips that match have the same shape at the same height.</dd></div>
       </dl>
-    </div>
-  </section>
-
-  <section class="sec" id="grade" aria-labelledby="grade-title">
-    <div class="wrap">
-      <div class="head rise">
-        <p class="eyebrow">Grade</p>
-        <h2 id="grade-title">Then Generate writes<br> looks for the clip.</h2>
-        <p class="lead"><strong>Not presets.</strong> Generate reads the whole clip, seven frames across it, and composes each look for what is there: where its blacks and whites sit, its color, how film would take it. The sliders arrive set, and every one of them is yours to move.</p>
-      </div>
-
-      <figure class="looks rise" id="looks">
-        <div class="frames">
-          <img data-look="0" src="images/look-0.webp" width="1280" height="720" loading="lazy" decoding="async" alt="A couple on a hillside in low sun, as Prepare left the frame, with no look.">
-          <img data-look="1" src="images/look-1.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Sungem 6:3: gold shadows under green highlights, soft contrast, rich color.">
-          <img data-look="2" src="images/look-2.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Jacobin 5:6, the clean print: no color cast, a little more contrast, natural color.">
-          <img data-look="3" src="images/look-3.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Hillstar 6:9: cyan shadows and highlights, strong contrast, rich color." class="on">
-          <img data-look="4" src="images/look-4.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Metaltail 6:4: olive shadows under teal highlights, soft contrast, rich color.">
-        </div>
-        <div class="tools">
-          <div class="seg many" role="group" aria-label="The frame with no look, or in one of the looks" data-for="looks">
-            <button type="button" data-show="0" aria-pressed="false">No look</button>
-            <button type="button" data-show="1" aria-pressed="false">Sungem 6:3</button>
-            <button type="button" data-show="2" aria-pressed="false">Jacobin 5:6</button>
-            <button type="button" data-show="3" aria-pressed="true">Hillstar 6:9</button>
-            <button type="button" data-show="4" aria-pressed="false">Metaltail 6:4</button>
-          </div>
-        </div>
-        <figcaption>One frame of the first clip as Prepare left it, and in the four looks one press of Generate made on that clip. A look is named after a hummingbird and two numbers: how bright it sits and how much contrast it has.</figcaption>
-      </figure>
-
-      <dl class="list">
-        <div class="rise"><dt>Checked on the picture</dt><dd>Each look is solved on the clip itself, then eased if it would clip a highlight, crush a black or move the skin away from where it was.</dd></div>
-        <div class="rise"><dt>All clips, or this clip</dt><dd>One look for the whole set. Any clip can wear a copy of its own, with its own sliders, and go back to the set's look without losing it.</dd></div>
-        <div class="rise"><dt>Every slider is yours</dt><dd>Tone with its curves, Color, Hues, Film and Finish, each in a window of its own. What Generate set is where you start, not where you have to stay.</dd></div>
-        <div class="rise"><dt>Grain and Vignette</dt><dd>Two windows of their own, off until you switch them on: the film's own grain with its size and roughness, and a vignette you place on a small picture of the frame.</dd></div>
-        <div class="rise"><dt>Layers</dt><dd>Add layer lays the grade down, and the next looks are made on top of it. Nothing is read from the clips again.</dd></div>
-        <div class="rise"><dt>Scopes</dt><dd>Waveform, RGB parade, vectorscope, histogram and a CIE diagram, drawn from the frame you are looking at.</dd></div>
-      </dl>
-
-      <figure class="win after rise">
-        <div class="shot">
-          <img src="images/app-grade-1440.webp" srcset="images/app-grade-1440.webp 1440w, images/app-grade-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Grade: the first clip large with the look Hillstar 6:9 on it and, under it, the four looks Generate made. Beside it a waveform, the switch between all clips and this clip, the look&#x27;s name with a line that describes it, and the Tone window.">
-        </div>
-        <figcaption>Grade, with Hillstar 6:9 on the first clip. Under the picture are the looks Generate made; beside it the scope, the look described in a line, and the first of its windows.</figcaption>
-      </figure>
     </div>
   </section>
 
@@ -413,20 +420,20 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
     <div class="wrap">
       <div class="head rise">
         <p class="eyebrow">Get Blick</p>
-        <h2 id="get-title" data-bk-live="Buy it once.">Not on sale yet.</h2>
+        <h2 id="get-title" data-bk-live="Seven days free.&lt;br&gt; Then by the month or the year.">On sale soon.</h2>
       </div>
       <div class="buy rise">
-        <div data-bk-only hidden>
-          <p class="price" data-bk-price></p>
-          <p class="price-note">One licence, no subscription.</p>
+        <div class="plans">
+          <div class="plan"><p class="plan-name">Monthly</p><p class="price" data-bk-price="monthly">€49</p><p class="price-note">a month</p><div class="plan-cta" data-bk-plan="monthly"></div></div>
+          <div class="plan"><p class="plan-name">Yearly</p><p class="price" data-bk-price="yearly">€495</p><p class="price-note">a year</p><div class="plan-cta" data-bk-plan="yearly"></div></div>
         </div>
         <ul class="facts">
           <li>Prepare, Grade and Export, as on this page</li>
-          <li>Everything runs on your own Mac</li>
+          <li>Every update for as long as you subscribe</li>
           <li data-bk-only hidden>Free to try for 7 days, exports included</li>
         </ul>
         <div class="ctas"><a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Blick%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Blick%20is%20on%20sale.">Tell me when it's on sale</a></div>
-        <p class="fine" data-bk-live="Try it free for 7 days first: everything works, exports included.&lt;br&gt; For a Mac with Apple silicon, on macOS 13 or later.">Blick isn't on sale yet. The button opens your mail app, and I'll write to you the day it is.<br> For a Mac with Apple silicon, on macOS 13 or later.</p>
+        <p class="fine" data-bk-live="Everything works in the 7 days, exports included.&lt;br&gt; For a Mac with Apple silicon, on macOS 13 or later.">Blick isn't on sale yet. The button opens your mail app, and I'll write to you the day it is.<br> For a Mac with Apple silicon, on macOS 13 or later.</p>
       </div>
     </div>
   </section>
@@ -438,22 +445,26 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
         <h2 id="faq-title">Before you ask.</h2>
       </div>
       <div class="faq rise">
-        <details><summary>Do my clips leave my computer?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="a"><p>No. Blick reads, matches, grades and renders on your own Mac. Nothing is uploaded, so there is no queue and there are no credits to buy.</p></div></details>
-        <details><summary>Does it change my files?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="a"><p>No. Blick writes new files into a folder you choose and never touches the ones you gave it.</p></div></details>
+        <details><summary>Do I need to know color grading?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>No. Generate writes a finished grade for the clip, and the first press gives the one that suits it best. Every slider is there for the day you want to move one.</p></div></details>
+        <details><summary>Can I change a look after Generate has made it?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>Yes, all of it. A generated look is a set of sliders and curves like any other grade: move them, switch a window off, or press Generate again for another.</p></div></details>
         <details><summary>Is it only for AI-generated clips?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
           <div class="a"><p>It is made for them, but it takes any Rec. 709 clips that should look like one film: stock footage, phone clips, renders.</p></div></details>
+        <details><summary>What does it cost?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>€49 a month or €495 a year, with every update for as long as you subscribe. Cancel whenever you like.</p></div></details>
+        <details data-bk-only hidden><summary>Can I try it first?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>Yes. Download it and everything works for 7 days, exports included. After that, exporting needs a subscription. Add the key from your receipt in the same app; nothing to reinstall.</p></div></details>
         <details><summary>What can I open in it?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="a"><p>MP4 and MOV files in H.264, HEVC, ProRes or DNxHR, at 8, 10 or 12 bits. Drop a folder and Blick takes every clip in it.</p></div></details>
-        <details><summary>Can I change a look after Generate has made it?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="a"><p>Yes, all of it. A generated look is a set of sliders and curves like any other grade: move them, switch a window off, or press Generate again for more.</p></div></details>
+          <div class="a"><p>MP4 and MOV files in H.264, HEVC, ProRes or DNxHR, at 8, 10 or 12 bits. Drop a folder and Blick takes every clip in it, or bring the sequence from your editor.</p></div></details>
         <details><summary>Can I keep grading in Resolve afterwards?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
           <div class="a"><p>Yes, two ways. Render ProRes 4444 or a 16-bit sequence and grade on top of it. Or save the look as a LUT and put it on your own files.</p></div></details>
-        <details data-bk-only hidden><summary>Can I try it first?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="a"><p>Yes. Download it and everything works for 7 days, exports included. After that, exporting needs a licence. Add the key from your receipt in the same app; nothing to reinstall.</p></div></details>
+        <details><summary>Does it change my files?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>No. Blick writes new files into a folder you choose and never touches the ones you gave it.</p></div></details>
+        <details><summary>Do my clips leave my computer?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="a"><p>No. Blick reads, matches, grades and renders on your own computer. Nothing is uploaded, so there is no queue and there are no credits to buy.</p></div></details>
         <details><summary>Which computers does it run on?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="a"><p>Macs with Apple silicon, on macOS 13 or later.</p></div></details>
+          <div class="a"><p>Macs with Apple silicon, on macOS 13 or later. A version for Windows is built and being tested.</p></div></details>
       </div>
     </div>
   </section>
@@ -486,19 +497,21 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 
 <script>
 (function () {
-  // The store (store.js). Until it is live the buttons ask to be told when Blick is on sale; once it is, each becomes Buy
-  // with the price, the price section and the end get a Download the free trial beside it, and the lines under them say
-  // what the trial is.
-  var store = window.BLICK_STORE || {};
-  if (store.live && store.checkout && store.download && store.price) {
-    [].forEach.call(document.querySelectorAll('a.btn.solid[href^="mailto:"]'), function (a, i) {
-      a.href = store.checkout; a.textContent = 'Buy Blick · ' + store.price; a.setAttribute('data-lk-buy', '');
-      if (i === 0) return;
-      var d = document.createElement('a'); d.className = 'btn line'; d.href = 'download/'; d.setAttribute('data-lk-download', ''); d.textContent = 'Download the free trial';
-      a.parentNode.appendChild(d);
+  // The store (store.js). The prices are shown from the start. Until the store is live the buttons ask to be told when
+  // Blick is on sale; once it is, each becomes the free trial, each plan gets a button to its own checkout, and the
+  // lines under them say what the trial is.
+  var store = window.BLICK_STORE || {}, plans = { monthly: store.monthly || {}, yearly: store.yearly || {} };
+  [].forEach.call(document.querySelectorAll('[data-bk-price]'), function (el) { var pl = plans[el.getAttribute('data-bk-price')]; if (pl && pl.price) el.textContent = pl.price; });
+  if (store.live && store.download && plans.monthly.checkout && plans.yearly.checkout) {
+    [].forEach.call(document.querySelectorAll('a.btn.solid[href^="mailto:"]'), function (a) {
+      a.href = 'download/'; a.textContent = 'Try it free for 7 days'; a.setAttribute('data-lk-download', '');
     });
-    [].forEach.call(document.querySelectorAll('[data-bk-live]'), function (el) { el.innerHTML = el.getAttribute('data-bk-live').replace('{price}', store.price); });
-    [].forEach.call(document.querySelectorAll('[data-bk-price]'), function (el) { el.textContent = store.price; });
+    [].forEach.call(document.querySelectorAll('[data-bk-plan]'), function (el) {
+      var k = el.getAttribute('data-bk-plan'), a = document.createElement('a');
+      a.className = 'btn line'; a.href = plans[k].checkout; a.setAttribute('data-lk-buy', ''); a.textContent = k === 'yearly' ? 'Subscribe by the year' : 'Subscribe by the month';
+      el.appendChild(a);
+    });
+    [].forEach.call(document.querySelectorAll('[data-bk-live]'), function (el) { el.innerHTML = el.getAttribute('data-bk-live'); });
     [].forEach.call(document.querySelectorAll('[data-bk-only]'), function (el) { el.hidden = false; });
   }
 
