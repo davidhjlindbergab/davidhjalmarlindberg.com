@@ -2,7 +2,7 @@
 
    A link marked data-gate="<product>" (Andrum's Download for Mac, Download for Windows and, on a phone, Send the
    link to my computer) first asks for the visitor's e-mail address in a small dialog. The download starts the
-   moment the address is in. /lika/download/ shows the same form in the page itself (DownloadGate.run with mount).
+   moment the address is in. /blick/download/ shows the same form in the page itself (DownloadGate.run with mount).
 
    The address goes to the site's collector, the same Google Apps Script web app as /stats.js. stats-collector.gs
    writes one row per download to the tab "E-post" in the Google Sheet "Statistik för davidhjalmarlindberg.com":
@@ -16,7 +16,7 @@
    themselves stay where they are, so a direct link to one still works: this asks, it doesn't lock.
 
    Link attributes:
-     data-gate          the product: Andrum, Lika or Colobri
+     data-gate          the product: Andrum, Blick or Colobri
      data-gate-title    the dialog's heading (default "Download <product>")
      data-gate-text     the line under it
      data-gate-file     what is written in the sheet's Fil column (default: the file's name, from href)

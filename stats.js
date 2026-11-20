@@ -16,8 +16,8 @@
                          or utm_source; utm_campaign), time zone, device, browser, system, language
      from the site       a page view of Andrum or Colobri that came from another part of the site
      time on the page    the seconds the page was in view
-     download            a click on a download (.dmg .exe .zip .pkg .msi under /download/, or a link marked data-lk-download: Lika's)
-     buy                 a click on Buy (and Andrum's in-app Buy button, which opens /andrum/buy/; Lika's data-lk-buy)
+     download            a click on a download (.dmg .exe .zip .pkg .msi under /download/, or a link marked data-lk-download: Blick's, as Lika's was)
+     buy                 a click on Buy (and Andrum's in-app Buy button, which opens /andrum/buy/; Blick's data-lk-buy, as Lika's was)
      notify              a click on "Tell me when it's on sale"
      mail, out           a click on an e-mail link, or on a link to another site
      use, exp            in Colobri in the browser (/colobri/app/): a frame or a clip opened, Generate and variations made
@@ -159,7 +159,7 @@
     try { url = new URL(a.getAttribute('href'), location.href); } catch (err) { return; }
 
     if (a.hasAttribute('data-lk-download')) {
-      send({ k: 'ev', n: 'dl', x: 'Lika', z: zone() });
+      send({ k: 'ev', n: 'dl', x: 'Blick', z: zone() });
     } else if (/\/download\/[^/]+\.(dmg|exe|zip|pkg|msi)$/i.test(url.pathname)) {
       send({ k: 'ev', n: 'dl', x: decodeURIComponent(url.pathname.split('/').pop()), z: zone() });
     } else if (a.hasAttribute('data-cb-buy') || a.hasAttribute('data-an-buy') || a.hasAttribute('data-lk-buy') || a.getAttribute('data-cb-track') === 'InitiateCheckout' || /(^|\.)lemonsqueezy\.com$/.test(url.hostname) || url.hostname === 'buy.polar.sh') {
