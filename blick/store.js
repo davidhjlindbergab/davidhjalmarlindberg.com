@@ -3,7 +3,8 @@
    Nothing is for sale until `live` is true and the three addresses are filled in: then the product page's buttons become
    Try it free for 7 days, each plan gets a button to its checkout, /blick/buy/ offers the two plans and /blick/download/
    forwards to the app.
-     monthly.checkout, yearly.checkout   each plan's checkout link at the store
+     monthly.checkout, yearly.checkout   each plan's checkout link at the store (Polar; each sends the buyer on to
+                                         /blick/thanks/?bought={CHECKOUT_ID}, which shows the key)
      download   the signed and notarized app (a release asset on GitHub: it is larger than GitHub Pages takes)
      version    the version that link holds */
 window.BLICK_STORE = {

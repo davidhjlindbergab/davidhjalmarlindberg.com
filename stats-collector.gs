@@ -43,7 +43,7 @@ var BROWSERS = ['Safari', 'Chrome', 'Firefox', 'Edge', 'Opera', 'Samsung Interne
 var SYSTEMS = ['iOS', 'iPadOS', 'Android', 'macOS', 'Windows', 'Linux', 'ChromeOS'];
 var EVENTS = { dl: 'nedladdning', buy: 'köpklick', notify: 'säg till', mail: 'mejl', out: 'utlänk', use: 'användning', exp: 'export' };
 var LEAD_HEADER = ['Tid', 'E-post', 'Produkt', 'Fil', 'Källa', 'Kampanj', 'Sida'];
-var PRODUCTS = ['Andrum', 'Lika', 'Colobri'];
+var PRODUCTS = ['Andrum', 'Blick', 'Lika', 'Colobri'];
 var ADDRESS = /^[^\s@<>()",;:\\]+@[^\s@<>()",;:\\]+\.[^\s@<>()",;:\\.]{2,}$/;
 
 function doGet() {
