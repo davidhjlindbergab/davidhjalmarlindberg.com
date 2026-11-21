@@ -69,6 +69,10 @@
       u.searchParams.delete("customer_session_token");
       window.history.replaceState(null, "", u.pathname + u.search + (u.hash || "#buy"));
     } catch (e) { /* fine as it is */ }
+    if (session) {   // the buyer's address is filed as a purchase (/download-gate.js, buyer)
+      window.DownloadGateBuyer = { product: "Andrum", session: session };
+      if (window.DownloadGate && window.DownloadGate.buyer) window.DownloadGate.buyer("Andrum", session);
+    }
     var seen = false, mark = "andrum-bought-" + id;
     try { seen = window.localStorage.getItem(mark) === "1"; window.localStorage.setItem(mark, "1"); } catch (e) { /* counted once per visit */ }
     // after the page's other scripts (pixel.js comes after this file)

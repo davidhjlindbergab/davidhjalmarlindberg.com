@@ -96,6 +96,9 @@ ol.steps h2 { margin: 0 0 6px; font-size: 19px; }
   try { var u = new URL(location.href); u.searchParams.delete('bought'); u.searchParams.delete('customer_session_token'); history.replaceState(null, '', u.pathname + u.search); } catch (e) { /* fine */ }
   var box = document.getElementById('key'), text = document.getElementById('keyText'), wait = document.getElementById('keyWait'), copy = document.getElementById('keyCopy');
   if (!/^polar_cst_[A-Za-z0-9_-]{10,}$/.test(session) || !window.fetch) return;
+  // the buyer's address is filed as a purchase (/download-gate.js, buyer)
+  window.DownloadGateBuyer = { product: 'Blick', session: session };
+  var g = document.createElement('script'); g.src = '/download-gate.js'; document.head.appendChild(g);
   var tries = 0;
   (function ask() {
     tries++;
