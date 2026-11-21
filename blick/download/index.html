@@ -63,10 +63,10 @@ footer a:hover { color: var(--ink); }
 <header class="bar"><div class="wrap"><a href="../" aria-label="Blick"><svg class="logo" viewBox="0 -720 3778 730" width="104" height="20" aria-hidden="true"><path fill="#78c7ff" fill-rule="evenodd" transform="translate(720 -360) scale(90)" d="M-8 0A10 10 0 0 1 8 0A10 10 0 0 1 -8 0ZM6.7082 0A9 9 0 0 0 3.1874 -2.4167A4 4 0 0 1 3.1874 2.4167A9 9 0 0 0 6.7082 0ZM-6.7082 0A9 9 0 0 1 -3.1874 -2.4167A4 4 0 0 0 -3.1874 2.4167A9 9 0 0 1 -6.7082 0ZM-3 0A3 3 0 0 1 3 0A3 3 0 0 1 -3 0Z"/><path fill="currentColor" transform="translate(1739 0)" d="M318 10Q263 10 220 -13.5Q177 -37 152.5 -78Q128 -119 128 -171L128 -309Q128 -361 153 -402Q178 -443 221 -466.5Q264 -490 318 -490Q383 -490 435.5 -456.5Q488 -423 518.5 -366.5Q549 -310 549 -239Q549 -169 518.5 -112.5Q488 -56 435.5 -23Q383 10 318 10ZM61 0L61 -720L171 -720L171 -362L152 -246L171 -129L171 0L61 0ZM300 -94Q340 -94 370.5 -112.5Q401 -131 418.5 -164Q436 -197 436 -240Q436 -283 418.5 -316Q401 -349 370.5 -367.5Q340 -386 300 -386Q260 -386 229 -367.5Q198 -349 181 -316Q164 -283 164 -240Q164 -197 181 -164Q198 -131 229 -112.5Q260 -94 300 -94ZM641 0L641 -720L751 -720L751 0L641 0ZM874 0L874 -480L984 -480L984 0L874 0ZM1328 10Q1257 10 1199.5 -23Q1142 -56 1109 -113Q1076 -170 1076 -240Q1076 -311 1109 -367.5Q1142 -424 1199.5 -457Q1257 -490 1328 -490Q1384 -490 1432.5 -468.5Q1481 -447 1515 -407L1443 -334Q1422 -359 1392.5 -371.5Q1363 -384 1328 -384Q1287 -384 1255.5 -365.5Q1224 -347 1206.5 -315Q1189 -283 1189 -240Q1189 -198 1206.5 -165.5Q1224 -133 1255.5 -114.5Q1287 -96 1328 -96Q1363 -96 1392.5 -108.5Q1422 -121 1443 -146L1515 -73Q1481 -33 1432.5 -11.5Q1384 10 1328 10ZM1899 0L1696 -245L1898 -480L2029 -480L1797 -216L1802 -279L2039 0L1899 0ZM1594 0L1594 -720L1704 -720L1704 0L1594 0ZM863.5 -634a65.5 65.5 0 1 0 131 0a65.5 65.5 0 1 0 -131 0Z"/></svg></a><a class="back" href="../">Back to Blick</a></div></header>
 <main><div class="wrap">
 <p class="eyebrow">Download</p>
-<div id="ask" hidden><h1>Download Blick</h1><p class="lead">Leave your e-mail address and the download starts straight away. Blick runs for 7 days with everything, exports included.</p><div id="ask-form"></div></div>
-<div id="wait" hidden><h1>Your download is starting…</h1><p class="lead">Unzip it and move Blick to your Applications folder. It runs for 7 days with everything, exports included; after that, subscribe to keep exporting.</p>
+<div id="ask" hidden><h1>Download Blick</h1><p class="lead">Leave your e-mail address and the download starts straight away. Blick runs for 7 days with everything, exports included.</p><div id="ask-form"></div><p class="fine" id="other" hidden><a href="#" id="other-link"></a></p></div>
+<div id="wait" hidden><h1>Your download is starting…</h1><p class="lead" id="wait-how">Unzip it and move Blick to your Applications folder. It runs for 7 days with everything, exports included; after that, subscribe to keep exporting.</p>
 <div class="ctas"><a class="btn solid" href="../buy/" data-lk-buy id="buy">See the plans</a><a class="btn line" href="../">Back to Blick</a></div>
-<p class="fine">For a Mac with Apple silicon, on macOS 13 or later. Signed and notarized by Apple.</p></div>
+<p class="fine" id="wait-for">For a Mac with Apple silicon, on macOS 13 or later. Signed and notarized by Apple.</p></div>
 <div id="soon"><h1>The download is not up yet.</h1>
 <p class="lead">Blick is not out yet. Leave me a line and I'll write to you the day it is.</p>
 <div class="ctas"><a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Blick%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Blick%20is%20on%20sale.">Tell me when it's on sale</a><a class="btn line" href="../">Back to Blick</a></div></div>
@@ -74,16 +74,31 @@ footer a:hover { color: var(--ink); }
 <footer><div class="wrap"><span>© 2026 David HJ Lindberg AB</span><nav><a href="../terms/">Licence agreement</a><a href="../privacy/">Privacy</a><a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a></nav></div></footer>
 <script>
 (function () {
-  var s = window.BLICK_STORE || {}, to = s.download;
+  /* Mac or Windows: what the visitor's computer says, or ?os=mac / ?os=windows (the link under the form sets it).
+     Windows is offered only when the store names a file for it. */
+  var s = window.BLICK_STORE || {}, q;
+  try { q = new URLSearchParams(location.search).get('os'); } catch (e) { q = null; }
+  var win = !!s.downloadWin && (q ? /^win/i.test(q) : /Windows/i.test(navigator.userAgent || ''));
+  var to = win ? s.downloadWin : s.download;
   function go() { document.getElementById('ask').hidden = true; document.getElementById('wait').hidden = false; location.replace(to); }
   if (to && s.live) {
     document.getElementById('soon').hidden = true;
+    if (win) {
+      document.getElementById('wait-how').textContent = 'Unzip it, put the folder where you like and open Blick in it. It runs for 7 days with everything, exports included; after that, subscribe to keep exporting.';
+      document.getElementById('wait-for').textContent = 'For Windows 10 and 11, 64-bit. Blick for Windows is new and not yet signed for Windows, so Windows asks before it opens it the first time: choose More info, then Run anyway.';
+    }
+    if (s.downloadWin && s.download) {
+      var other = document.getElementById('other-link');
+      other.textContent = win ? 'On a Mac? Download for Mac' : 'On Windows? Download for Windows';
+      other.href = '?os=' + (win ? 'mac' : 'windows');
+      document.getElementById('other').hidden = false;
+    }
     // first the visitor's e-mail address (/download-gate.js), unless they bought Blick or gave it before
     var gate = window.DownloadGate, file = decodeURIComponent(to.split('/').pop());
     if (!gate) go();
     else {
       document.getElementById('ask').hidden = false;
-      gate.run({ product: 'Blick', file: file, text: '', button: 'Download for Mac', mount: document.getElementById('ask-form') }, go);
+      gate.run({ product: 'Blick', file: file, text: '', button: win ? 'Download for Windows' : 'Download for Mac', mount: document.getElementById('ask-form') }, go);
     }
   }
 })();
