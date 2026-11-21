@@ -12,16 +12,16 @@
 <script>/* the glow keeps time with the clock, so it is the same on every page (see style.css) */
 document.documentElement.style.setProperty('--t', Date.now() / 1000 % 86400);</script>
 <script>
-/* the color grading app's old address goes to its page today, at the same place within it (the buy link to the pricing) */
+/* the color grading app's old addresses go to Blick, which it became */
 (function () {
   var p = location.pathname, m = /^\/(n[a-z]{4})(\/.*)?$/i.exec(p);
   if (m && m[1].toLowerCase() === ['n', 'y', 'a', 'n', 's'].join('')) {
     var rest = m[2] || '/', hash = location.hash === '#buy' ? '#pricing' : location.hash;
     if (/^\/download\//.test(rest)) rest = '/#pricing';
-    location.replace('/colobri' + rest + location.search + (rest.indexOf('#') < 0 ? hash : ''));
+    location.replace('/blick/');
   }
   // (an earlier version of the plugins' download goes to the pricing, where the current one is)
-  if (/^\/colobri\/download\/Colobri-(plugins|for-(Mac|Windows))-[0-9.]+\.zip$/i.test(p)) location.replace('/colobri/#pricing');
+  if (/^\/colobri\/download\/Colobri-(plugins|for-(Mac|Windows))-[0-9.]+\.zip$/i.test(p)) location.replace('/blick/');
 })();
 </script>
 <script src="/stats.js" defer></script>
@@ -37,7 +37,6 @@ document.documentElement.style.setProperty('--t', Date.now() / 1000 % 86400);</s
       <div class="menu-list">
         <a href="/andrum/">Andrum</a>
         <a href="/blick/">Blick</a>
-        <a href="/colobri/">Colobri</a>
       </div>
     </div>
     <a href="/#about">About</a>

@@ -1,6 +1,6 @@
 # davidhjalmarlindberg.com
 
-The website of David Hjalmar Lindberg: the front page, a page for each project, and product pages for Andrum (`/andrum/`), Colobri (`/colobri/`) and Blick (`/blick/`, unlisted and not on sale yet).
+The website of David Hjalmar Lindberg: the front page, a page for each project, and product pages for Andrum (`/andrum/`) and Blick (`/blick/`) and Blick (`/blick/`, unlisted and not on sale yet).
 
 Plain HTML, CSS and JavaScript with no build step. Served by GitHub Pages from the root of `main`; `CNAME` holds the custom domain.
 
@@ -60,6 +60,10 @@ Plain HTML, CSS and JavaScript with no build step. Served by GitHub Pages from t
 - **The browser app** (`colobri/app/index.html`, with `colobri/app/colobri-stills.bin` beside it): since 14 Nov 2026 this is the new Colobri web app, Version 13 (generation 12 of the engine). It is the Claude artifact "Colobri" wrapped as a page of its own with this site's head: the description, the share card, `/stats.js` and the icon. No build step here. It opens on David's field-of-light animation with "Bring your colors to life." A clip or a still is read in the browser and looks are made for its frame, each from one of David's own stills and named after a hummingbird; Generate adds more until none is left that reads differently. The Stills tab shows all 1,073 stills, and picking one grades the picture to it. `colobri-stills.bin` holds a small picture of each still (144 px high); the page fetches it when the Stills tab is opened, and works without it. It is free, with no licence and no trial. Stills (PNG or JPEG) and LUTs (a zip with a cube and the recipe) are plain downloads. Nothing is uploaded. It replaced the site build of the earlier app (`dist/web/colobri-site.html`, which asked for a licence to export); that page is in this repository's history. To update it, rebuild the artifact and wrap it again with the same head (`build_site.py` in the app's build), and copy the stills file again if the stills changed. The Colobri product page (`colobri/index.html`) still shows the earlier app in its picture of the app.
 
 - **Meta domain verification**: the `facebook-domain-verification` meta tag in the front page's head (`index.html`) must stay.
+
+## Colobri: taken off the site (21 Nov 2026)
+
+David, 21 Nov 2026: "ta bort Colobri från siten". Colobri's product page, the app in the browser (`colobri/app/`), its tiles, its place in every menu and in the sitemap, its scripts, pictures and `img/work/colobri.webp` are removed. `colobri/`, `colobri/app/`, `colobri/thanks/`, `colobri/terms/` and `colobri/privacy/` send the visitor to Blick; so do the older addresses that `404.html` used to send to Colobri. Kept, linked from nowhere: the two plugin zips and their checksums in `colobri/download/`, for anyone who still has a link to them. Sections further down that describe Colobri's pages are history. The cookie choice is still kept under the name `colobri.cookies` (Andrum's pixel reads it).
 
 ## Lika: taken off the site (20 Nov 2026)
 
