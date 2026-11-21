@@ -9,7 +9,8 @@
    time, address, product, file, where they came from and the page.
 
    The browser remembers the address (localStorage), so a visitor is asked once: their next download goes straight
-   through and is written down with the same address. Buyers are never asked: back from the checkout (?bought=),
+   through and is written down with the same address. A buyer's address comes from the checkout instead (see buyer
+   below), written down as a purchase. Buyers are never asked: back from the checkout (?bought=),
    or with Andrum's thank-you panel showing, or a purchase remembered by Andrum's store.js.
 
    If the dialog can't be shown (a browser without <dialog>), the download goes through as before. The files
@@ -71,7 +72,7 @@
      addresses: it reads k, n, x, p and test, and files the address as a download (nedladdning) in its tab Test.
      The new one (stats-collector.gs) sees lead: 1, writes the
      whole row to the tab E-post, and moves what the old one filed there once. */
-  function send(product, file, email) {
+  function send(product, file, email, buyer) {
     var q = new URLSearchParams(location.search), test = q.get('stats') === 'test';
     var lead = {
       v: 1, k: 'ev', n: test ? 'out' : 'dl', x: email, test: 1,
@@ -79,6 +80,7 @@
       p: location.pathname.replace(/\/index\.html$/, '/'), s: source(q), c: q.get('utm_campaign') || ''
     };
     if (test) lead.lt = 1;
+    if (buyer) { lead.t = 'buy'; lead.nm = String(buyer.name || '').slice(0, 80); }
     if (location.protocol !== 'https:' || location.hostname !== HOST) {   // (previews and copies elsewhere send nothing)
       if (window.console) console.info('[download-gate] would send', lead);
       return;
@@ -277,5 +279,25 @@
     });
   }, true);
 
-  window.DownloadGate = { run: run, remembered: remembered };
+  /* A purchase. Back from Polar's checkout the address carries a one-time session for this buyer
+     (customer_session_token). With it the page asks Polar for the buyer's own name and address, once, and files them
+     like a download, marked as a purchase: so David can write to those who bought, too. The session is used for this
+     one question and kept nowhere. A product's own script hands it over: DownloadGate.buyer('Andrum', session), or,
+     if it runs before this file, window.DownloadGateBuyer = { product, session }. */
+  var asked = {};
+  function buyer(product, session) {
+    if (!/^polar_cst_[A-Za-z0-9_-]{10,}$/.test(session || '') || asked[session] || !window.fetch) return;
+    asked[session] = 1;
+    fetch('https://api.polar.sh/v1/customer-portal/customers/me', { headers: { Authorization: 'Bearer ' + session, Accept: 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (c) {
+        if (!c || !valid(c.email)) return;
+        remember(c.email);
+        send(product, '', c.email, { name: c.name });
+      })
+      .catch(function () {});
+  }
+
+  window.DownloadGate = { run: run, remembered: remembered, buyer: buyer };
+  if (window.DownloadGateBuyer) buyer(window.DownloadGateBuyer.product, window.DownloadGateBuyer.session);
 })();

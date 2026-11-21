@@ -23,6 +23,12 @@
  * that sent them), utm_campaign and the page. Nothing there is ever added up or removed by the script. From a page
  * opened with ?stats=test they go to "E-post test".
  *
+ * Since 21 Nov 2026 a purchase comes the same way: back from Polar's checkout the page reads the buyer's own name and
+ * address with the one-time session Polar hands it, and sends them with t: 'buy'. The row's Typ is then "köp"
+ * (a download's is "nedladdning"). The tab "Adresser" is the list to write to: one row per address, with the
+ * products, whether they have bought, the first and the latest time. Its last column, Avregistrerad, is David's to
+ * fill in by hand for anyone who asks not to be written to; the script never touches it.
+ *
  * Each address comes as a message the collector before 17 Nov 2026 also understood (k: 'ev', n: 'dl', the address
  * as x, test: 1): that version filed it as a download in the tab Test. The first address after this version is
  * deployed moves those rows from Test to E-post, once (moveEarlyLeads_).
@@ -42,7 +48,8 @@ var DEVICES = { m: 'mobil', t: 'surfplatta', d: 'dator' };
 var BROWSERS = ['Safari', 'Chrome', 'Firefox', 'Edge', 'Opera', 'Samsung Internet', 'Instagram', 'Facebook'];
 var SYSTEMS = ['iOS', 'iPadOS', 'Android', 'macOS', 'Windows', 'Linux', 'ChromeOS'];
 var EVENTS = { dl: 'nedladdning', buy: 'köpklick', notify: 'säg till', mail: 'mejl', out: 'utlänk', use: 'användning', exp: 'export' };
-var LEAD_HEADER = ['Tid', 'E-post', 'Produkt', 'Fil', 'Källa', 'Kampanj', 'Sida'];
+var LEAD_HEADER = ['Tid', 'E-post', 'Produkt', 'Fil', 'Källa', 'Kampanj', 'Sida', 'Typ', 'Namn'];
+var LIST_HEADER = ['E-post', 'Namn', 'Produkter', 'Köpt', 'Först', 'Senast', 'Avregistrerad'];
 var PRODUCTS = ['Andrum', 'Blick', 'Lika', 'Colobri'];
 var ADDRESS = /^[^\s@<>()",;:\\]+@[^\s@<>()",;:\\]+\.[^\s@<>()",;:\\.]{2,}$/;
 
@@ -142,7 +149,9 @@ function leadRow_(hit, now) {
     clean_(hit.f, /^[\w\-. ()]+$/, 80),
     clean_(hit.s, /^[a-z0-9][a-z0-9 ._\-()\/]*$/i, 60).toLowerCase(),
     clean_(hit.c, /^[\w\-. +%]+$/, 60),
-    path_(hit.p)
+    path_(hit.p),
+    hit.t === 'buy' ? 'köp' : 'nedladdning',
+    hit.t === 'buy' && typeof hit.nm === 'string' ? hit.nm.replace(/[\u0000-\u001f<>="]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80) : ''
   ];
 }
 
@@ -160,8 +169,10 @@ function storeLead_(row, test) {
       sheet.getRange('A1').setNote('Fylls i av skriptet i Tillägg > Apps Script: en rad per nedladdning från davidhjalmarlindberg.com, ' +
         'med adressen besökaren skrev in före nedladdningen.');
     }
+    if (sheet.getRange(1, LEAD_HEADER.length).getValue() !== LEAD_HEADER[LEAD_HEADER.length - 1]) sheet.getRange(1, 1, 1, LEAD_HEADER.length).setValues([LEAD_HEADER]).setFontWeight('bold');
     if (!test) moveEarlyLeads_(ss, sheet);
     sheet.appendRow(asLeadText_(row));
+    if (!test) listAddress_(ss, row);
   } finally {
     lock.releaseLock();
   }
@@ -187,10 +198,36 @@ function moveEarlyLeads_(ss, sheet) {
     var m = /^(.+?)(\(news\))?$/.exec(text(r[3]));
     if (text(r[2]) !== 'nedladdning' || !m || !ADDRESS.test(m[1])) return;
     var day = r[0] instanceof Date ? day_(r[0]) : text(r[0]);
-    sheet.appendRow(asLeadText_([day, m[1], text(r[1]) === 'andrum' ? 'Andrum' : 'Lika', '', '', '', '']));
+    var early = [day, m[1], text(r[1]) === 'andrum' ? 'Andrum' : 'Lika', '', '', '', '', 'nedladdning', ''];
+    sheet.appendRow(asLeadText_(early));
+    listAddress_(ss, early);
     moved.push(i + 2);
   });
   for (var j = moved.length - 1; j >= 0; j--) test.deleteRow(moved[j]);
+}
+
+/** The tab "Adresser": one row per address (compared in small letters), kept up as rows come to E-post. */
+function listAddress_(ss, row) {
+  var sheet = ss.getSheetByName('Adresser');
+  if (!sheet) {
+    sheet = ss.insertSheet('Adresser', ss.getNumSheets());
+    sheet.getRange(1, 1, 1, LIST_HEADER.length).setValues([LIST_HEADER]).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+    sheet.setColumnWidth(1, 260).setColumnWidth(2, 180).setColumnWidth(3, 160);
+    sheet.getRange('A1').setNote('En rad per adress, från fliken E-post. Skriptet fyller i allt utom kolumnen Avregistrerad: ' +
+      'skriv något där för den som inte vill ha fler mejl.');
+  }
+  var email = String(row[1]).toLowerCase(), when = row[0], product = row[2], buy = row[7] === 'köp', name = row[8] || '';
+  var last = sheet.getLastRow(), at = 0;
+  if (last > 1) {
+    var have = sheet.getRange(2, 1, last - 1, 1).getValues();
+    for (var i = 0; i < have.length; i++) if (String(have[i][0]).replace(/^'/, '').toLowerCase() === email) { at = i + 2; break; }
+  }
+  if (!at) { sheet.appendRow(asLeadText_([email, name, product, buy ? 'ja' : '', when, when])); return; }
+  var r = sheet.getRange(at, 1, 1, 6).getValues()[0].map(function (v) { return String(v).replace(/^'/, ''); });
+  var products = r[2] ? r[2].split(', ') : [];
+  if (products.indexOf(product) < 0) products.push(product);
+  sheet.getRange(at, 2, 1, 5).setValues([asLeadText_([name || r[1], products.join(', '), buy || r[3] === 'ja' ? 'ja' : '', r[4] || when, when])]);
 }
 
 function tab_(ss, name) {
