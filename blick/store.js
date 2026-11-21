@@ -8,9 +8,9 @@
      download   the signed and notarized app (a release asset on GitHub: it is larger than GitHub Pages takes)
      version    the version that link holds */
 window.BLICK_STORE = {
-  live: false,
-  monthly: { price: '\u20ac49', checkout: '' },
-  yearly: { price: '\u20ac495', checkout: '' },
-  download: '',
-  version: ''
+  live: true,
+  monthly: { price: '\u20ac49', checkout: 'https://buy.polar.sh/polar_cl_ckr0X9FwjOHj01flRe8hq6phO5JdZixgoTARB2yzqwe' },
+  yearly: { price: '\u20ac495', checkout: 'https://buy.polar.sh/polar_cl_ZSTUFMM4WkBDfQlGgL7B5v69gHi7ND5iS0fOl4U5LT4' },
+  download: 'https://github.com/davidhjlindbergab/davidhjalmarlindberg.com/releases/download/blick-3.4.2/Blick-3.4.2-mac.zip',
+  version: '3.4.2'
 };
