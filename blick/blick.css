@@ -1,0 +1,328 @@
+/* Blick's pages on davidhjalmarlindberg.com: the overview and the pages under it (Grade, Prepare, Workflow, Tech specs).
+   They are the mark's own room: black, and one light. The mark is David's "Blick Animation" (17 Nov 2026), an eye drawn
+   in one line that is black until a light finds it. The pages' only color is the brand's blue, #78C7FF, which is the
+   logo's: in the bar's eye, in the small eye before each label, under the page you are on and in what a control points
+   at. Everything else is neutral, as in the app, where the only color is the footage. What moves is light and focus,
+   never position. Text as on the site's other product pages: SF Pro on Apple devices (the system font), Inter elsewhere. */
+@font-face { font-family: "Inter Web"; src: url("../fonts/inter-var-latin.woff") format("woff"); font-weight: 100 900; font-style: normal; font-display: swap; size-adjust: 98%; }
+
+:root {
+  color-scheme: dark;
+  --bg: #000000;
+  --card: #080b0e;
+  --well: #11171c;
+  --line: #1c242b;
+  --line-2: #2a343c;
+  --ink: #eef3f6;
+  --ink-2: #b3bdc5;
+  --ink-3: #8e9aa4;
+  --sky: #78c7ff;
+  /* the mark in small, before each label */
+  --mark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-8.6 -4.6 17.2 9.2'%3E%3Cpath fill='%2378c7ff' fill-rule='evenodd' d='M-8 0A10 10 0 0 1 8 0A10 10 0 0 1 -8 0ZM6.7082 0A9 9 0 0 0 3.1874 -2.4167A4 4 0 0 1 3.1874 2.4167A9 9 0 0 0 6.7082 0ZM-6.7082 0A9 9 0 0 1 -3.1874 -2.4167A4 4 0 0 0 -3.1874 2.4167A9 9 0 0 1 -6.7082 0ZM-3 0A3 3 0 0 1 3 0A3 3 0 0 1 -3 0Z'/%3E%3C/svg%3E");
+  --f: -apple-system, BlinkMacSystemFont, "Inter Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --gl: max(22px, env(safe-area-inset-left, 0px));
+  --gr: max(22px, env(safe-area-inset-right, 0px));
+  --wide: 1200px;
+  --r: 18px;
+  --bar: 52px;
+  --ease: cubic-bezier(.22, .7, .2, 1);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--bar) + 12px + env(safe-area-inset-top, 0px)); -webkit-text-size-adjust: 100%; background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 17px/1.47059 var(--f); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: clip; letter-spacing: 0.0035em; }
+img, video { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+::selection { background: rgba(120, 199, 255, 0.3); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--sky); outline-offset: 3px; border-radius: 6px; }
+.wrap { width: 100%; max-width: calc(var(--wide) + var(--gl) + var(--gr)); margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
+
+/* the bar: the mark, the pages, and the way in. On a narrow screen the pages are a row of their own under it, which
+   can be pushed sideways. */
+.bar { position: sticky; top: 0; z-index: 20; padding-top: env(safe-area-inset-top, 0px); background: rgba(0, 0, 0, 0.72); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid transparent; transition: border-color .3s; }
+.bar.on { border-bottom-color: var(--line); }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; column-gap: 28px; }
+.bar .home { display: flex; align-items: center; height: 52px; margin-right: auto; color: var(--ink); }
+.logo { display: block; width: auto; height: 20px; }
+.tabs { display: flex; gap: 26px; font-size: 13px; color: var(--ink-2); }
+.tabs a { display: block; padding: 17px 0 16px; border-bottom: 1px solid transparent; text-decoration: none; white-space: nowrap; transition: color .2s, border-color .2s; }
+.tabs a:hover { color: var(--ink); }
+.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--sky); }
+
+/* pills: as wide as their words; the words start where the round end meets the straight edge (half the height, border included) */
+.btn { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 21px; border-radius: 22px; border: 1px solid transparent; font: 400 17px/1 var(--f); letter-spacing: 0; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background .25s, border-color .25s, color .25s; }
+.btn.solid { background: var(--ink); color: #000; }
+.btn.solid:hover { background: var(--sky); }
+.btn.small { height: 30px; padding: 0 14px; border-radius: 15px; font-size: 13px; }
+.btn.line { border-color: var(--line-2); color: var(--ink); }
+.btn.line:hover { border-color: var(--sky); }
+.more { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-2); padding-bottom: 1px; transition: border-color .25s; }
+.more:hover { border-bottom-color: var(--sky); }
+.fine { margin: 18px 0 0; font-size: 14px; line-height: 1.43; color: var(--ink-3); }
+.fine a { color: var(--ink-2); }
+
+/* what a part of the app came with: a small word beside its name. The script reads the store and writes what is true
+   today: "Coming in 3.7" while the download is older than that, "New" once it is that version, nothing after. */
+.v { display: inline-flex; align-items: center; height: 22px; padding: 0 11px; margin-left: 10px; border-radius: 11px; box-shadow: inset 0 0 0 1px var(--line-2); font: 400 12px/1 var(--f); letter-spacing: 0.01em; color: var(--ink-2); white-space: nowrap; vertical-align: middle; position: relative; top: -0.12em; }
+.v:empty { display: none; }
+.v.new { color: var(--sky); box-shadow: inset 0 0 0 1px rgba(120, 199, 255, 0.4); }
+.eyebrow .v, h2 .v { top: 0; }
+.list dt .v, .formats dt .v { margin-left: 0; top: 0; }
+.formats dt { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; align-content: start; }
+
+/* The opening of the overview: the eye, and the light that finds it. The canvas is drawn by the script (David's
+   shader); under it lies the same eye lit by a plain gradient, which is what shows without WebGL or without the script. */
+.hero { position: relative; padding: clamp(26px, 3.2vw, 44px) 0 0; text-align: center; }
+.eye { position: relative; width: min(76vw, 640px); aspect-ratio: 17.6 / 9.6; margin: 0 auto clamp(16px, 2vw, 24px); }
+.eye canvas, .eye svg { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.eye canvas { opacity: 0; }
+.eye.lit canvas { opacity: 1; }
+.eye.lit svg { visibility: hidden; }
+.tag-line { margin: 0 0 clamp(14px, 1.8vw, 20px); font-size: 12px; line-height: 1; letter-spacing: 0.26em; text-transform: uppercase; color: var(--ink-3); }
+h1 { margin: 0; font-size: clamp(42px, 6.4vw, 80px); line-height: 1.04; font-weight: 600; letter-spacing: -0.035em; text-wrap: balance; }
+.hero .lead, .intro .lead { max-width: 720px; margin: clamp(18px, 2.4vw, 26px) auto 0; font-size: clamp(19px, 1.9vw, 24px); line-height: 1.36; color: var(--ink-2); text-wrap: balance; }
+.ctas { position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 17px 26px; margin-top: clamp(26px, 3vw, 36px); }
+
+/* the opening of the pages under it: the page's name, one sentence, and what it is about */
+.intro { padding: clamp(56px, 8vw, 112px) 0 clamp(52px, 7vw, 92px); text-align: center; }
+.intro .eyebrow { margin-bottom: 18px; }
+
+/* Original | Graded, as in the app's bar */
+.seg { display: inline-flex; padding: 3px; border-radius: 12px; background: var(--well); box-shadow: inset 0 0 0 1px var(--line); }
+.seg button { appearance: none; height: 34px; padding: 0 18px; border: 0; border-radius: 9px; background: none; color: var(--ink-2); font: 500 15px/1 var(--f); white-space: nowrap; cursor: pointer; transition: background .25s, color .25s; }
+.seg button:hover { color: var(--ink); }
+.seg button[aria-pressed="true"] { background: #27313a; color: var(--ink); }
+.seg.many { flex-wrap: wrap; justify-content: center; }
+.tools { display: flex; justify-content: center; margin-top: 20px; }
+html:not(.js) .tools { display: none; }
+figure { margin: 0; }
+figcaption, .cap { max-width: 660px; margin: 16px auto 0; font-size: 14px; line-height: 1.43; color: var(--ink-3); text-align: center; text-wrap: pretty; }
+.tag { position: absolute; left: 14px; top: 14px; padding: 5px 8px 4px; border-radius: 5px; background: rgba(0, 0, 0, 0.62); color: var(--ink); font: 500 12px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+
+/* The cut. One film file carries every shot twice, frame for frame: the upper picture as the clip arrived, the lower one as
+   Blick rendered it. Left alone (no script, or the script gave up) the film shows as it is, both pictures and the browser's
+   controls. Once the script has it (.live) the stage is one picture high and a canvas over the film draws what is asked
+   for: the two side by side with a line between them, or one of them whole. */
+.film { padding: clamp(44px, 6vw, 76px) 0 clamp(80px, 11vw, 150px); }
+.film .stage { position: relative; max-width: 760px; margin: 0 auto; border-radius: 14px; overflow: hidden; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.film video { width: 100%; }
+.film canvas, .film .tag, .film .knob, .film .play, .film figure:not(.live) .tools, .film .live .plain, .film figure:not(.live) .lively { display: none; }
+.by-finger { display: none; }
+@media (hover: none) and (pointer: coarse) { .by-finger { display: inline; } .by-mouse { display: none; } }
+.film .live .stage { max-width: none; aspect-ratio: 16 / 9; cursor: pointer; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
+.film .live video { position: absolute; left: 0; top: 0; }
+.film .live canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
+.film .live .tag { display: block; pointer-events: none; transition: opacity .2s; }
+.film .tag.end { left: auto; right: 14px; }
+.film .stage[data-show="final"] .tag:not(.end), .film .stage[data-show="original"] .tag.end { opacity: 0; }
+/* the line between the two pictures, with its grip: drag it, or move it with the arrow keys */
+.film .live .stage[data-show="split"] .knob { display: block; position: absolute; top: 0; bottom: 0; left: var(--at, 50%); width: 44px; margin-left: -22px; cursor: ew-resize; touch-action: none; }
+.film .knob::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; margin-left: -.5px; background: rgba(238, 243, 246, 0.92); }
+.film .knob svg { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: rgba(0, 0, 0, 0.5); box-shadow: inset 0 0 0 1.5px rgba(238, 243, 246, 0.92); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.film .knob:focus-visible { outline: none; }
+.film .knob:focus-visible svg { box-shadow: inset 0 0 0 1.5px var(--sky), 0 0 0 3px rgba(120, 199, 255, 0.45); }
+/* the film plays by itself while it is in view; this stops and starts it */
+.film .live .play { display: grid; place-items: center; position: absolute; left: 12px; bottom: 12px; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: rgba(0, 0, 0, 0.6); color: var(--ink); cursor: pointer; opacity: .62; transition: opacity .2s; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.film .play:hover, .film .play:focus-visible, .film .stage.paused .play { opacity: 1; }
+.film .play svg { width: 12px; height: 12px; }
+.film .play .go, .film .stage.paused .play .stop { display: none; }
+.film .stage.paused .play .go { display: block; }
+
+/* sections */
+.sec { padding: 0 0 clamp(88px, 12vw, 168px); }
+.head { max-width: 860px; margin: 0 auto clamp(36px, 5vw, 60px); text-align: center; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 14px; font-size: 14px; line-height: 1.3; font-weight: 600; color: var(--ink-2); }
+.eyebrow::before { content: ""; width: 22px; height: 12px; background: var(--mark) center / contain no-repeat; }
+h2 { margin: 0; font-size: clamp(32px, 4.8vw, 56px); line-height: 1.07; font-weight: 600; letter-spacing: -0.028em; text-wrap: balance; }
+.head .lead { max-width: 700px; margin: 20px auto 0; font-size: clamp(19px, 1.7vw, 21px); line-height: 1.38; color: var(--ink-2); text-wrap: pretty; }
+.lead strong { color: var(--ink); font-weight: 600; }
+/* one thing said large: what the app is */
+.statement { max-width: 1000px; margin: 0 auto; font-size: clamp(26px, 3.7vw, 46px); line-height: 1.15; font-weight: 600; letter-spacing: -0.022em; color: var(--ink-3); text-align: center; text-wrap: balance; }
+.statement strong { color: var(--ink); font-weight: 600; }
+.list + .cap, .formats + .cap { margin-top: clamp(34px, 4vw, 48px); }
+h3 { margin: 0; font-size: 21px; line-height: 1.19; font-weight: 600; letter-spacing: -0.01em; }
+
+/* the app's window: one photograph of it, or two, one over the other */
+.win .shot { position: relative; aspect-ratio: 1440 / 900; border-radius: clamp(6px, 1.1vw, 13px); overflow: hidden; background: #101010; box-shadow: 0 0 0 1px var(--line-2); }
+.win .shot img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.win .shot .b { opacity: 0; transition: opacity .6s var(--ease); }
+.win[data-show="b"] .shot .b { opacity: 1; }
+.win + .list, .looks + .list, .picks + .list, .list.after { margin-top: clamp(44px, 6vw, 76px); }
+.win.after, .list + .win { margin-top: clamp(44px, 6vw, 76px); }
+/* a piece of the window, shown at its own shape */
+.piece { max-width: 980px; margin: 0 auto; }
+.piece img { width: 100%; border-radius: clamp(6px, 1.1vw, 13px); box-shadow: 0 0 0 1px var(--line-2); background: #101010; }
+.piece.narrow { max-width: 560px; }
+
+/* one frame in several looks: all of them in a row without the script, one at a time with it */
+.looks .frames { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.looks .frames img { width: 100%; border-radius: 10px; background: var(--card); }
+.js .looks .frames { position: relative; display: block; max-width: 980px; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: clamp(8px, 1.1vw, 14px); overflow: hidden; background: var(--card); box-shadow: 0 0 0 1px var(--line); }
+.js .looks .frames img { position: absolute; inset: 0; height: 100%; border-radius: 0; opacity: 0; transition: opacity .45s var(--ease); }
+.js .looks .frames img.on { opacity: 1; }
+/* every clip of the cut side by side, in one look after another */
+.js .looks.strip .frames { max-width: none; aspect-ratio: 2584 / 288; border-radius: clamp(4px, .6vw, 8px); }
+@media (max-width: 599px) { .js .looks.strip .frames { aspect-ratio: 1286 / 726; } }
+/* the looks of the library, each chosen by its own picture */
+.picks { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 980px; margin: 18px auto 0; padding: 0; list-style: none; }
+html:not(.js) .picks { display: none; }
+.picks button { appearance: none; display: block; width: clamp(58px, 8.3vw, 98px); padding: 0; border: 0; border-radius: 8px; background: var(--card); overflow: hidden; cursor: pointer; box-shadow: 0 0 0 1px var(--line-2); opacity: .58; transition: opacity .25s, box-shadow .25s; }
+.picks button img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.picks button:hover { opacity: 1; }
+.picks button[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px var(--sky); }
+.picks .none { display: grid; place-items: center; aspect-ratio: 16 / 9; font: 500 12px/1.2 var(--f); color: var(--ink-2); }
+
+/* The wall: looks of the library, side by side from edge to edge. It rests in the dark, and a light crosses it: the
+   pointer's, or its own when the pointer rests. Two copies of one picture, the lit one seen through a round opening. */
+.wall { position: relative; height: clamp(300px, 44vw, 640px); overflow: hidden; background: var(--card); --mx: 50%; --my: 46%; }
+.wall img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.wall .dim { filter: brightness(.4) saturate(.85); }
+.wall .lit { -webkit-mask-image: radial-gradient(circle clamp(170px, 32vw, 470px) at var(--mx) var(--my), #000 0, rgba(0, 0, 0, .6) 42%, transparent 100%); mask-image: radial-gradient(circle clamp(170px, 32vw, 470px) at var(--mx) var(--my), #000 0, rgba(0, 0, 0, .6) 42%, transparent 100%); }
+.wall::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(#000, transparent 16%, transparent 84%, #000); }
+.wall + .wrap { margin-top: clamp(40px, 5vw, 64px); }
+
+/* a row of large facts, each one thing the app knows or holds */
+.facts-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px 44px; margin: 0; text-align: center; }
+.facts-row dt { font-size: clamp(44px, 6vw, 72px); line-height: 1; font-weight: 600; letter-spacing: -0.035em; }
+.facts-row dd { max-width: 300px; margin: 12px auto 0; font-size: 16px; line-height: 1.45; color: var(--ink-2); text-wrap: balance; }
+
+/* short facts in columns */
+.list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px 44px; margin: 0; }
+.list dt { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 6px; font-size: 19px; line-height: 1.26; font-weight: 600; letter-spacing: -0.006em; }
+.list dd { margin: 0; font-size: 16px; line-height: 1.47; color: var(--ink-2); }
+.list.four { grid-template-columns: repeat(4, 1fr); }
+.list.two { grid-template-columns: repeat(2, 1fr); max-width: 900px; margin-left: auto; margin-right: auto; }
+
+/* what happens, in the order it happens */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 0; padding: 0; list-style: none; counter-reset: step; border-top: 1px solid var(--line-2); }
+.steps.three { grid-template-columns: repeat(3, 1fr); }
+.steps li { counter-increment: step; padding: 22px 26px 4px 0; }
+.steps li + li { padding-left: 26px; border-left: 1px solid var(--line); }
+.steps li::before { content: counter(step); display: block; margin-bottom: 14px; font: 500 13px/1 var(--mono); color: var(--sky); }
+.steps h3 { margin-bottom: 8px; font-size: 19px; line-height: 1.26; }
+.steps p { margin: 0; font-size: 16px; line-height: 1.47; color: var(--ink-2); }
+
+/* text beside a picture */
+.duo { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
+.duo.flip > :first-child { order: 2; }
+.duo .copy .eyebrow { margin-bottom: 12px; }
+.duo .copy h2 { font-size: clamp(30px, 3.6vw, 44px); }
+.duo .copy p { margin: 18px 0 0; font-size: 17px; line-height: 1.47; color: var(--ink-2); text-wrap: pretty; }
+.duo .copy p strong { color: var(--ink); font-weight: 600; }
+.duo img { width: 100%; border-radius: clamp(6px, 1.1vw, 13px); box-shadow: 0 0 0 1px var(--line-2); background: #101010; }
+.duo figcaption { text-align: left; margin-left: 0; }
+
+/* rows of name and what it is: formats, requirements, everything listed */
+.formats { display: grid; grid-template-columns: max-content 1fr; gap: 0 clamp(20px, 4vw, 56px); max-width: 860px; margin: 0 auto; }
+.formats div { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; padding: 15px 0; border-top: 1px solid var(--line); }
+.formats div:last-child { border-bottom: 1px solid var(--line); }
+.formats dt { font-weight: 600; }
+.formats dd { margin: 0; color: var(--ink-2); }
+.formats.after { margin-top: clamp(44px, 6vw, 76px); }
+.spec { max-width: 860px; margin: 0 auto; }
+.spec + .spec { margin-top: clamp(56px, 7vw, 88px); }
+.spec h2 { margin-bottom: 22px; font-size: clamp(26px, 3vw, 34px); letter-spacing: -0.02em; }
+.spec .formats { max-width: none; }
+.spec .fine { margin-top: 16px; }
+
+/* the names of the looks, as words */
+.words { max-width: 860px; margin: clamp(36px, 5vw, 56px) auto 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; font-size: 17px; color: var(--ink-2); }
+.words li span { color: var(--ink-3); }
+
+/* the price, once there is one; until then, how to hear of it */
+.buy { max-width: 620px; margin: 0 auto; padding: clamp(30px, 5vw, 48px) clamp(24px, 5vw, 52px) clamp(30px, 5vw, 46px); border-radius: 24px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line); text-align: center; }
+.price { margin: 0; font-size: clamp(64px, 9vw, 88px); line-height: 1; font-weight: 600; letter-spacing: -0.04em; }
+.price-note { margin: 12px 0 0; font-size: 19px; color: var(--ink-2); }
+.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.plan { padding: 26px 16px 26px; border-radius: 18px; box-shadow: inset 0 0 0 1px var(--line-2); }
+.plan-name { margin: 0 0 12px; font-size: 14px; line-height: 1.3; font-weight: 600; color: var(--ink-2); }
+.plan .price { font-size: clamp(46px, 7vw, 64px); }
+.plan .price-note { margin-top: 8px; font-size: 17px; }
+.plan-cta { margin-top: 20px; }
+.plan-cta:empty { display: none; }
+@media (max-width: 479px) { .plans { grid-template-columns: 1fr; } }
+.facts { display: inline-block; margin: 26px 0 0; padding: 0; list-style: none; text-align: left; }
+.facts li { position: relative; padding: 5px 0 5px 34px; color: var(--ink-2); }
+.facts li::before { content: ""; position: absolute; left: 0; top: 12px; width: 22px; height: 12px; background: var(--mark) center / contain no-repeat; }
+.buy .ctas { margin-top: 28px; }
+.buy .fine { max-width: 430px; margin-left: auto; margin-right: auto; text-wrap: balance; }
+.behind { max-width: 620px; margin: 22px auto 0; font-size: 14px; line-height: 1.43; color: var(--ink-3); text-align: center; text-wrap: pretty; }
+
+/* questions */
+.faq { max-width: 860px; margin: 0 auto; }
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-child { border-bottom: 1px solid var(--line); }
+.faq summary { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 0; font-size: 19px; line-height: 1.3; font-weight: 600; letter-spacing: -0.006em; list-style: none; cursor: pointer; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary svg { flex: 0 0 auto; width: 15px; height: 15px; color: var(--ink-3); transition: transform .3s var(--ease); }
+.faq details[open] summary svg { transform: rotate(45deg); }
+.faq .a { padding: 0 44px 22px 0; color: var(--ink-2); }
+.faq .a p { margin: 0 0 10px; }
+
+/* where to go from here: the other pages, each with what it holds */
+.onward { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.onward a { display: block; padding: 26px 26px 28px; border-radius: var(--r); background: var(--card); box-shadow: inset 0 0 0 1px var(--line); text-decoration: none; transition: box-shadow .25s; }
+.onward a:hover { box-shadow: inset 0 0 0 1px var(--sky); }
+.onward .eyebrow { margin-bottom: 10px; }
+.onward h3 { font-size: 24px; line-height: 1.17; letter-spacing: -0.015em; }
+.onward p { margin: 10px 0 0; font-size: 16px; line-height: 1.45; color: var(--ink-2); }
+
+/* the end */
+.end { text-align: center; }
+.end .eye-small { display: block; width: 168px; height: auto; margin: 0 auto 34px; }
+footer { padding: 34px 0 calc(34px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); font-size: 13px; line-height: 1.5; color: var(--ink-3); }
+footer .wrap { display: grid; grid-template-columns: 1fr auto; gap: 22px 40px; align-items: start; }
+footer .logo { margin-bottom: 14px; color: var(--ink); }
+footer p { margin: 0; max-width: 440px; }
+footer ul { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; padding: 0; list-style: none; }
+footer a { color: var(--ink-2); text-decoration: none; }
+footer a:hover { color: var(--ink); }
+footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+
+/* things come into focus as they are reached, once */
+.js .rise { opacity: 0; transition: opacity .9s var(--ease), filter .9s var(--ease); }
+.js .rise.soft { filter: blur(7px); }
+.js .rise.in { opacity: 1; filter: none; }
+
+@media (min-width: 700px) { .eye { width: min(38vw, 52vh, 560px); } }
+@media (max-width: 899px) {
+  :root { --bar: 92px; }
+  .tabs { order: 3; width: calc(100% + var(--gl) + var(--gr)); margin: 0 calc(-1 * var(--gr)) 0 calc(-1 * var(--gl)); padding: 0 var(--gr) 0 var(--gl); gap: 24px; overflow-x: auto; scrollbar-width: none; border-top: 1px solid var(--line); }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs a { padding: 11px 0 10px; }
+  .list, .list.four { grid-template-columns: 1fr 1fr; }
+  .steps:not(.three) { grid-template-columns: 1fr 1fr; }
+  .steps:not(.three) li:nth-child(odd) { padding-left: 0; border-left: 0; }
+  .steps:not(.three) li:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .duo, .duo.flip { grid-template-columns: 1fr; }
+  .duo.flip > :first-child { order: 0; }
+}
+@media (max-width: 599px) {
+  .list, .list.four, .list.two { grid-template-columns: 1fr; gap: 26px; }
+  .facts-row { grid-template-columns: 1fr; }
+  .steps, .steps.three { grid-template-columns: 1fr; }
+  .steps li, .steps li + li, .steps:not(.three) li:nth-child(n) { padding: 20px 0 4px; border-left: 0; }
+  .steps li + li { border-top: 1px solid var(--line); }
+  /* on a phone the window is shown from its left edge, large enough to read */
+  .win .shot { aspect-ratio: 1000 / 900; }
+  .win .shot img { object-fit: cover; object-position: 0 0; }
+  .win.right .shot img { object-position: 100% 0; }
+  .seg.many button { height: 32px; padding: 0 12px; font-size: 14px; }
+  .formats { grid-template-columns: 1fr; }
+  .formats div { display: block; padding: 13px 0; }
+  .faq summary { font-size: 17px; }
+  .faq .a { padding-right: 0; }
+  .tag { left: 9px; top: 9px; }
+  .film .tag.end { right: 9px; }
+  .film .live .play { left: 8px; bottom: 8px; }
+  .film .knob svg { width: 28px; height: 28px; margin: -14px 0 0 -14px; }
+  footer .wrap { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .rise, .js .rise.soft { opacity: 1; filter: none; transition: none; }
+  .win .shot .b, .js .looks .frames img, .film .live .tag, .film .live .play { transition: none; }
+}
+@media print { .bar, .tools, .picks, .film .knob, .film .play { display: none !important; } body { background: #fff; color: #000; } }
