@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tech specs · Blick</title>
+<meta name="description" content="What Blick runs on, what it opens and what it writes, everything in Prepare, Grade and Export, and what each version brought.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://davidhjalmarlindberg.com/blick/specs/">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="Blick">
+<meta property="og:title" content="Tech specs · Blick">
+<meta property="og:description" content="What Blick runs on, what it opens and what it writes, everything in Prepare, Grade and Export, and what each version brought.">
+<meta property="og:url" content="https://davidhjalmarlindberg.com/blick/specs/">
+<meta property="og:image" content="https://davidhjalmarlindberg.com/blick/images/blick-og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Blick mark, an eye drawn in one line and lit in sky blue on black, with the name Blick under it.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../images/blick-mark.svg" type="image/svg+xml">
+<link rel="icon" href="../images/blick-icon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="../images/blick-touch-180.png">
+<link rel="stylesheet" href="../blick.css?v=3.7">
+<script>document.documentElement.classList.add('js');</script>
+<script src="../store.js"></script>
+<script src="/stats.js" defer></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <!-- the mark: an eye in one line, 16 stroke widths wide and 8 high, lids and iris as one shape; and the name -->
+  <path id="blick-eye" fill-rule="evenodd" d="M-8 0A10 10 0 0 1 8 0A10 10 0 0 1 -8 0ZM6.7082 0A9 9 0 0 0 3.1874 -2.4167A4 4 0 0 1 3.1874 2.4167A9 9 0 0 0 6.7082 0ZM-6.7082 0A9 9 0 0 1 -3.1874 -2.4167A4 4 0 0 0 -3.1874 2.4167A9 9 0 0 1 -6.7082 0ZM-3 0A3 3 0 0 1 3 0A3 3 0 0 1 -3 0Z"/>
+  <path id="blick-word" d="M318 10Q263 10 220 -13.5Q177 -37 152.5 -78Q128 -119 128 -171L128 -309Q128 -361 153 -402Q178 -443 221 -466.5Q264 -490 318 -490Q383 -490 435.5 -456.5Q488 -423 518.5 -366.5Q549 -310 549 -239Q549 -169 518.5 -112.5Q488 -56 435.5 -23Q383 10 318 10ZM61 0L61 -720L171 -720L171 -362L152 -246L171 -129L171 0L61 0ZM300 -94Q340 -94 370.5 -112.5Q401 -131 418.5 -164Q436 -197 436 -240Q436 -283 418.5 -316Q401 -349 370.5 -367.5Q340 -386 300 -386Q260 -386 229 -367.5Q198 -349 181 -316Q164 -283 164 -240Q164 -197 181 -164Q198 -131 229 -112.5Q260 -94 300 -94ZM641 0L641 -720L751 -720L751 0L641 0ZM874 0L874 -480L984 -480L984 0L874 0ZM1328 10Q1257 10 1199.5 -23Q1142 -56 1109 -113Q1076 -170 1076 -240Q1076 -311 1109 -367.5Q1142 -424 1199.5 -457Q1257 -490 1328 -490Q1384 -490 1432.5 -468.5Q1481 -447 1515 -407L1443 -334Q1422 -359 1392.5 -371.5Q1363 -384 1328 -384Q1287 -384 1255.5 -365.5Q1224 -347 1206.5 -315Q1189 -283 1189 -240Q1189 -198 1206.5 -165.5Q1224 -133 1255.5 -114.5Q1287 -96 1328 -96Q1363 -96 1392.5 -108.5Q1422 -121 1443 -146L1515 -73Q1481 -33 1432.5 -11.5Q1384 10 1328 10ZM1899 0L1696 -245L1898 -480L2029 -480L1797 -216L1802 -279L2039 0L1899 0ZM1594 0L1594 -720L1704 -720L1704 0L1594 0ZM863.5 -634a65.5 65.5 0 1 0 131 0a65.5 65.5 0 1 0 -131 0Z"/>
+  <!-- the light the eye has where the graphics card cannot draw it -->
+  <radialGradient id="eye-plain-light" gradientUnits="userSpaceOnUse" cx="-3.2" cy="-2.4" r="11"><stop offset="0" stop-color="#bfefff"/><stop offset=".14" stop-color="#79dcf7"/><stop offset=".5" stop-color="#3f7fd0"/><stop offset=".82" stop-color="#0a1e6e"/><stop offset="1" stop-color="#05070a"/></radialGradient>
+</defs></svg>
+
+<header class="bar" id="bar">
+  <div class="wrap">
+    <a class="home" href="../" aria-label="Blick, the overview"><svg class="logo" viewBox="0 -720 3778 730" width="104" height="20" aria-hidden="true"><use href="#blick-eye" fill="#78c7ff" transform="translate(720 -360) scale(90)"/><use href="#blick-word" fill="currentColor" transform="translate(1739 0)"/></svg></a>
+    <nav class="tabs" aria-label="Blick's pages">
+      <a href="../">Overview</a>
+      <a href="../grade/">Grade</a>
+      <a href="../prepare/">Prepare</a>
+      <a href="../workflow/">Workflow</a>
+      <a href="../specs/" aria-current="page">Tech specs</a>
+    </nav>
+    <a class="btn line small" href="../#get">Get Blick</a>
+  </div>
+</header>
+
+<main>
+  <section class="intro" aria-labelledby="page-title">
+    <div class="wrap">
+      <p class="eyebrow rise">Tech specs</p>
+      <h1 id="page-title" class="rise soft">Everything, listed.</h1>
+      <p class="lead rise">What Blick runs on, what it opens and what it writes, what is in each of its three parts, and what each version brought.</p>
+    </div>
+  </section>
+
+  <section class="sec" aria-label="Specifications">
+    <div class="wrap">
+      <div class="spec rise">
+        <h2>Requirements</h2>
+        <dl class="formats">
+          <div><dt>Mac</dt><dd>A Mac with Apple silicon, on macOS 13 or later. Signed and notarized.</dd></div>
+          <div><dt>Windows</dt><dd>Windows 10 or 11, 64-bit, on Intel or AMD. Not yet signed for Windows, so Windows asks before it opens Blick the first time.</dd></div>
+          <div><dt>Connection</dt><dd>None for the work: clips are read, graded and rendered on the computer. A subscription's key is checked with the store once in 30 days.</dd></div>
+        </dl>
+      </div>
+
+      <div class="spec rise" id="versions">
+        <h2>Versions</h2>
+        <dl class="formats">
+          <div><dt>The download</dt><dd>Blick <span data-bk-version>3.4.2</span> for the Mac, Blick <span data-bk-version-win>3.4.2</span> for Windows.</dd></div>
+          <div><dt>3.7 <span class="v" data-v="3.7">Blick 3.7</span></dt><dd>The library holds 3,773 looks, and the engine learned its tables again from them. Looks is a tab of its own, with kinds, three orders and a Size slider. A clip that already reads like a finished picture keeps a share of what it has. Menus work in one motion: press, hold, let go. A project opens as it was closed, and no file is read twice.</dd></div>
+          <div><dt>3.6 <span class="v" data-v="3.6">Blick 3.6</span></dt><dd>Scenes, each with its own match and its own look. A right-click menu for the whole window. Sliders that go all the way. Names with three numbers, and a name can be changed. A slider for the size of the clips. Quicker throughout: frames are kept, a clip you have been to comes at once.</dd></div>
+          <div><dt>3.5 <span class="v" data-v="3.5">Blick 3.5</span></dt><dd>A match that holds scenes together and never crushes. Care for skin under every look, on every clip. A look on another clip never clips or crushes more than on its own. The library as pictures, with Saved as one of its kinds.</dd></div>
+          <div><dt>3.4</dt><dd>Blick for Windows. A way in and back for DaVinci Resolve, Premiere Pro, Final Cut Pro and CapCut. The subscription, with seven days free.</dd></div>
+        </dl>
+        <p class="fine" data-bk-behind hidden>What is marked as coming is finished and arrives as a free update, on the Mac first.</p>
+        <p class="fine" data-bk-behind-win hidden>Blick for Windows follows the Mac.</p>
+      </div>
+
+      <div class="spec rise">
+        <h2>What it opens</h2>
+        <dl class="formats">
+          <div><dt>Files</dt><dd>MP4 and MOV</dd></div>
+          <div><dt>Codecs</dt><dd>H.264, HEVC, ProRes and DNxHR, at 8, 10 or 12 bits</dd></div>
+          <div><dt>Color</dt><dd>Rec. 709</dd></div>
+          <div><dt>Sets</dt><dd>Clips, a folder with every clip in it, or one file with a whole film in it, which Find cuts splits into its shots</dd></div>
+          <div><dt>Timelines</dt><dd>From DaVinci Resolve and Premiere Pro through Blick's scripts and panel, from Final Cut Pro as XML, from CapCut as the project's folder</dd></div>
+        </dl>
+      </div>
+
+      <div class="spec rise">
+        <h2>What it writes</h2>
+        <dl class="formats">
+          <div><dt>ProRes</dt><dd>422 Proxy, LT, 422 and HQ, 4444 and 4444 XQ</dd></div>
+          <div><dt>DNxHR</dt><dd>SQ, HQ, HQX and 444</dd></div>
+          <div><dt>HEVC</dt><dd>10-bit, 4:2:0 or 4:2:2, in software, or on the Mac's own chip</dd></div>
+          <div><dt>H.264</dt><dd>8-bit</dd></div>
+          <div><dt>Lossless</dt><dd>FFV1 at 10 or 16 bits, and uncompressed 10-bit</dd></div>
+          <div><dt>CineForm</dt><dd>10-bit 4:2:2</dd></div>
+          <div><dt>Image sequences</dt><dd>DPX at 10 bits, TIFF and PNG at 16</dd></div>
+          <div><dt>Stills</dt><dd>PNG or JPEG, at full size</dd></div>
+          <div><dt>The look</dt><dd>A .cube LUT: the look of all clips without finish, grain and vignette</dd></div>
+          <div><dt>The match</dt><dd>A .cube and a .cdl for each clip: the match alone</dd></div>
+          <div><dt>Sound</dt><dd>Carried over from each clip into its render</dd></div>
+          <div><dt>Back to the editor</dt><dd>A sequence for DaVinci Resolve or Premiere Pro, a project as FCPXML for Final Cut Pro, a copy of the project for CapCut</dd></div>
+        </dl>
+      </div>
+
+      <div class="spec rise">
+        <h2>Prepare</h2>
+        <dl class="formats">
+          <div><dt>Match to</dt><dd>Group, Hero or Neutral, with Auto match. Clips that look alike are held together as one scene <span class="v" data-v="3.5">Blick 3.5</span></dd></div>
+          <div><dt>Strengths</dt><dd>Blacks, Whites, Shoulder, Mids, Balance, Warmth, Saturation, Black point, and the spread across the clips</dd></div>
+          <div><dt>Scenes</dt><dd>A scene you make has its own match here and its own look in Grade <span class="v" data-v="3.6">Blick 3.6</span></dd></div>
+          <div><dt>Finish</dt><dd>Hold, Clean-up, Deband, Sharpen; Upscale 1.5 times, 2 times or to UHD; for the cut or for one clip</dd></div>
+          <div><dt>A clip's own</dt><dd>Trims for one clip, on top of the match</dd></div>
+          <div><dt>Cuts</dt><dd>Find cuts, Cut here, Join</dd></div>
+          <div><dt>Check</dt><dd>Pulsing level, noise, banding skies, clipped tones, repeated frames, a cut inside a clip, a hand that changes shape, clips off the set's frame rate or size</dd></div>
+          <div><dt>Views</dt><dd>Clips or Viewer; Original, Split, Prepared; zoom to the pixel; full screen</dd></div>
+        </dl>
+      </div>
+
+      <div class="spec rise">
+        <h2>Grade</h2>
+        <dl class="formats">
+          <div><dt>Generate</dt><dd>Reads seven frames across the clip. The first look is the grade that suits the clip best; each further look stands apart from the ones before it. One setting, Experimental, for how far a look may go</dd></div>
+          <div><dt>Library</dt><dd>3,773 looks as pictures or gradients; All, Dark, Bright, Warm, Cool and Saved; Relevant, Latest or Most used; a Size slider <span class="v" data-v="3.7">Blick 3.7</span></dd></div>
+          <div><dt>Applies to</dt><dd>All clips, one scene, or only this clip</dd></div>
+          <div><dt>Tone</dt><dd>Amount, Exposure, Contrast, Shadows, Highlights, Blacks, Whites</dd></div>
+          <div><dt>Color</dt><dd>Color, Warmth, Tint, Relight, Palette, Skin hold, Vibrance, Crossover, Shade color, Light color</dd></div>
+          <div><dt>Hues</dt><dd>Skies, Foliage and Reds, each with its turn and its color</dd></div>
+          <div><dt>Film</dt><dd>Three dyes with movable peaks, Density, Print curve, Develop from Pull 1 to Push 2, Silver, Flare, Cross process, Dye transfer, Two-color, Age, Night</dd></div>
+          <div><dt>Finish</dt><dd>Glow, Separation, Detail, Halation, Mist, Soften</dd></div>
+          <div><dt>Grain</dt><dd>Amount, size, roughness, softness, color, motion, shadows, midtones, highlights, gauge; a loupe at 100, 200 or 400 percent</dd></div>
+          <div><dt>Vignette</dt><dd>Amount, reach, feather, falloff, roundness, stretch, angle, highlights, shadows, color, tint, hue; placed on a picture of the frame</dd></div>
+          <div><dt>Layers</dt><dd>Add layer lays another look over the one in hand</dd></div>
+          <div><dt>Saved looks</dt><dd>The whole grade, kept for every project</dd></div>
+        </dl>
+      </div>
+
+      <div class="spec rise">
+        <h2>Scopes</h2>
+        <dl class="formats">
+          <div><dt>Blick Scope</dt><dd>Color and light in one drawing, a plume for each clip; Close up; against a reference; pushes Warmth, Tint and Exposure when dragged</dd></div>
+          <div><dt>And</dt><dd>Waveform, Parade, Vector, Histogram, CIE 1931, Numbers</dd></div>
+          <div><dt>Shown</dt><dd>Any number at once, at the foot of the window in Prepare and in Grade; each can be zoomed into</dd></div>
+        </dl>
+      </div>
+
+      <div class="spec rise">
+        <h2>The subscription</h2>
+        <dl class="formats">
+          <div><dt>Price</dt><dd><span data-bk-price="monthly">€49</span> a month or <span data-bk-price="yearly">€495</span> a year, with every update for as long as you subscribe</dd></div>
+          <div><dt>Trial</dt><dd>7 days in the app, everything working, exports included, without a card</dd></div>
+          <div><dt>Computers</dt><dd>Two of your own at a time, for your own work and for work you do for others</dd></div>
+          <div><dt>Money back</dt><dd>Within 14 days of your first payment, in full</dd></div>
+        </dl>
+        <p class="fine">The whole agreement is in the <a href="../terms/">licence agreement</a>.</p>
+      </div>
+
+      <div class="spec rise">
+        <h2>Good to know</h2>
+        <dl class="formats">
+          <div><dt>A LUT</dt><dd>Holds the look of all clips. Finish, grain and vignette are in renders and stills, not in a LUT. Where scenes wear different looks, renders carry each scene's look</dd></div>
+          <div><dt>Skin</dt><dd>What Blick cares for as skin is a range of warm hues, not a face it has recognised. Wood and sand of that color are looked after too</dd></div>
+          <div><dt>Scenes</dt><dd>Which clips are one scene is judged by their colors, not by what is in them. You can always make a scene yourself</dd></div>
+          <div><dt>Sound</dt><dd>Finished files have their sound. A sequence sent back to Premiere Pro or Resolve places the picture only; the project for Final Cut Pro carries both</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="onward-title">
+    <div class="wrap">
+      <h2 class="sr" id="onward-title">More about Blick</h2>
+      <div class="onward rise">
+        <a href="../"><p class="eyebrow">Back to</p><h3>The overview</h3><p>The film, the looks and the price.</p></a>
+        <a href="../grade/"><p class="eyebrow">Grade</p><h3>How Generate writes a grade</h3><p>What it reads, the library, film, grain and the scopes.</p></a>
+        <a href="../#get"><p class="eyebrow">Get Blick</p><h3>Seven days free</h3><p>Then €49 a month or €495 a year.</p></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <svg class="logo" viewBox="0 -720 3778 730" width="104" height="20" role="img" aria-label="Blick"><use href="#blick-eye" fill="#78c7ff" transform="translate(720 -360) scale(90)"/><use href="#blick-word" fill="currentColor" transform="translate(1739 0)"/></svg>
+      <p>Blick is Swedish for gaze. The clips on these pages are AI-generated; Blick matched, graded and rendered them. The looks on the wall are my own grades.</p>
+    </div>
+    <ul>
+      <li><a href="../terms/">Licence agreement</a></li>
+      <li><a href="../privacy/">Privacy</a></li>
+      <li><a href="mailto:me@davidhjalmarlindberg.com">me@davidhjalmarlindberg.com</a></li>
+    </ul>
+    <div class="legal">
+      <span>© 2026 David HJ Lindberg AB</span>
+      <a href="../../">David Hjalmar Lindberg</a>
+    </div>
+  </div>
+</footer>
+
+<script src="../blick.js?v=3.7"></script>
+</body>
+</html>
