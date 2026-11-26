@@ -20,7 +20,7 @@
 <link rel="icon" href="../images/blick-mark.svg" type="image/svg+xml">
 <link rel="icon" href="../images/blick-icon-64.png" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="../images/blick-touch-180.png">
-<link rel="stylesheet" href="../blick.css?v=3.7">
+<link rel="stylesheet" href="../blick.css?v=3.8">
 <script>document.documentElement.classList.add('js');</script>
 <script src="../store.js"></script>
 <script src="/stats.js" defer></script>
@@ -72,7 +72,8 @@
         <h2>Versions</h2>
         <dl class="formats">
           <div><dt>The download</dt><dd>Blick <span data-bk-version>3.4.2</span> for the Mac, Blick <span data-bk-version-win>3.4.2</span> for Windows.</dd></div>
-          <div><dt>3.7 <span class="v" data-v="3.7">Blick 3.7</span></dt><dd>The library holds 3,773 looks, and the engine learned its tables again from them. Looks is a tab of its own, with kinds, three orders and a Size slider. A clip that already reads like a finished picture keeps a share of what it has. Menus work in one motion: press, hold, let go. A project opens as it was closed, and no file is read twice.</dd></div>
+          <div><dt>3.8 <span class="v" data-v="3.8">Blick 3.8</span></dt><dd>Film is a tab of its own, between Adjust and Looks: 46 presets in eight families, each shown on the frame in hand, and your own beside them. A negative with exposure in stops, format and dyes; a print with roll-off, fade, base, toning and a split tone; black and white through color filters; halation, and a gate with weave, breath, dust and scratches.</dd></div>
+          <div><dt>3.7 <span class="v" data-v="3.7">Blick 3.7</span></dt><dd>Generate creates the perfect grade from the clip alone: what more than 3,300 finished grades have in common is built into the engine. Black and white are set where a picture begins to clip, and the grade is fitted to every clip of the cut. The library holds 3,773 looks. Looks is a tab of its own, with kinds, three orders and a Size slider. Menus work in one motion: press, hold, let go. A project opens as it was closed, and no file is read twice.</dd></div>
           <div><dt>3.6 <span class="v" data-v="3.6">Blick 3.6</span></dt><dd>Scenes, each with its own match and its own look. A right-click menu for the whole window. Sliders that go all the way. Names with three numbers, and a name can be changed. A slider for the size of the clips. Quicker throughout: frames are kept, a clip you have been to comes at once.</dd></div>
           <div><dt>3.5 <span class="v" data-v="3.5">Blick 3.5</span></dt><dd>A match that holds scenes together and never crushes. Care for skin under every look, on every clip. A look on another clip never clips or crushes more than on its own. The library as pictures, with Saved as one of its kinds.</dd></div>
           <div><dt>3.4</dt><dd>Blick for Windows. A way in and back for DaVinci Resolve, Premiere Pro, Final Cut Pro and CapCut. The subscription, with seven days free.</dd></div>
@@ -103,7 +104,7 @@
           <div><dt>CineForm</dt><dd>10-bit 4:2:2</dd></div>
           <div><dt>Image sequences</dt><dd>DPX at 10 bits, TIFF and PNG at 16</dd></div>
           <div><dt>Stills</dt><dd>PNG or JPEG, at full size</dd></div>
-          <div><dt>The look</dt><dd>A .cube LUT: the look of all clips without finish, grain and vignette</dd></div>
+          <div><dt>The look</dt><dd>A .cube LUT: the look as it stands on the clip it was made on, with its film stock and print; without halation, gate, grain, finish and vignette</dd></div>
           <div><dt>The match</dt><dd>A .cube and a .cdl for each clip: the match alone</dd></div>
           <div><dt>Sound</dt><dd>Carried over from each clip into its render</dd></div>
           <div><dt>Back to the editor</dt><dd>A sequence for DaVinci Resolve or Premiere Pro, a project as FCPXML for Final Cut Pro, a copy of the project for CapCut</dd></div>
@@ -127,16 +128,20 @@
       <div class="spec rise">
         <h2>Grade</h2>
         <dl class="formats">
-          <div><dt>Generate</dt><dd>Reads seven frames across the clip. The first look is the grade that suits the clip best; each further look stands apart from the ones before it. One setting, Experimental, for how far a look may go</dd></div>
+          <div><dt>Generate</dt><dd>Reads seven frames across the clip. The first look is the perfect grade for the clip, with black and white where the picture begins to clip, fitted to every clip of the cut; each further look stands apart from the ones before it. One setting, Experimental, for how far a look may go <span class="v" data-v="3.7">Blick 3.7</span></dd></div>
           <div><dt>Library</dt><dd>3,773 looks as pictures or gradients; All, Dark, Bright, Warm, Cool and Saved; Relevant, Latest or Most used; a Size slider <span class="v" data-v="3.7">Blick 3.7</span></dd></div>
           <div><dt>Applies to</dt><dd>All clips, one scene, or only this clip</dd></div>
           <div><dt>Tone</dt><dd>Amount, Exposure, Contrast, Shadows, Highlights, Blacks, Whites</dd></div>
           <div><dt>Color</dt><dd>Color, Warmth, Tint, Relight, Palette, Skin hold, Vibrance, Crossover, Shade color, Light color</dd></div>
           <div><dt>Hues</dt><dd>Skies, Foliage and Reds, each with its turn and its color</dd></div>
-          <div><dt>Film</dt><dd>Three dyes with movable peaks, Density, Print curve, Develop from Pull 1 to Push 2, Silver, Flare, Cross process, Dye transfer, Two-color, Age, Night</dd></div>
-          <div><dt>Finish</dt><dd>Glow, Separation, Detail, Halation, Mist, Soften</dd></div>
-          <div><dt>Grain</dt><dd>Amount, size, roughness, softness, color, motion, shadows, midtones, highlights, gauge; a loupe at 100, 200 or 400 percent</dd></div>
+          <div><dt>Finish</dt><dd>Separation, Detail, Soften</dd></div>
           <div><dt>Vignette</dt><dd>Amount, reach, feather, falloff, roundness, stretch, angle, highlights, shadows, color, tint, hue; placed on a picture of the frame</dd></div>
+          <div><dt>Film presets</dt><dd>46 in eight families: Negative 10, Print 5, Slide 5, 16 mm 4, 8 mm 3, Mono 7, Vintage 5, Lab 7; each shown on the frame in hand; your own saved beside them; one switch and a Reset <span class="v" data-v="3.8">Blick 3.8</span></dd></div>
+          <div><dt>Negative</dt><dd>Three dyes with movable peaks, Purity, Crosstalk, Hue shift; Exposure in stops; Develop from Pull 1 to Push 2; Format 8, 16, 35 or 65 mm; Acutance; Richness, Depth</dd></div>
+          <div><dt>Print</dt><dd>Density, Print curve, Roll-off, Printer lights, Fade, Base, Base warmth; toning in shadows, midtones and highlights; Split tone with amount, hue and balance</dd></div>
+          <div><dt>Process</dt><dd>Silver, Flare, Cross process, Dye transfer, Two-color, Age, Night; black and white with a filter: none, yellow, orange, red, green or blue</dd></div>
+          <div><dt>Halation and Gate</dt><dd>Halation, its color, Glow, Mist; Weave, Breath, Dust, Scratches; a switch for each window</dd></div>
+          <div><dt>Grain</dt><dd>Amount, size, roughness, softness, color, motion, shadows, midtones, highlights; a loupe at 100, 200 or 400 percent</dd></div>
           <div><dt>Layers</dt><dd>Add layer lays another look over the one in hand</dd></div>
           <div><dt>Saved looks</dt><dd>The whole grade, kept for every project</dd></div>
         </dl>
@@ -165,7 +170,7 @@
       <div class="spec rise">
         <h2>Good to know</h2>
         <dl class="formats">
-          <div><dt>A LUT</dt><dd>Holds the look of all clips. Finish, grain and vignette are in renders and stills, not in a LUT. Where scenes wear different looks, renders carry each scene's look</dd></div>
+          <div><dt>A LUT</dt><dd>Holds the look as it stands on the clip it was made on. Renders carry the look fitted to each clip, and each scene's own look; a LUT is one table and cannot. Halation, gate, grain, finish and vignette are in renders and stills, not in a LUT</dd></div>
           <div><dt>Skin</dt><dd>What Blick cares for as skin is a range of warm hues, not a face it has recognised. Wood and sand of that color are looked after too</dd></div>
           <div><dt>Scenes</dt><dd>Which clips are one scene is judged by their colors, not by what is in them. You can always make a scene yourself</dd></div>
           <div><dt>Sound</dt><dd>Finished files have their sound. A sequence sent back to Premiere Pro or Resolve places the picture only; the project for Final Cut Pro carries both</dd></div>
@@ -179,7 +184,7 @@
       <h2 class="sr" id="onward-title">More about Blick</h2>
       <div class="onward rise">
         <a href="../"><p class="eyebrow">Back to</p><h3>The overview</h3><p>The film, the looks and the price.</p></a>
-        <a href="../grade/"><p class="eyebrow">Grade</p><h3>How Generate writes a grade</h3><p>What it reads, the library, film, grain and the scopes.</p></a>
+        <a href="../grade/"><p class="eyebrow">Grade</p><h3>How the engine creates a grade</h3><p>What it analyzes, the film lab, the library and the scopes.</p></a>
         <a href="../#get"><p class="eyebrow">Get Blick</p><h3>Seven days free</h3><p>Then €49 a month or €495 a year.</p></a>
       </div>
     </div>
@@ -204,6 +209,6 @@
   </div>
 </footer>
 
-<script src="../blick.js?v=3.7"></script>
+<script src="../blick.js?v=3.8"></script>
 </body>
 </html>

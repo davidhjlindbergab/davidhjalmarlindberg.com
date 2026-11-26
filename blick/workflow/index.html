@@ -20,7 +20,7 @@
 <link rel="icon" href="../images/blick-mark.svg" type="image/svg+xml">
 <link rel="icon" href="../images/blick-icon-64.png" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="../images/blick-touch-180.png">
-<link rel="stylesheet" href="../blick.css?v=3.7">
+<link rel="stylesheet" href="../blick.css?v=3.8">
 <script>document.documentElement.classList.add('js');</script>
 <script src="../store.js"></script>
 <script src="/stats.js" defer></script>
@@ -62,7 +62,7 @@
       <h2 class="sr" id="parts-title">The three parts</h2>
       <ol class="steps three rise">
         <li><h3>Prepare</h3><p>Drop clips, a folder or a timeline anywhere on the window. Blick reads them, matches them to each other and, where you want it, finishes them.</p></li>
-        <li><h3>Grade</h3><p>Press Generate. Take the grade it writes, press again for another, or choose a look from the library. Move anything you like.</p></li>
+        <li><h3>Grade</h3><p>Press Generate. Take the grade the engine creates, press again for another, give it a film, or choose a look from the library. Move anything you like.</p></li>
         <li><h3>Export</h3><p>Render new files with the match, the finish and the look in them, send them back to your editor, or take the look along as a LUT.</p></li>
       </ol>
     </div>
@@ -109,7 +109,7 @@
       </div>
       <figure class="win rise">
         <div class="shot">
-          <img src="../images/win-export-1440.webp" srcset="../images/win-export-1440.webp 1440w, ../images/win-export-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Export: the first clip with its look, and beside it the format, the folder and the buttons that render the clips, save a still or save the look as a LUT.">
+          <img src="../images/38/win-export-1440.webp" srcset="../images/38/win-export-1440.webp 1440w, ../images/38/win-export-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Export: a clip with its look, and beside it the format, the folder and the buttons that render the clips, save a still or save the look as a LUT.">
         </div>
         <figcaption>Export, with the look on. One press renders every clip in the look it wears.</figcaption>
       </figure>
@@ -122,7 +122,7 @@
         <div><dt>CineForm</dt><dd>10-bit 4:2:2</dd></div>
         <div><dt>Image sequences</dt><dd>DPX at 10 bits, TIFF and PNG at 16</dd></div>
         <div><dt>Stills</dt><dd>The frame in front of you at full size, as PNG or JPEG, with everything on it</dd></div>
-        <div><dt>The look</dt><dd>A .cube LUT of the grade, without its finish, grain and vignette</dd></div>
+        <div><dt>The look</dt><dd>A .cube LUT of the grade with its film stock and print, without halation, gate, grain, finish and vignette</dd></div>
         <div><dt>The match</dt><dd>A .cube and a .cdl for each clip: the match alone, for grading on in your editor</dd></div>
       </dl>
     </div>
@@ -145,7 +145,7 @@
       </dl>
       <figure class="win after rise">
         <div class="shot">
-          <img src="../images/win-menu-prepare-1440.webp" srcset="../images/win-menu-prepare-1440.webp 1440w, ../images/win-menu-prepare-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Prepare with the menu a right-click on a clip opens: Open in the viewer, Show in Finder, Match the set to this clip, Counts toward the middle, Copy this clip&#x27;s settings, New scene from this clip, Find the cuts in this clip, and Remove.">
+          <img src="../images/38/win-menu-prepare-1440.webp" srcset="../images/38/win-menu-prepare-1440.webp 1440w, ../images/38/win-menu-prepare-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Prepare with the menu a right-click on a clip opens: Open in the viewer, Show in Finder, Match the set to this clip, Counts toward the middle, Copy this clip&#x27;s settings, New scene from this clip, Find the cuts in this clip, and Remove.">
         </div>
         <figcaption>A right-click on a clip in Prepare.</figcaption>
       </figure>
@@ -167,7 +167,7 @@
       <h2 class="sr" id="onward-title">More about Blick</h2>
       <div class="onward rise">
         <a href="../specs/"><p class="eyebrow">Next</p><h3>Tech specs</h3><p>What it runs on, what it opens and writes, and what each version brought.</p></a>
-        <a href="../grade/"><p class="eyebrow">Back to</p><h3>Grade</h3><p>How Generate writes a grade, and the library of 3,773 looks.</p></a>
+        <a href="../grade/"><p class="eyebrow">Back to</p><h3>Grade</h3><p>How the engine creates a grade, the film lab, and the library of 3,773 looks.</p></a>
         <a href="../#get"><p class="eyebrow">Get Blick</p><h3>Seven days free</h3><p>Then €49 a month or €495 a year.</p></a>
       </div>
     </div>
@@ -192,6 +192,6 @@
   </div>
 </footer>
 
-<script src="../blick.js?v=3.7"></script>
+<script src="../blick.js?v=3.8"></script>
 </body>
 </html>

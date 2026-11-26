@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Blick · AI color grading</title>
-<meta name="description" content="Blick reads a clip and writes the grade it needs: tone, color and film, set for that picture. Then it matches every clip in the cut. AI color grading for generated film, for Mac and Windows.">
+<meta name="description" content="Blick is the intelligent color engine for AI film. It analyzes every clip and creates a perfect cinematic grade for it, fits it to every shot of the cut, and adds a complete film lab. AI color grading for Mac and Windows.">
 <meta name="theme-color" content="#000000">
 <link rel="canonical" href="https://davidhjalmarlindberg.com/blick/">
 <meta property="og:type" content="product">
 <meta property="og:site_name" content="Blick">
 <meta property="og:title" content="Blick · AI color grading">
-<meta property="og:description" content="Blick reads a clip and writes the grade it needs: tone, color and film, set for that picture. Then it matches every clip in the cut. AI color grading for generated film, for Mac and Windows.">
+<meta property="og:description" content="Blick is the intelligent color engine for AI film. It analyzes every clip and creates a perfect cinematic grade for it, fits it to every shot of the cut, and adds a complete film lab. AI color grading for Mac and Windows.">
 <meta property="og:url" content="https://davidhjalmarlindberg.com/blick/">
 <meta property="og:image" content="https://davidhjalmarlindberg.com/blick/images/blick-og.jpg">
 <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
 <link rel="icon" href="images/blick-mark.svg" type="image/svg+xml">
 <link rel="icon" href="images/blick-icon-64.png" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="images/blick-touch-180.png">
-<link rel="stylesheet" href="blick.css?v=3.7">
+<link rel="stylesheet" href="blick.css?v=3.8">
 <script>document.documentElement.classList.add('js');</script>
 <script src="store.js"></script>
 <script src="/stats.js" defer></script>
@@ -56,11 +56,11 @@
     </div>
     <div class="wrap">
       <p class="tag-line rise">AI color grading</p>
-      <h1 id="hero-title" class="rise soft">It sees the clip.<br> Then it grades it.</h1>
-      <p class="lead rise">Blick is an AI colorist for generated film. It reads every clip you give it and writes the grade that picture needs: tone, color and film. Then it carries the whole cut with it.</p>
+      <h1 id="hero-title" class="rise soft">Perfect grades.<br> Created by AI.</h1>
+      <p class="lead rise">Blick is the intelligent color engine for AI film. It analyzes every clip, understands its light, its color and its skin, and creates a cinematic grade built for that exact picture. One press. Every shot. One film.</p>
       <div class="ctas rise">
         <a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Blick%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Blick%20is%20on%20sale.">Tell me when it's on sale</a>
-        <a class="more" href="#film">See what it does</a>
+        <a class="more" href="#film">Watch it work</a>
       </div>
       <p class="fine rise" data-bk-live="Free for 7 days. Then €49 a month or €495 a year.">€49 a month or €495 a year. On sale soon.</p>
     </div>
@@ -71,9 +71,9 @@
       <h2 class="sr" id="film-title">One cut, as it arrived and as Blick rendered it</h2>
       <figure class="rise" id="filmFig">
         <div class="stage" id="stage" data-show="split">
-          <video id="reel" muted loop playsinline controls preload="none" poster="images/film-37-poster.webp" width="1536" height="1744" data-gap="16" aria-label="Five generated shots cut together, forty frames each: a couple on a hillside in low sun, a woman above a city at dusk, a man hauling on a rope in a storm, a woman looking up inside a vast hall of machinery, a monk sitting before a whale&#x27;s skeleton. The film carries every shot twice, frame for frame: as it was generated, and as Blick rendered it, matched to the others and graded.">
-            <source src="images/film-37-864.mp4" type="video/mp4" media="(min-width: 700px)">
-            <source src="images/film-37-576.mp4" type="video/mp4">
+          <video id="reel" muted loop playsinline controls preload="none" poster="images/38/film-poster.webp" width="1536" height="1744" data-gap="16" aria-label="Fourteen generated shots cut together, one second each: a monk sitting before a whale&#x27;s skeleton in a vast hall; a ribbed structure over grey water; a ring of people round a disc of light in a dark arena; a woman drawing on a wall of sketches by lamplight; a woman at a helicopter&#x27;s door above a city; a man by a frosted rope bridge and wind turbines in snow at dusk; a woman straining at a lever; a figure seen from behind in a dry canyon; a woman&#x27;s face close up, with a tear; two men fighting amid flying debris; a small figure under a vast dome of light; two people in flood water at a wheel; a rider on a horse in a snowy city; two men in a desert crowd under an arch. The film carries every shot twice, frame for frame: as it was generated, and as Blick rendered it, matched to the others and graded.">
+            <source src="images/38/film-864.mp4" type="video/mp4" media="(min-width: 700px)">
+            <source src="images/38/film-576.mp4" type="video/mp4">
           </video>
           <canvas id="reelView" width="1536" height="864" aria-hidden="true"></canvas>
           <span class="tag" aria-hidden="true">Original</span>
@@ -88,14 +88,14 @@
             <button type="button" data-show="final" aria-pressed="false">Graded</button>
           </div>
         </div>
-        <figcaption>Five generated clips, forty frames of each. <span class="lively">Left of the line they play as they arrived, right of it as Blick rendered them:</span><span class="plain">Above they play as they arrived, below as Blick rendered them:</span> matched to each other, then graded with Glint 6:9:6, a look chosen from the library, fitted by Blick to each clip. <span class="lively"><span class="by-mouse">Click</span><span class="by-finger">Tap</span> the picture to see one of them whole.</span></figcaption>
+        <figcaption>Fourteen AI-generated shots, one second of each. <span class="lively">Left of the line they play as they arrived, right of it as Blick rendered them:</span><span class="plain">Above they play as they arrived, below as Blick rendered them:</span> matched to each other, then graded with Glint 4:8:9, the grade Generate created first, fitted by the engine to every shot. <span class="lively"><span class="by-mouse">Click</span><span class="by-finger">Tap</span> the picture to see one of them whole.</span></figcaption>
       </figure>
     </div>
   </section>
 
   <section class="sec" aria-label="What Blick is">
     <div class="wrap">
-      <p class="statement rise">A grade used to be built by hand, one shot at a time, by someone who had spent years learning how. <strong>Blick reads the film and writes it.</strong> You keep every control a colorist has. You just never start from nothing again.</p>
+      <p class="statement rise">A cinematic grade used to be built by hand, shot by shot, by someone with years of training. <strong>Blick's AI engine creates it in one press.</strong> Every control a colorist has is still yours. You just never start from zero again.</p>
     </div>
   </section>
 
@@ -103,36 +103,65 @@
     <div class="wrap">
       <div class="head rise">
         <p class="eyebrow">Generate</p>
-        <h2 id="grade-title">A grade is written.<br> Not picked.</h2>
-        <p class="lead"><strong>No presets, no LUT packs.</strong> Generate reads the whole clip, seven frames across it, and writes the grade that clip needs: where its blacks and whites sit, its color, how film would take it. The first press gives the grade that suits the clip best. Press again for another, made for the same picture.</p>
+        <h2 id="grade-title">It doesn't pick a look.<br> It creates one.</h2>
+        <p class="lead"><strong>Not presets. Not LUT packs.</strong> Press Generate and the engine analyzes your clip: its deepest black and its brightest white, the color it carries, the skin in it, the way the light falls. Then it builds the perfect grade for that picture. Press again and it creates another, made for the same clip.</p>
       </div>
 
       <figure class="looks rise" id="looks">
         <div class="frames">
-          <img data-look="0" src="images/gen-0.webp" width="1280" height="720" loading="lazy" decoding="async" alt="A couple on a hillside in low sun, as Prepare left the frame, with no look.">
-          <img data-look="1" src="images/gen-1.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Luster 5:6:5, the grade Generate wrote first." class="on">
-          <img data-look="2" src="images/gen-2.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Glint 5:9:7, the look the second press made.">
-          <img data-look="3" src="images/gen-3.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Luster 4:7:3, the look the third press made.">
-          <img data-look="4" src="images/gen-4.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Glint 6:5:7, the look the fourth press made.">
+          <img data-look="0" src="images/38/gen-0.webp" width="1280" height="720" loading="lazy" decoding="async" alt="A woman at a helicopter&#x27;s door above a city, as Prepare left the frame, with no look.">
+          <img data-look="1" src="images/38/gen-1.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Glint 4:8:9, the grade Generate created first." class="on">
+          <img data-look="2" src="images/38/gen-2.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Glint 4:2:4, the look the second press created.">
+          <img data-look="3" src="images/38/gen-3.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Glint 6:2:8, the look the fourth press created.">
+          <img data-look="4" src="images/38/gen-4.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame in Gleam 4:6:8, the look the fifth press created.">
         </div>
         <div class="tools">
           <div class="seg many" role="group" aria-label="The frame with no look, or in one of the looks" data-for="looks">
             <button type="button" data-show="0" aria-pressed="false">No look</button>
-            <button type="button" data-show="1" aria-pressed="true">Luster 5:6:5</button>
-            <button type="button" data-show="2" aria-pressed="false">Glint 5:9:7</button>
-            <button type="button" data-show="3" aria-pressed="false">Luster 4:7:3</button>
-            <button type="button" data-show="4" aria-pressed="false">Glint 6:5:7</button>
+            <button type="button" data-show="1" aria-pressed="true">Glint 4:8:9</button>
+            <button type="button" data-show="2" aria-pressed="false">Glint 4:2:4</button>
+            <button type="button" data-show="3" aria-pressed="false">Glint 6:2:8</button>
+            <button type="button" data-show="4" aria-pressed="false">Gleam 4:6:8</button>
           </div>
         </div>
-        <figcaption>One frame of the first clip as Prepare left it, then in the grade Generate wrote first and in the looks of three more presses. A look is named for the color of its shadows, then three numbers: brightness, contrast and color strength.</figcaption>
+        <figcaption>One frame of the fifth clip as Prepare left it, then in the grade Generate created first and in the looks of three more presses. A look is named for the color of its shadows, then three numbers: brightness, contrast and color strength.</figcaption>
       </figure>
 
       <dl class="list">
-        <div class="rise"><dt>It reads the picture</dt><dd>Seven frames across the clip: its darkest and brightest, how much color it carries and where, whether there is skin in it, how the light falls.</dd></div>
-        <div class="rise"><dt>It solves the grade on the clip</dt><dd>Each look is worked out on the clip itself, the first one on three film stocks, and its sliders are set from what the result measures.</dd></div>
-        <div class="rise"><dt>It checks before you see it</dt><dd>A look that would clip a highlight, crush a black or turn the skin is eased until it does not. What you get is finished.</dd></div>
+        <div class="rise"><dt>Smart analysis</dt><dd>Seven frames across the clip are read before a pixel is touched: the darkest and brightest points, how much color and in which hues, where the skin is, how the light falls.</dd></div>
+        <div class="rise"><dt>The perfect grade, built in <span class="v" data-v="3.7">Blick 3.7</span></dt><dd>The engine carries what more than 3,300 finished cinematic grades have in common: where their tones lie, the color of their shadows and their lights, how rich they run, where skin sits. It takes your clip there.</dd></div>
+        <div class="rise"><dt>Precision at both ends <span class="v" data-v="3.7">Blick 3.7</span></dt><dd>Black and white are set exactly where your picture begins to clip. The darkest point is black, the brightest is white, and nothing burns or crushes that did not before.</dd></div>
       </dl>
       <p class="cap rise"><a class="more" href="grade/">Everything about Grade</a></p>
+    </div>
+  </section>
+
+  <section class="sec" id="cut" aria-labelledby="cut-title">
+    <div class="wrap">
+      <div class="head rise">
+        <p class="eyebrow">Every shot <span class="v" data-v="3.7">Blick 3.7</span></p>
+        <h2 id="cut-title">One press.<br> The whole film.</h2>
+        <p class="lead"><strong>A look is never pasted across a cut.</strong> The engine solves it again on every clip: light, contrast, color, shadows and skin, each fitted to that shot. Fourteen different pictures go in. One film comes out.</p>
+      </div>
+      <figure class="looks sheet rise" id="sheet">
+        <div class="frames">
+          <picture><source media="(max-width: 599px)" srcset="images/38/sheet-0-tall.webp" width="1286" height="2556"><img data-look="0" src="images/38/sheet-0.webp" width="2836" height="456" loading="lazy" decoding="async" alt="Fourteen generated clips side by side, as they arrived: a monk sitting before a whale&#x27;s skeleton in a vast hall; a ribbed structure over grey water; a ring of people round a disc of light in a dark arena; a woman drawing on a wall of sketches by lamplight; a woman at a helicopter&#x27;s door above a city; a man by a frosted rope bridge and wind turbines in snow at dusk; a woman straining at a lever; a figure seen from behind in a dry canyon; a woman&#x27;s face close up, with a tear; two men fighting amid flying debris; a small figure under a vast dome of light; two people in flood water at a wheel; a rider on a horse in a snowy city; two men in a desert crowd under an arch."></picture>
+          <picture><source media="(max-width: 599px)" srcset="images/38/sheet-1-tall.webp" width="1286" height="2556"><img data-look="1" src="images/38/sheet-1.webp" width="2836" height="456" loading="lazy" decoding="async" alt="The same fourteen frames: Prepared."></picture>
+          <picture><source media="(max-width: 599px)" srcset="images/38/sheet-2-tall.webp" width="1286" height="2556"><img data-look="2" src="images/38/sheet-2.webp" width="2836" height="456" loading="lazy" decoding="async" alt="The same fourteen frames: Glint 4:8:9." class="on"></picture>
+          <picture><source media="(max-width: 599px)" srcset="images/38/sheet-3-tall.webp" width="1286" height="2556"><img data-look="3" src="images/38/sheet-3.webp" width="2836" height="456" loading="lazy" decoding="async" alt="The same fourteen frames: Gleam 4:6:8."></picture>
+          <picture><source media="(max-width: 599px)" srcset="images/38/sheet-4-tall.webp" width="1286" height="2556"><img data-look="4" src="images/38/sheet-4.webp" width="2836" height="456" loading="lazy" decoding="async" alt="The same fourteen frames: Glint 4:2:4."></picture>
+        </div>
+        <div class="tools">
+          <div class="seg many" role="group" aria-label="The clips of the cut with no look, or all in one look" data-for="sheet">
+            <button type="button" data-show="0" aria-pressed="false">Original</button>
+            <button type="button" data-show="1" aria-pressed="false">Prepared</button>
+            <button type="button" data-show="2" aria-pressed="true">Glint 4:8:9</button>
+            <button type="button" data-show="3" aria-pressed="false">Gleam 4:6:8</button>
+            <button type="button" data-show="4" aria-pressed="false">Glint 4:2:4</button>
+          </div>
+        </div>
+        <figcaption>The fourteen clips as they arrived, as Prepare matched them, and then all in one look: the grade Generate created first, and the looks of two more presses. Every clip gets the look solved on its own picture.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -140,8 +169,8 @@
     <div class="wrap">
       <div class="head rise">
         <p class="eyebrow">The engine <span class="v" data-v="3.7">Blick 3.7</span></p>
-        <h2 id="learned-title">It learned color from<br> finished pictures.</h2>
-        <p class="lead"><strong>More than 3,600 of them.</strong> Blick's engine was not given rules for what looks good. It was taught by graded frames, read one by one: where a finished picture puts its black and its white, how far each color goes at each brightness, where skin sits. A new grade is held to what those pictures have in common.</p>
+        <h2 id="learned-title">Intelligence built from<br> thousands of finished grades.</h2>
+        <p class="lead"><strong>More than 3,300 of them, studied frame by frame.</strong> Blick's engine was never handed rules for what looks good. It learned from graded pictures: where a finished frame puts its black and its white, how far each color goes at each brightness, where skin sits. What they share became its sense of a perfect grade.</p>
       </div>
     </div>
     <div class="wall rise" role="img" aria-label="A wall of graded film frames from Blick's library: landscapes at dusk, forests, streets at night, interiors, figures seen from behind, side by side from edge to edge.">
@@ -150,10 +179,59 @@
     </div>
     <div class="wrap">
       <dl class="list">
-        <div class="rise"><dt>What finished looks like</dt><dd>The engine knows the levels, the contrast and the color of thousands of finished frames. A grade it writes lands where finished pictures do, not where a formula says.</dd></div>
-        <div class="rise"><dt>How far color goes</dt><dd>For every hue and every brightness it has seen how much color a graded picture carries. A new look stays inside that, so it is rich where it can be and never loud.</dd></div>
-        <div class="rise"><dt>When to do less</dt><dd>A clip that already reads like a finished picture keeps what it has. Blick moves a clip as far as it needs and no further.</dd></div>
+        <div class="rise"><dt>It knows what finished looks like</dt><dd>The levels, the contrast and the color of thousands of finished frames are in the engine. A grade it creates lands where finished pictures do, not where a formula says.</dd></div>
+        <div class="rise"><dt>It knows how far color can go</dt><dd>For every hue and every brightness it has seen how much color a graded picture carries. A new look stays inside that: rich where it can be, never loud.</dd></div>
+        <div class="rise"><dt>It knows when to do less</dt><dd>A bright scene stays bright. A clip that arrives rich is not pushed further. The engine moves a picture as far as it needs and no further.</dd></div>
       </dl>
+    </div>
+  </section>
+
+  <section class="sec" id="filmlab" aria-labelledby="filmlab-title">
+    <div class="wrap">
+      <div class="head rise">
+        <p class="eyebrow">Film <span class="v" data-v="3.8">Blick 3.8</span></p>
+        <h2 id="filmlab-title">A complete film lab.<br> Inside the grade.</h2>
+        <p class="lead"><strong>46 film presets in eight families,</strong> each shown on your own frame before you choose: negative, print, slide, 16 mm, 8 mm, black and white, vintage and lab. Under them runs a film engine that models the stock itself, from the dyes in the negative to the weave in the gate.</p>
+      </div>
+
+      <figure class="looks rise" id="flm">
+        <div class="frames">
+          <img data-look="0" src="images/38/flm-0.webp" width="1280" height="720" loading="lazy" decoding="async" alt="A man by a frosted rope bridge and wind turbines in snow at dusk, in Glint 4:8:9 with the film Generate gave the look.">
+          <img data-look="1" src="images/38/flm-1.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame on Daylight 250: A daylight negative, printed: a gentle roll-off and a little warmth in the highlights.">
+          <img data-look="2" src="images/38/flm-2.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame on Slide Vivid 50: Reversal film: narrow dyes, deep color, a hard curve and almost no halo." class="on">
+          <img data-look="3" src="images/38/flm-3.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame on Print Warm: A dense print on a warm base: warm highlights over cool shadows.">
+          <img data-look="4" src="images/38/flm-4.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame on Super 8 Home: The smallest film: coarse grain, rich color, weave, breath, dust and scratches.">
+          <img data-look="5" src="images/38/flm-5.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame on Mono Classic 400: Black and white through a yellow filter, with a classic grain.">
+          <img data-look="6" src="images/38/flm-6.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame on Three-Strip: Dye transfer on narrow dyes: saturated, deep color.">
+          <img data-look="7" src="images/38/flm-7.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame on Bleach Bypass: The silver left in the print: harder contrast, less color. The look keeps its own stock.">
+        </div>
+        <ul class="picks named" role="group" aria-label="The frame with the look's own film, or with one of these film presets" data-for="flm">
+          <li><button type="button" data-show="0" aria-pressed="false" data-says="The look&#x27;s own. The film the look came with."><img src="images/38/flm-t0.webp" width="320" height="180" loading="lazy" decoding="async" alt=""><span>The look&#x27;s own</span></button></li>
+          <li><button type="button" data-show="1" aria-pressed="false" data-says="Daylight 250. A daylight negative, printed: a gentle roll-off and a little warmth in the highlights."><img src="images/38/flm-t1.webp" width="320" height="180" loading="lazy" decoding="async" alt=""><span>Daylight 250</span></button></li>
+          <li><button type="button" data-show="2" aria-pressed="true" data-says="Slide Vivid 50. Reversal film: narrow dyes, deep color, a hard curve and almost no halo."><img src="images/38/flm-t2.webp" width="320" height="180" loading="lazy" decoding="async" alt=""><span>Slide Vivid 50</span></button></li>
+          <li><button type="button" data-show="3" aria-pressed="false" data-says="Print Warm. A dense print on a warm base: warm highlights over cool shadows."><img src="images/38/flm-t3.webp" width="320" height="180" loading="lazy" decoding="async" alt=""><span>Print Warm</span></button></li>
+          <li><button type="button" data-show="4" aria-pressed="false" data-says="Super 8 Home. The smallest film: coarse grain, rich color, weave, breath, dust and scratches."><img src="images/38/flm-t4.webp" width="320" height="180" loading="lazy" decoding="async" alt=""><span>Super 8 Home</span></button></li>
+          <li><button type="button" data-show="5" aria-pressed="false" data-says="Mono Classic 400. Black and white through a yellow filter, with a classic grain."><img src="images/38/flm-t5.webp" width="320" height="180" loading="lazy" decoding="async" alt=""><span>Mono Classic 400</span></button></li>
+          <li><button type="button" data-show="6" aria-pressed="false" data-says="Three-Strip. Dye transfer on narrow dyes: saturated, deep color."><img src="images/38/flm-t6.webp" width="320" height="180" loading="lazy" decoding="async" alt=""><span>Three-Strip</span></button></li>
+          <li><button type="button" data-show="7" aria-pressed="false" data-says="Bleach Bypass. The silver left in the print: harder contrast, less color. The look keeps its own stock."><img src="images/38/flm-t7.webp" width="320" height="180" loading="lazy" decoding="async" alt=""><span>Bleach Bypass</span></button></li>
+        </ul>
+        <figcaption><span data-said>Slide Vivid 50. Reversal film: narrow dyes, deep color, a hard curve and almost no halo.</span> One frame of the sixth clip in Glint 4:8:9. The first small picture is the look with the film it came with; each of the others is the same look on another film.</figcaption>
+      </figure>
+
+      <dl class="list four">
+        <div class="rise"><dt>Negative</dt><dd>Three dye layers with their own purity, crosstalk and hue. Exposure in stops, developing pulled or pushed, and the format, from 8 mm to 65 mm.</dd></div>
+        <div class="rise"><dt>Print</dt><dd>Density, the print's curve and roll-off, printer lights, fade, the base and its warmth, toning by shadows, midtones and highlights, and a split tone.</dd></div>
+        <div class="rise"><dt>Process</dt><dd>Silver for a bleach bypass, flare, cross process, dye transfer, two-color, age, day for night, and black and white through a color filter.</dd></div>
+        <div class="rise"><dt>Light and gate</dt><dd>Halation, glow and mist round the highlights. Weave, breath, dust and scratches in the gate. Grain that follows the exposure.</dd></div>
+      </dl>
+
+      <figure class="win right after rise">
+        <div class="shot">
+          <img src="images/38/win-film-1440.webp" srcset="images/38/win-film-1440.webp 1440w, images/38/win-film-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Grade with the Film tab open: the film&#x27;s name, Daylight 250, its switch, Save and Reset; the eight families; ten negative presets, each a small picture of the frame; and the Negative window with the three dyes, Exposure, Develop, Format and Acutance.">
+        </div>
+        <figcaption>The Film tab on the thirteenth clip. Each preset is a small picture of the frame in hand; the chosen one has a blue bar and a blue name. Under them are the film&#x27;s windows, the first of which is the negative with its three dyes.</figcaption>
+      </figure>
+      <p class="cap rise"><a class="more" href="grade/#film">Everything in Film</a></p>
     </div>
   </section>
 
@@ -161,34 +239,34 @@
     <div class="wrap">
       <div class="head rise">
         <p class="eyebrow">The library <span class="v" data-v="3.7">Blick 3.7</span></p>
-        <h2 id="library-title">3,773 looks.<br> Any of them on your clip.</h2>
-        <p class="lead"><strong>Every frame on that wall is a look.</strong> Choose one, and Blick grades your clip to it: not a filter laid over the picture, but that frame's tone and color worked out again on yours. Sort them by what suits the clip, narrow them to dark, bright, warm or cool, and keep your own beside them.</p>
+        <h2 id="library-title">3,773 cinematic looks.<br> Each rebuilt on your clip.</h2>
+        <p class="lead"><strong>Every look is a finished frame.</strong> Choose one and the engine grades your clip to it: not a filter laid over the picture, but that look's tone and color solved again on yours. Smart sorting puts the looks that suit your frame first, and your own saved grades live beside them.</p>
       </div>
 
       <figure class="looks rise" id="lib">
         <div class="frames">
-          <img data-look="0" src="images/lib-0.webp" width="1280" height="720" loading="lazy" decoding="async" alt="A monk sitting before a whale&#x27;s skeleton in a vast hall, as Prepare left the frame, with no look.">
-          <img data-look="1" src="images/lib-1.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glance 7:4:7, the look of a walk through tall grass under power lines, in clear sun." class="on">
-          <img data-look="2" src="images/lib-2.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Luster 4:8:5, the look of a car passing a lake at sunset, under dark trees.">
-          <img data-look="3" src="images/lib-3.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glint 7:5:3, the look of a caravan crossing a white plain at dawn.">
-          <img data-look="4" src="images/lib-4.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glimpse 4:4:7, the look of a car on a wet road in a blue night.">
-          <img data-look="5" src="images/lib-5.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Luster 4:3:7, the look of a rider on a path under an old oak.">
-          <img data-look="6" src="images/lib-6.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glance 6:7:3, the look of a pigeon on a cart in a snowy street.">
-          <img data-look="7" src="images/lib-7.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glance 5:9:7, the look of a filling station at night, in snow.">
-          <img data-look="8" src="images/lib-8.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glint 6:9:6, the look of a city in haze at sunrise.">
+          <img data-look="0" src="images/38/lib-0.webp" width="1280" height="720" loading="lazy" decoding="async" alt="A figure seen from behind in a dry canyon, as Prepare left the frame, with no look.">
+          <img data-look="1" src="images/38/lib-1.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glance 7:2:9, the look of a walk through tall grass under power lines, in clear sun.">
+          <img data-look="2" src="images/38/lib-2.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Luster 4:6:9, the look of a car passing a lake at sunset, under dark trees.">
+          <img data-look="3" src="images/38/lib-3.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glint 7:3:9, the look of a caravan crossing a white plain at dawn.">
+          <img data-look="4" src="images/38/lib-4.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glimpse 6:3:9, the look of a car on a wet road in a blue night.">
+          <img data-look="5" src="images/38/lib-5.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Luster 7:4:9, the look of a rider on a path under an old oak.">
+          <img data-look="6" src="images/38/lib-6.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glance 7:6:9, the look of a pigeon on a cart in a snowy street.">
+          <img data-look="7" src="images/38/lib-7.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glance 7:8:9, the look of a filling station at night, in snow." class="on">
+          <img data-look="8" src="images/38/lib-8.webp" width="1280" height="720" loading="lazy" decoding="async" alt="The same frame graded to Glint 7:8:9, the look of a city in haze at sunrise.">
         </div>
         <ul class="picks" role="group" aria-label="The clip with no look, or graded to one of these looks from the library" data-for="lib">
           <li><button type="button" data-show="0" aria-pressed="false" aria-label="No look" data-says="The frame as Prepare left it, with no look."><span class="none">No look</span></button></li>
-          <li><button type="button" data-show="1" aria-pressed="true" aria-label="Glance 7:4:7: the look of a walk through tall grass under power lines, in clear sun" data-says="Glance 7:4:7, from a walk through tall grass under power lines, in clear sun."><img src="images/still-1.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
-          <li><button type="button" data-show="2" aria-pressed="false" aria-label="Luster 4:8:5: the look of a car passing a lake at sunset, under dark trees" data-says="Luster 4:8:5, from a car passing a lake at sunset, under dark trees."><img src="images/still-2.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
-          <li><button type="button" data-show="3" aria-pressed="false" aria-label="Glint 7:5:3: the look of a caravan crossing a white plain at dawn" data-says="Glint 7:5:3, from a caravan crossing a white plain at dawn."><img src="images/still-3.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
-          <li><button type="button" data-show="4" aria-pressed="false" aria-label="Glimpse 4:4:7: the look of a car on a wet road in a blue night" data-says="Glimpse 4:4:7, from a car on a wet road in a blue night."><img src="images/still-4.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
-          <li><button type="button" data-show="5" aria-pressed="false" aria-label="Luster 4:3:7: the look of a rider on a path under an old oak" data-says="Luster 4:3:7, from a rider on a path under an old oak."><img src="images/still-5.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
-          <li><button type="button" data-show="6" aria-pressed="false" aria-label="Glance 6:7:3: the look of a pigeon on a cart in a snowy street" data-says="Glance 6:7:3, from a pigeon on a cart in a snowy street."><img src="images/still-6.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
-          <li><button type="button" data-show="7" aria-pressed="false" aria-label="Glance 5:9:7: the look of a filling station at night, in snow" data-says="Glance 5:9:7, from a filling station at night, in snow."><img src="images/still-7.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
-          <li><button type="button" data-show="8" aria-pressed="false" aria-label="Glint 6:9:6: the look of a city in haze at sunrise" data-says="Glint 6:9:6, from a city in haze at sunrise."><img src="images/still-8.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
+          <li><button type="button" data-show="1" aria-pressed="false" aria-label="Glance 7:2:9: the look of a walk through tall grass under power lines, in clear sun" data-says="Glance 7:2:9, from a walk through tall grass under power lines, in clear sun."><img src="images/38/still-0.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
+          <li><button type="button" data-show="2" aria-pressed="false" aria-label="Luster 4:6:9: the look of a car passing a lake at sunset, under dark trees" data-says="Luster 4:6:9, from a car passing a lake at sunset, under dark trees."><img src="images/38/still-1.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
+          <li><button type="button" data-show="3" aria-pressed="false" aria-label="Glint 7:3:9: the look of a caravan crossing a white plain at dawn" data-says="Glint 7:3:9, from a caravan crossing a white plain at dawn."><img src="images/38/still-2.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
+          <li><button type="button" data-show="4" aria-pressed="false" aria-label="Glimpse 6:3:9: the look of a car on a wet road in a blue night" data-says="Glimpse 6:3:9, from a car on a wet road in a blue night."><img src="images/38/still-3.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
+          <li><button type="button" data-show="5" aria-pressed="false" aria-label="Luster 7:4:9: the look of a rider on a path under an old oak" data-says="Luster 7:4:9, from a rider on a path under an old oak."><img src="images/38/still-4.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
+          <li><button type="button" data-show="6" aria-pressed="false" aria-label="Glance 7:6:9: the look of a pigeon on a cart in a snowy street" data-says="Glance 7:6:9, from a pigeon on a cart in a snowy street."><img src="images/38/still-5.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
+          <li><button type="button" data-show="7" aria-pressed="true" aria-label="Glance 7:8:9: the look of a filling station at night, in snow" data-says="Glance 7:8:9, from a filling station at night, in snow."><img src="images/38/still-6.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
+          <li><button type="button" data-show="8" aria-pressed="false" aria-label="Glint 7:8:9: the look of a city in haze at sunrise" data-says="Glint 7:8:9, from a city in haze at sunrise."><img src="images/38/still-7.webp" width="320" height="180" loading="lazy" decoding="async" alt=""></button></li>
         </ul>
-        <figcaption><span data-said>Glance 7:4:7, from a walk through tall grass under power lines, in clear sun.</span> Each small picture is a look from the library. The large one is one frame of the fifth clip, graded to the look you choose.</figcaption>
+        <figcaption><span data-said>Glance 7:8:9, from a filling station at night, in snow.</span> Each small picture is a look from the library. The large one is one frame of the eighth clip, graded to the look you choose.</figcaption>
       </figure>
     </div>
   </section>
@@ -198,13 +276,13 @@
       <div class="head rise">
         <p class="eyebrow">Prepare</p>
         <h2 id="prepare-title">Many clips.<br> One film.</h2>
-        <p class="lead"><strong>Generated clips rarely agree.</strong> One sits on milky blacks, the next runs magenta, a third tops out early. Prepare measures every clip and gives each the correction that brings the set together. Its Finish then takes the generated look off the clips that need it: it steadies the level, cleans, debands and sharpens.</p>
+        <p class="lead"><strong>Generated clips never agree.</strong> One sits on milky blacks, the next runs magenta, a third tops out early. Blick's matching engine measures every clip and calculates the exact correction that brings the set together. Its Finish then takes the generated look off the clips that need it: it steadies the level, cleans, debands and sharpens.</p>
       </div>
 
       <figure class="win rise" id="win" data-show="a" data-turn>
         <div class="shot">
-          <img class="a" src="images/win-original-1440.webp" srcset="images/win-original-1440.webp 1440w, images/win-original-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick's window in Prepare with five clips as tiles, as they arrived. Beside them the match and finish settings, under them Blick Scope.">
-          <img class="b" src="images/win-prepared-1440.webp" srcset="images/win-prepared-1440.webp 1440w, images/win-prepared-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="The same window showing the clips prepared: matched to each other.">
+          <img class="a" src="images/38/win-original-1440.webp" srcset="images/38/win-original-1440.webp 1440w, images/38/win-original-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick's window in Prepare with fourteen clips as tiles, as they arrived. Beside them the match and finish settings, under them Blick Scope.">
+          <img class="b" src="images/38/win-prepared-1440.webp" srcset="images/38/win-prepared-1440.webp 1440w, images/38/win-prepared-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="The same window showing the clips prepared: matched to each other.">
         </div>
         <div class="tools">
           <div class="seg" role="group" aria-label="The window showing the clips as they arrived, or prepared" data-for="win">
@@ -212,13 +290,13 @@
             <button type="button" data-show="b" aria-pressed="false">Prepared</button>
           </div>
         </div>
-        <figcaption>Blick in Prepare with the five clips, as they arrived and matched, at the app's own settings. Under them is Blick Scope, with a plume for every clip.</figcaption>
+        <figcaption>Blick in Prepare with the fourteen clips, as they arrived and matched, at the app's own settings. Under them is Blick Scope, with a plume for every clip.</figcaption>
       </figure>
 
       <dl class="list">
-        <div class="rise"><dt>One scene, one grade <span class="v" data-v="3.5">Blick 3.5</span></dt><dd>Clips that look alike as they come are held as one scene and corrected together. Prepare never pulls apart what already matched.</dd></div>
+        <div class="rise"><dt>Scene-aware matching <span class="v" data-v="3.5">Blick 3.5</span></dt><dd>Clips that look alike as they come are held as one scene and corrected together. Prepare never pulls apart what already matched.</dd></div>
         <div class="rise"><dt>A finish for the cut</dt><dd>Hold keeps level and color steady, Clean-up takes out noise and grit, Deband rebuilds smooth ramps, Sharpen lifts the edges, Upscale goes up to UHD.</dd></div>
-        <div class="rise"><dt>Check</dt><dd>Blick goes through every clip and lists what an eye would stop at in a screening: a level that pulses, a sky that bands, a frame that repeats, a hand that changes shape.</dd></div>
+        <div class="rise"><dt>An automatic check</dt><dd>Blick goes through every clip and lists what an eye would stop at in a screening: a level that pulses, a sky that bands, a frame that repeats, a hand that changes shape.</dd></div>
       </dl>
       <p class="cap rise"><a class="more" href="prepare/">Everything about Prepare</a></p>
     </div>
@@ -227,14 +305,14 @@
   <section class="sec" id="care" aria-labelledby="care-title">
     <div class="wrap">
       <div class="head rise">
-        <p class="eyebrow">Care <span class="v" data-v="3.5">Blick 3.5</span></p>
+        <p class="eyebrow">Skin <span class="v" data-v="3.5">Blick 3.5</span></p>
         <h2 id="care-title">Skin stays skin.</h2>
-        <p class="lead"><strong>A look is only good if the people in it are.</strong> Blick reads every look as it is shown, on every clip. Where it would push a face warmer or redder than it came, the look gives way there, for that clip alone. The same care holds the two ends of the picture.</p>
+        <p class="lead"><strong>A grade is only as good as the people in it.</strong> The engine reads the skin tones under every look, on every clip, and holds them where finished pictures keep theirs. Where a look would push a face too warm or too red, it gives way there, for that clip alone.</p>
       </div>
       <dl class="list">
-        <div class="rise"><dt>Faces first</dt><dd>Where skin would carry clearly more color under a look than it arrived with, the look's own push on the warm hues is taken down for that clip.</dd></div>
-        <div class="rise"><dt>Nothing crushed that was not</dt><dd>A look put on the other clips may not send more of a clip to black or to white than it does on its own clip. Shadows and highlights are moved for that clip, unseen.</dd></div>
-        <div class="rise"><dt>One look, fitted to each clip</dt><dd>A look applies to the whole cut, to one scene or to one clip. On each clip it is worked out again, so the cut holds together without every clip being forced to one recipe.</dd></div>
+        <div class="rise"><dt>Faces first</dt><dd>Skin is graded in relation to the look, never sacrificed to it. Where it would carry clearly more color than it should, the look's push on the warm hues is taken down for that clip.</dd></div>
+        <div class="rise"><dt>Nothing crushed, nothing burned</dt><dd>On every clip the engine counts what stands at full black and at full white. Where a look would send clearly more there than arrived, that end is taken back.</dd></div>
+        <div class="rise"><dt>One look, fitted to each clip</dt><dd>A look applies to the whole cut, to one scene or to one clip. On each clip it is solved again, so the cut holds together without every shot being forced into one recipe.</dd></div>
       </dl>
     </div>
   </section>
@@ -243,19 +321,19 @@
     <div class="wrap">
       <div class="head rise">
         <p class="eyebrow">Control</p>
-        <h2 id="hands-title">It starts the grade.<br> You finish it.</h2>
-        <p class="lead"><strong>Nothing is locked.</strong> A generated look is a set of sliders and curves like any other grade. Move them, switch a window off, look at the scopes, save the result. What Generate set is where you start, not where you have to stay.</p>
+        <h2 id="hands-title">AI starts the grade.<br> You direct it.</h2>
+        <p class="lead"><strong>Nothing is locked.</strong> A generated look is a complete grade, open in three tabs: Adjust, Film and Looks. Move any slider or curve, switch a window off to see what it does, read the scopes, save the result. What the engine set is where you start, not where you have to stay.</p>
       </div>
       <figure class="win rise">
         <div class="shot">
-          <img src="images/win-grade-1440.webp" srcset="images/win-grade-1440.webp 1440w, images/win-grade-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Grade: the first clip large with the look Luster 5:6:5, under it the clips of the cut, the looks Generate made and Blick Scope, and beside it the look&#x27;s name, what it applies to and the Tone window.">
+          <img src="images/38/win-grade-1440.webp" srcset="images/38/win-grade-1440.webp 1440w, images/38/win-grade-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Grade: the fifth clip large with the look Glint 4:8:9, under it the clips of the cut, the looks Generate made and Blick Scope, and beside it the three tabs, the look&#x27;s name, what it applies to and the Tone window.">
         </div>
-        <figcaption>Grade, with Luster 5:6:5 on the first clip. Under the picture are the clips of the cut, the looks Generate made and the scopes; beside it the look&#x27;s name, what it applies to, and the first of its windows.</figcaption>
+        <figcaption>Grade, with Glint 4:8:9 on the fifth clip. Under the picture are the clips of the cut, the looks Generate made and the scopes; beside it the tabs Adjust, Film and Looks, the look&#x27;s name, what it applies to, and the first of its windows.</figcaption>
       </figure>
       <dl class="list four">
-        <div class="rise"><dt>Five windows</dt><dd>Tone with its curves, Color, Hues, Film and Finish. Each can be enlarged, and each can be switched off to see what it does.</dd></div>
-        <div class="rise"><dt>Film, modelled</dt><dd>A film stock as three dyes whose peaks you can move, with density, a print's curve, and developing pulled or pushed.</dd></div>
-        <div class="rise"><dt>Grain and Vignette</dt><dd>Two windows of their own. Grain is judged in a loupe at full size, and a vignette is placed, turned and tinted on a small picture of the frame.</dd></div>
+        <div class="rise"><dt>Adjust</dt><dd>Tone with its curves, Color, Hues, Finish and Vignette. Each window can be enlarged, and each can be switched off to see what it does.</dd></div>
+        <div class="rise"><dt>Film <span class="v" data-v="3.8">Blick 3.8</span></dt><dd>Negative, Print, Process, Halation, Gate and Grain, with 46 presets and a place for your own.</dd></div>
+        <div class="rise"><dt>Sliders that go all the way <span class="v" data-v="3.6">Blick 3.6</span></dt><dd>Nearly white, nearly black, one grey, four times the color. What Generate sets stays well inside; the far ends are for you.</dd></div>
         <div class="rise"><dt>Seven scopes</dt><dd>Blick Scope, waveform, parade, vectorscope, histogram, CIE diagram and numbers, as many at once as you like.</dd></div>
       </dl>
     </div>
@@ -268,11 +346,17 @@
         <h2 id="workflow-title">Into your edit.<br> And back.</h2>
         <p class="lead"><strong>Blick sits between the generator and the edit.</strong> Drop clips or a folder on it, or send a timeline from your editor. Take the result as new files in the format the edit wants, with the sound carried over, or leave the files alone and take the look along as a LUT.</p>
       </div>
+      <figure class="win rise">
+        <div class="shot">
+          <img src="images/38/win-export-1440.webp" srcset="images/38/win-export-1440.webp 1440w, images/38/win-export-2880.webp 2880w" sizes="(max-width: 599px) 150vw, (max-width: 1244px) 100vw, 1200px" width="2880" height="1800" loading="lazy" decoding="async" alt="Blick&#x27;s window in Export: a clip with its look, and beside it the format, the folder and the buttons that render the clips, save a still or save the look as a LUT.">
+        </div>
+        <figcaption>Export, with the look on. One press renders every clip in the look it wears.</figcaption>
+      </figure>
       <dl class="list four">
         <div class="rise"><dt>Four editors</dt><dd>A way in and back for DaVinci Resolve, Premiere Pro, Final Cut Pro and CapCut. The finished clips return as a sequence, each where its original sits.</dd></div>
         <div class="rise"><dt>Projects that wait for you <span class="v" data-v="3.7">Blick 3.7</span></dt><dd>A project opens as it was closed. Blick keeps what it read of every file, and reads a file again only if it has changed.</dd></div>
         <div class="rise"><dt>Renders for the edit</dt><dd>ProRes up to 4444 XQ, DNxHR, HEVC, H.264, CineForm, lossless, and DPX, TIFF or PNG sequences.</dd></div>
-        <div class="rise"><dt>On your computer</dt><dd>Blick reads, grades and renders where the clips are. Nothing is uploaded, so there is no queue and there are no credits to buy.</dd></div>
+        <div class="rise"><dt>On your computer</dt><dd>The engine reads, grades and renders where the clips are. Nothing is uploaded, so there is no queue and there are no credits to buy.</dd></div>
       </dl>
       <p class="cap rise"><a class="more" href="workflow/">Everything about the workflow</a></p>
     </div>
@@ -311,11 +395,11 @@
       </div>
       <div class="faq rise">
         <details><summary>Do I need to know color grading?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="a"><p>No. Generate writes a finished grade for the clip, and the first press gives the one that suits it best. Every slider is there for the day you want to move one.</p></div></details>
+          <div class="a"><p>No. Generate creates a finished grade for the clip, and the first press gives the perfect one for that picture. Every slider is there for the day you want to move one.</p></div></details>
         <details><summary>What is the AI, exactly?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="a"><p>An engine that has learned from finished grades and that reads your clip before it does anything. It measures the picture, weighs what it learned against what it sees, writes a grade, works it out on the clip and checks the result. It does not repaint your picture or invent anything in it. What it writes is a grade, made of sliders and curves you can read and change.</p></div></details>
+          <div class="a"><p>A color engine that has learned from thousands of finished grades and that analyzes your clip before it does anything. It measures the picture, sets black and white where the picture begins to clip, builds the grade, solves it on every clip and checks the result. It does not repaint your picture or invent anything in it. What it creates is a grade, made of sliders and curves you can read and change.</p></div></details>
         <details><summary>Can I change a look after Generate has made it?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
-          <div class="a"><p>Yes, all of it. A generated look is a set of sliders and curves like any other grade: move them, switch a window off, or press Generate again for another.</p></div></details>
+          <div class="a"><p>Yes, all of it. A generated look is a set of sliders and curves like any other grade: move them, change its film, switch a window off, or press Generate again for another.</p></div></details>
         <details><summary>Is it only for AI-generated clips?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
           <div class="a"><p>It is made for them, but it takes any Rec. 709 clips that should look like one film: stock footage, phone clips, renders.</p></div></details>
         <details><summary>What does it cost?<svg viewBox="0 0 15 15" aria-hidden="true"><path d="M7.5 1v13M1 7.5h13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
@@ -340,8 +424,8 @@
     <div class="wrap">
       <h2 class="sr" id="onward-title">More about Blick</h2>
       <div class="onward rise">
-        <a href="grade/"><p class="eyebrow">Grade</p><h3>How Generate writes a grade</h3><p>What it reads, the library, the names of the looks, film, grain and the scopes.</p></a>
-        <a href="prepare/"><p class="eyebrow">Prepare</p><h3>How a set becomes one film</h3><p>The match, scenes, the finish, cuts, and what Check looks for.</p></a>
+        <a href="grade/"><p class="eyebrow">Grade</p><h3>How the engine creates a grade</h3><p>What it analyzes, the library, the film lab with its 46 presets, and the scopes.</p></a>
+        <a href="prepare/"><p class="eyebrow">Prepare</p><h3>How a set becomes one film</h3><p>The matching engine, scenes, the finish, cuts, and what Check looks for.</p></a>
         <a href="workflow/"><p class="eyebrow">Workflow</p><h3>From the generator to the edit</h3><p>Projects, the four editors, the formats, and the hand's own shortcuts.</p></a>
         <a href="specs/"><p class="eyebrow">Tech specs</p><h3>Everything, listed</h3><p>What it runs on, what it opens and writes, and what each version brought.</p></a>
       </div>
@@ -351,7 +435,7 @@
   <section class="sec end" aria-labelledby="end-title">
     <div class="wrap">
       <svg class="eye-small rise" viewBox="-8.8 -4.8 17.6 9.6" width="168" height="92" aria-hidden="true"><use href="#blick-eye" fill="url(#eye-plain-light)"/></svg>
-      <h2 id="end-title" class="rise soft">Give the film its look.</h2>
+      <h2 id="end-title" class="rise soft">Your film.<br> Perfectly graded.</h2>
       <div class="ctas rise"><a class="btn solid" href="mailto:me@davidhjalmarlindberg.com?subject=Blick%3A%20tell%20me%20when%20it%27s%20on%20sale&amp;body=Tell%20me%20when%20Blick%20is%20on%20sale.">Tell me when it's on sale</a></div>
     </div>
   </section>
@@ -375,6 +459,6 @@
   </div>
 </footer>
 
-<script src="blick.js?v=3.7"></script>
+<script src="blick.js?v=3.8"></script>
 </body>
 </html>
