@@ -29,6 +29,8 @@
         if (v) extra += "&" + keep[i] + "=" + encodeURIComponent(v.slice(0, 120));
       }
     } catch (e) { /* the plain link is fine */ }
+    // the running offer, as in ../assets/js/store.js: change both together
+    if (Date.now() < Date.parse("2026-12-01T08:00:00Z")) extra += "&discount_code=BLACKFRIDAY";
     window.location.replace(url + "?theme=dark" + extra);
   })();
 </script>

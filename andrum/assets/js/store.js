@@ -16,7 +16,8 @@
 
   Measuring ads is in pixel.js (the Meta pixel, loaded only for visitors who accept it, one question
   for the whole site). This file tells it when a checkout opens (InitiateCheckout) and when an order
-  is paid (Purchase, at the list price: the page isn't told what a discount took off).
+  is paid (Purchase, at the list price, or at a running offer's price: the page isn't told what a
+  discount code took off).
 */
 (function () {
   "use strict";
@@ -24,12 +25,25 @@
   var CHECKOUT = "https://buy.polar.sh/polar_cl_GzJkmjeg0Qgc7hVDs9MoLwPK0VM4AX0NuDO241KhMyZ";
   var PRICE = 59, CURRENCY = "EUR";
 
+  // A price for a limited time. While it runs, the buttons and the price panel say its price, a line
+  // across the top of the page says so, the checkout opens with its discount code and the pixel counts
+  // at its price. After `until` the page is as it is written, with nothing to undo. The code must exist
+  // in Polar (Products, Discounts) with the same end; the same offer is in ../../buy/index.html.
+  var OFFER = {
+    code: "BLACKFRIDAY", price: 39, name: "Black Friday",
+    until: Date.parse("2026-12-01T08:00:00Z"),          // Monday 30 November, to its end on the American west coast
+    ends: "through Monday 30 November"
+  };
+  function offer() { return OFFER && Date.now() < OFFER.until ? OFFER : null; }
+  function price() { var o = offer(); return o ? o.price : PRICE; }
+
   var doc = document;
   var CAMPAIGN = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
 
   function checkoutUrl() {
     var url = CHECKOUT + (CHECKOUT.indexOf("?") < 0 ? "?" : "&") + "theme=dark";
-    var q;
+    var o = offer(), q;
+    if (o) url += "&discount_code=" + encodeURIComponent(o.code);
     try { q = new URLSearchParams(window.location.search); } catch (e) { return url; }
     for (var i = 0; i < CAMPAIGN.length; i++) {
       var v = q.get(CAMPAIGN[i]);
@@ -77,7 +91,7 @@
     try { seen = window.localStorage.getItem(mark) === "1"; window.localStorage.setItem(mark, "1"); } catch (e) { /* counted once per visit */ }
     // after the page's other scripts (pixel.js comes after this file)
     function done() {
-      if (!seen) track("purchase", { id: id, value: PRICE, currency: CURRENCY });
+      if (!seen) track("purchase", { id: id, value: price(), currency: CURRENCY });
       showThanks("");
       if (/^polar_cst_[A-Za-z0-9_-]{10,}$/.test(session)) showKey(session);
     }
@@ -118,6 +132,33 @@
     });
   }
 
+  // ---------------------------------------------------------------------------------- a running offer
+  (function () {
+    var o = offer();
+    if (!o) return;
+    var was = "\u20ac" + PRICE, now = "\u20ac" + o.price;
+    var buttons = doc.querySelectorAll("[data-an-buy], .top__link[href='#buy']");
+    for (var i = 0; i < buttons.length; i++)
+      if (buttons[i].textContent.indexOf(was) >= 0) buttons[i].textContent = buttons[i].textContent.replace(was, now);
+    var p = doc.querySelector("[data-an-price] .price");
+    if (p) {
+      var rest = p.querySelector("span");
+      p.textContent = now + " ";
+      var old = doc.createElement("s"); old.textContent = was; old.setAttribute("aria-label", "instead of " + was);
+      p.appendChild(old); p.appendChild(doc.createTextNode(" "));
+      if (rest) p.appendChild(rest);
+      var note = doc.createElement("p");
+      note.className = "offer-note";
+      note.textContent = o.name + " price, " + o.ends + ". Then " + was + " again.";
+      p.parentNode.insertBefore(note, p.nextSibling);
+    }
+    var bar = doc.createElement("a");
+    bar.className = "offer-bar"; bar.href = "#buy";
+    bar.textContent = o.name + ": Andrum for " + now + " instead of " + was + ", " + o.ends + ".";
+    doc.body.insertBefore(bar, doc.body.firstChild);
+    doc.documentElement.className += " has-offer";
+  })();
+
   function showThanks(email) {
     var main = doc.querySelector("[data-an-price]");
     var thanks = doc.querySelector("[data-an-thanks]");
@@ -137,7 +178,7 @@
     var count = window.andrumPixel;
     if (typeof count !== "function") return;
     o = o || {};
-    if (what === "checkout") count("InitiateCheckout", { content_name: "Andrum", content_type: "product", value: PRICE, currency: CURRENCY });
+    if (what === "checkout") count("InitiateCheckout", { content_name: "Andrum", content_type: "product", value: price(), currency: CURRENCY });
     else if (what === "purchase") count("Purchase", { content_name: "Andrum", content_type: "product", value: o.value, currency: o.currency }, o.id ? { eventID: o.id } : undefined);
   }
 
