@@ -391,3 +391,9 @@ details > p + p { margin-top: -8px; }
   .btn, .play, .ways button { transition: none; }
   .dock, .play[aria-busy="true"] svg { animation: none; }
 }
+
+/* A running offer (store.js adds these while it runs) */
+.offer-bar { display: block; padding: 11px 20px; background: linear-gradient(90deg, #3d63ff, #8b5cff 48%, #ff9ad5); color: #fff; font: 500 15px/1.35 var(--text); text-align: center; text-decoration: none; }
+.offer-bar:hover { text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.7); }
+.price s { margin-left: 2px; font-size: 0.5em; color: var(--dim); text-decoration-thickness: 1px; }
+.offer-note { margin: 8px 0 18px; color: var(--ink); font: 500 15px/1.4 var(--text); }
