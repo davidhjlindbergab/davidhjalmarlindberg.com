@@ -99,7 +99,7 @@ h1 { margin: 0; font-size: clamp(42px, 6.4vw, 80px); line-height: 1.04; font-wei
 html:not(.js) .tools { display: none; }
 figure { margin: 0; }
 figcaption, .cap { max-width: 660px; margin: 16px auto 0; font-size: 14px; line-height: 1.43; color: var(--ink-3); text-align: center; text-wrap: pretty; }
-.tag { position: absolute; left: 14px; top: 14px; padding: 5px 8px 4px; border-radius: 5px; background: rgba(0, 0, 0, 0.62); color: var(--ink); font: 500 12px/1 var(--mono); letter-spacing: .09em; text-transform: uppercase; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+.tag { position: absolute; left: 14px; top: 14px; padding: 5px 8px 4px; border-radius: 5px; background: rgba(0, 0, 0, 0.62); color: var(--ink); font: 500 12px/1 var(--f); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
 
 /* The cut. One film file carries every shot twice, frame for frame: the upper picture as the clip arrived, the lower one as
    Blick rendered it. Left alone (no script, or the script gave up) the film shows as it is, both pictures and the browser's
@@ -165,14 +165,36 @@ h3 { margin: 0; font-size: 21px; line-height: 1.19; font-weight: 600; letter-spa
 /* every clip of the cut side by side, in one look after another */
 .js .looks.strip .frames { max-width: none; aspect-ratio: 2584 / 288; border-radius: clamp(4px, .6vw, 8px); }
 @media (max-width: 599px) { .js .looks.strip .frames { aspect-ratio: 1286 / 726; } }
+/* all fourteen clips at once: seven by two on a wide window, two by seven on a narrow one, where the names stay in reach */
+.js .looks.sheet .frames { max-width: none; aspect-ratio: 2836 / 456; border-radius: clamp(4px, .6vw, 8px); }
+@media (max-width: 599px) {
+  .js .looks.sheet .frames { aspect-ratio: 1286 / 2556; }
+  .js .looks.sheet .tools { position: sticky; bottom: max(12px, env(safe-area-inset-bottom, 0px)); z-index: 2; }
+  .js .looks.sheet .seg { background: rgba(10, 13, 16, 0.86); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+  .picks.named li { width: calc((100% - 30px) / 4); }
+}
 /* the looks of the library, each chosen by its own picture */
 .picks { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 980px; margin: 18px auto 0; padding: 0; list-style: none; }
 html:not(.js) .picks { display: none; }
-.picks button { appearance: none; display: block; width: clamp(58px, 8.3vw, 98px); padding: 0; border: 0; border-radius: 8px; background: var(--card); overflow: hidden; cursor: pointer; box-shadow: 0 0 0 1px var(--line-2); opacity: .58; transition: opacity .25s, box-shadow .25s; }
-.picks button img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.picks button { appearance: none; display: block; width: clamp(58px, 8.3vw, 98px); padding: 0; border: 0; background: none; cursor: pointer; opacity: .58; transition: opacity .25s; }
+.picks button img, .picks .none { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; background: var(--card); box-shadow: 0 0 0 1px var(--line-2); }
+.picks button::after { content: ""; display: block; height: 2px; margin-top: 6px; border-radius: 1px; background: transparent; transition: background .25s; }
 .picks button:hover { opacity: 1; }
-.picks button[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 1px var(--bg), 0 0 0 3px var(--sky); }
-.picks .none { display: grid; place-items: center; aspect-ratio: 16 / 9; font: 500 12px/1.2 var(--f); color: var(--ink-2); }
+.picks button[aria-pressed="true"] { opacity: 1; }
+.picks button[aria-pressed="true"]::after { background: var(--sky); }
+.picks .none { display: grid; place-items: center; font: 500 12px/1.2 var(--f); color: var(--ink-2); }
+/* film presets: each a small picture of the frame with its name under it, as in the Film tab */
+.picks.named { gap: 12px 10px; }
+.picks.named.six { max-width: 720px; }
+.picks.named li { width: clamp(72px, 10.4vw, 108px); }
+.picks.named button { width: 100%; }
+.picks.named button span { display: block; margin-top: 4px; padding-top: 6px; border-top: 2px solid transparent; font: 500 12px/1.25 var(--f); color: var(--ink-2); transition: color .25s, border-color .25s; }
+.picks.named button::after { display: none; }
+.picks.named button[aria-pressed="true"] span { color: var(--sky); border-top-color: var(--sky); }
+/* the film presets by family, as words */
+.families { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px 36px; max-width: 1080px; margin: clamp(44px, 6vw, 76px) auto 0; }
+.families dt { margin-bottom: 5px; font-size: 15px; line-height: 1.3; font-weight: 600; color: var(--ink); }
+.families dd { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
 
 /* The wall: looks of the library, side by side from edge to edge. It rests in the dark, and a light crosses it: the
    pointer's, or its own when the pointer rests. Two copies of one picture, the lit one seen through a round opening. */
@@ -293,6 +315,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
   .tabs::-webkit-scrollbar { display: none; }
   .tabs a { padding: 11px 0 10px; }
   .list, .list.four { grid-template-columns: 1fr 1fr; }
+  .families { grid-template-columns: 1fr 1fr; }
   .steps:not(.three) { grid-template-columns: 1fr 1fr; }
   .steps:not(.three) li:nth-child(odd) { padding-left: 0; border-left: 0; }
   .steps:not(.three) li:nth-child(n+3) { border-top: 1px solid var(--line); }
@@ -302,7 +325,7 @@ footer .legal { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-con
 @media (max-width: 599px) {
   .list, .list.four, .list.two { grid-template-columns: 1fr; gap: 26px; }
   .facts-row { grid-template-columns: 1fr; }
-  .steps, .steps.three { grid-template-columns: 1fr; }
+  .steps, .steps:not(.three), .steps.three { grid-template-columns: 1fr; }
   .steps li, .steps li + li, .steps:not(.three) li:nth-child(n) { padding: 20px 0 4px; border-left: 0; }
   .steps li + li { border-top: 1px solid var(--line); }
   /* on a phone the window is shown from its left edge, large enough to read */
